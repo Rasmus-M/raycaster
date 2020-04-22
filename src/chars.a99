@@ -1,0 +1,22 @@
+****************************************
+* Colorset Definitions
+****************************************
+COL0   DATA >1010,>1010,>1010,>1010    ;
+COL1   DATA >F0F0,>F0F0,>F0F0,>F0F0    ;
+COL2   DATA >6060,>6060,>6060,>6060    ;
+COL3   DATA >9090,>9090,>9090,>9090    ;
+COL4   DATA >C0C0,>C0C0,>C0C0,>C0C0    ;
+COL5   DATA >3030,>3030,>3030,>3030    ;
+COL6   DATA >4040,>4040,>4040,>4040    ;
+COL7   DATA >5050,>5050,>5050,>5050    ;
+****************************************
+* Character Patterns
+****************************************
+PAT0   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT1   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT2   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT3   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT4   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT5   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT6   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT7   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
