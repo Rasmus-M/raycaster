@@ -1,11 +1,130 @@
+*********************************************************************
+*
+* Raycaster
+* For the TI-99/4A home computer
+*
+* April 2020
+* Rasmus Moustgaard <rasmus.moustgaard@gmail.com>
+*
+
+**
+* Memory mapped addresses
+*
+vdpwd  equ  >8c00                      ; VDP write data
+vdpwa  equ  >8c02                      ; VDP set read/write address
+vdprd  equ  >8800                      ; VDP read data
+vdpsta equ  >8802                      ; VDP status
+sound  equ  >8400                      ; PSG sound
+spchrd equ	>9000                      ; Speech read
+spchwt equ	>9400                      ; Speech write
+grmrd  equ  >9800                      ; GROM read data
+grmra  equ  >9802                      ; GROM address read
+grmwd  equ  >9C00                      ; GROM write data
+grmwa  equ  >9C02                      ; GROM address write
+
+**
+* VDP memory map
+*
+ptrntb equ  >0000                      ; Pattern table base 1
+ptrnt2 equ  >1000                      ; Pattern table base 2
+sprptb equ  >1800                      ; Sprite pattern table base
+colrtb equ  >2000                      ; Color table base 1
+nametb equ  >2800                      ; Name table base 1
+namet2 equ  >2c00                      ; Name table base 2
+spratb equ  >2f00                      ; Sprite attribute table base 1
+sprat2 equ  >2f80                      ; Sprite attribute table base 2
+colrt2 equ  >3000                      ; Color table base 2
+
+**
+* Constants
+*
+map_width:
+       equ  256
+map_height:
+       equ  32
+n_tile_patterns:
+       equ  8
+n_sprite_patterns:
+       equ  0
+
+**
+* Scratch pad
+*
+rndsd  equ  >83c0                      ; Random number seed
+pad    equ  >8300
+wrksp  equ  pad                        ; Workspace
+r0lb   equ  wrksp+1                    ; Low byte of register 0
+r1lb   equ  wrksp+3
+r2lb   equ  wrksp+5
+r3lb   equ  wrksp+7
+r4lb   equ  wrksp+9
+r5lb   equ  wrksp+11
+r6lb   equ  wrksp+13
+r7lb   equ  wrksp+15
+r8lb   equ  wrksp+17
+r9lb   equ  wrksp+19
+stack  equ  wrksp+>20                  ; Stack (grows up)
+padvar equ  stack+>20                  ; Start of pad variables
+
+**
+* PAD variables
+*
+rand_no:
+       equ  padvar+2
+x:
+       equ  rand_no+2
+y:
+       equ  x+2
+pad_max:
+       equ  y+2
+
+       copy "macros.a99"
+
+***************************************************************
+*
+* Main program
+*
+       aorg >a000
+main:
+       limi 0                          ; Interrupts off
+       lwpi wrksp                      ; Setup workspace
+       li   r10,stack                  ; Setup stack pointer
+       bl   @one_time_init
+loop:
+       jmp  loop
+
+*********************************************************************
+*
+* Wait for vertical retrace (CRU)
+*
+vsync:
+       clr  r12
+vsync_1:
+       tb   2                          ; Test CRU bit for VDP interrupt
+       jeq  vsync_1
+       movb @vdpsta,r12
+       rt
+*// vsync
+
+*********************************************************************
+*
+* Cast rays
+*
+cast_rays:
+       .proc
 
 
+
+       .endproc
+*// cast_rays
+
+***************************************************************
 *
-* r4: Direction index of ray to cast
+* r0: Direction index of ray to cast
 *
-* On return r8 contains the distance, or -1 if no hit
-* r7 contains the map entry
-* r0,r1 contains the map coordinates
+* On return r0,r1 contains the map coordinates
+* r2 contains the distance, or -1 if no hit
+* r3 contains the map entry/color
 *
 max_steps:
        equ  16
@@ -34,6 +153,231 @@ cast_ray_2:
        ai   r8,max_steps+1             ; max_steps - steps_left + 1
        rt                              ; Return
 
+*********************************************************************
+*
+* One time initializations
+*
+one_time_init:
+       .proc
+       li   r15,vdpwd
+       mov  @rndsd,@rand_no            ; Save random number seed
+       bl   @graphics_mode
+*      Clear scratch pad
+       li   r0,padvar
+       li   r2,>8400-padvar
+       bl   @clear
+*      Patterns
+       li   r0,ptrntb
+       li   r1,PAT0
+       li   r2,n_tile_patterns*8
+       bl   @vmbw
+       li   r0,ptrntb+>800
+       li   r1,PAT0
+       li   r2,n_tile_patterns*8
+       bl   @vmbw
+       li   r0,ptrntb+>1000
+       li   r1,PAT0
+       li   r2,n_tile_patterns*8
+       bl   @vmbw
+*      Colors
+       li   r0,colrtb
+       li   r1,COL0
+       li   r2,n_tile_patterns*8
+       bl   @vmbw
+*      Sprite patterns
+;       li   r0,sprptb
+;       li   r1,SPR0
+;       li   r2,n_sprite_patterns*32
+;       bl   @vmbw
+;       li   r0,spratb
+;       li   r1,>d000
+;       bl   @vsbw
+       .endproc
+*// one_time_init
+
+*********************************************************************
+*
+* Set graphics mode
+*
+graphics_mode:
+       .proc
+       clr  r0
+       li   r1,vdp_registers
+       li   r2,8
+graphics_mode_1:
+       movb *r1+,@r0lb
+       bl   @vwtr                      ; Set register
+       ai   r0,>0100
+       dec  r2
+       jne  graphics_mode_1
+*      Clear VDP RAM
+       clr  r0
+       clr  r1
+       li   r2,>4000
+       bl   @vsmw
+       .endproc
+*      VDP registers
+vdp_registers:
+       byte >02                        ; Graphics II mode
+       byte >e2                        ; 16K, display on, interrupt enabled
+       byte nametb/>400                ; Name table
+       byte >df                        ; Color table
+       byte ptrntb/>800+>03            ; Pattern table
+       byte spratb/>80                 ; Sprite attribute table
+       byte sprptb/>800                ; Sprite pattern table
+       byte >01                        ; Backdrop color
+*// graphics_mode
+
+*********************************************************************
+*
+* Check key
+*
+* r0: Column in MSB: >0000 - >0700, Row in LSB: >0006 - >0014
+*
+*       Column   0      1    2    3    4    5     6       7
+*     Row
+*     >0006      =      .    ,    M    N    /    Fire    Fire
+*     >0008    Space    L    K    J    H    ;    Left    Left
+*     >000A    Enter    O    I    U    Y    P    Right   Right
+*     >000C             9    8    7    6    0    Down    Down
+*     >000E    Fctn     2    3    4    5    1    Up      Up
+*     >0010    Shift    S    D    F    G    A
+*     >0012    Ctrl     W    E    R    T    Q
+*     >0014             X    C    V    B    Z
+*
+* On return NEQ means that the key is pressed
+*
+KEY_FI EQU  >0606
+KEY_LF EQU  >0608
+KEY_RG EQU  >060A
+KEY_DN EQU  >060C
+KEY_UP EQU  >060E
+KEY_CM EQU  >0206
+KEY_FS EQU  >0106
+KEY_0  EQU  >050C
+KEY_1  EQU  >050E
+KEY_2  EQU  >010E
+KEY_3  EQU  >020E
+KEY_4  EQU  >030E
+KEY_5  EQU  >040E
+KEY_6  EQU  >040C
+KEY_7  EQU  >030C
+KEY_8  EQU  >020C
+KEY_9  EQU  >010C
+KEY_A  EQU  >0510
+KEY_B  EQU  >0414
+KEY_C  EQU  >0214
+KEY_D  EQU  >0210
+KEY_E  EQU  >0212
+KEY_F  EQU  >0310
+KEY_G  EQU  >0410
+KEY_H  EQU  >0408
+KEY_I  EQU  >020A
+KEY_J  EQU  >0308
+KEY_K  EQU  >0208
+KEY_L  EQU  >0108
+KEY_M  EQU  >0306
+KEY_N  EQU  >0406
+KEY_O  EQU  >010A
+KEY_P  EQU  >050A
+KEY_Q  EQU  >0512
+KEY_R  EQU  >0312
+KEY_S  EQU  >0110
+KEY_T  EQU  >0412
+KEY_U  EQU  >030A
+KEY_V  EQU  >0314
+KEY_W  EQU  >0112
+KEY_X  EQU  >0114
+KEY_Y  EQU  >040A
+KEY_Z  EQU  >0514
+KEY_SP EQU  >0008
+KEY_EN EQU  >000A
+KEY_FN EQU  >000E
+KEY_SH EQU  >0010
+KEY_CT EQU  >0012
+JOY_FI EQU  >0606
+JOY_LT EQU  >0608
+JOY_RT EQU  >060A
+JOY_DN EQU  >060C
+JOY_UP EQU  >060E
+*
+check_key:
+       li   r12,>0024                  ; CRU address of the column decoder
+       ldcr r0,3                       ; Select column
+       andi r0,>00ff
+       mov  r0,r12                     ; Select row
+       tb   0                          ; Test key, EQ if not pressed
+       rt
+*// check_key
+
+*********************************************************************
+*
+* CPU space to CPU space copy
+*
+* r0: source
+* r1: destination
+* r2: number of bytes
+*
+copy:
+       mov  *r0+,*r1+
+       dect r2
+       jne  copy
+       rt
+*// copy
+
+*********************************************************************
+*
+* CPU space clear
+*
+* r0: start
+* r2: number of bytes
+*
+clear:
+       clr  *r0+
+       dect r2
+       jne  clear
+       rt
+*// clear
+
+*********************************************************************
+*
+* CPU space fill
+*
+* r0: start
+* r1: word to fill with
+* r2: number of bytes
+*
+fill:
+       mov  r1,*r0+
+       dect r2
+       jne  fill
+       rt
+*// fill
+
+*********************************************************************
+*
+* Random number generator
+*
+rand:
+       li   r0,28643                   ; A prime number to multiply by
+       mpy  @rand_no,r0
+       ai   r1,31873                   ; Add a prime number
+       src  r1,7                       ; Shift to break odd/even pattern
+       mov  r1,@rand_no
+       mov  r1,r0
+       b    *r11
+*// rand
+
+*********************************************************************
+*
+* Program files
+*
+       copy "vdp.a99"
+
+***************************************************************
+*
+* Data
+*
 unit_vectors_x:
        data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1
        data >00ed,>00e7,>00e2,>00dc,>00d5,>00ce,>00c6,>00be
@@ -73,5 +417,6 @@ unit_vectors_y:
        aorg >2000
 map:
        copy "map.a99"
+       copy "chars.a99"
 
        end
