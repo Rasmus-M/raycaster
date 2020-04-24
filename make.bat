@@ -3,7 +3,7 @@ xas99.py -R -S -L raycaster.lst -w src/raycaster.a99 -o raycaster.obj
 
 xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
 
-java -jar tools/ea5tocart.jar bin/RAYCASTER "RAYCASTER 3" 0 > make.log
+java -jar tools/ea5tocart.jar bin/RAYCASTER "RAYCASTER" > make.log
 
 copy bin\RAYCASTER8.bin .\raycaster3-8.bin
 

@@ -7,6 +7,8 @@
 * Rasmus Moustgaard <rasmus.moustgaard@gmail.com>
 *
 
+       copy "macros.a99"
+
 **
 * Memory mapped addresses
 *
@@ -42,6 +44,14 @@ map_width:
        equ  256
 map_height:
        equ  32
+screen_width:
+       equ  32
+screen_height:
+       equ  24
+n_directions:
+       equ  128
+n_rays:
+       equ  screen_width
 n_tile_patterns:
        equ  8
 n_sprite_patterns:
@@ -75,10 +85,16 @@ x:
        equ  rand_no+2
 y:
        equ  x+2
-pad_max:
+dir:
        equ  y+2
-
-       copy "macros.a99"
+ray_count:
+       equ  dir+2
+ray_idx:
+       equ  ray_count+2
+column_ptrs:
+       equ  ray_idx+2
+pad_max:
+       equ  column_ptrs+(n_rays*2)
 
 ***************************************************************
 *
@@ -90,8 +106,12 @@ main:
        lwpi wrksp                      ; Setup workspace
        li   r10,stack                  ; Setup stack pointer
        bl   @one_time_init
-loop:
-       jmp  loop
+       mov  @start_x,@x
+       mov  @start_y,@y
+       mov  @start_dir,@dir
+main_loop:
+       bl   @cast_rays
+       jmp  main_loop
 
 *********************************************************************
 *
@@ -112,15 +132,31 @@ vsync_1:
 *
 cast_rays:
        .proc
-
-
-
+       li   r2,n_rays
+       mov  r2,@ray_count
+       mov  @dir,r2
+       ai  r2,-n_rays/2
+       andi r2,n_directions-1
+       mov  r2,@ray_idx
+cast_rays_1:
+       mov  @x,r0                      ; x
+       mov  @y,r1                      ; y
+       mov  @ray_idx,r2
+       bl   @cast_ray
+       mov  @ray_idx,r2
+       inc  r2
+       andi r2,n_directions-1
+       mov  r2,@ray_idx
+       dec  @ray_count
+       jne  cast_rays_1
        .endproc
 *// cast_rays
 
 ***************************************************************
 *
-* r0: Direction index of ray to cast
+* r0: x position to cast from (FP 8.8)
+* r1: y position to cast from (FP 8.8)
+* r2: Direction index of ray to cast
 *
 * On return r0,r1 contains the map coordinates
 * r2 contains the distance, or -1 if no hit
@@ -130,27 +166,27 @@ max_steps:
        equ  16
 *
 cast_ray:
-       mov  @x,r0                      ; x
-       mov  @y,r1                      ; y
-       sla  r4,1
-       mov  @unit_vectors_x(r4),r2     ; xdir
-       mov  @unit_vectors_y(r4),r3     ; ydir
+       sla  r2,1
+       mov  @unit_vectors_x(r2),r3     ; xdir
+       mov  @unit_vectors_y(r2),r4     ; ydir
        li   r8,max_steps               ; Step counter
        li   r5,r6lb                    ; Cache r6lb
 cast_ray_1:
-       a    r2,r0                      ; x += xdir
-       a    r3,r1                      ; y += ydir
+       a    r3,r0                      ; x += xdir
+       a    r4,r1                      ; y += ydir
        movb r1,r6                      ; y -> r6 msb
-       movb r2,*r5                     ; x -> r6 lsb
+       movb r0,*r5                     ; x -> r6 lsb
        movb @map(r6),r7                ; Get map entry
        jne  cast_ray_2                 ; Not zero is a hit
        dec  r8                         ; Distance count down
        jne  cast_ray_1                 ; Loop until we give up
-       seto r8                         ; No hit
+       seto r2                         ; No hit
+       clr  r7
        rt                              ; Return
 cast_ray_2:
-       neg  r8                         ; Calculate distance
-       ai   r8,max_steps+1             ; max_steps - steps_left + 1
+       li   r2,max_steps+1             ; Calculate distance
+       s    r8,r2                      ; max_steps - steps_left + 1
+       movb r7,r3                      ; map entry
        rt                              ; Return
 
 *********************************************************************
@@ -378,6 +414,13 @@ rand:
 *
 * Data
 *
+start_x:
+       data >1000
+start_y:
+       data >1500
+start_dir:
+       data 135
+
 unit_vectors_x:
        data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1
        data >00ed,>00e7,>00e2,>00dc,>00d5,>00ce,>00c6,>00be
@@ -414,9 +457,16 @@ unit_vectors_y:
        data >ff4b,>ff54,>ff5e,>ff68,>ff72,>ff7c,>ff87,>ff93
        data >ff9e,>ffaa,>ffb6,>ffc2,>ffce,>ffda,>ffe7,>fff3
 
+***************************************************************
+*
+* Data files
+*
+columns:
+       copy "columns.a99"
+
        aorg >2000
 map:
        copy "map.a99"
        copy "chars.a99"
 
-       end
+       end  main

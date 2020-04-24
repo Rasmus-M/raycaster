@@ -9,6 +9,10 @@ COL4   DATA >C0C0,>C0C0,>C0C0,>C0C0    ;
 COL5   DATA >3030,>3030,>3030,>3030    ;
 COL6   DATA >4040,>4040,>4040,>4040    ;
 COL7   DATA >5050,>5050,>5050,>5050    ;
+COL8   DATA >7070,>7070,>7070,>7070    ;
+COL9   DATA >FCFC,>FCFC,>FCFC,>FCFC    ;
+COL10  DATA >FCFC,>FCFC,>FCFC,>FCFC    ;
+COL11  DATA >FCFC,>FCFC,>FCFC,>FCFC    ;
 ****************************************
 * Character Patterns
 ****************************************
@@ -20,3 +24,7 @@ PAT4   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
 PAT5   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
 PAT6   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
 PAT7   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT8   DATA >FFFF,>FFFF,>FFFF,>FFFF    ;
+PAT9   DATA >F0F0,>F0F0,>0F0F,>0F0F    ;
+PAT10  DATA >CCCC,>3333,>CCCC,>3333    ;
+PAT11  DATA >AA55,>AA55,>AA55,>AA55    ;
