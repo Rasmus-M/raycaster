@@ -53,9 +53,9 @@ n_directions:
 n_rays:
        equ  screen_width
 max_steps:
-       equ  16
+       equ  24
 n_tile_patterns:
-       equ  12
+       equ  19
 n_sprite_patterns:
        equ  0
 
@@ -552,19 +552,41 @@ start_y:
 start_dir:
        data 96
 
+; 0 = 24
+; 1 = 22
+; 2 = 20
+; 3 = 18
+; 4 = 16
+; 5 = 14
+; 6 = 12
+; 7 = 10
+; 8 = 8
+; 9 = 6
+; 10 = 4
+; 11 = 2
+; 12 = 0
+
 dist_column_lookup:
        data 0*screen_height
-       data 1*screen_height
-       data 2*screen_height
        data 3*screen_height
-       data 4*screen_height
        data 5*screen_height
        data 6*screen_height
+       data 7*screen_height
        data 7*screen_height
        data 8*screen_height
        data 8*screen_height
        data 9*screen_height
        data 9*screen_height
+       data 9*screen_height
+       data 9*screen_height
+       data 10*screen_height
+       data 10*screen_height
+       data 10*screen_height
+       data 10*screen_height
+       data 10*screen_height
+       data 10*screen_height
+       data 10*screen_height
+       data 10*screen_height
        data 10*screen_height
        data 10*screen_height
        data 11*screen_height
