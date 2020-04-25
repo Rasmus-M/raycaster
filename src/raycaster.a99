@@ -99,8 +99,12 @@ column_ptr:
        equ  ray_idx+2
 column_ptrs:
        equ  column_ptr+2
-pad_max:
+cast_ray_pad:
        equ  column_ptrs+(n_rays*2)
+upload_screen_loop_pad:
+       equ  cast_ray_pad+50
+pad_max:
+       equ  upload_screen_loop_pad+24
 
 ***************************************************************
 *
@@ -177,7 +181,7 @@ cast_rays_1:
        mov  @x,r0                      ; x
        mov  @y,r1                      ; y
        mov  @ray_idx,r2
-       bl   @cast_ray
+       bl   @cast_ray_pad
 *      Calculate which column to display
        li   r4,13*screen_height        ; Size of a column set
        mpy  r3,r4                      ; Multiple by color
@@ -229,6 +233,8 @@ cast_ray_2:
        clr  r3
        movb r7,@r3lb                   ; map entry/color
        rt                              ; Return
+cast_ray_end:
+       equ  $
 *// cast_ray
 
 *********************************************************************
@@ -243,19 +249,29 @@ upload_screen:
        ai   r0,nametb
        bl   @vwad
        li   r3,screen_height
-upload_screen_1:
+       bl   @upload_screen_loop_pad
+       .endproc
+*// upload_screen
+
+*********************************************************************
+*
+* Upload screen loop
+*
+upload_screen_loop:
        li   r1,column_ptrs
        li   r2,screen_width
-upload_screen_2:
+upload_screen_loop_1:
        mov  *r1,r0
        movb *r0+,*r15
        mov  r0,*r1+
        dec  r2
-       jne  upload_screen_2
+       jne  upload_screen_loop_1
        dec  r3
-       jne  upload_screen_1
-       .endproc
-*// upload_screen
+       jne  upload_screen_loop
+       rt
+upload_screen_loop_end:
+       equ  $
+*// upload_screen_loop
 
 *********************************************************************
 *
@@ -333,6 +349,15 @@ one_time_init:
        li   r0,padvar
        li   r2,>8400-padvar
        bl   @clear
+*      Copy code to pad
+       li   r0,cast_ray
+       li   r1,cast_ray_pad
+       li   r2,cast_ray_end-cast_ray
+       bl   @copy
+       li   r0,upload_screen_loop
+       li   r1,upload_screen_loop_pad
+       li   r2,upload_screen_loop_end-upload_screen_loop
+       bl   @copy
 *      Patterns
        li   r0,ptrntb
        li   r1,PAT0
