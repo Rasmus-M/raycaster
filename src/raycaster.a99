@@ -196,24 +196,6 @@ cast_rays_1:
        dec  @ray_count
        jne  cast_rays_1
        .endproc
-dist_column_lookup:
-       data 1*screen_height
-       data 2*screen_height
-       data 3*screen_height
-       data 4*screen_height
-       data 5*screen_height
-       data 6*screen_height
-       data 7*screen_height
-       data 7*screen_height
-       data 8*screen_height
-       data 8*screen_height
-       data 9*screen_height
-       data 9*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 11*screen_height
-       data 11*screen_height
-       data 12*screen_height
 *// cast_rays
 
 ***************************************************************
@@ -308,20 +290,32 @@ user_input_3:
        jeq  user_input_4
        mov  @dir,r2
        sla  r2,1
-       mov  @unit_vectors_x(r2),r0
-       mov  @unit_vectors_y(r2),r1
-       s    r0,@x
-       s    r1,@y
+       mov  @x,r0
+       s    @unit_vectors_x(r2),r0
+       mov  @y,r1
+       s    @unit_vectors_y(r2),r1
+       movb r1,r2
+       movb r0,@r2lb
+       movb @map(r2),r2
+       jne  user_input_5
+       mov  r0,@x
+       mov  r1,@y
 user_input_4:
 *      Up
        tb   4
        jeq  user_input_5
        mov  @dir,r2
        sla  r2,1
-       mov  @unit_vectors_x(r2),r0
-       mov  @unit_vectors_y(r2),r1
-       a    r0,@x
-       a    r1,@y
+       mov  @x,r0
+       a    @unit_vectors_x(r2),r0
+       mov  @y,r1
+       a    @unit_vectors_y(r2),r1
+       movb r1,r2
+       movb r0,@r2lb
+       movb @map(r2),r2
+       jne  user_input_5
+       mov  r0,@x
+       mov  r1,@y
 user_input_5:
        .endproc
 *// user_input
@@ -398,7 +392,7 @@ vdp_registers:
        byte ptrntb/>800+>03            ; Pattern table
        byte spratb/>80                 ; Sprite attribute table
        byte sprptb/>800                ; Sprite pattern table
-       byte >01                        ; Backdrop color
+       byte >0e                        ; Backdrop color
 *// graphics_mode
 
 *********************************************************************
@@ -557,6 +551,25 @@ start_y:
        data >1500
 start_dir:
        data 96
+
+dist_column_lookup:
+       data 0*screen_height
+       data 1*screen_height
+       data 2*screen_height
+       data 3*screen_height
+       data 4*screen_height
+       data 5*screen_height
+       data 6*screen_height
+       data 7*screen_height
+       data 8*screen_height
+       data 8*screen_height
+       data 9*screen_height
+       data 9*screen_height
+       data 10*screen_height
+       data 10*screen_height
+       data 11*screen_height
+       data 11*screen_height
+       data 12*screen_height
 
 unit_vectors_x:
        data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1
