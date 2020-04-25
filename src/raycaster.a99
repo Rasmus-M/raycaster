@@ -128,6 +128,7 @@ main_loop:
 * Wait for vertical retrace (CRU)
 *
 vsync:
+       movb @vdpsta,r12
        clr  r12
 vsync_1:
        tb   2                          ; Test CRU bit for VDP interrupt
@@ -178,10 +179,11 @@ cast_rays_1:
        mov  @ray_idx,r2
        bl   @cast_ray
 *      Calculate which column to display
+       li   r4,13*screen_height        ; Size of a column set
+       mpy  r3,r4                      ; Multiple by color
        mov  r2,r4                      ; Distance
        sla  r4,1
-       mov   @dist_column_lookup(r4),r4
-       mpy  r3,r4                      ; Multiple by color
+       a    @dist_column_lookup(r4),r5
        ai   r5,columns
        mov  @column_ptr,r6
        mov  r5,*r6+
@@ -245,7 +247,7 @@ cast_ray_2:
        clr  r3
        movb r7,@r3lb                   ; map entry/color
        rt                              ; Return
-*// cast_rays
+*// cast_ray
 
 *********************************************************************
 *
@@ -289,7 +291,7 @@ user_input_1:
        tb   1
        jeq  user_input_2
        mov  @dir,r0
-       dec  r0
+       dect r0
        andi r0,n_directions-1
        mov  r0,@dir
 user_input_2:
@@ -297,7 +299,7 @@ user_input_2:
        tb   2
        jeq  user_input_3
        mov  @dir,r0
-       inc  r0
+       inct r0
        andi r0,n_directions-1
        mov  r0,@dir
 user_input_3:
@@ -554,7 +556,7 @@ start_x:
 start_y:
        data >1500
 start_dir:
-       data 135
+       data 96
 
 unit_vectors_x:
        data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1
