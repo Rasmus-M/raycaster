@@ -55,7 +55,7 @@ n_rays:
 max_steps:
        equ  24
 n_tile_patterns:
-       equ  19
+       equ  121
 n_sprite_patterns:
        equ  0
 
@@ -183,7 +183,7 @@ cast_rays_1:
        mov  @ray_idx,r2
        bl   @cast_ray_pad
 *      Calculate which column to display
-       li   r4,13*screen_height        ; Size of a column set
+       li   r4,19*screen_height        ; Size of a column set
        mpy  r3,r4                      ; Multiple by color
        mov  r2,r4                      ; Distance
        sla  r4,1
@@ -571,52 +571,38 @@ rand:
 * Data
 *
 start_x:
-       data >1000
+       data >1d00
 start_y:
-       data >1500
+       data >1900
 start_dir:
        data 96
 
-; 0 = 24
-; 1 = 22
-; 2 = 20
-; 3 = 18
-; 4 = 16
-; 5 = 14
-; 6 = 12
-; 7 = 10
-; 8 = 8
-; 9 = 6
-; 10 = 4
-; 11 = 2
-; 12 = 0
-
 dist_column_lookup:
        data 0*screen_height
+       data 1*screen_height
+       data 2*screen_height
        data 3*screen_height
+       data 4*screen_height
        data 5*screen_height
        data 6*screen_height
        data 7*screen_height
-       data 7*screen_height
-       data 8*screen_height
        data 8*screen_height
        data 9*screen_height
-       data 9*screen_height
-       data 9*screen_height
-       data 9*screen_height
        data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 10*screen_height
-       data 11*screen_height
        data 11*screen_height
        data 12*screen_height
+       data 12*screen_height
+       data 13*screen_height
+       data 13*screen_height
+       data 14*screen_height
+       data 14*screen_height
+       data 15*screen_height
+       data 15*screen_height
+       data 16*screen_height
+       data 16*screen_height
+       data 17*screen_height
+       data 17*screen_height
+       data 18*screen_height
 
 unit_vectors_x:
        data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1

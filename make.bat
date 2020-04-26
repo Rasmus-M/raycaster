@@ -12,6 +12,8 @@ xdm99.py raycaster.dsk --initialize DSSD -n RAYCASTER
 :dskok
 
 xdm99.py raycaster.dsk -a bin/RAYCASTER
+xdm99.py raycaster.dsk -a bin/RAYCASTES
+xdm99.py raycaster.dsk -a bin/RAYCASTET
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end
