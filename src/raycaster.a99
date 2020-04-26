@@ -261,13 +261,13 @@ upload_screen_loop:
        li   r1,column_ptrs
        li   r2,screen_width
 upload_screen_loop_1:
-       mov  *r1,r0
-       movb *r0+,*r15
-       mov  r0,*r1+
+       mov  *r1,r0                     ; Get column pointer
+       movb *r0+,*r15                  ; Write byte to VDP (r15 contains VDPWD)
+       mov  r0,*r1+                    ; Write pointer back
        dec  r2
-       jne  upload_screen_loop_1
+       jne  upload_screen_loop_1       ; Next column
        dec  r3
-       jne  upload_screen_loop
+       jne  upload_screen_loop         ; Next row
        rt
 upload_screen_loop_end:
        equ  $
