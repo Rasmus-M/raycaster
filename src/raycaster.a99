@@ -99,10 +99,10 @@ column_ptr:
        equ  ray_idx+2
 column_ptrs:
        equ  column_ptr+2
-cast_ray_pad:
+cast_ray_loop_pad:
        equ  column_ptrs+(n_rays*2)
 upload_screen_loop_pad:
-       equ  cast_ray_pad+50
+       equ  cast_ray_loop_pad+20
 pad_max:
        equ  upload_screen_loop_pad+24
 
@@ -181,7 +181,7 @@ cast_rays_1:
        mov  @x,r0                      ; x
        mov  @y,r1                      ; y
        mov  @ray_idx,r2
-       bl   @cast_ray_pad
+       bl   @cast_ray
 *      Calculate which column to display
        li   r4,19*screen_height        ; Size of a column set
        mpy  r3,r4                      ; Multiple by color
@@ -213,29 +213,38 @@ cast_rays_1:
 * r3 contains the map entry/color
 *
 cast_ray:
+       .proc
        sla  r2,1
-       mov  @unit_vectors_x(r2),r3     ; xdir
-       mov  @unit_vectors_y(r2),r4     ; ydir
+       mov  @cos_table(r2),r3          ; xdir
+       mov  @sin_table(r2),r4          ; ydir
        li   r8,max_steps               ; Step counter
        li   r5,r6lb                    ; Cache r6lb
-cast_ray_1:
+       bl   @cast_ray_loop_pad
+       li   r2,max_steps               ; Calculate distance
+       s    r8,r2                      ; max_steps - steps_left
+       clr  r3
+       movb r7,@r3lb                   ; map entry/color
+       .endproc                        ; Return
+*// cast_ray
+
+***************************************************************
+*
+* Cast ray loop
+*
+cast_ray_loop:
        a    r3,r0                      ; x += xdir
        a    r4,r1                      ; y += ydir
        movb r1,r6                      ; y -> r6 msb
        movb r0,*r5                     ; x -> r6 lsb
        movb @map(r6),r7                ; Get map entry
-       jne  cast_ray_2                 ; Not zero is a hit
+       jne  cast_ray_loop_1            ; Not zero is a hit
        dec  r8                         ; Distance count down
-       jne  cast_ray_1                 ; Loop until we give up
-cast_ray_2:
-       li   r2,max_steps               ; Calculate distance
-       s    r8,r2                      ; max_steps - steps_left
-       clr  r3
-       movb r7,@r3lb                   ; map entry/color
+       jne  cast_ray_loop              ; Loop until we give up
+cast_ray_loop_1:
        rt                              ; Return
-cast_ray_end:
+cast_ray_loop_end:
        equ  $
-*// cast_ray
+*// cast_ray_loop
 
 *********************************************************************
 *
@@ -307,9 +316,9 @@ user_input_3:
        mov  @dir,r2
        sla  r2,1
        mov  @x,r0
-       s    @unit_vectors_x(r2),r0
+       s    @cos_table(r2),r0
        mov  @y,r1
-       s    @unit_vectors_y(r2),r1
+       s    @sin_table(r2),r1
        movb r1,r2
        movb r0,@r2lb
        movb @map(r2),r2
@@ -323,9 +332,9 @@ user_input_4:
        mov  @dir,r2
        sla  r2,1
        mov  @x,r0
-       a    @unit_vectors_x(r2),r0
+       a    @cos_table(r2),r0
        mov  @y,r1
-       a    @unit_vectors_y(r2),r1
+       a    @sin_table(r2),r1
        movb r1,r2
        movb r0,@r2lb
        movb @map(r2),r2
@@ -350,9 +359,9 @@ one_time_init:
        li   r2,>8400-padvar
        bl   @clear
 *      Copy code to pad
-       li   r0,cast_ray
-       li   r1,cast_ray_pad
-       li   r2,cast_ray_end-cast_ray
+       li   r0,cast_ray_loop
+       li   r1,cast_ray_loop_pad
+       li   r2,cast_ray_loop_end-cast_ray_loop
        bl   @copy
        li   r0,upload_screen_loop
        li   r1,upload_screen_loop_pad
@@ -577,34 +586,38 @@ start_y:
 start_dir:
        data 96
 
-dist_column_lookup:
-       data 0*screen_height
-       data 1*screen_height
-       data 2*screen_height
-       data 3*screen_height
-       data 4*screen_height
-       data 5*screen_height
-       data 6*screen_height
-       data 7*screen_height
-       data 8*screen_height
-       data 9*screen_height
-       data 10*screen_height
-       data 11*screen_height
-       data 12*screen_height
-       data 12*screen_height
-       data 13*screen_height
-       data 13*screen_height
-       data 14*screen_height
-       data 14*screen_height
-       data 15*screen_height
-       data 15*screen_height
-       data 16*screen_height
-       data 16*screen_height
-       data 17*screen_height
-       data 17*screen_height
-       data 18*screen_height
+**
+* This table lists, for each distance
+* 1.00, 1.25, 1.50 ... 23.50, 23.75
+* the index of one of the 23 pre-drawn
+* columns to use.
+*
+dist_height_table:
+       data 0, 1, 2, 3, 4, 5, 6, 7
+       data 8, 9, 10, 11, 12, 13, 13, 14
+       data 14, 15, 15, 16, 16, 16, 17, 17
+       data 17, 17, 18, 18, 18, 18, 18, 19
+       data 19, 19, 19, 19, 19, 19, 19, 20
+       data 20, 20, 20, 20, 20, 20, 20, 20
+       data 20, 20, 20, 21, 21, 21, 21, 21
+       data 21, 21, 21, 21, 21, 21, 21, 21
+       data 21, 21, 21, 21, 21, 21, 21, 21
+       data 21, 22, 22, 22, 22, 22, 22, 22
+       data 22, 22, 22, 22, 22, 22, 22, 22
+       data 22, 22, 22, 22
 
-unit_vectors_x:
+**
+* These are the heights of the pre-drawn colums,
+* but the numbers are not used for anything here.
+*
+*      24.0, 19.0, 16.0, 13.5, 12.0, 10.5, 9.5, 8.5
+*      8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5
+*      4.0, 3.5, 3.0, 2.5, 2.0, 1.5, 1.0
+
+**
+* 128 values of cos(a) as FP 8.8 for 0 <= a < 360 degrees.
+*
+cos_table:
        data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1
        data >00ed,>00e7,>00e2,>00dc,>00d5,>00ce,>00c6,>00be
        data >00b5,>00ac,>00a2,>0098,>008e,>0084,>0079,>006d
@@ -622,7 +635,10 @@ unit_vectors_x:
        data >00b5,>00be,>00c6,>00ce,>00d5,>00dc,>00e2,>00e7
        data >00ed,>00f1,>00f5,>00f8,>00fb,>00fd,>00ff,>0100
 
-unit_vectors_y:
+**
+* 128 values of sin(a) as FP 8.8 for 0 <= a < 360 degrees.
+*
+sin_table:
        data >0000,>000d,>0019,>0026,>0032,>003e,>004a,>0056
        data >0062,>006d,>0079,>0084,>008e,>0098,>00a2,>00ac
        data >00b5,>00be,>00c6,>00ce,>00d5,>00dc,>00e2,>00e7
@@ -639,6 +655,48 @@ unit_vectors_y:
        data >ff13,>ff19,>ff1e,>ff24,>ff2b,>ff32,>ff3a,>ff42
        data >ff4b,>ff54,>ff5e,>ff68,>ff72,>ff7c,>ff87,>ff93
        data >ff9e,>ffaa,>ffb6,>ffc2,>ffce,>ffda,>ffe7,>fff3
+
+**
+* 128 values of 1 / cos(a) as FP 8.8 for 0 <= a < 360 degrees.
+*
+inv_cos_table:
+       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
+       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
+       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
+       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
+       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
+       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
+       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
+       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
+       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
+       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
+       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
+       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
+       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
+       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
+       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
+       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
+
+**
+* 128 values of 1 / sin(a) as FP 8.8 for 0 <= a < 360 degrees.
+*
+inv_sin_table:
+       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
+       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
+       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
+       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
+       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
+       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
+       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
+       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
+       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
+       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
+       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
+       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
+       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
+       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
+       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
+       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
 
 ***************************************************************
 *
