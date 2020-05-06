@@ -50,7 +50,7 @@ screen_height:
        equ  24
 n_directions:
        equ  128
-dir_index_mask:
+direction_mask:
        equ  2*n_directions-1
 n_rays:
        equ  screen_width
@@ -101,10 +101,10 @@ dir:                                   ; Player direction 0 - 2 * n_directions (
        equ  y+2
 ray_count:
        equ  dir+2
-ray_idx:
+ray_dir:
        equ  ray_count+2
 column_ptr:
-       equ  ray_idx+2
+       equ  ray_dir+2
 column_ptrs:
        equ  column_ptr+2
 cast_ray_loop_pad:
@@ -140,7 +140,7 @@ main_loop:
 * Wait for vertical retrace (CRU)
 *
 vsync:
-       movb @vdpsta,r12
+       movb @vdpsta,r12                ; Clear any pending interrupt
        clr  r12
 vsync_1:
        tb   2                          ; Test CRU bit for VDP interrupt
@@ -178,55 +178,63 @@ cast_rays:
        .proc
        li   r0,column_ptrs
        mov  r0,@column_ptr
-       li   r2,n_rays
-       mov  r2,@ray_count
-       mov  @dir,r2
-       ai  r2,-n_rays
-       andi r2,dir_index_mask
-       mov  r2,@ray_idx
+       li   r2,n_rays                  ; Number of rays to cast
+       mov  r2,@ray_count              ; Init count-down
+       mov  @dir,r2                    ; Player direction (even only)
+       ai  r2,-n_rays                  ; Direction of leftmost ray
+       andi r2,direction_mask          ; Wrap around
+       mov  r2,@ray_dir                ; Save
 cast_rays_1:
 *      Cast ray
        mov  @x,r0                      ; x
        mov  @y,r1                      ; y
-       mov  @ray_idx,r2
-       bl   @cast_ray
+       mov  @ray_dir,r2                ; Direction
+       bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
+       bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate which column to display
        mov  r4,r4                      ; Color
-       jeq  cast_rays_2
+       jeq  cast_rays_2                ; Jump if no wall
        dec  r4                         ; Color--
-       a    r3,r4                      ; Add side to color
+       a    r3,r4                      ; Different color on x/y facing walls
 cast_rays_2:
-       li   r6,24*screen_height        ; Size of a column set
-       mpy  r4,r6                      ; Multiple by color to r7
-*      Fish-eye correction
-       mov  @ray_idx,r8
-       s    @dir,r8
-       andi r8,dir_index_mask
-       mov  @cos_table(r8),r8
-       mpy  r2,r8
-       movb @r8lb,r2
-       movb r9,@r2lb
-*
+       li   r6,24*screen_height        ; Byte size of a column set
+       mpy  r4,r6                      ; Multiply by color into r7
        mov  r2,r5                      ; Distance
        srl  r5,6                       ; To FP 14.2
        sla  r5,1                       ; To word offset
        mov  @dist_column_table(r5),r5  ; Get column index
-       li   r6,screen_height           ; Column size
+       li   r6,screen_height           ; Column byte size
        mpy  r6,r5                      ; Column index * column size
        a    r6,r7                      ; Add to column set base
        ai   r7,columns                 ; Add columns base
-       mov  @column_ptr,r6
-       mov  r7,*r6+
-       mov  r6,@column_ptr
+       mov  @column_ptr,r6             ; Get address of column pointer
+       mov  r7,*r6+                    ; Set column pointer and increment
+       mov  r6,@column_ptr             ; Save address of next column pointer
 *      Next ray
-       mov  @ray_idx,r2
-       inct r2
-       andi r2,dir_index_mask
-       mov  r2,@ray_idx
-       dec  @ray_count
-       jne  cast_rays_1
+       mov  @ray_dir,r2                ; Get ray direction
+       inct r2                         ; Increment it
+       andi r2,direction_mask          ; Wrap around
+       mov  r2,@ray_dir                ; Save it
+       dec  @ray_count                 ; Count down
+       jne  cast_rays_1                ; Loop if more rays to cast
        .endproc
 *// cast_rays
+
+*********************************************************************
+*
+* Fish-eye correction
+* Calculate perpendicualar distance from euclidian distance in r2
+*
+fish_eye_correction:
+       mov  @ray_dir,r12               ; Ray direction
+       s    @dir,r12                   ; Direction offset (angle)
+       andi r12,direction_mask         ; Wrap around
+       mov  @cos_table(r12),r12        ; Cosine of angle
+       mpy  r2,r12                     ; Multiply by distance
+       movb @r12lb,r2                  ; Move result back
+       movb r13,@r2lb                  ; into r2
+       rt
+*// fish_eye_correction
 
 ***************************************************************
 *
@@ -252,10 +260,10 @@ cast_ray:
        mov  @inv_sin_table(r2),r5      ; deltaDistY
 *      Calculate sideDistX
        mov  @cos_table(r2),r3          ; dirX
-       jlt  cast_ray_1
-       jgt  cast_ray_2
+       jlt  cast_ray_1                 ; dirX < 0 ?
+       jgt  cast_ray_2                 ; dirX > 0 ?
        clr  r6                         ; stepX
-       li   r7,>7f00                   ; sideDistX
+       li   r7,>7f00                   ; sideDistX (max value)
        jmp  cast_ray_3
 cast_ray_1:
        mpy  r4,r6                      ; sideDistX = fracX * deltaDistX
@@ -273,10 +281,10 @@ cast_ray_2:
 *      Calculate sideDistY
 cast_ray_3:
        mov  @sin_table(r2),r3          ; dirY
-       jlt  cast_ray_4
-       jgt  cast_ray_5
+       jlt  cast_ray_4                 ; dirY < 0 ?
+       jgt  cast_ray_5                 ; dirY < 0 ?
        clr  r8                         ; stepY
-       li   r9,>7f00                   ; sideDistY
+       li   r9,>7f00                   ; sideDistY (max value)
        jmp  cast_ray_6
 cast_ray_4:
        mpy  r5,r8                      ; sideDistY = fracY * deltaDistY
@@ -291,7 +299,7 @@ cast_ray_5:
        swpb r9                         ; Fractional part to LSB
        movb @r8lb,r9                   ; Integer part to MSB
        li   r8,map_width               ; stepY = 1
-*      Map address
+*      Map address from coordinates
 cast_ray_6:
        movb r0,@r12lb
        movb r1,r12
@@ -299,7 +307,7 @@ cast_ray_6:
 *      Cast the ray
        li   r2,max_steps               ; Step counter
        bl   @cast_ray_loop_pad
-*      Inverse map address (maybe not required)
+*      Coordinates from map address (maybe not required)
        ai   r12,-map
        movb @r12lb,r0
        movb r12,r1
@@ -307,7 +315,7 @@ cast_ray_6:
        mov  r2,r2                      ; Steps left
        jne  cast_ray_7
        li   r2,>1700                   ; Max distance
-       clr  r4
+       clr  r4                         ; Reset color
        jmp  cast_ray_10
 cast_ray_7:
        mov  r3,r3                      ; xSide ?
@@ -337,15 +345,15 @@ cast_ray_loop:
        a    r4,r7                      ; sideDistX += deltaDistX
        a    r6,r12                     ; mapX += stepX
        movb *r12,r13                   ; Check map
-       jne  cast_ray_loop_2
+       jne  cast_ray_loop_2            ; Exit if not empty
        dec  r2                         ; Distance count down
        jne  cast_ray_loop              ; Loop until we give up
        rt
 cast_ray_loop_1:
        a    r5,r9                      ; sideDistY += deltaDistY
        a    r8,r12                     ; mapY += stepY
-       movb *r12,r13
-       jne  cast_ray_loop_3
+       movb *r12,r13                   ; Check map
+       jne  cast_ray_loop_3            ; Exit if not empty
        dec  r2                         ; Distance count down
        jne  cast_ray_loop              ; Loop until we give up
        rt
@@ -365,13 +373,13 @@ cast_ray_loop_end:
 *
 upload_screen:
        .proc
-       mov  @dbl_buffer_flag,r0
+       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
        andi r0,>0001
        sla  r0,10
        ai   r0,nametb
-       bl   @vwad
-       clr  @self_modifying_offset
-       li   r3,screen_height
+       bl   @vwad                      ; Set VDP address
+       clr  @self_modifying_offset     ; Evil!
+       li   r3,screen_height           ; Row counter
        bl   @upload_screen_loop_pad
        .endproc
 *// upload_screen
@@ -409,14 +417,13 @@ user_input:
        bl   @check_key
 *      Fire
        jeq  user_input_1
-
 *      Left
 user_input_1:
        tb   1
        jeq  user_input_2
        mov  @dir,r0
-       ai   r0,-4
-       andi r0,dir_index_mask
+       dect r0                         ; Turn left
+       andi r0,direction_mask
        mov  r0,@dir
        jmp  user_input_3
 user_input_2:
@@ -424,8 +431,8 @@ user_input_2:
        tb   2
        jeq  user_input_3
        mov  @dir,r0
-       ai   r0,4
-       andi r0,dir_index_mask
+       inct r0                         ; Turn right
+       andi r0,direction_mask
        mov  r0,@dir
 user_input_3:
 *      Down
@@ -705,11 +712,11 @@ rand:
 * Data
 *
 start_x:
-       data >1000
+       data >0c00
 start_y:
        data >1000
 start_dir:
-       data 192
+       data 64
 
 **
 * This table lists, for each distance
