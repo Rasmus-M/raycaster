@@ -108,9 +108,9 @@ column_ptrs:
 cast_ray_loop_pad:
        equ  column_ptrs+(n_rays*2)
 upload_screen_loop_pad:
-       equ  cast_ray_loop_pad+28
+       equ  cast_ray_loop_pad+40
 pad_max:
-       equ  upload_screen_loop_pad+36
+       equ  upload_screen_loop_pad+28
 
 ***************************************************************
 *
@@ -336,19 +336,25 @@ cast_ray_loop:
        jgt  cast_ray_loop_1
        a    r4,r7                      ; sideDistX += deltaDistX
        a    r6,r12                     ; mapX += stepX
-       clr  r3                         ; xSide = 0
-       jmp  cast_ray_loop_2
+       movb *r12,r13                   ; Check map
+       jne  cast_ray_loop_2
+       dec  r2                         ; Distance count down
+       jne  cast_ray_loop              ; Loop until we give up
+       rt
 cast_ray_loop_1:
        a    r5,r9                      ; sideDistY += deltaDistY
        a    r8,r12                     ; mapY += stepY
-       seto r3                         ; xSide = 1
-cast_ray_loop_2:
        movb *r12,r13
        jne  cast_ray_loop_3
        dec  r2                         ; Distance count down
        jne  cast_ray_loop              ; Loop until we give up
+       rt
+cast_ray_loop_2:
+       clr  r3                         ; xSide = 1
+       rt
 cast_ray_loop_3:
-       rt                              ; Return
+       seto r3                         ; xSide = -1
+       rt
 cast_ray_loop_end:
        equ  $
 *// cast_ray_loop
@@ -364,6 +370,7 @@ upload_screen:
        sla  r0,10
        ai   r0,nametb
        bl   @vwad
+       clr  @self_modifying_offset
        li   r3,screen_height
        bl   @upload_screen_loop_pad
        .endproc
@@ -374,19 +381,22 @@ upload_screen:
 * Upload screen loop
 *
 upload_screen_loop:
-       li   r1,column_ptrs
+       li   r0,column_ptrs
        li   r2,screen_width
 upload_screen_loop_1:
-       mov  *r1,r0                     ; Get column pointer
-       movb *r0+,*r15                  ; Write byte to VDP (r15 contains VDPWD)
-       mov  r0,*r1+                    ; Write pointer back
+       mov  *r0+,r1                    ; Get column pointer
+upload_screen_offset:
+       movb @0(r1),*r15                ; Write byte to VDP (r15 contains VDPWD)
        dec  r2
        jne  upload_screen_loop_1       ; Next column
+       inc  @self_modifying_offset
        dec  r3
        jne  upload_screen_loop         ; Next row
        rt
 upload_screen_loop_end:
        equ  $
+self_modifying_offset:
+       equ upload_screen_offset+2-upload_screen_loop+upload_screen_loop_pad
 *// upload_screen_loop
 
 *********************************************************************
