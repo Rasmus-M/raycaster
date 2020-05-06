@@ -75,8 +75,14 @@ r6lb   equ  wrksp+13
 r7lb   equ  wrksp+15
 r8lb   equ  wrksp+17
 r9lb   equ  wrksp+19
+r10lb  equ  wrksp+21
+r11lb  equ  wrksp+23
+r12lb  equ  wrksp+25
+r13lb  equ  wrksp+27
+r14lb  equ  wrksp+29
+r15lb  equ  wrksp+31
 stack  equ  wrksp+>20                  ; Stack (grows up)
-padvar equ  stack+>20                  ; Start of pad variables
+padvar equ  stack+>10                  ; Start of pad variables
 
 **
 * PAD variables
@@ -102,7 +108,7 @@ column_ptrs:
 cast_ray_loop_pad:
        equ  column_ptrs+(n_rays*2)
 upload_screen_loop_pad:
-       equ  cast_ray_loop_pad+20
+       equ  cast_ray_loop_pad+28
 pad_max:
        equ  upload_screen_loop_pad+36
 
@@ -234,6 +240,7 @@ cast_rays_2:
 *
 cast_ray:
        .proc
+*      Set up variables
        mov  r0,r6                      ; Player x
        mov  r1,r8                      ; Player y
        andi r0,>ff00                   ; mapX
@@ -254,7 +261,7 @@ cast_ray_1:
        mpy  r4,r6                      ; sideDistX = fracX * deltaDistX
        swpb r7                         ; Fractional part to LSB
        movb @r6lb,r7                   ; Integer part to MSB
-       li   r6,>ff00                   ; stepX = -1
+       li   r6,-1                      ; stepX = -1
        jmp  cast_ray_3
 cast_ray_2:
        neg  r6                         ; -fracX
@@ -262,7 +269,7 @@ cast_ray_2:
        mpy  r4,r6                      ; sideDistX = (1 - fracX) * deltaDistX
        swpb r7                         ; Fractional part to LSB
        movb @r6lb,r7                   ; Integer part to MSB
-       li   r6,>0100                   ; stepX = 1
+       li   r6,1                       ; stepX = 1
 *      Calculate sideDistY
 cast_ray_3:
        mov  @sin_table(r2),r3          ; dirY
@@ -275,7 +282,7 @@ cast_ray_4:
        mpy  r5,r8                      ; sideDistY = fracY * deltaDistY
        swpb r9                         ; Fractional part to LSB
        movb @r8lb,r9                   ; Integer part to MSB
-       li   r8,>ff00                   ; stepY = -1
+       li   r8,-map_width              ; stepY = -1
        jmp  cast_ray_6
 cast_ray_5:
        neg  r8                         ; -fracY
@@ -283,10 +290,20 @@ cast_ray_5:
        mpy  r5,r8                      ; sideDistY = (1 - fracY) * deltaDistY
        swpb r9                         ; Fractional part to LSB
        movb @r8lb,r9                   ; Integer part to MSB
-       li   r8,>0100                   ; stepY = 1
+       li   r8,map_width               ; stepY = 1
+*      Map address
 cast_ray_6:
+       movb r0,@r12lb
+       movb r1,r12
+       ai   r12,map
+*      Cast the ray
        li   r2,max_steps               ; Step counter
-       bl   @cast_ray_loop
+       bl   @cast_ray_loop_pad
+*      Inverse map address (maybe not required)
+       ai   r12,-map
+       movb @r12lb,r0
+       movb r12,r1
+*      Calculate distance
        mov  r2,r2                      ; Steps left
        jne  cast_ray_7
        li   r2,>1700                   ; Max distance
@@ -301,9 +318,10 @@ cast_ray_7:
 cast_ray_8:
        s    r5,r9                      ; sideDistY -= deltaDistY
        mov  r9,r2                      ; Distance
+*      Color and side
 cast_ray_9:
-       clr  r4
-       movb r12,@r4lb                  ; Color
+       clr  r4                         ; Clear color
+       movb r13,@r4lb                  ; Set color
 cast_ray_10:
        abs  r3                         ; Side
        .endproc                        ; Return
@@ -317,18 +335,15 @@ cast_ray_loop:
        c    r7,r9                      ; sideDistX < sideDistY ?
        jgt  cast_ray_loop_1
        a    r4,r7                      ; sideDistX += deltaDistX
-       a    r6,r0                      ; mapX += stepX
+       a    r6,r12                     ; mapX += stepX
        clr  r3                         ; xSide = 0
        jmp  cast_ray_loop_2
 cast_ray_loop_1:
        a    r5,r9                      ; sideDistY += deltaDistY
-       a    r8,r1                      ; mapY += stepY
+       a    r8,r12                     ; mapY += stepY
        seto r3                         ; xSide = 1
 cast_ray_loop_2:
-       mov  r0,r12
-       swpb r12
-       movb r1,r12
-       movb @map(r12),r12
+       movb *r12,r13
        jne  cast_ray_loop_3
        dec  r2                         ; Distance count down
        jne  cast_ray_loop              ; Loop until we give up
@@ -408,9 +423,13 @@ user_input_3:
        mov  @dir,r2
        sla  r2,1
        mov  @x,r0
-       s    @cos_table(r2),r0
+       mov  @cos_table(r2),r3
+       sra  r3,1
+       s    r3,r0
        mov  @y,r1
-       s    @sin_table(r2),r1
+       mov  @sin_table(r2),r3
+       sra  r3,1
+       s    r3,r1
        movb r1,r2
        movb r0,@r2lb
        movb @map(r2),r2
@@ -424,9 +443,13 @@ user_input_4:
        mov  @dir,r2
        sla  r2,1
        mov  @x,r0
-       a    @cos_table(r2),r0
+       mov  @cos_table(r2),r3
+       sra  r3,1
+       a    r3,r0
        mov  @y,r1
-       a    @sin_table(r2),r1
+       mov  @sin_table(r2),r3
+       sra  r3,1
+       a    r3,r1
        movb r1,r2
        movb r0,@r2lb
        movb @map(r2),r2
