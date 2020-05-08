@@ -423,6 +423,7 @@ user_input_1:
        jeq  user_input_2
        mov  @dir,r0
        dect r0                         ; Turn left
+       dect r0                         ; Turn left
        andi r0,direction_mask
        mov  r0,@dir
        jmp  user_input_3
@@ -431,6 +432,7 @@ user_input_2:
        tb   2
        jeq  user_input_3
        mov  @dir,r0
+       inct r0                         ; Turn right
        inct r0                         ; Turn right
        andi r0,direction_mask
        mov  r0,@dir
