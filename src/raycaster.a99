@@ -57,7 +57,7 @@ n_rays:
 max_steps:
        equ  24
 n_tile_patterns:
-       equ  133
+       equ  80
 n_sprite_patterns:
        equ  0
 
@@ -192,24 +192,19 @@ cast_rays_1:
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
        bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate which column to display
-       mov  r4,r4                      ; Color
-       jeq  cast_rays_2                ; Jump if no wall
-       dec  r4                         ; Color--
-       a    r3,r4                      ; Different color on x/y facing walls
-cast_rays_2:
-       li   r6,32*screen_height        ; Byte size of a column set
-       mpy  r4,r6                      ; Multiply by color into r7
+       bl   @get_column_set            ; Returns column set index in r4
+       sla  r4,1                       ; To word offset
+       mov  @columns_set_table(r4),r4  ; Get columns set address
        mov  r2,r5                      ; Distance
        srl  r5,6                       ; To FP 14.2
        sla  r5,1                       ; To word offset
        mov  @dist_column_table(r5),r5  ; Get column index
        li   r6,screen_height           ; Column byte size
        mpy  r6,r5                      ; Column index * column size
-       a    r6,r7                      ; Add to column set base
-       ai   r7,columns                 ; Add columns base
-       mov  @column_ptr,r6             ; Get address of column pointer
-       mov  r7,*r6+                    ; Set column pointer and increment
-       mov  r6,@column_ptr             ; Save address of next column pointer
+       a    r4,r6                      ; Add to column set base
+       mov  @column_ptr,r7             ; Get address of column pointer
+       mov  r6,*r7+                    ; Set column pointer and increment
+       mov  r7,@column_ptr             ; Save address of next column pointer
 *      Next ray
        mov  @ray_dir,r2                ; Get ray direction
        inct r2                         ; Increment it
@@ -219,6 +214,22 @@ cast_rays_2:
        jne  cast_rays_1                ; Loop if more rays to cast
        .endproc
 *// cast_rays
+
+*********************************************************************
+*
+* Calculate column set from map color
+* r4: map color
+*
+get_column_set:
+       mov  r4,r4                      ; Color
+       jeq  get_column_set_1           ; Return if no wall
+
+
+       dec  r4                         ; Color--
+       a    r3,r4                      ; Different color on x/y facing walls
+get_column_set_1:
+       rt
+*// get_column_set
 
 *********************************************************************
 *
@@ -314,7 +325,7 @@ cast_ray_6:
 *      Calculate distance
        mov  r2,r2                      ; Steps left
        jne  cast_ray_7
-       li   r2,>1700                   ; Max distance
+       li   r2,>1f00                   ; Max distance
        clr  r4                         ; Reset color
        jmp  cast_ray_10
 cast_ray_7:
@@ -759,6 +770,10 @@ dist_column_table:
 *      12.0,11.5,10.5,10.0,9.5,9.0,8.5,8.0
 *      7.5,7.0,6.5,6.0,5.5,5.0,4.5,4.0
 *      3.5,3.0,2.5,2.0,1.5,1.0,0.5,0.0
+columns_set_table:
+       data MD1,MD2,MD3,MD4,MD5,MD6,MD7,MD8
+       data MD9,MD10
+
 
 **
 * 128 values of cos(a) as FP 8.8 for 0 <= a < 360 degrees.
