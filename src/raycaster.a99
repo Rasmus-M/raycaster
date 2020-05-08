@@ -57,7 +57,7 @@ n_rays:
 max_steps:
        equ  24
 n_tile_patterns:
-       equ  121
+       equ  133
 n_sprite_patterns:
        equ  0
 
