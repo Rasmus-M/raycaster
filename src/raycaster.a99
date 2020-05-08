@@ -103,8 +103,10 @@ ray_count:
        equ  dir+2
 ray_dir:
        equ  ray_count+2
-column_ptr:
+distance:
        equ  ray_dir+2
+column_ptr:
+       equ  distance+2
 column_ptrs:
        equ  column_ptr+2
 cast_ray_loop_pad:
@@ -190,6 +192,7 @@ cast_rays_1:
        mov  @y,r1                      ; y
        mov  @ray_dir,r2                ; Direction
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
+       mov  r2,@distance               ; Save euclidian distance
        bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate which column to display
        bl   @get_column_set            ; Returns column set index in r4
@@ -217,22 +220,6 @@ cast_rays_1:
 
 *********************************************************************
 *
-* Calculate column set from map color
-* r4: map color
-*
-get_column_set:
-       mov  r4,r4                      ; Color
-       jeq  get_column_set_1           ; Return if no wall
-
-
-       dec  r4                         ; Color--
-       a    r3,r4                      ; Different color on x/y facing walls
-get_column_set_1:
-       rt
-*// get_column_set
-
-*********************************************************************
-*
 * Fish-eye correction
 * Calculate perpendicualar distance from euclidian distance in r2
 *
@@ -246,6 +233,47 @@ fish_eye_correction:
        movb r13,@r2lb                  ; into r2
        rt
 *// fish_eye_correction
+
+*********************************************************************
+*
+* Calculate column set from map color
+* r4: map color
+* Returns columns set index in r4
+*
+get_column_set:
+       mov  r4,r4                      ; Color
+       jeq  get_column_set_2           ; Return if no wall
+       ci   r4,10
+       jhe  get_column_set_1
+*      Single column set
+       dec  r4                         ; Color--
+       a    r3,r4                      ; Different color on x/y facing walls
+       jmp  get_column_set_2
+*      Texture
+get_column_set_1:
+       ai   r4,-10                     ; Texture index
+       sla  r4,4                       ; * 16
+       mov  @ray_dir,r12               ; Ray direction
+       s    @dir,r12                   ; Direction offset (angle)
+       andi r12,direction_mask         ; Wrap around
+       mov  @sin_table(r12),r12        ; Sine of angle
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       mov  r3,r3                      ; Check side
+       jne  get_column_set_3           ; Jump if y side
+       a    @x,r12                     ; playerX + sin(a)
+       jmp  get_column_set_4
+get_column_set_3:
+       a    @y,r12                     ; playerY + sin(a)
+get_column_set_4:
+       andi r12,>00f0                  ; Isolate the bits we need
+       srl  r12,3                      ; Shift to word offset
+       a    r12,r4                     ; Add to texture index
+       mov  @textures(r4),r4           ; Get column set index
+get_column_set_2:
+       rt
+*// get_column_set
 
 ***************************************************************
 *
@@ -774,7 +802,6 @@ columns_set_table:
        data MD1,MD2,MD3,MD4,MD5,MD6,MD7,MD8
        data MD9,MD10
 
-
 **
 * 128 values of cos(a) as FP 8.8 for 0 <= a < 360 degrees.
 *
@@ -866,6 +893,9 @@ inv_sin_table:
 columns:
        copy "columns.a99"
        copy "chars.a99"
+
+textures:
+       copy "textures.a99"
 
        aorg >2000
 map:
