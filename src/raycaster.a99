@@ -835,7 +835,7 @@ dist_column_table:
 *
 columns_set_table:
        data MD1,MD2,MD3,MD4,MD5,MD6,MD7,MD8
-       data MD9,MD10
+       data MD9,MD10,MD11,MD12
 
 **
 * 128 values of cos(a) as FP 8.8 for 0 <= a < 360 degrees.
