@@ -242,36 +242,58 @@ fish_eye_correction:
 *
 get_column_set:
        mov  r4,r4                      ; Color
-       jeq  get_column_set_2           ; Return if no wall
+       jeq  get_column_set_6           ; Return if no wall
        ci   r4,10
        jhe  get_column_set_1
 *      Single column set
        dec  r4                         ; Color--
        a    r3,r4                      ; Different color on x/y facing walls
-       jmp  get_column_set_2
+       jmp  get_column_set_6
 *      Texture
 get_column_set_1:
-       ai   r4,-10                     ; Texture index
-       sla  r4,4                       ; * 16
        mov  @ray_dir,r12               ; Ray direction
-       s    @dir,r12                   ; Direction offset (angle)
-       andi r12,direction_mask         ; Wrap around
-       mov  @sin_table(r12),r12        ; Sine of angle
+       mov  r3,r3                      ; Check side
+       jne  get_column_set_3           ; Jump if y side
+*      Texture x side
+       mov  @sin_table(r12),r12        ; dirY
+       jlt  get_column_set_2
        mpy  @distance,r12              ; Multiply by distance
        swpb r12                        ; Rearrange result
        movb r13,@r12lb                 ; as FP 8.8
-       mov  r3,r3                      ; Check side
-       jne  get_column_set_3           ; Jump if y side
-       a    @x,r12                     ; playerX + sin(a)
-       jmp  get_column_set_4
-get_column_set_3:
        a    @y,r12                     ; playerY + sin(a)
+       jmp  get_column_set_5
+get_column_set_2:
+       neg  r12
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       neg  r12
+       a    @y,r12                     ; playerY + sin(a)
+       jmp  get_column_set_5
+*      Texture y side
+get_column_set_3:
+       mov  @cos_table(r12),r12        ; dirX
+       jlt  get_column_set_4
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       a    @x,r12                     ; playerY + sin(a)
+       jmp  get_column_set_5
 get_column_set_4:
+       neg  r12
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       neg  r12
+       a    @x,r12                     ; playerY + sin(a)
+get_column_set_5:
+       ai   r4,-10                     ; Texture index
+       sla  r4,5                       ; * 32
        andi r12,>00f0                  ; Isolate the bits we need
        srl  r12,3                      ; Shift to word offset
        a    r12,r4                     ; Add to texture index
        mov  @textures(r4),r4           ; Get column set index
-get_column_set_2:
+get_column_set_6:
        rt
 *// get_column_set
 
@@ -491,14 +513,14 @@ user_input_3:
        movb r1,r2
        movb r0,@r2lb
        movb @map(r2),r2
-       jne  user_input_5
+       jne  user_input_6
        mov  r0,@x
        mov  r1,@y
-       jmp  user_input_5
+       jmp  user_input_6
 user_input_4:
 *      Up
        tb   4
-       jeq  user_input_5
+       jeq  user_input_6
        mov  @dir,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
@@ -511,10 +533,14 @@ user_input_4:
        movb r1,r2
        movb r0,@r2lb
        movb @map(r2),r2
-       jne  user_input_5
+       jeq  user_input_5
+       cb   @door,r2
+       jeq  user_input_5
+       jmp  user_input_6
+user_input_5:
        mov  r0,@x
        mov  r1,@y
-user_input_5:
+user_input_6:
        .endproc
 *// user_input
 
@@ -758,6 +784,10 @@ start_y:
        data >1000
 start_dir:
        data 64
+space:
+       byte 0
+door:
+       byte 10
 
 **
 * This table lists, for each distance
@@ -798,6 +828,11 @@ dist_column_table:
 *      12.0,11.5,10.5,10.0,9.5,9.0,8.5,8.0
 *      7.5,7.0,6.5,6.0,5.5,5.0,4.5,4.0
 *      3.5,3.0,2.5,2.0,1.5,1.0,0.5,0.0
+
+**
+* Addresses of the different column sets,
+* each with a different color or texture.
+*
 columns_set_table:
        data MD1,MD2,MD3,MD4,MD5,MD6,MD7,MD8
        data MD9,MD10
@@ -845,7 +880,7 @@ sin_table:
        data >ff9e,>ffaa,>ffb6,>ffc2,>ffce,>ffda,>ffe7,>fff3
 
 **
-* 128 values of 1 / cos(a) as FP 8.8 for 0 <= a < 360 degrees.
+* 128 values of abs(1 / cos(a)) as FP 8.8 for 0 <= a < 360 degrees.
 *
 inv_cos_table:
        data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
@@ -866,7 +901,7 @@ inv_cos_table:
        data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
 
 **
-* 128 values of 1 / sin(a) as FP 8.8 for 0 <= a < 360 degrees.
+* 128 values of abs(1 / sin(a)) as FP 8.8 for 0 <= a < 360 degrees.
 *
 inv_sin_table:
        data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
