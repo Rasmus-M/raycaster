@@ -59,7 +59,7 @@ max_steps:
 n_tile_patterns:
        equ  80
 n_sprite_patterns:
-       equ  0
+       equ  12
 
 **
 * Scratch pad
@@ -163,10 +163,10 @@ set_vdp_regs:
        ori  r0,>020a
        bl   @vwtr
 *      Set sprite attribute table
-       mov  @dbl_buffer_flag,r0
-       andi r0,>0001
-       ori  r0,>055e
-       bl   @vwtr
+;       mov  @dbl_buffer_flag,r0
+;       andi r0,>0001
+;       ori  r0,>055e
+;       bl   @vwtr
 *      Flip flag
        inv  @dbl_buffer_flag
        .endproc
@@ -585,13 +585,14 @@ one_time_init:
        li   r2,n_tile_patterns*8
        bl   @vmbw
 *      Sprite patterns
-;       li   r0,sprptb
-;       li   r1,SPR0
-;       li   r2,n_sprite_patterns*32
-;       bl   @vmbw
-;       li   r0,spratb
-;       li   r1,>d000
-;       bl   @vsbw
+       li   r0,sprptb
+       li   r1,SPR0
+       li   r2,n_sprite_patterns*32
+       bl   @vmbw
+       li   r0,spratb
+       li   r1,SAL
+       li   r2,50
+       bl   @vmbw
        .endproc
 *// one_time_init
 
@@ -928,9 +929,10 @@ inv_sin_table:
 columns:
        copy "columns.a99"
        copy "chars.a99"
-
 textures:
        copy "textures.a99"
+
+       copy "gun.a99"
 
        aorg >2000
 map:
