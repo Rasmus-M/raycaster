@@ -57,7 +57,7 @@ n_rays:
 max_steps:
        equ  24
 n_tile_patterns:
-       equ  80
+       equ  168
 n_sprite_patterns:
        equ  12
 
@@ -105,8 +105,10 @@ ray_dir:
        equ  ray_count+2
 distance:
        equ  ray_dir+2
-column_ptr:
+depth_buffer_ptr:
        equ  distance+2
+column_ptr:
+       equ  depth_buffer_ptr+2
 column_ptrs:
        equ  column_ptr+2
 cast_ray_loop_pad:
@@ -163,10 +165,10 @@ set_vdp_regs:
        ori  r0,>020a
        bl   @vwtr
 *      Set sprite attribute table
-;       mov  @dbl_buffer_flag,r0
-;       andi r0,>0001
-;       ori  r0,>055e
-;       bl   @vwtr
+       mov  @dbl_buffer_flag,r0
+       andi r0,>0001
+       ori  r0,>055e
+       bl   @vwtr
 *      Flip flag
        inv  @dbl_buffer_flag
        .endproc
@@ -180,6 +182,8 @@ cast_rays:
        .proc
        li   r0,column_ptrs
        mov  r0,@column_ptr
+       li   r0,depth_buffer
+       mov  r0,@depth_buffer_ptr
        li   r2,n_rays                  ; Number of rays to cast
        mov  r2,@ray_count              ; Init count-down
        mov  @dir,r2                    ; Player direction (even only)
@@ -194,6 +198,9 @@ cast_rays_1:
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
        mov  r2,@distance               ; Save euclidian distance
        bl   @fish_eye_correction       ; Adjust distance in r2
+       mov  @depth_buffer_ptr,r5
+       mov  r2,*r5+
+       mov  r5,@depth_buffer_ptr
 *      Calculate which column to display
        bl   @get_column_set            ; Returns column set index in r4
        sla  r4,1                       ; To word offset
@@ -593,6 +600,10 @@ one_time_init:
        li   r1,SAL
        li   r2,50
        bl   @vmbw
+       li   r0,sprat2
+       li   r1,SAL2
+       li   r2,50
+       bl   @vmbw
        .endproc
 *// one_time_init
 
@@ -789,6 +800,8 @@ space:
        byte 0
 door:
        byte 10
+depth_buffer:
+       bss  32*2
 
 **
 * This table lists, for each distance
@@ -933,6 +946,7 @@ textures:
        copy "textures.a99"
 
        copy "gun.a99"
+       copy "soldier.a99"
 
        aorg >2000
 map:

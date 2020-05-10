@@ -1,0 +1,122 @@
+soldier_depth_table:
+       data MD13,MD13,MD13
+       data MD14
+       data MD15,MD15
+       data MD16,MD16
+       data MD17,MD17,MD17,MD17
+       data MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,0
+
+* == Map #13 ==
+MC13   DATA 1                          ;
+MS13   DATA >0008,>0010,>0080          ; Width, Height, Size
+* -- Map Row 0 --
+MD13   DATA >0000,>5051,>0152,>0000    ;
+* -- Map Row 1 --
+       DATA >0000,>0151,>0101,>0000    ;
+* -- Map Row 2 --
+       DATA >0000,>5354,>5455,>0000    ;
+* -- Map Row 3 --
+       DATA >0000,>5657,>5859,>0000    ;
+* -- Map Row 4 --
+       DATA >005A,>5B05,>055B,>5C00    ;
+* -- Map Row 5 --
+       DATA >5A05,>5B05,>055B,>055C    ;
+* -- Map Row 6 --
+       DATA >0505,>5B05,>055B,>0505    ;
+* -- Map Row 7 --
+       DATA >05A7,>A7A7,>A7A7,>A7A7    ;
+* -- Map Row 8 --
+       DATA >5D05,>5E05,>055E,>055F    ;
+* -- Map Row 9 --
+       DATA >0000,>6005,>6005,>0000    ;
+* -- Map Row 10 --
+       DATA >0000,>6005,>6005,>0000    ;
+* -- Map Row 11 --
+       DATA >0000,>6005,>6005,>0000    ;
+* -- Map Row 12 --
+       DATA >0000,>6162,>6162,>0000    ;
+* -- Map Row 13 --
+       DATA >0000,>6162,>6162,>0000    ;
+* -- Map Row 14 --
+       DATA >0000,>6162,>6162,>0000    ;
+* -- Map Row 15 --
+       DATA >0000,>0303,>0303,>0000    ;
+* == Map #14 ==
+MC14   DATA 1                          ;
+MS14   DATA >0006,>000C,>0048          ; Width, Height, Size
+* -- Map Row 0 --
+MD14   DATA >0063,>6465,>6600          ;
+* -- Map Row 1 --
+       DATA >0067,>6869,>6A00          ;
+* -- Map Row 2 --
+       DATA >0000,>6B6C,>0000          ;
+* -- Map Row 3 --
+       DATA >6D6E,>6F70,>7172          ;
+* -- Map Row 4 --
+       DATA >6E05,>6F70,>0571          ;
+* -- Map Row 5 --
+       DATA >0573,>7475,>7373          ;
+* -- Map Row 6 --
+       DATA >7677,>0505,>7879          ;
+* -- Map Row 7 --
+       DATA >007A,>0560,>7B00          ;
+* -- Map Row 8 --
+       DATA >007A,>0560,>7B00          ;
+* -- Map Row 9 --
+       DATA >007C,>6203,>7D00          ;
+* -- Map Row 10 --
+       DATA >007C,>6203,>7D00          ;
+* -- Map Row 11 --
+       DATA >007E,>6203,>7F00          ;
+* == Map #15 ==
+MC15   DATA 1                          ;
+MS15   DATA >0004,>0008,>0020          ; Width, Height, Size
+* -- Map Row 0 --
+MD15   DATA >0080,>8100                ;
+* -- Map Row 1 --
+       DATA >0082,>8300                ;
+* -- Map Row 2 --
+       DATA >5A84,>855C                ;
+* -- Map Row 3 --
+       DATA >0586,>8788                ;
+* -- Map Row 4 --
+       DATA >898A,>8B8C                ;
+* -- Map Row 5 --
+       DATA >0060,>6000                ;
+* -- Map Row 6 --
+       DATA >0061,>6100                ;
+* -- Map Row 7 --
+       DATA >0003,>6100                ;
+* == Map #16 ==
+MC16   DATA 1                          ;
+MS16   DATA >0003,>0006,>0012          ; Width, Height, Size
+* -- Map Row 0 --
+MD16   BYTE >8D,>8E,>8F                ;
+* -- Map Row 1 --
+       BYTE >90,>91,>92                ;
+* -- Map Row 2 --
+       BYTE >93,>94,>95                ;
+* -- Map Row 3 --
+       BYTE >96,>05,>97                ;
+* -- Map Row 4 --
+       BYTE >98,>99,>9A                ;
+* -- Map Row 5 --
+       BYTE >9B,>9C,>9D                ;
+* == Map #17 ==
+MC17   DATA 1                          ;
+MS17   DATA >0002,>0004,>0008          ; Width, Height, Size
+* -- Map Row 0 --
+MD17   DATA >9E9F                      ;
+* -- Map Row 1 --
+       DATA >A0A1                      ;
+* -- Map Row 2 --
+       DATA >A2A3                      ;
+* -- Map Row 3 --
+       DATA >7EA4                      ;
+* == Map #18 ==
+MC18   DATA 1                          ;
+MS18   DATA >0001,>0002,>0002          ; Width, Height, Size
+* -- Map Row 0 --
+MD18   BYTE >A5                        ;
+* -- Map Row 1 --
+       BYTE >A6                        ;
