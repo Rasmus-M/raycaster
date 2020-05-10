@@ -113,10 +113,8 @@ column_ptrs:
        equ  column_ptr+2
 cast_ray_loop_pad:
        equ  column_ptrs+(n_rays*2)
-upload_screen_loop_pad:
-       equ  cast_ray_loop_pad+40
 pad_max:
-       equ  upload_screen_loop_pad+28
+       equ  cast_ray_loop_pad+40
 
 ***************************************************************
 *
@@ -446,34 +444,47 @@ upload_screen:
        sla  r0,10
        ai   r0,nametb
        bl   @vwad                      ; Set VDP address
-       clr  @self_modifying_offset     ; Evil!
        li   r3,screen_height           ; Row counter
-       bl   @upload_screen_loop_pad
-       .endproc
-*// upload_screen
-
-*********************************************************************
-*
-* Upload screen loop
-*
 upload_screen_loop:
-       li   r0,column_ptrs
-       li   r2,screen_width
-upload_screen_loop_1:
-       mov  *r0+,r1                    ; Get column pointer
-upload_screen_offset:
-       movb @0(r1),*r15                ; Write byte to VDP (r15 contains VDPWD)
-       dec  r2
-       jne  upload_screen_loop_1       ; Next column
-       inc  @self_modifying_offset
+       lwpi column_ptrs
+       movb *r0+,@vdpwd
+       movb *r1+,@vdpwd
+       movb *r2+,@vdpwd
+       movb *r3+,@vdpwd
+       movb *r4+,@vdpwd
+       movb *r5+,@vdpwd
+       movb *r6+,@vdpwd
+       movb *r7+,@vdpwd
+       movb *r8+,@vdpwd
+       movb *r9+,@vdpwd
+       movb *r10+,@vdpwd
+       movb *r11+,@vdpwd
+       movb *r12+,@vdpwd
+       movb *r13+,@vdpwd
+       movb *r14+,@vdpwd
+       movb *r15+,@vdpwd
+       lwpi column_ptrs+32
+       movb *r0+,@vdpwd
+       movb *r1+,@vdpwd
+       movb *r2+,@vdpwd
+       movb *r3+,@vdpwd
+       movb *r4+,@vdpwd
+       movb *r5+,@vdpwd
+       movb *r6+,@vdpwd
+       movb *r7+,@vdpwd
+       movb *r8+,@vdpwd
+       movb *r9+,@vdpwd
+       movb *r10+,@vdpwd
+       movb *r11+,@vdpwd
+       movb *r12+,@vdpwd
+       movb *r13+,@vdpwd
+       movb *r14+,@vdpwd
+       movb *r15+,@vdpwd
+       lwpi wrksp
        dec  r3
        jne  upload_screen_loop         ; Next row
-       rt
-upload_screen_loop_end:
-       equ  $
-self_modifying_offset:
-       equ upload_screen_offset+2-upload_screen_loop+upload_screen_loop_pad
-*// upload_screen_loop
+       .endproc
+*// upload_screen
 
 *********************************************************************
 *
@@ -568,10 +579,6 @@ one_time_init:
        li   r0,cast_ray_loop
        li   r1,cast_ray_loop_pad
        li   r2,cast_ray_loop_end-cast_ray_loop
-       bl   @copy
-       li   r0,upload_screen_loop
-       li   r1,upload_screen_loop_pad
-       li   r2,upload_screen_loop_end-upload_screen_loop
        bl   @copy
 *      Patterns
        li   r0,ptrntb
