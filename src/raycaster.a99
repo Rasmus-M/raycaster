@@ -509,55 +509,108 @@ draw_objects:
        mov  @n_objects,r5
 draw_objects_1:
        mov  @object_x(r4),r0
-       s    @x,r0
+       s    @x,r0                      ; dx
        ci   r0,(max_object_distance-1)*256
        jgt  draw_objects_2
        ci   r0,-max_object_distance*256
        jlt   draw_objects_2
        mov  @object_y(r4),r1
-       s    @y,r1
+       s    @y,r1                      ; dy
        ci   r1,(max_object_distance-1)*256
        jgt  draw_objects_2
        ci   r1,-max_object_distance*256
        jlt   draw_objects_2
-       sra  r0,8                       ; To integer
-       sra  r1,8                       ; To integer
+       sra  r0,8                       ; dx to integer
+       sra  r1,8                       ; dy to integer
 *      Look up angle
        mov  r1,r2
-       ai   r2,max_object_distance/2
-       li   r3,max_object_distance
+       ai   r2,max_object_distance
+       li   r3,max_object_distance*2
        mpy  r3,r2                      ; Result in r3
        mov  r0,r2
-       ai   r2,max_object_distance/2
+       ai   r2,max_object_distance
        a    r2,r3
        clr  r6
        movb @angle_table(r3),@r6lb     ; Get angle
        s    @angle,r6                  ; Subtract player angle
-       ci   r6,-n_directions/2
+       ci   r6,-n_rays
        jlt  draw_objects_2
-       ci   r6,n_directions/2-1
+       ci   r6,n_rays-1
        jgt  draw_objects_2
-*      Loop up distance
+*      Look up distance
        abs  r0
        abs  r1
        mov  r1,r2
        li   r3,max_object_distance
        mpy  r3,r2                      ; Result in r3
        a    r0,r3
-       sla  r3,1
-       movb @distance_table(r3),r7     ; Get distance
-       ci   r7,max_object_distance
+       sla  r3,1                       ; To word offset
+       mov  @distance_table(r3),r7     ; Get distance
+       ci   r7,max_object_distance*256
        jgt  draw_objects_2
 *      Object is within view and distance
-
-
-
+       bl   @draw_object
 draw_objects_2:
        ai   r4,object_size
        dec  r5
        jne  draw_objects_1
        .endproc
 *// draw_objects
+
+*********************************************************************
+*
+* Draw object
+*
+* r4: object to draw
+* r6: angle relative to player
+* r7: distance FP 8.8
+*
+draw_object:
+       .proc
+*      Find map to use
+       mov  r7,r8                      ; Distance FP 8.8
+       srl  r8,8                       ; Distance integer
+       sla  r8,1                       ; To word offset
+       a    @object_depth_table(r4),r8 ; Add depth table base for object
+       mov  *r8,r8                     ; Map address
+       mov  *r8+,r1                    ; Width
+       mov  *r8+,r2                    ; Height
+       inct r8                         ; Skip size word
+*      Screen address
+       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
+       andi r0,>0001
+       sla  r0,10
+       ai   r0,nametb+(screen_height*screen_width/2)+(screen_width/2) ; Center of screen
+       mov  r1,r3                      ; Width
+       srl  r3,1                       ; / 2
+       sra  r6,1
+       s    r3,r6                      ; Subtract column offset
+       a    r6,r0;                     ; Add column offset (angle)
+       mov  r2,r3                      ; Height
+       srl  r3,1                       ; / 2
+;      dect r3                         ; - 2
+       sla  r3,5                       ; * 32
+       s    r3,r0                      ; Subtract row offset
+draw_object_1:
+       bl   @vwad                      ; Set VDP address
+       mov  r1,r3                      ; Column counter
+draw_object_2:
+       movb *r8+,r9
+       jeq  draw_object_3
+       movb r9,*r15
+       dec  r3
+       jne  draw_object_2
+       jmp  draw_object_4
+draw_object_3:
+       movb @vdprd,r9
+       dec  r3
+       jne  draw_object_2
+draw_object_4:
+       ai   r0,screen_width
+       dec  r2
+       jne  draw_object_1
+       .endproc
+*// draw_object
 
 *********************************************************************
 *
@@ -575,7 +628,7 @@ user_input_1:
        jeq  user_input_2
        mov  @angle,r0
        dect r0                         ; Turn left
-       dect r0                         ; Turn left
+;       dect r0                         ; Turn left
        andi r0,direction_mask
        mov  r0,@angle
        jmp  user_input_3
@@ -585,7 +638,7 @@ user_input_2:
        jeq  user_input_3
        mov  @angle,r0
        inct r0                         ; Turn right
-       inct r0                         ; Turn right
+;       inct r0                         ; Turn right
        andi r0,direction_mask
        mov  r0,@angle
 user_input_3:
@@ -875,7 +928,7 @@ start_x:
 start_y:
        data >1000
 start_dir:
-       data 64
+       data >40
 space:
        byte 0
 door:
@@ -895,8 +948,8 @@ object_size:
 n_objects:
        data 1
 objects:
-       data >2600                      ; x
-       data >1000                      ; y
+       data >1600                      ; x
+       data >0c00                      ; y
        data soldier_depth_table
 
 **
@@ -962,6 +1015,9 @@ textures:
        copy "textures.a99"
        copy "gun.a99"
        copy "soldier.a99"
+
+ram_max:
+       equ  $
 
        aorg >2000
 map:

@@ -1,10 +1,10 @@
 soldier_depth_table:
-       data MD13,MD13,MD13
-       data MD14
-       data MD15,MD15
-       data MD16,MD16
-       data MD17,MD17,MD17,MD17
-       data MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18,MD18
+       data MS13,MS13,MS13
+       data MS14
+       data MS15,MS15
+       data MS16,MS16
+       data MS17,MS17,MS17,MS17
+       data MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18
 
 * == Map #13 ==
 MC13   DATA 1                          ;
