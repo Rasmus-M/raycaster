@@ -56,6 +56,8 @@ n_rays:
        equ  screen_width
 max_steps:
        equ  24
+max_object_distance:
+       equ  24
 n_tile_patterns:
        equ  168
 n_sprite_patterns:
@@ -97,24 +99,28 @@ x:                                     ; Player x FP 8.8
        equ  dbl_buffer_flag+2
 y:                                     ; Player y FP 8.8
        equ  x+2
-dir:                                   ; Player direction 0 - 2 * n_directions (even only)
+angle:                                 ; Player direction 0 - 2 * n_directions (even only)
        equ  y+2
 ray_count:
-       equ  dir+2
-ray_dir:
+       equ  angle+2
+ray_angle:
        equ  ray_count+2
 distance:
-       equ  ray_dir+2
+       equ  ray_angle+2
 depth_buffer_ptr:
        equ  distance+2
 column_ptr:
        equ  depth_buffer_ptr+2
 column_ptrs:
        equ  column_ptr+2
-cast_ray_loop_pad:
+tmp:
        equ  column_ptrs+(n_rays*2)
-pad_max:
+cast_ray_loop_pad:
+       equ  tmp+2
+depth_buffer:
        equ  cast_ray_loop_pad+40
+pad_max:
+       equ  depth_buffer+(n_rays*2)
 
 ***************************************************************
 *
@@ -128,12 +134,13 @@ main:
        bl   @one_time_init
        mov  @start_x,@x
        mov  @start_y,@y
-       mov  @start_dir,@dir
+       mov  @start_dir,@angle
 main_loop:
        bl   @vsync
        bl   @set_vdp_regs
        bl   @cast_rays
        bl   @upload_screen
+       bl   @draw_objects
        bl   @user_input
        jmp  main_loop
 
@@ -184,15 +191,15 @@ cast_rays:
        mov  r0,@depth_buffer_ptr
        li   r2,n_rays                  ; Number of rays to cast
        mov  r2,@ray_count              ; Init count-down
-       mov  @dir,r2                    ; Player direction (even only)
+       mov  @angle,r2                  ; Player direction (even only)
        ai  r2,-n_rays                  ; Direction of leftmost ray
        andi r2,direction_mask          ; Wrap around
-       mov  r2,@ray_dir                ; Save
+       mov  r2,@ray_angle              ; Save
 cast_rays_1:
 *      Cast ray
        mov  @x,r0                      ; x
        mov  @y,r1                      ; y
-       mov  @ray_dir,r2                ; Direction
+       mov  @ray_angle,r2              ; Direction
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
        mov  r2,@distance               ; Save euclidian distance
        bl   @fish_eye_correction       ; Adjust distance in r2
@@ -204,7 +211,7 @@ cast_rays_1:
        sla  r4,1                       ; To word offset
        mov  @columns_set_table(r4),r4  ; Get columns set address
        mov  r2,r5                      ; Distance
-       srl  r5,6                       ; To FP 14.2
+       srl  r5,5                       ; To FP 13.3
        sla  r5,1                       ; To word offset
        mov  @dist_column_table(r5),r5  ; Get column index
        li   r6,screen_height           ; Column byte size
@@ -214,10 +221,10 @@ cast_rays_1:
        mov  r6,*r7+                    ; Set column pointer and increment
        mov  r7,@column_ptr             ; Save address of next column pointer
 *      Next ray
-       mov  @ray_dir,r2                ; Get ray direction
+       mov  @ray_angle,r2              ; Get ray direction
        inct r2                         ; Increment it
        andi r2,direction_mask          ; Wrap around
-       mov  r2,@ray_dir                ; Save it
+       mov  r2,@ray_angle              ; Save it
        dec  @ray_count                 ; Count down
        jne  cast_rays_1                ; Loop if more rays to cast
        .endproc
@@ -229,10 +236,10 @@ cast_rays_1:
 * Calculate perpendicualar distance from euclidian distance in r2
 *
 fish_eye_correction:
-       mov  @ray_dir,r12               ; Ray direction
-       s    @dir,r12                   ; Direction offset (angle)
+       mov  @ray_angle,r12             ; Ray direction
+       s    @angle,r12                 ; Angle offset
        andi r12,direction_mask         ; Wrap around
-       mov  @cos_table(r12),r12        ; Cosine of angle
+       mov  @cos_table(r12),r12        ; Cosine of angle (positive)
        mpy  r2,r12                     ; Multiply by distance
        movb @r12lb,r2                  ; Move result back
        movb r13,@r2lb                  ; into r2
@@ -256,7 +263,7 @@ get_column_set:
        jmp  get_column_set_6
 *      Texture
 get_column_set_1:
-       mov  @ray_dir,r12               ; Ray direction
+       mov  @ray_angle,r12             ; Ray direction
        mov  r3,r3                      ; Check side
        jne  get_column_set_3           ; Jump if y side
 *      Texture x side
@@ -380,7 +387,7 @@ cast_ray_6:
 *      Calculate distance
        mov  r2,r2                      ; Steps left
        jne  cast_ray_7
-       li   r2,>1f00                   ; Max distance
+       li   r2,max_steps*256           ; Max distance
        clr  r4                         ; Reset color
        jmp  cast_ray_10
 cast_ray_7:
@@ -447,44 +454,110 @@ upload_screen:
        li   r3,screen_height           ; Row counter
 upload_screen_loop:
        lwpi column_ptrs
-       movb *r0+,@vdpwd
-       movb *r1+,@vdpwd
-       movb *r2+,@vdpwd
-       movb *r3+,@vdpwd
-       movb *r4+,@vdpwd
-       movb *r5+,@vdpwd
-       movb *r6+,@vdpwd
-       movb *r7+,@vdpwd
-       movb *r8+,@vdpwd
-       movb *r9+,@vdpwd
-       movb *r10+,@vdpwd
-       movb *r11+,@vdpwd
-       movb *r12+,@vdpwd
-       movb *r13+,@vdpwd
-       movb *r14+,@vdpwd
+       mov  r15,@tmp
+       li   r15,vdpwd
+       movb *r0+,*r15
+       movb *r1+,*r15
+       movb *r2+,*r15
+       movb *r3+,*r15
+       movb *r4+,*r15
+       movb *r5+,*r15
+       movb *r6+,*r15
+       movb *r7+,*r15
+       movb *r8+,*r15
+       movb *r9+,*r15
+       movb *r10+,*r15
+       movb *r11+,*r15
+       movb *r12+,*r15
+       movb *r13+,*r15
+       movb *r14+,*r15
+       mov  @tmp,r15
        movb *r15+,@vdpwd
        lwpi column_ptrs+32
-       movb *r0+,@vdpwd
-       movb *r1+,@vdpwd
-       movb *r2+,@vdpwd
-       movb *r3+,@vdpwd
-       movb *r4+,@vdpwd
-       movb *r5+,@vdpwd
-       movb *r6+,@vdpwd
-       movb *r7+,@vdpwd
-       movb *r8+,@vdpwd
-       movb *r9+,@vdpwd
-       movb *r10+,@vdpwd
-       movb *r11+,@vdpwd
-       movb *r12+,@vdpwd
-       movb *r13+,@vdpwd
-       movb *r14+,@vdpwd
+       mov  r15,@tmp
+       li   r15,vdpwd
+       movb *r0+,*r15
+       movb *r1+,*r15
+       movb *r2+,*r15
+       movb *r3+,*r15
+       movb *r4+,*r15
+       movb *r5+,*r15
+       movb *r6+,*r15
+       movb *r7+,*r15
+       movb *r8+,*r15
+       movb *r9+,*r15
+       movb *r10+,*r15
+       movb *r11+,*r15
+       movb *r12+,*r15
+       movb *r13+,*r15
+       movb *r14+,*r15
+       mov  @tmp,r15
        movb *r15+,@vdpwd
        lwpi wrksp
        dec  r3
        jne  upload_screen_loop         ; Next row
        .endproc
 *// upload_screen
+
+*********************************************************************
+*
+* Draw objects
+*
+draw_objects:
+       .proc
+       li   r4,objects
+       mov  @n_objects,r5
+draw_objects_1:
+       mov  @object_x(r4),r0
+       s    @x,r0
+       ci   r0,(max_object_distance-1)*256
+       jgt  draw_objects_2
+       ci   r0,-max_object_distance*256
+       jlt   draw_objects_2
+       mov  @object_y(r4),r1
+       s    @y,r1
+       ci   r1,(max_object_distance-1)*256
+       jgt  draw_objects_2
+       ci   r1,-max_object_distance*256
+       jlt   draw_objects_2
+       sra  r0,8                       ; To integer
+       sra  r1,8                       ; To integer
+*      Look up angle
+       mov  r1,r2
+       ai   r2,max_object_distance/2
+       li   r3,max_object_distance
+       mpy  r3,r2                      ; Result in r3
+       mov  r0,r2
+       ai   r2,max_object_distance/2
+       a    r2,r3
+       clr  r6
+       movb @angle_table(r3),@r6lb     ; Get angle
+       s    @angle,r6                  ; Subtract player angle
+       ci   r6,-n_directions/2
+       jlt  draw_objects_2
+       ci   r6,n_directions/2-1
+       jgt  draw_objects_2
+*      Loop up distance
+       abs  r0
+       abs  r1
+       mov  r1,r2
+       li   r3,max_object_distance
+       mpy  r3,r2                      ; Result in r3
+       a    r0,r3
+       sla  r3,1
+       movb @distance_table(r3),r7     ; Get distance
+       ci   r7,max_object_distance
+       jgt  draw_objects_2
+*      Object is within view and distance
+
+
+
+draw_objects_2:
+       ai   r4,object_size
+       dec  r5
+       jne  draw_objects_1
+       .endproc
+*// draw_objects
 
 *********************************************************************
 *
@@ -500,26 +573,26 @@ user_input:
 user_input_1:
        tb   1
        jeq  user_input_2
-       mov  @dir,r0
+       mov  @angle,r0
        dect r0                         ; Turn left
        dect r0                         ; Turn left
        andi r0,direction_mask
-       mov  r0,@dir
+       mov  r0,@angle
        jmp  user_input_3
 user_input_2:
 *      Right
        tb   2
        jeq  user_input_3
-       mov  @dir,r0
+       mov  @angle,r0
        inct r0                         ; Turn right
        inct r0                         ; Turn right
        andi r0,direction_mask
-       mov  r0,@dir
+       mov  r0,@angle
 user_input_3:
 *      Down
        tb   3
        jeq  user_input_4
-       mov  @dir,r2
+       mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
        sra  r3,1
@@ -539,7 +612,7 @@ user_input_4:
 *      Up
        tb   4
        jeq  user_input_6
-       mov  @dir,r2
+       mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
        sra  r3,1
@@ -807,14 +880,31 @@ space:
        byte 0
 door:
        byte 10
-depth_buffer:
-       bss  32*2
+
+**
+* Objects
+*
+object_x:
+       equ  0
+object_y:
+       equ  2
+object_depth_table:
+       equ  4
+object_size:
+       equ  6
+n_objects:
+       data 1
+objects:
+       data >2600                      ; x
+       data >1000                      ; y
+       data soldier_depth_table
 
 **
 * This table lists, for each distance
-* 1.00, 1.25, 1.50 ... 23.50, 23.75
+* 0 <= d < 24 step 0.125
 * the index of one of the 23 pre-drawn
 * columns to use.
+* 23*8 = 192 entries (+1)
 *
 dist_column_table:
        data 0,1,2,3,4,5,6,7
@@ -840,6 +930,8 @@ dist_column_table:
        data 29,29,29,29,29,29,29,29
        data 29,29,29,29,29,29,29,29
        data 29,29,29,29,29,29,29,29
+       data 30,30,30,30,30,30,30,30    ; Should actually be 29
+       data 31                         ; When max steps are reached
 
 **
 * These are the heights of the pre-drawn colums,
@@ -858,100 +950,16 @@ columns_set_table:
        data MD1,MD2,MD3,MD4,MD5,MD6,MD7,MD8
        data MD9,MD10,MD11,MD12
 
-**
-* 128 values of cos(a) as FP 8.8 for 0 <= a < 360 degrees.
-*
-cos_table:
-       data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1
-       data >00ed,>00e7,>00e2,>00dc,>00d5,>00ce,>00c6,>00be
-       data >00b5,>00ac,>00a2,>0098,>008e,>0084,>0079,>006d
-       data >0062,>0056,>004a,>003e,>0032,>0026,>0019,>000d
-       data >0000,>fff3,>ffe7,>ffda,>ffce,>ffc2,>ffb6,>ffaa
-       data >ff9e,>ff93,>ff87,>ff7c,>ff72,>ff68,>ff5e,>ff54
-       data >ff4b,>ff42,>ff3a,>ff32,>ff2b,>ff24,>ff1e,>ff19
-       data >ff13,>ff0f,>ff0b,>ff08,>ff05,>ff03,>ff01,>ff00
-       data >ff00,>ff00,>ff01,>ff03,>ff05,>ff08,>ff0b,>ff0f
-       data >ff13,>ff19,>ff1e,>ff24,>ff2b,>ff32,>ff3a,>ff42
-       data >ff4b,>ff54,>ff5e,>ff68,>ff72,>ff7c,>ff87,>ff93
-       data >ff9e,>ffaa,>ffb6,>ffc2,>ffce,>ffda,>ffe7,>fff3
-       data >0000,>000d,>0019,>0026,>0032,>003e,>004a,>0056
-       data >0062,>006d,>0079,>0084,>008e,>0098,>00a2,>00ac
-       data >00b5,>00be,>00c6,>00ce,>00d5,>00dc,>00e2,>00e7
-       data >00ed,>00f1,>00f5,>00f8,>00fb,>00fd,>00ff,>0100
-
-**
-* 128 values of sin(a) as FP 8.8 for 0 <= a < 360 degrees.
-*
-sin_table:
-       data >0000,>000d,>0019,>0026,>0032,>003e,>004a,>0056
-       data >0062,>006d,>0079,>0084,>008e,>0098,>00a2,>00ac
-       data >00b5,>00be,>00c6,>00ce,>00d5,>00dc,>00e2,>00e7
-       data >00ed,>00f1,>00f5,>00f8,>00fb,>00fd,>00ff,>0100
-       data >0100,>0100,>00ff,>00fd,>00fb,>00f8,>00f5,>00f1
-       data >00ed,>00e7,>00e2,>00dc,>00d5,>00ce,>00c6,>00be
-       data >00b5,>00ac,>00a2,>0098,>008e,>0084,>0079,>006d
-       data >0062,>0056,>004a,>003e,>0032,>0026,>0019,>000d
-       data >0000,>fff3,>ffe7,>ffda,>ffce,>ffc2,>ffb6,>ffaa
-       data >ff9e,>ff93,>ff87,>ff7c,>ff72,>ff68,>ff5e,>ff54
-       data >ff4b,>ff42,>ff3a,>ff32,>ff2b,>ff24,>ff1e,>ff19
-       data >ff13,>ff0f,>ff0b,>ff08,>ff05,>ff03,>ff01,>ff00
-       data >ff00,>ff00,>ff01,>ff03,>ff05,>ff08,>ff0b,>ff0f
-       data >ff13,>ff19,>ff1e,>ff24,>ff2b,>ff32,>ff3a,>ff42
-       data >ff4b,>ff54,>ff5e,>ff68,>ff72,>ff7c,>ff87,>ff93
-       data >ff9e,>ffaa,>ffb6,>ffc2,>ffce,>ffda,>ffe7,>fff3
-
-**
-* 128 values of abs(1 / cos(a)) as FP 8.8 for 0 <= a < 360 degrees.
-*
-inv_cos_table:
-       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
-       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
-       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
-       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
-       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
-       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
-       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
-       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
-       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
-       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
-       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
-       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
-       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
-       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
-       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
-       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
-
-**
-* 128 values of abs(1 / sin(a)) as FP 8.8 for 0 <= a < 360 degrees.
-*
-inv_sin_table:
-       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
-       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
-       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
-       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
-       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
-       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
-       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
-       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
-       data >ff00,>1461,>0a34,>06d1,>0520,>041e,>0372,>02f8
-       data >029d,>0257,>021f,>01f2,>01cd,>01ae,>0194,>017d
-       data >016a,>015a,>014b,>013f,>0134,>012a,>0122,>011b
-       data >0115,>0110,>010c,>0108,>0105,>0103,>0101,>0100
-       data >0100,>0100,>0101,>0103,>0105,>0108,>010c,>0110
-       data >0115,>011b,>0122,>012a,>0134,>013f,>014b,>015a
-       data >016a,>017d,>0194,>01ae,>01cd,>01f2,>021f,>0257
-       data >029d,>02f8,>0372,>041e,>0520,>06d1,>0a34,>1461
-
 ***************************************************************
 *
 * Data files
 *
+       copy "math_tables.a99"
 columns:
        copy "columns.a99"
        copy "chars.a99"
 textures:
        copy "textures.a99"
-
        copy "gun.a99"
        copy "soldier.a99"
 
