@@ -50,7 +50,7 @@ screen_height:
        equ  24
 n_directions:
        equ  128
-direction_mask:
+angle_mask:
        equ  2*n_directions-1
 n_rays:
        equ  screen_width
@@ -195,7 +195,7 @@ cast_rays:
        mov  r2,@ray_count              ; Init count-down
        mov  @angle,r2                  ; Player direction (even only)
        ai  r2,-n_rays                  ; Direction of leftmost ray
-       andi r2,direction_mask          ; Wrap around
+       andi r2,angle_mask          ; Wrap around
        mov  r2,@ray_angle              ; Save
 cast_rays_1:
 *      Cast ray
@@ -225,7 +225,7 @@ cast_rays_1:
 *      Next ray
        mov  @ray_angle,r2              ; Get ray direction
        inct r2                         ; Increment it
-       andi r2,direction_mask          ; Wrap around
+       andi r2,angle_mask          ; Wrap around
        mov  r2,@ray_angle              ; Save it
        dec  @ray_count                 ; Count down
        jne  cast_rays_1                ; Loop if more rays to cast
@@ -240,7 +240,7 @@ cast_rays_1:
 fish_eye_correction:
        mov  @ray_angle,r12             ; Ray direction
        s    @angle,r12                 ; Angle offset
-       andi r12,direction_mask         ; Wrap around
+       andi r12,angle_mask         ; Wrap around
        mov  @cos_table(r12),r12        ; Cosine of angle (positive)
        mpy  r2,r12                     ; Multiply by distance
        movb @r12lb,r2                  ; Move result back
@@ -532,9 +532,9 @@ draw_objects_1:
        mov  r0,r2
        ai   r2,max_object_distance
        a    r2,r3
-       clr  r6
-       movb @angle_table(r3),@r6lb     ; Get angle
-       s    @angle,r6                  ; Subtract player angle
+       movb @angle_table(r3),r6        ; Get angle
+       sb   @angle+1,r6                ; Subtract player angle
+       sra  r6,8                       ; Extend to 16-bit
        ci   r6,-n_rays-max_object_width
        jlt  draw_objects_2
        ci   r6,n_rays+max_object_width-1
@@ -597,8 +597,8 @@ draw_object:
 draw_object_5:
        mov  r6,r6                      ; Check if out of screen
        jlt  draw_object_6
-       c    r7,@depth_buffer(r12)      ; Check if behind wall
-       jgt  draw_object_6
+;       c    r7,@depth_buffer(r12)      ; Check if behind wall
+;       jgt  draw_object_6
        jmp  draw_object_7              ; Column OK
 draw_object_6:
        inc  r6                         ; Next column
@@ -614,8 +614,8 @@ draw_object_7:
 draw_object_8:
        ci   r6,screen_width-1          ; Check if out of screen
        jgt  draw_object_9
-       c    r7,@depth_buffer(r12)      ; Check if behind wall
-       jgt  draw_object_9
+;       c    r7,@depth_buffer(r12)      ; Check if behind wall
+;       jgt  draw_object_9
        inc  r6                         ; Next column
        inct r12
        dec  r3
@@ -665,7 +665,7 @@ user_input_1:
        mov  @angle,r0
        dect r0                         ; Turn left
 ;       dect r0                         ; Turn left
-       andi r0,direction_mask
+       andi r0,angle_mask
        mov  r0,@angle
        jmp  user_input_3
 user_input_2:
@@ -675,7 +675,7 @@ user_input_2:
        mov  @angle,r0
        inct r0                         ; Turn right
 ;       inct r0                         ; Turn right
-       andi r0,direction_mask
+       andi r0,angle_mask
        mov  r0,@angle
 user_input_3:
 *      Down
