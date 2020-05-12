@@ -1,10 +1,17 @@
 soldier_depth_table:
-       data MS13,MS13,MS13
-       data MS14
-       data MS15,MS15
-       data MS16,MS16
-       data MS17,MS17,MS17,MS17
-       data MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18
+;       data MS13
+;       data MS14,MS14
+;       data MS15,MS15,MS15
+;       data MS16,MS16,MS16,MS16
+;       data MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17
+;       data MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18
+
+       data MS13,MS13
+       data MS14,MS14,MS14
+       data MS15,MS15,MS15,MS15
+       data MS16,MS16,MS16,MS16,MS16,MS16
+       data MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17
+       data MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18
 
 * == Map #13 ==
 MC13   DATA 1                          ;

@@ -204,10 +204,10 @@ cast_rays_1:
        mov  @ray_angle,r2              ; Direction
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
        mov  r2,@distance               ; Save euclidian distance
-       bl   @fish_eye_correction       ; Adjust distance in r2
        mov  @depth_buffer_ptr,r5
        mov  r2,*r5+
        mov  r5,@depth_buffer_ptr
+       bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate which column to display
        bl   @get_column_set            ; Returns column set index in r4
        sla  r4,1                       ; To word offset
@@ -548,6 +548,7 @@ draw_objects_1:
        a    r0,r3
        sla  r3,1                       ; To word offset
        mov  @distance_table(r3),r7     ; Get distance
+;      ai   r7,->0100
        ci   r7,max_object_distance*256
        jgt  draw_objects_2
 *      Object is within view and distance
@@ -571,7 +572,11 @@ draw_object:
        .proc
 *      Find map to use
        mov  r7,r8                      ; Distance FP 8.8
-       srl  r8,8                       ; Distance integer
+       srl  r8,6                       ; Distance FP 14.2
+       ci   r8,39
+       jlt  draw_object_11
+       b    @draw_object_10            ; Return
+draw_object_11:
        sla  r8,1                       ; To word offset
        a    @object_depth_table(r4),r8 ; Add depth table base for object
        mov  *r8,r8                     ; Map address
@@ -597,8 +602,8 @@ draw_object:
 draw_object_5:
        mov  r6,r6                      ; Check if out of screen
        jlt  draw_object_6
-;       c    r7,@depth_buffer(r12)      ; Check if behind wall
-;       jgt  draw_object_6
+       c    r7,@depth_buffer(r12)      ; Check if behind wall
+       jgt  draw_object_6
        jmp  draw_object_7              ; Column OK
 draw_object_6:
        inc  r6                         ; Next column
@@ -614,8 +619,8 @@ draw_object_7:
 draw_object_8:
        ci   r6,screen_width-1          ; Check if out of screen
        jgt  draw_object_9
-;       c    r7,@depth_buffer(r12)      ; Check if behind wall
-;       jgt  draw_object_9
+       c    r7,@depth_buffer(r12)      ; Check if behind wall
+       jgt  draw_object_9
        inc  r6                         ; Next column
        inct r12
        dec  r3
@@ -664,7 +669,7 @@ user_input_1:
        jeq  user_input_2
        mov  @angle,r0
        dect r0                         ; Turn left
-;       dect r0                         ; Turn left
+       dect r0                         ; Turn left
        andi r0,angle_mask
        mov  r0,@angle
        jmp  user_input_3
@@ -674,7 +679,7 @@ user_input_2:
        jeq  user_input_3
        mov  @angle,r0
        inct r0                         ; Turn right
-;       inct r0                         ; Turn right
+       inct r0                         ; Turn right
        andi r0,angle_mask
        mov  r0,@angle
 user_input_3:
@@ -984,8 +989,8 @@ object_size:
 n_objects:
        data 1
 objects:
-       data >1600                      ; x
-       data >0c00                      ; y
+       data >1e00                      ; x
+       data >0d00                      ; y
        data soldier_depth_table
 
 **
