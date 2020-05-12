@@ -58,6 +58,8 @@ max_steps:
        equ  24
 max_object_distance:
        equ  24
+max_object_width:
+       equ  8
 n_tile_patterns:
        equ  168
 n_sprite_patterns:
@@ -533,9 +535,9 @@ draw_objects_1:
        clr  r6
        movb @angle_table(r3),@r6lb     ; Get angle
        s    @angle,r6                  ; Subtract player angle
-       ci   r6,-n_rays
+       ci   r6,-n_rays-max_object_width
        jlt  draw_objects_2
-       ci   r6,n_rays-1
+       ci   r6,n_rays+max_object_width-1
        jgt  draw_objects_2
 *      Look up distance
        abs  r0
@@ -580,20 +582,51 @@ draw_object:
        mov  @dbl_buffer_flag,r0        ; Which buffer to update?
        andi r0,>0001
        sla  r0,10
-       ai   r0,nametb+(screen_height*screen_width/2)+(screen_width/2) ; Center of screen
-       mov  r1,r3                      ; Width
+       ai   r0,nametb+(screen_height*screen_width/2)
+       mov  r2,r3                      ; Object height
        srl  r3,1                       ; / 2
-       sra  r6,1
-       s    r3,r6                      ; Subtract column offset
-       a    r6,r0;                     ; Add column offset (angle)
-       mov  r2,r3                      ; Height
-       srl  r3,1                       ; / 2
-;      dect r3                         ; - 2
        sla  r3,5                       ; * 32
        s    r3,r0                      ; Subtract row offset
+*      Find start column to render
+       ai   r6,screen_width            ; Center screen column * 2
+       s    r1,r6                      ; Leftmost screen column * 2
+       mov  r6,r12                     ; Index to depth buffer
+       sra  r6,1                       ; Leftmost screen column
+       mov  r1,r3                      ; Column counter
+       mov  r1,r13                     ; Adjusted width
+draw_object_5:
+       mov  r6,r6                      ; Check if out of screen
+       jlt  draw_object_6
+       c    r7,@depth_buffer(r12)      ; Check if behind wall
+       jgt  draw_object_6
+       jmp  draw_object_7              ; Column OK
+draw_object_6:
+       inc  r6                         ; Next column
+       inct r12
+       dec  r13                        ; Decrease width
+       inc  r8                         ; Increase map address
+       dec  r3
+       jne  draw_object_5
+       jmp  draw_object_10             ; No columns to render
+draw_object_7:
+       a    r6,r0                      ; Add start column to screen address
+*      Find end column to render
+draw_object_8:
+       ci   r6,screen_width-1          ; Check if out of screen
+       jgt  draw_object_9
+       c    r7,@depth_buffer(r12)      ; Check if behind wall
+       jgt  draw_object_9
+       inc  r6                         ; Next column
+       inct r12
+       dec  r3
+       jne  draw_object_8
+draw_object_9:
+       s    r3,r13                     ; Substract remaining columns from width
+       jeq  draw_object_10             ; No columns to render
+*      Draw to VDP
 draw_object_1:
        bl   @vwad                      ; Set VDP address
-       mov  r1,r3                      ; Column counter
+       mov  r13,r3                     ; Column counter
 draw_object_2:
        movb *r8+,r9
        jeq  draw_object_3
@@ -606,9 +639,12 @@ draw_object_3:
        dec  r3
        jne  draw_object_2
 draw_object_4:
+       a    r1,r8                      ; Add width to map address
+       s    r13,r8                     ; Substract adjusted width
        ai   r0,screen_width
        dec  r2
        jne  draw_object_1
+draw_object_10:
        .endproc
 *// draw_object
 
