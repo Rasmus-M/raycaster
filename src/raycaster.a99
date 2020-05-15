@@ -41,9 +41,9 @@ colrt2 equ  >3000                      ; Color table base 2
 * Constants
 *
 map_width:
-       equ  256
+       equ  64
 map_height:
-       equ  32
+       equ  64
 screen_width:
        equ  32
 screen_height:
@@ -376,16 +376,15 @@ cast_ray_5:
        li   r8,map_width               ; stepY = 1
 *      Map address from coordinates
 cast_ray_6:
-       movb r0,@r12lb
-       movb r1,r12
-       ai   r12,map
+       bl   @get_map_address
+       mov  r2,r12
 *      Cast the ray
        li   r2,max_steps               ; Step counter
        bl   @cast_ray_loop_pad
 *      Coordinates from map address (maybe not required)
-       ai   r12,-map
-       movb @r12lb,r0
-       movb r12,r1
+;       ai   r12,-map
+;       movb @r12lb,r0
+;       movb r12,r1
 *      Calculate distance
        mov  r2,r2                      ; Steps left
        jne  cast_ray_7
@@ -681,15 +680,13 @@ user_input_3:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-       sra  r3,1
+       sra  r3,2
        s    r3,r0
        mov  @y,r1
        mov  @sin_table(r2),r3
-       sra  r3,1
+       sra  r3,2
        s    r3,r1
-       movb r1,r2
-       movb r0,@r2lb
-       movb @map(r2),r2
+       bl   @get_map_byte
        jne  user_input_6
        mov  r0,@x
        mov  r1,@y
@@ -701,15 +698,13 @@ user_input_4:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-       sra  r3,1
+       sra  r3,2
        a    r3,r0
        mov  @y,r1
        mov  @sin_table(r2),r3
-       sra  r3,1
+       sra  r3,2
        a    r3,r1
-       movb r1,r2
-       movb r0,@r2lb
-       movb @map(r2),r2
+       bl   @get_map_byte
        jeq  user_input_5
        cb   @door,r2
        jeq  user_input_5
@@ -720,6 +715,42 @@ user_input_5:
 user_input_6:
        .endproc
 *// user_input
+
+*********************************************************************
+*
+* Get map byte
+*
+* r0: x FP 8.8
+* r1: y FP 8.8
+*
+* On return r2 MSB contains the map byte. r0 and r1 are preserved.
+*
+get_map_byte:
+       clr  r2
+       movb r1,r2
+       srl  r2,2                       ; 2-log2(map_width)
+       socb r0,@r2lb
+       movb @map(r2),r2
+       rt
+*// get_map_byte
+
+*********************************************************************
+*
+* Get map address
+*
+* r0: x FP 8.8
+* r1: y FP 8.8
+*
+* On return r2 MSB contains the address. r0 and r1 are preserved.
+*
+get_map_address:
+       clr  r2
+       movb r1,r2
+       srl  r2,2                       ; 2-log2(map_width)
+       socb r0,@r2lb
+       ai   r2,map
+       rt
+*// get_map_address
 
 *********************************************************************
 *
@@ -803,7 +834,7 @@ vdp_registers:
        byte ptrntb/>800+>03            ; Pattern table
        byte spratb/>80                 ; Sprite attribute table
        byte sprptb/>800                ; Sprite pattern table
-       byte >0e                        ; Backdrop color
+       byte >0d                        ; Backdrop color
 *// graphics_mode
 
 *********************************************************************
@@ -1057,11 +1088,11 @@ byte_c0h    byte >c0
 * Data
 *
 start_x:
-       data >0c00
+       data >2000
 start_y:
-       data >1000
+       data >2000
 start_dir:
-       data >40
+       data >c0
 space:
        byte 0
 door:
@@ -1079,13 +1110,25 @@ object_depth_table:
 object_size:
        equ  6
 n_objects:
-       data 2
+       data 6
 objects:
-       data >0b00                      ; x
-       data >1600                      ; y
+       data >0c00                      ; x
+       data >1900                      ; y
        data soldier_depth_table
-       data >2800                      ; x
-       data >1700                      ; y
+       data >2500                      ; x
+       data >2f00                      ; y
+       data soldier_depth_table
+       data >3400                      ; x
+       data >3c00                      ; y
+       data soldier_depth_table
+       data >3900                      ; x
+       data >0400                      ; y
+       data soldier_depth_table
+       data >1000                      ; x
+       data >0c00                      ; y
+       data soldier_depth_table
+       data >1b00                      ; x
+       data >3d00                      ; y
        data soldier_depth_table
 
 **
