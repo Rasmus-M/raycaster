@@ -1186,7 +1186,6 @@ columns_set_table:
 *
 * Data files
 *
-       copy "math_tables.a99"
 columns:
        copy "columns.a99"
        copy "chars.a99"
@@ -1201,5 +1200,6 @@ ram_max:
        aorg >2000
 map:
        copy "map.a99"
+       copy "math_tables.a99"
 
        end  main
