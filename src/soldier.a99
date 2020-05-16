@@ -1,17 +1,21 @@
 soldier_depth_table:
-;       data MS13
-;       data MS14,MS14
-;       data MS15,MS15,MS15
-;       data MS16,MS16,MS16,MS16
-;       data MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17
-;       data MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18
-
-       data MS13,MS13
-       data MS14,MS14,MS14
-       data MS15,MS15,MS15,MS15
-       data MS16,MS16,MS16,MS16,MS16,MS16
-       data MS17,MS17,MS17,MS17,MS17,MS17,MS17,MS17
-       data MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18,MS18
+       data 0,0,MS13,MS13              ; 0: inf, 64, 32, 21
+       data MS13,MS14,MS14,MS15        ; 1: 16, 12, 10, 9
+       data MS15,MS15,MS16,MS16        ; 2: 8, 7, 6, 5
+       data MS16,MS17,MS17,MS17        ; 3: 5, 4, 4, 4
+       data MS17,MS18,MS18,MS18        ; 4: 4, 3, 3, 3
+       data MS18,MS18,MS19,MS19        ; 5: 3, 3, 2, 2
+       data MS19,MS19,MS19,MS19        ; 6: 2, 2, 2, 2
+       data MS19,MS19,MS19,MS19        ; 7: 2, 2, 2, 2
+       data MS19,MS20,MS20,MS20        ; 8: 2, 1, 1, 1
+       data MS20,MS20,MS20,MS20        ; 9: 1, 1, 1, 1
+       data MS20,MS20,MS20,MS20        ; 10: 1, 1, 1, 1
+       data MS20,MS20,MS20,MS20        ; 11: 1, 1, 1, 1
+       data MS20,MS20,MS20,MS20        ; 12: 1, 1, 1, 1
+       data MS20,MS20,MS20,MS20        ; 13: 1, 1, 1, 1
+       data MS20,MS20,MS20,MS20        ; 14: 1, 1, 1, 1
+       data MS20,MS20,MS20,MS20        ; 15: 1, 1, 1, 1
+       data MS20, 0, 0, 0              ; 16: 1, 0, 0, 0
 
 * == Map #13 ==
 MC13   DATA 1                          ;
@@ -49,7 +53,7 @@ MD13   DATA >0000,>5051,>0152,>0000    ;
 * -- Map Row 15 --
        DATA >0000,>0303,>0303,>0000    ;
 * == Map #14 ==
-MC14   DATA 1                          ;
+MC14   DATA 13                         ;
 MS14   DATA >0006,>000C,>0048          ; Width, Height, Size
 * -- Map Row 0 --
 MD14   DATA >0063,>6465,>6600          ;
@@ -76,7 +80,7 @@ MD14   DATA >0063,>6465,>6600          ;
 * -- Map Row 11 --
        DATA >007E,>6203,>7F00          ;
 * == Map #15 ==
-MC15   DATA 1                          ;
+MC15   DATA 13                         ;
 MS15   DATA >0004,>0008,>0020          ; Width, Height, Size
 * -- Map Row 0 --
 MD15   DATA >0080,>8100                ;
@@ -95,20 +99,20 @@ MD15   DATA >0080,>8100                ;
 * -- Map Row 7 --
        DATA >0003,>6100                ;
 * == Map #16 ==
-MC16   DATA 1                          ;
+MC16   DATA 13                         ;
 MS16   DATA >0003,>0006,>0012          ; Width, Height, Size
 * -- Map Row 0 --
-MD16   BYTE >8D,>8E,>8F                ;
+MD16   BYTE >8D,>8E,>8F                  ;
 * -- Map Row 1 --
-       BYTE >90,>91,>92                ;
+       BYTE >90,>91,>92                  ;
 * -- Map Row 2 --
-       BYTE >93,>94,>95                ;
+       BYTE >93,>94,>95                  ;
 * -- Map Row 3 --
-       BYTE >96,>05,>97                ;
+       BYTE >96,>05,>97                  ;
 * -- Map Row 4 --
-       BYTE >98,>99,>9A                ;
+       BYTE >98,>99,>9A                  ;
 * -- Map Row 5 --
-       BYTE >9B,>9C,>9D                ;
+       BYTE >9B,>9C,>9D                  ;
 * == Map #17 ==
 MC17   DATA 1                          ;
 MS17   DATA >0002,>0004,>0008          ; Width, Height, Size
@@ -122,8 +126,24 @@ MD17   DATA >9E9F                      ;
        DATA >7EA4                      ;
 * == Map #18 ==
 MC18   DATA 1                          ;
-MS18   DATA >0001,>0002,>0002          ; Width, Height, Size
+MS18   DATA >0002,>0003,>0006          ; Width, Height, Size
 * -- Map Row 0 --
-MD18   BYTE >A5                        ;
+MD18   DATA >B8B9                      ;
+* -- Map Row 1 --
+       DATA >BABB                      ;
+* -- Map Row 2 --
+       DATA >BCBD                      ;
+* == Map #19 ==
+MC19   DATA 13                         ;
+MS19   DATA >0001,>0002,>0002          ; Width, Height, Size
+* -- Map Row 0 --
+MD19   BYTE >A5                        ;
 * -- Map Row 1 --
        BYTE >A6                        ;
+* == Map #20 ==
+MC20   DATA 13                         ;
+MS20   DATA >0001,>0001,>0001          ; Width, Height, Size
+* -- Map Row 0 --
+MD20   BYTE >B7                        ;
+
+       even

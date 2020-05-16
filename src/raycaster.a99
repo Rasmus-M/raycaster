@@ -57,15 +57,15 @@ n_rays:
 max_steps:
        equ  24
 max_object_distance:
-       equ  24
+       equ  16
 max_object_width:
        equ  8
 n_tile_patterns:
-       equ  183
+       equ  190
 n_sprite_patterns:
        equ  12
 soldier_speed:
-       equ  >0080
+       equ  >0040
 
 **
 * Scratch pad
@@ -534,15 +534,14 @@ draw_objects_1:
        jgt  draw_objects_2
 *      Look up distance
        abs  r0
+       srl  r0,8                       ; dx to integer
        abs  r1
-       sra  r0,8                       ; dx to integer
-       sra  r1,8                       ; dy to integer
-       mov  r1,r2
-       li   r3,max_object_distance
-       mpy  r3,r2                      ; Result in r3
-       a    r0,r3
-       sla  r3,1                       ; To word offset
-       mov  @distance_table(r3),r7     ; Get distance
+       srl  r1,8                       ; dy to integer
+       sla  r1,5                       ; dy * 32
+       a    r0,r1                      ; +dx
+       clr  r7
+       movb @distance_table(r1),r7     ; Get distance as FP 6.2
+       srl  r7,2                       ; To FP 8.8
        ci   r7,max_object_distance*256
        jgt  draw_objects_2
 *      Object is within view and distance
@@ -560,20 +559,16 @@ draw_objects_2:
 *
 * r4: object to draw
 * r6: angle relative to player
-* r7: distance FP 8.8
+* r7: distance FP 8.8 (last 6 bits are zero)
 *
 draw_object:
        .proc
 *      Find map to use
        mov  r7,r8                      ; Distance FP 8.8
-       srl  r8,6                       ; Distance FP 14.2
-       ci   r8,39
-       jlt  draw_object_11
-       b    @draw_object_10            ; Return
-draw_object_11:
-       sla  r8,1                       ; To word offset
+       srl  r8,5                       ; To FP 14.2 + word offset
        a    @object_depth_table(r4),r8 ; Add depth table base for object
        mov  *r8,r8                     ; Map address
+       jeq  draw_object_10
        mov  *r8+,r1                    ; Width
        mov  *r8+,r2                    ; Height
        inct r8                         ; Skip size word
@@ -581,7 +576,7 @@ draw_object_11:
        mov  @dbl_buffer_flag,r0        ; Which buffer to update?
        andi r0,>0001
        sla  r0,10
-       ai   r0,nametb+(screen_width*(screen_height/2+1))
+       ai   r0,nametb+(screen_width*(screen_height/2))
        mov  r2,r3                      ; Object height
        srl  r3,1                       ; / 2
        sla  r3,5                       ; * 32
@@ -1170,7 +1165,7 @@ object_type_soldier:
        equ  1
 
 n_objects:
-       data 6
+       data 8
 objects:
        data object_type_soldier
        data >0c00                      ; x
@@ -1195,9 +1190,9 @@ objects:
        data object_type_soldier
        data >1000                      ; x
        data >0c00                      ; y
-       data object_type_soldier
-
        data soldier_depth_table
+
+       data object_type_soldier
        data >1b00                      ; x
        data >3d00                      ; y
        data soldier_depth_table
