@@ -144,6 +144,7 @@ main_loop:
        bl   @upload_screen
        bl   @draw_objects
        bl   @user_input
+       bl   @move_enemies;
        jmp  main_loop
 
 *********************************************************************
@@ -718,6 +719,43 @@ user_input_6:
 
 *********************************************************************
 *
+* Move enemies
+*
+move_enemies:
+       .proc
+       bl   @rand
+       ci   r0,>f000
+       jl   move_enemies_3
+       li   r4,objects
+       mov  @n_objects,r5
+move_enemies_1:
+       mov  @object_type(r4),r0
+       ci   r0,object_type_soldier
+       jne  move_enemies_2
+       bl   @rand
+       sra  r0,8
+       mov  r0,r2
+       bl   @rand
+       sra  r0,8
+       mov  r0,r3
+       mov  @object_x(r4),r0
+       a    r2,r0
+       mov  @object_y(r4),r1
+       a    r3,r1
+       bl   @get_map_byte
+       jne  move_enemies_2
+       mov  r0,@object_x(r4)
+       mov  r1,@object_y(r4)
+move_enemies_2:
+       ai   r4,object_size
+       dec  r5
+       jne  move_enemies_1
+move_enemies_3:
+       .endproc
+*// move_enemies
+
+*********************************************************************
+*
 * Get map byte
 *
 * r0: x FP 8.8
@@ -1101,31 +1139,48 @@ door:
 **
 * Objects
 *
-object_x:
+object_type:
        equ  0
-object_y:
+object_x:
        equ  2
-object_depth_table:
+object_y:
        equ  4
-object_size:
+object_depth_table:
        equ  6
+object_size:
+       equ  8
+
+object_type_soldier:
+       equ  1
+
 n_objects:
        data 6
 objects:
+       data object_type_soldier
        data >0c00                      ; x
        data >1900                      ; y
        data soldier_depth_table
+
+       data object_type_soldier
        data >2500                      ; x
        data >2f00                      ; y
        data soldier_depth_table
+
+       data object_type_soldier
        data >3400                      ; x
        data >3c00                      ; y
        data soldier_depth_table
+
+       data object_type_soldier
        data >3900                      ; x
        data >0400                      ; y
        data soldier_depth_table
+
+       data object_type_soldier
        data >1000                      ; x
        data >0c00                      ; y
+       data object_type_soldier
+
        data soldier_depth_table
        data >1b00                      ; x
        data >3d00                      ; y
