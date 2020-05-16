@@ -146,7 +146,7 @@ main_loop:
        bl   @upload_screen
        bl   @draw_objects
        bl   @user_input
-       bl   @move_enemies;
+;      bl   @move_enemies;
        jmp  main_loop
 
 *********************************************************************
@@ -1167,8 +1167,6 @@ object_size:
 object_type_soldier:
        equ  1
 
-n_objects:
-       data 8
 objects:
        data object_type_soldier
        data >0c00                      ; x
@@ -1199,6 +1197,10 @@ objects:
        data >1b00                      ; x
        data >3d00                      ; y
        data soldier_depth_table
+objects_end:
+       equ  $
+n_objects:
+       data (objects_end-objects)/object_size
 
 **
 * This table lists, for each distance
