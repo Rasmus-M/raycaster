@@ -146,7 +146,7 @@ main_loop:
        bl   @upload_screen
        bl   @draw_objects
        bl   @user_input
-;      bl   @move_enemies;
+       bl   @move_enemies;
        jmp  main_loop
 
 *********************************************************************
