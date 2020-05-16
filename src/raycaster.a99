@@ -64,6 +64,8 @@ n_tile_patterns:
        equ  183
 n_sprite_patterns:
        equ  12
+soldier_speed:
+       equ  >0080
 
 **
 * Scratch pad
@@ -723,9 +725,6 @@ user_input_6:
 *
 move_enemies:
        .proc
-       bl   @rand
-       ci   r0,>f000
-       jl   move_enemies_3
        li   r4,objects
        mov  @n_objects,r5
 move_enemies_1:
@@ -733,14 +732,31 @@ move_enemies_1:
        ci   r0,object_type_soldier
        jne  move_enemies_2
        bl   @rand
-       sra  r0,8
-       mov  r0,r2
-       bl   @rand
-       sra  r0,8
-       mov  r0,r3
+       ci   r0,>e000
+       jl   move_enemies_2
+*      x
        mov  @object_x(r4),r0
+       mov  @x,r2
+       s    r0,r2
+       jeq  move_enemies_5
+       jlt  move_enemies_4
+       li   r2,soldier_speed
+       jmp  move_enemies_5
+move_enemies_4:
+       li   r2,-soldier_speed
+move_enemies_5:
        a    r2,r0
+*      y
        mov  @object_y(r4),r1
+       mov  @y,r3
+       s    r1,r3
+       jeq  move_enemies_7
+       jlt  move_enemies_6
+       li   r3,soldier_speed
+       jmp  move_enemies_7
+move_enemies_6:
+       li   r3,-soldier_speed
+move_enemies_7:
        a    r3,r1
        bl   @get_map_byte
        jne  move_enemies_2
