@@ -1,15 +1,15 @@
 soldier_depth_table:
        data 0,0,MS13,MS13              ; 0: inf, 64, 32, 21
-       data MS13,MS14,MS14,MS15        ; 1: 16, 12, 10, 9
-       data MS15,MS15,MS16,MS16        ; 2: 8, 7, 6, 5
-       data MS16,MS17,MS17,MS17        ; 3: 5, 4, 4, 4
-       data MS17,MS18,MS18,MS18        ; 4: 4, 3, 3, 3
-       data MS18,MS18,MS19,MS19        ; 5: 3, 3, 2, 2
-       data MS19,MS19,MS19,MS19        ; 6: 2, 2, 2, 2
+       data MS13,MS14,MS14,MS15        ; 1: 16, 13, 11, 9
+       data MS15,MS15,MS16,MS16        ; 2: 8, 7, 6, 6
+       data MS16,MS16,MS16,MS17        ; 3: 5, 5, 5, 4
+       data MS17,MS17,MS17,MS18        ; 4: 4, 4, 4, 3
+       data MS18,MS18,MS18,MS18        ; 5: 3, 3, 3, 3
+       data MS18,MS18,MS19,MS19        ; 6: 3, 3, 2, 2
        data MS19,MS19,MS19,MS19        ; 7: 2, 2, 2, 2
-       data MS19,MS20,MS20,MS20        ; 8: 2, 1, 1, 1
-       data MS20,MS20,MS20,MS20        ; 9: 1, 1, 1, 1
-       data MS20,MS20,MS20,MS20        ; 10: 1, 1, 1, 1
+       data MS19,MS19,MS19,MS19        ; 8: 2, 2, 2, 2
+       data MS19,MS19,MS19,MS19        ; 9: 2, 2, 2, 2
+       data MS19,MS19,MS19,MS20        ; 10: 2, 2, 2, 1
        data MS20,MS20,MS20,MS20        ; 11: 1, 1, 1, 1
        data MS20,MS20,MS20,MS20        ; 12: 1, 1, 1, 1
        data MS20,MS20,MS20,MS20        ; 13: 1, 1, 1, 1

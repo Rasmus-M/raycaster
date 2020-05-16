@@ -577,10 +577,13 @@ draw_object:
        andi r0,>0001
        sla  r0,10
        ai   r0,nametb+(screen_width*(screen_height/2))
-       mov  r2,r3                      ; Object height
-       srl  r3,1                       ; / 2
+       clr  r3
+       movb r7,@r3lb                   ; Distance integer
+       sla  r3,1                       ; To word offset
+       mov  @floor_offset_from_center(r3),r3 ; Floor offset from center
+       s    r2,r3                      ; Minus object height
        sla  r3,5                       ; * 32
-       s    r3,r0                      ; Subtract row offset
+       a    r3,r0                      ; Add row offset
 *      Find start column to render
        ai   r6,screen_width            ; Center screen column * 2
        s    r1,r6                      ; Leftmost screen column * 2
@@ -1248,6 +1251,12 @@ dist_column_table:
 columns_set_table:
        data MD1,MD2,MD3,MD4,MD5,MD6,MD7,MD8
        data MD9,MD10,MD11,MD12
+
+**
+* Floor offset from vertical center of screen at different distances
+*
+floor_offset_from_center:
+       data 12, 12, 6, 4, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1
 
 ***************************************************************
 *
