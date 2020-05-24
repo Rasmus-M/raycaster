@@ -655,6 +655,9 @@ user_input:
        bl   @check_key
 *      Fire
        jeq  user_input_1
+       mov  @bullet_active,r0
+       jne  user_input_1
+       bl   @fire_bullet
 *      Left
 user_input_1:
        tb   1
@@ -767,6 +770,26 @@ move_enemies_2:
 move_enemies_3:
        .endproc
 *// move_enemies
+
+*********************************************************************
+*
+* Fire bullet
+*
+fire_bullet:
+       seto @bullet_active
+       mov  @x,@bullet_x
+       mov  @y,@bullet_y
+       li   r1,>0400
+       mov  r1,@bullet_z
+       mov  @angle,r2
+       mov  @cos_table(r2),r0
+       sra  r0,1
+       mov  r0,@bullet_vx
+       mov  @cos_table(r2),r1
+       sra  r1,1
+       mov  r1,@bullet_vy
+       rt
+*// fire_bullet
 
 *********************************************************************
 *
@@ -1201,6 +1224,21 @@ objects_end:
        equ  $
 n_objects:
        data (objects_end-objects)/object_size
+
+bullet_active:
+       data 0
+bullet_x:
+       data 0
+bullet_y:
+       data 0
+bullet_z:
+       data 0
+bullet_vx:
+       data 0
+bullet_vy:
+       data 0
+bullet_vz:
+       data 0
 
 **
 * This table lists, for each distance
