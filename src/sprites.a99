@@ -1,0 +1,110 @@
+****************************************
+* Sprite Patterns
+****************************************
+SPR0   DATA >0000,>0000,>0000,>0000    ; Color 1
+       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0000,>0000,>0000,>0001    ;
+       DATA >0303,>0D1B,>3F2D,>7F6F    ;
+SPR1   DATA >0000,>020F,>1D17,>F8AF    ; Color 1
+       DATA >765F,>FEFC,>B9FC,>F4FD    ;
+       DATA >0000,>1837,>D040,>FFAE    ;
+       DATA >FB5E,>0F0D,>171F,>0F17    ;
+SPR2   DATA >0000,>0CF5,>0280,>FFB6    ; Color 1
+       DATA >FBDE,>BEFA,>FEFD,>BEFC    ;
+       DATA >0000,>2018,>EC76,>8DF1    ;
+       DATA >DE37,>1E1B,>2F0F,>160F    ;
+SPR3   DATA >0000,>0000,>0000,>00E0    ; Color 1
+       DATA >30A0,>DCE6,>BBFD,>D6FF    ;
+       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0000,>0000,>0000,>80C0    ;
+SPR4   DATA >0000,>0101,>0101,>0303    ; Color 1
+       DATA >0303,>0303,>0303,>0307    ;
+       DATA >BEFF,>FFF7,>DFFF,>FEFD    ;
+       DATA >FDB7,>FFFF,>7FFD,>EFFF    ;
+SPR5   DATA >F4FC,>F5FC,>EAE0,>8F7F    ; Color 1
+       DATA >FFFF,>FBDF,>76FF,>FFF5    ;
+       DATA >171D,>0FA0,>003F,>FFFF    ;
+       DATA >FFDB,>7DFF,>FFF7,>FF7F    ;
+SPR6   DATA >FEF6,>FD02,>00F8,>FFFF    ; Color 1
+       DATA >FF56,>FBFF,>DFFF,>7FFB    ;
+       DATA >2D17,>0F2D,>1706,>F1FE    ;
+       DATA >FFFF,>AFFA,>6FFE,>FF57    ;
+SPR7   DATA >F6FF,>DBFF,>DDD7,>DF37    ; Color 1
+       DATA >ADF7,>FFFD,>BFEF,>FBFF    ;
+       DATA >80E0,>60C0,>F070,>F0D0    ;
+       DATA >F0F0,>F0D0,>70F0,>F0D0    ;
+SPR8   DATA >0F0F,>0E1F,>3D3F,>3F7F    ; Color 1
+       DATA >7E7F,>7F7F,>7DFF,>FFFF    ;
+       DATA >5DFF,>FFFF,>EFFF,>FFFF    ;
+       DATA >FFFF,>EFBF,>FEE8,>C452    ;
+SPR9   DATA >DFF8,>E4E8,>A8E8,>A8E8    ; Color 1
+       DATA >68E8,>A842,>2887,>BDF7    ;
+       DATA >FF37,>1F5F,>2F1F,>2F3F    ;
+       DATA >175E,>00A4,>08F7,>DE7B    ;
+SPR10  DATA >FFFE,>75FC,>FDF5,>FCBD    ; Color 1
+       DATA >FAFD,>0002,>90FF,>AEFB    ;
+       DATA >FF05,>0305,>0305,>0305    ;
+       DATA >0305,>0511,>84E9,>DCF7    ;
+SPR11  DATA >FAEF,>FFFF,>7FFF,>FB7F    ; Color 1
+       DATA >FFFF,>BD7F,>7F07,>4A11    ;
+       DATA >F8BC,>FCDE,>FEF6,>FFBF    ;
+       DATA >FFFD,>FFDF,>FFFF,>FBEF    ;
+SPR12  DATA >071F,>3F7F,>7FFF,>FFFF    ; Color 1
+       DATA >FFFF,>FF7F,>7F3F,>1F07    ;
+       DATA >E0F8,>FCFE,>FEFF,>FFFF    ;
+       DATA >FFFF,>FFFE,>FEFC,>F8E0    ;
+SPR13  DATA >0003,>0F1F,>3F3F,>7F7F    ; Color 1
+       DATA >7F7F,>3F3F,>1F0F,>0300    ;
+       DATA >00C0,>F0F8,>FCFC,>FEFE    ;
+       DATA >FEFE,>FCFC,>F8F0,>C000    ;
+SPR14  DATA >0000,>030F,>1F1F,>3F3F    ; Color 1
+       DATA >3F3F,>1F1F,>0F03,>0000    ;
+       DATA >0000,>C0F0,>F8F8,>FCFC    ;
+       DATA >FCFC,>F8F8,>F0C0,>0000    ;
+SPR15  DATA >0000,>0003,>070F,>1F1F    ; Color 1
+       DATA >1F1F,>0F07,>0300,>0000    ;
+       DATA >0000,>00C0,>E0F0,>F8F8    ;
+       DATA >F8F8,>F0E0,>C000,>0000    ;
+SPR16  DATA >0000,>0000,>0107,>070F    ; Color 1
+       DATA >0F07,>0701,>0000,>0000    ;
+       DATA >0000,>0000,>80E0,>E0F0    ;
+       DATA >F0E0,>E080,>0000,>0000    ;
+SPR17  DATA >0000,>0000,>0001,>0307    ; Color 1
+       DATA >0703,>0100,>0000,>0000    ;
+       DATA >0000,>0000,>0080,>C0E0    ;
+       DATA >E0C0,>8000,>0000,>0000    ;
+SPR18  DATA >0000,>0000,>0000,>0103    ; Color 1
+       DATA >0301,>0000,>0000,>0000    ;
+       DATA >0000,>0000,>0000,>80C0    ;
+       DATA >C080,>0000,>0000,>0000    ;
+SPR19  DATA >0000,>0000,>0000,>0001    ; Color 1
+       DATA >0100,>0000,>0000,>0000    ;
+       DATA >0000,>0000,>0000,>0080    ;
+       DATA >8000,>0000,>0000,>0000    ;
+
+SAL    BYTE 111+64,112,36,14
+       BYTE 95+64,96,16,14
+       BYTE 111+64,96,32,14
+       BYTE 95+64,112,20,14
+       BYTE 79+64,112,4,14
+       BYTE 79+64,96,0,14
+       BYTE 79+64,144,12,14
+       BYTE 79+64,128,8,14
+       BYTE 111+64,144,44,14
+       BYTE 95+64,128,24,14
+       BYTE 111+64,128,40,14
+       BYTE 95+64,144,28,14
+       BYTE >D0,>00
+SAL2   BYTE 111+66,112,36,14
+       BYTE 95+66,96,16,14
+       BYTE 111+66,96,32,14
+       BYTE 95+66,112,20,14
+       BYTE 79+66,112,4,14
+       BYTE 79+66,96,0,14
+       BYTE 79+66,144,12,14
+       BYTE 79+66,128,8,14
+       BYTE 111+66,144,44,14
+       BYTE 95+66,128,24,14
+       BYTE 111+66,128,40,14
+       BYTE 95+66,144,28,14
+       BYTE >D0,>00

@@ -63,7 +63,7 @@ max_object_width:
 n_tile_patterns:
        equ  202
 n_sprite_patterns:
-       equ  12
+       equ  20
 soldier_speed:
        equ  >0040
 
@@ -1269,15 +1269,19 @@ columns:
        copy "chars.a99"
 textures:
        copy "textures.a99"
-       copy "gun.a99"
+       copy "sprites.a99"
        copy "soldier.a99"
 
 ram_max:
        equ  $
-
+**
+*      Lower RAM
+*
        aorg >2000
-map:
+
        copy "map.a99"
        copy "math_tables.a99"
+map:
+       equ  MD0
 
        end  main
