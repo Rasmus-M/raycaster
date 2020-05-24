@@ -146,7 +146,8 @@ main_loop:
        bl   @upload_screen
        bl   @draw_objects
        bl   @user_input
-       bl   @move_enemies;
+       bl   @move_enemies
+       bl   @move_bullets
        jmp  main_loop
 
 *********************************************************************
@@ -655,7 +656,7 @@ user_input:
        bl   @check_key
 *      Fire
        jeq  user_input_1
-       mov  @bullet_active,r0
+       abs  @bullet_active
        jne  user_input_1
        bl   @fire_bullet
 *      Left
@@ -690,7 +691,7 @@ user_input_3:
        mov  @sin_table(r2),r3
        sra  r3,2
        s    r3,r1
-       bl   @get_map_byte
+       bl   @get_map_value
        jne  user_input_6
        mov  r0,@x
        mov  r1,@y
@@ -708,7 +709,7 @@ user_input_4:
        mov  @sin_table(r2),r3
        sra  r3,2
        a    r3,r1
-       bl   @get_map_byte
+       bl   @get_map_value
        jeq  user_input_5
        cb   @door,r2
        jeq  user_input_5
@@ -759,7 +760,7 @@ move_enemies_6:
        li   r3,-soldier_speed
 move_enemies_7:
        a    r3,r1
-       bl   @get_map_byte
+       bl   @get_map_value
        jne  move_enemies_2
        mov  r0,@object_x(r4)
        mov  r1,@object_y(r4)
@@ -773,41 +774,67 @@ move_enemies_3:
 
 *********************************************************************
 *
+* Move bullets
+*
+move_bullets:
+       .proc
+       abs  @bullet_active
+       jeq  move_bullets_0
+       a    @bullet_vx,@bullet_x
+       a    @bullet_vy,@bullet_y
+       li   r0,->0004
+       a    r0,@bullet_vz
+       a    @bullet_vz,@bullet_z
+       mov  @bullet_x,r0
+       mov  @bullet_y,r1
+       bl   @get_map_address
+       movb *r2,r3
+       jeq  move_bullets_0
+       movb @space,*r2
+       clr  @bullet_active
+move_bullets_0:
+       .endproc
+*// move_bullets
+
+*********************************************************************
+*
 * Fire bullet
 *
 fire_bullet:
-       seto @bullet_active
        mov  @x,@bullet_x
        mov  @y,@bullet_y
-       li   r1,>0400
-       mov  r1,@bullet_z
+       li   r3,>0400
+       mov  r3,@bullet_z
        mov  @angle,r2
        mov  @cos_table(r2),r0
        sra  r0,1
        mov  r0,@bullet_vx
-       mov  @cos_table(r2),r1
+       mov  @sin_table(r2),r1
        sra  r1,1
        mov  r1,@bullet_vy
+       li   r3,>0040
+       mov  r3,@bullet_vz
+       seto @bullet_active
        rt
 *// fire_bullet
 
 *********************************************************************
 *
-* Get map byte
+* Get map value
 *
 * r0: x FP 8.8
 * r1: y FP 8.8
 *
 * On return r2 MSB contains the map byte. r0 and r1 are preserved.
 *
-get_map_byte:
+get_map_value:
        clr  r2
        movb r1,r2
        srl  r2,2                       ; 2-log2(map_width)
        socb r0,@r2lb
        movb @map(r2),r2
        rt
-*// get_map_byte
+*// get_map_value
 
 *********************************************************************
 *
