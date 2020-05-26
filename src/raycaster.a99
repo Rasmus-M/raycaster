@@ -148,6 +148,7 @@ main_loop:
        bl   @user_input
        bl   @move_enemies
        bl   @move_bullets
+       bl   @draw_bullets
        jmp  main_loop
 
 *********************************************************************
@@ -538,7 +539,7 @@ draw_objects_1:
        srl  r0,8                       ; dx to integer
        abs  r1
        srl  r1,8                       ; dy to integer
-       sla  r1,5                       ; dy * 32
+       sla  r1,4                       ; dy * 16
        a    r0,r1                      ; +dx
        clr  r7
        movb @distance_table(r1),r7     ; Get distance as FP 6.2
@@ -795,6 +796,33 @@ move_bullets:
 move_bullets_0:
        .endproc
 *// move_bullets
+
+*********************************************************************
+*
+* Draw bullets
+*
+draw_bullets:
+       .proc
+       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
+       andi r0,>0001
+       sla  r0,7
+       ai   r0,spratb+(12*4)
+       bl   @vwad                      ; Set VDP address
+       abs  @bullet_active
+       jeq  draw_bullets_0
+       li   r1,>6000
+       movb r1,*r15
+       li   r1,>8000
+       movb r1,*r15
+       li   r1,>3000
+       movb r1,*r15
+       li   r1,>0100
+       movb r1,*r15
+draw_bullets_0:
+       li   r1,>d000
+       movb r1,*r15
+       .endproc
+*// draw_bullets
 
 *********************************************************************
 *
@@ -1084,7 +1112,8 @@ rand:
 * Arcus tangent 2 function
 *
 * Calculates the angle of the vector with coordinates (x,y) = (r0,r1)
-* Result in r6 MSB
+* Result in r6
+* FP 8.24 / FP 8.8 = FP 0.16
 *
 atan2:
        clr  r3                         ; For division
@@ -1098,16 +1127,18 @@ atan2:
        mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2                      ; Result in r2
        srl  r2,8
-       movb @atan_table(r2),r6
-       jmp  atan2_8                    ;             result = 0x00 + a;
+       sla  r2,1
+       mov  @atan_table(r2),r6
+       rt                              ;             result = 0x00 + a;
 atan2_1:                               ;         } else {
        mov  r0,r2                      ;             int a = lookup(x / y);
        div  r1,r2
        srl  r2,8
-       movb @atan_table(r2),r6
+       sla  r2,1
+       mov  @atan_table(r2),r6
        neg  r6                         ;             result = 0x40 - a;
-       ab   @byte_40h,r6
-       jmp  atan2_8                    ;         }
+       ai   r6,>4000
+       rt                              ;         }
 atan2_2:                               ;     } else {
 *      Q2
        neg  r0                         ;         x = -x;
@@ -1116,17 +1147,19 @@ atan2_2:                               ;     } else {
        mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
-       movb @atan_table(r2),r6
+       sla  r2,1
+       mov  @atan_table(r2),r6
        neg  r6                         ;             result = 0x80 - a;
-       ab   @byte_80h,r6
-       jmp  atan2_8
+       ai   r6,>8000
+       rt
 atan2_3:                               ;         } else {
        mov  r0,r2                      ;             int a = lookup(x / y);
        div  r1,r2
        srl  r2,8
-       movb @atan_table(r2),r6
-       ab   @byte_40h,r6               ;              result = 0x40 + a;
-       jmp  atan2_8                    ;         }
+       sla  r2,1
+       mov  @atan_table(r2),r6
+       ai   r6,>4000                   ;                 result = 0x40 + a;
+       rt                              ;         }
                                        ;     }
 atan2_4:                               ; } else {
        neg  r1                         ;     y = -y;
@@ -1138,16 +1171,18 @@ atan2_4:                               ; } else {
        mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
-       movb @atan_table(r2),r6
+       sla  r2,1
+       mov  @atan_table(r2),r6
        neg  r6                         ;             result = 0x100 - a;
-       jmp  atan2_8
+       rt
 atan2_5:                               ;         } else {
        mov  r0,r2                      ;             int a = lookup(x / y);
        div  r1,r2
        srl  r2,8
-       movb @atan_table(r2),r6
-       ab   @byte_c0h,r6               ;             result = 0xc0 + a;
-       jmp  atan2_8                    ;         }
+       sla  r2,1
+       mov  @atan_table(r2),r6
+       ai   r6,>c000                   ;                 result = 0xc0 + a;
+       rt                              ;         }
 atan2_6:                               ;     } else {
 *      Q3
        neg  r0                         ;         x = -x;
@@ -1156,27 +1191,21 @@ atan2_6:                               ;     } else {
        mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
-       movb @atan_table(r2),r6
-       ab   @byte_80h,r6               ;             result = 0x80 + a;
-       jmp  atan2_8
+       sla  r2,1
+       mov  @atan_table(r2),r6
+       ai   r6,>8000                   ;                 result = 0x80 + a;
+       rt
 atan2_7:                               ;         } else {
        mov  r0,r2                      ;             int a = lookup(x / y);
        div  r1,r2
        srl  r2,8
-       movb @atan_table(r2),r6
+       sla  r2,1
+       mov  @atan_table(r2),r6
        neg  r6                         ;             result = 0xc0 - a;
-       ab   @byte_c0h,r6
-                                       ;         }
+       ai   r6,>c000
+       rt                              ;         }
                                        ;     }
                                        ; }
-atan2_8:
-       rt
-*
-byte_00h    byte >00
-byte_40h    byte >40
-byte_80h    byte >80
-byte_c0h    byte >c0
-*
 *// atan2
 
 *********************************************************************
@@ -1323,8 +1352,8 @@ columns_set_table:
 * Floor offset from vertical center of screen at different distances
 *
 floor_offset_from_center:
-       data 12, 12, 6, 4, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1
-
+;      data 12, 12, 6, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1
+       data 12, 8, 4, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 ***************************************************************
 *
 * Data files
