@@ -58,6 +58,8 @@ max_steps:
        equ  24
 max_object_distance:
        equ  16
+max_bullet_distance:
+       equ  16
 max_object_width:
        equ  8
 n_tile_patterns:
@@ -66,6 +68,10 @@ n_sprite_patterns:
        equ  20
 soldier_speed:
        equ  >0040
+bullet_speed_z:
+       equ  ->0c00
+bullet_accl_z:
+       equ  >0100
 
 **
 * Scratch pad
@@ -535,15 +541,7 @@ draw_objects_1:
        ci   r6,n_rays+max_object_width-1
        jgt  draw_objects_2
 *      Look up distance
-       abs  r0
-       srl  r0,8                       ; dx to integer
-       abs  r1
-       srl  r1,8                       ; dy to integer
-       sla  r1,4                       ; dy * 16
-       a    r0,r1                      ; +dx
-       clr  r7
-       movb @distance_table(r1),r7     ; Get distance as FP 6.2
-       srl  r7,2                       ; To FP 8.8
+       bl   @euclidian_distance
        ci   r7,max_object_distance*256
        jgt  draw_objects_2
 *      Object is within view and distance
@@ -783,15 +781,22 @@ move_bullets:
        jeq  move_bullets_0
        a    @bullet_vx,@bullet_x
        a    @bullet_vy,@bullet_y
-       li   r0,->0004
+       li   r0,bullet_accl_z
        a    r0,@bullet_vz
        a    @bullet_vz,@bullet_z
        mov  @bullet_x,r0
        mov  @bullet_y,r1
        bl   @get_map_address
        movb *r2,r3
-       jeq  move_bullets_0
+       jeq  move_bullets_2
        movb @space,*r2
+       jmp  move_bullets_1
+move_bullets_2:
+       a    @bullet_speed,@bullet_distance
+       mov  @bullet_distance,r0
+       ci   r0,max_bullet_distance*256
+       jlt  move_bullets_0
+move_bullets_1:
        clr  @bullet_active
 move_bullets_0:
        .endproc
@@ -810,18 +815,32 @@ draw_bullets:
        bl   @vwad                      ; Set VDP address
        abs  @bullet_active
        jeq  draw_bullets_0
-       li   r1,>6000
+*      Check angle
+       mov  @bullet_angle,r0
+       s    @angle,r0                  ; Subtract player angle
+       ci   r0,-n_rays
+       jlt  draw_bullets_0
+       ci   r0,n_rays
+       jgt  draw_bullets_0
+       sla  r0,8                       ; To pixels
+       ai   r0,>7800                   ; Center
+       mov  @bullet_distance,r1
+       srl  r1,8
+       movb @bullet_distance_pattern_table(r1),r1
+*      Draw sprite
+       movb @bullet_z,*r15             ; y
+       movb r0,*r15                    ; x
+       movb r1,*r15                    ; pattern
+       li   r1,>0a00                   ; color
        movb r1,*r15
-       li   r1,>8000
-       movb r1,*r15
-       li   r1,>3000
-       movb r1,*r15
-       li   r1,>0100
-       movb r1,*r15
+*      End marker
 draw_bullets_0:
        li   r1,>d000
        movb r1,*r15
        .endproc
+bullet_distance_pattern_table:
+       byte >30,>34,>38,>3c,>40,>40,>44,>44
+       byte >48,>48,>48,>4c,>4c,>4c,>4c,>4c
 *// draw_bullets
 
 *********************************************************************
@@ -831,17 +850,17 @@ draw_bullets_0:
 fire_bullet:
        mov  @x,@bullet_x
        mov  @y,@bullet_y
-       li   r3,>0400
-       mov  r3,@bullet_z
+       li   r3,>9000
+       mov  r3,@bullet_z               ; Screen y coordinate
        mov  @angle,r2
-       mov  @cos_table(r2),r0
-       sra  r0,1
-       mov  r0,@bullet_vx
-       mov  @sin_table(r2),r1
-       sra  r1,1
-       mov  r1,@bullet_vy
-       li   r3,>0040
+       mov  @cos_table(r2),@bullet_vx
+       mov  @sin_table(r2),@bullet_vy
+       li   r3,bullet_speed_z
        mov  r3,@bullet_vz
+       mov  r2,@bullet_angle
+       li   r3,>0100                   ; 1.0
+       mov  r3,@bullet_speed
+       clr  @bullet_distance
        seto @bullet_active
        rt
 *// fire_bullet
@@ -1112,8 +1131,7 @@ rand:
 * Arcus tangent 2 function
 *
 * Calculates the angle of the vector with coordinates (x,y) = (r0,r1)
-* Result in r6
-* FP 8.24 / FP 8.8 = FP 0.16
+* Result in r6 as FP 8.8
 *
 atan2:
        clr  r3                         ; For division
@@ -1210,6 +1228,26 @@ atan2_7:                               ;         } else {
 
 *********************************************************************
 *
+* Euclidian distance
+*
+* Calculates the length of the vector with coordinates (x,y) = (r0,r1)
+* Result in r7 as FP 8.8
+*
+euclidian_distance:
+       abs  r0
+       srl  r0,8                       ; x to integer
+       abs  r1
+       srl  r1,8                       ; y to integer
+       sla  r1,4                       ; y * 16
+       a    r0,r1                      ; +x
+       clr  r7
+       movb @distance_table(r1),r7     ; Get distance as FP 6.2
+       srl  r7,2                       ; To FP 8.8
+       rt
+*// euclidian_distance
+
+*********************************************************************
+*
 * Program files
 *
        copy "vdp.a99"
@@ -1294,6 +1332,12 @@ bullet_vx:
 bullet_vy:
        data 0
 bullet_vz:
+       data 0
+bullet_angle:
+       data 0
+bullet_speed:
+       data 0
+bullet_distance:
        data 0
 
 **
