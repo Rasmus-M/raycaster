@@ -822,16 +822,15 @@ draw_bullets:
        jlt  draw_bullets_0
        ci   r0,n_rays
        jgt  draw_bullets_0
-       sla  r0,8                       ; To pixels
-       ai   r0,>7800                   ; Center
+       ai   r0,>78                     ; Center
        mov  @bullet_distance,r1
        srl  r1,8
-       movb @bullet_distance_pattern_table(r1),r1
+       movb @bullet_distance_pattern_table(r1),r1    ; Pattern
 *      Draw sprite
        movb @bullet_z,*r15             ; y
-       movb r0,*r15                    ; x
+       movb @r0lb,*r15                 ; x
        movb r1,*r15                    ; pattern
-       li   r1,>0a00                   ; color
+       li   r1,>0e00                   ; color
        movb r1,*r15
 *      End marker
 draw_bullets_0:
