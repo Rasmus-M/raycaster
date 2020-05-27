@@ -8,127 +8,127 @@ MD1    DATA >0101,>0101,>0101,>0101    ;
 * -- Map Row 1 --
        DATA >0F12,>0101,>0101,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>0101,>0101,>1500    ;
+       DATA >0101,>0101,>0101,>15CA    ;
 * -- Map Row 2 --
        DATA >0F0F,>1101,>0101,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>0101,>0114,>0000    ;
+       DATA >0101,>0101,>0114,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F12,>0101,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>0101,>1500,>0000    ;
+       DATA >0101,>0101,>15CB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>0101,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>0101,>0000,>0000    ;
+       DATA >0101,>0101,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>1101,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>0114,>0000,>0000    ;
+       DATA >0101,>0114,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F12,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>1500,>0000,>0000    ;
+       DATA >0101,>15CB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F11,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>1400,>0000,>0000    ;
+       DATA >0101,>14CB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0101,>0000,>0000,>0000    ;
+       DATA >0101,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>1201    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0115,>0000,>0000,>0000    ;
+       DATA >0115,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>1001    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0113,>0000,>0000,>0000    ;
+       DATA >0113,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0F01    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0100,>0000,>0000,>0000    ;
+       DATA >01CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0F12    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >1500,>0000,>0000,>0000    ;
+       DATA >15CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0F11    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >1400,>0000,>0000,>0000    ;
+       DATA >14CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0F10    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >1300,>0000,>0000,>0000    ;
+       DATA >13CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >0101,>0101,>0101,>0101    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1201,>0101,>0101,>0115    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1101,>0101,>0101,>0114    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1001,>0101,>0101,>0113    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F01,>0101,>0101,>0100    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F01,>0101,>0101,>01CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F12,>0101,>0101,>1500    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F12,>0101,>0101,>15CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F11,>0101,>0101,>1400    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F11,>0101,>0101,>14CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F10,>0101,>0101,>1300    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F10,>0101,>0101,>13CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0101,>0101,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0101,>0101,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1201,>0115,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1201,>0115,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1101,>0114,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1101,>0114,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1001,>0113,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1001,>0113,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F01,>0100,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F01,>01CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F12,>1500,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F12,>15CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F11,>1400,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F11,>14CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F10,>1300,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F10,>13CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #2 ==
 MC2    DATA 0                          ;
 MS2    DATA >0018,>0020,>0300          ; Width, Height, Size
@@ -139,127 +139,127 @@ MD2    DATA >0202,>0202,>0202,>0202    ;
 * -- Map Row 1 --
        DATA >0F18,>0202,>0202,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>0202,>0202,>1B00    ;
+       DATA >0202,>0202,>0202,>1BCA    ;
 * -- Map Row 2 --
        DATA >0F0F,>1702,>0202,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>0202,>021A,>0000    ;
+       DATA >0202,>0202,>021A,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F18,>0202,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>0202,>1B00,>0000    ;
+       DATA >0202,>0202,>1BCB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>0202,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>0202,>0000,>0000    ;
+       DATA >0202,>0202,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>1702,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>021A,>0000,>0000    ;
+       DATA >0202,>021A,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F18,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>1B00,>0000,>0000    ;
+       DATA >0202,>1BCB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F17,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>1A00,>0000,>0000    ;
+       DATA >0202,>1ACB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>0202    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0202,>0000,>0000,>0000    ;
+       DATA >0202,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>1802    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >021B,>0000,>0000,>0000    ;
+       DATA >021B,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>1602    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0219,>0000,>0000,>0000    ;
+       DATA >0219,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0F02    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0200,>0000,>0000,>0000    ;
+       DATA >02CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0F18    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >1B00,>0000,>0000,>0000    ;
+       DATA >1BCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0F17    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >1A00,>0000,>0000,>0000    ;
+       DATA >1ACC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0F16    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >1900,>0000,>0000,>0000    ;
+       DATA >19CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >0202,>0202,>0202,>0202    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1802,>0202,>0202,>021B    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1702,>0202,>0202,>021A    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1602,>0202,>0202,>0219    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F02,>0202,>0202,>0200    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F02,>0202,>0202,>02CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F18,>0202,>0202,>1B00    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F18,>0202,>0202,>1BCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F17,>0202,>0202,>1A00    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F17,>0202,>0202,>1ACC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F16,>0202,>0202,>1900    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F16,>0202,>0202,>19CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0202,>0202,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0202,>0202,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1802,>021B,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1802,>021B,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1702,>021A,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1702,>021A,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1602,>0219,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1602,>0219,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F02,>0200,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F02,>02CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F18,>1B00,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F18,>1BCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F17,>1A00,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F17,>1ACC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F16,>1900,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F16,>19CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #3 ==
 MC3    DATA 0                          ;
 MS3    DATA >0018,>0020,>0300          ; Width, Height, Size
@@ -270,127 +270,127 @@ MD3    DATA >0303,>0303,>0303,>0303    ;
 * -- Map Row 1 --
        DATA >0F1E,>0303,>0303,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>0303,>0303,>2100    ;
+       DATA >0303,>0303,>0303,>21CA    ;
 * -- Map Row 2 --
        DATA >0F0F,>1D03,>0303,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>0303,>0320,>0000    ;
+       DATA >0303,>0303,>0320,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F1E,>0303,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>0303,>2100,>0000    ;
+       DATA >0303,>0303,>21CB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>0303,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>0303,>0000,>0000    ;
+       DATA >0303,>0303,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>1D03,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>0320,>0000,>0000    ;
+       DATA >0303,>0320,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F1E,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>2100,>0000,>0000    ;
+       DATA >0303,>21CB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F1D,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>2000,>0000,>0000    ;
+       DATA >0303,>20CB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>0303    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0303,>0000,>0000,>0000    ;
+       DATA >0303,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>1E03    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0321,>0000,>0000,>0000    ;
+       DATA >0321,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>1C03    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >031F,>0000,>0000,>0000    ;
+       DATA >031F,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0F03    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0300,>0000,>0000,>0000    ;
+       DATA >03CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0F1E    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >2100,>0000,>0000,>0000    ;
+       DATA >21CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0F1D    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >2000,>0000,>0000,>0000    ;
+       DATA >20CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0F1C    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >1F00,>0000,>0000,>0000    ;
+       DATA >1FCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >0303,>0303,>0303,>0303    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1E03,>0303,>0303,>0321    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1D03,>0303,>0303,>0320    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >1C03,>0303,>0303,>031F    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F03,>0303,>0303,>0300    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F03,>0303,>0303,>03CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F1E,>0303,>0303,>2100    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F1E,>0303,>0303,>21CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F1D,>0303,>0303,>2000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F1D,>0303,>0303,>20CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F1C,>0303,>0303,>1F00    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F1C,>0303,>0303,>1FCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0303,>0303,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0303,>0303,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1E03,>0321,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1E03,>0321,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1D03,>0320,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1D03,>0320,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>1C03,>031F,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>1C03,>031F,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F03,>0300,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F03,>03CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F1E,>2100,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F1E,>21CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F1D,>2000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F1D,>20CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F1C,>1F00,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F1C,>1FCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #4 ==
 MC4    DATA 0                          ;
 MS4    DATA >0018,>0020,>0300          ; Width, Height, Size
@@ -401,127 +401,127 @@ MD4    DATA >0404,>0404,>0404,>0404    ;
 * -- Map Row 1 --
        DATA >0F24,>0404,>0404,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>0404,>0404,>2700    ;
+       DATA >0404,>0404,>0404,>27CA    ;
 * -- Map Row 2 --
        DATA >0F0F,>2304,>0404,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>0404,>0426,>0000    ;
+       DATA >0404,>0404,>0426,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F24,>0404,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>0404,>2700,>0000    ;
+       DATA >0404,>0404,>27CB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>0404,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>0404,>0000,>0000    ;
+       DATA >0404,>0404,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>2304,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>0426,>0000,>0000    ;
+       DATA >0404,>0426,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F24,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>2700,>0000,>0000    ;
+       DATA >0404,>27CB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F23,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>2600,>0000,>0000    ;
+       DATA >0404,>26CB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>0404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0404,>0000,>0000,>0000    ;
+       DATA >0404,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>2404    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0427,>0000,>0000,>0000    ;
+       DATA >0427,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>2204    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0425,>0000,>0000,>0000    ;
+       DATA >0425,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0F04    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0400,>0000,>0000,>0000    ;
+       DATA >04CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0F24    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >2700,>0000,>0000,>0000    ;
+       DATA >27CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0F23    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >2600,>0000,>0000,>0000    ;
+       DATA >26CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0F22    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >2500,>0000,>0000,>0000    ;
+       DATA >25CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >0404,>0404,>0404,>0404    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >2404,>0404,>0404,>0427    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >2304,>0404,>0404,>0426    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >2204,>0404,>0404,>0425    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F04,>0404,>0404,>0400    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F04,>0404,>0404,>04CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F24,>0404,>0404,>2700    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F24,>0404,>0404,>27CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F23,>0404,>0404,>2600    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F23,>0404,>0404,>26CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F22,>0404,>0404,>2500    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F22,>0404,>0404,>25CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0404,>0404,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0404,>0404,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>2404,>0427,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>2404,>0427,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>2304,>0426,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>2304,>0426,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>2204,>0425,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>2204,>0425,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F04,>0400,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F04,>04CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F24,>2700,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F24,>27CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F23,>2600,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F23,>26CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F22,>2500,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F22,>25CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #5 ==
 MC5    DATA 0                          ;
 MS5    DATA >0018,>0020,>0300          ; Width, Height, Size
@@ -532,127 +532,127 @@ MD5    DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
 * -- Map Row 1 --
        DATA >0F2A,>B6B6,>B6B6,>B6B6    ;
        DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
-       DATA >B6B6,>B6B6,>B6B6,>2D00    ;
+       DATA >B6B6,>B6B6,>B6B6,>2DCA    ;
 * -- Map Row 2 --
        DATA >0F0F,>29B6,>B6B6,>B6B6    ;
        DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
-       DATA >B6B6,>B6B6,>B62C,>0000    ;
+       DATA >B6B6,>B6B6,>B62C,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F2A,>B6B6,>B6B6    ;
        DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
-       DATA >B6B6,>B6B6,>2D00,>0000    ;
+       DATA >B6B6,>B6B6,>2DCB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>B6B6,>B6B6    ;
        DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
-       DATA >B6B6,>B6B6,>0000,>0000    ;
+       DATA >B6B6,>B6B6,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>29B6,>B6B6    ;
        DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
-       DATA >B6B6,>B62C,>0000,>0000    ;
+       DATA >B6B6,>B62C,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F2A,>B6B6    ;
        DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
-       DATA >B6B6,>2D00,>0000,>0000    ;
+       DATA >B6B6,>2DCB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F29,>B6B6    ;
        DATA >B6B6,>B6B6,>B6B6,>B6B6    ;
-       DATA >B6B6,>2C00,>0000,>0000    ;
+       DATA >B6B6,>2CCB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>ABAB    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >ABAB,>0000,>0000,>0000    ;
+       DATA >ABAB,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>AAAB    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >ABAD,>0000,>0000,>0000    ;
+       DATA >ABAD,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>A8AB    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >ABAC,>0000,>0000,>0000    ;
+       DATA >ABAC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0FAB    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >AB00,>0000,>0000,>0000    ;
+       DATA >ABCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0FAA    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >AD00,>0000,>0000,>0000    ;
+       DATA >ADCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0FA9    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >AC00,>0000,>0000,>0000    ;
+       DATA >ACCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0FA8    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >AC00,>0000,>0000,>0000    ;
+       DATA >ACCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >ABAB,>ABAB,>ABAB,>ABAB    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >AAAB,>ABAB,>ABAB,>ABAE    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >A9AB,>ABAB,>ABAB,>ABAD    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >A8AB,>ABAB,>ABAB,>ABAC    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0FB2,>B2B2,>B2B2,>B200    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0FB2,>B2B2,>B2B2,>B2CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0FB1,>B2B2,>B2B2,>B500    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0FB1,>B2B2,>B2B2,>B5CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0FB0,>B2B2,>B2B2,>B400    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0FB0,>B2B2,>B2B2,>B4CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0FAF,>B2B2,>B2B2,>B300    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0FAF,>B2B2,>B2B2,>B3CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>B2B2,>B2B2,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>B2B2,>B2B2,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>B1B2,>B2B5,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>B1B2,>B2B5,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>B0B2,>B2B4,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>B0B2,>B2B4,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>AFB2,>B2B3,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>AFB2,>B2B3,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0FB2,>B200,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0FB2,>B2CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F30,>3300,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F30,>33CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F2F,>3200,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F2F,>32CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F2E,>3100,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F2E,>31CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #6 ==
 MC6    DATA 0                          ;
 MS6    DATA >0018,>0020,>0300          ; Width, Height, Size
@@ -663,127 +663,127 @@ MD6    DATA >0606,>0606,>0606,>0606    ;
 * -- Map Row 1 --
        DATA >0F30,>0606,>0606,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>0606,>0606,>3300    ;
+       DATA >0606,>0606,>0606,>33CA    ;
 * -- Map Row 2 --
        DATA >0F0F,>2F06,>0606,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>0606,>0632,>0000    ;
+       DATA >0606,>0606,>0632,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F30,>0606,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>0606,>3300,>0000    ;
+       DATA >0606,>0606,>33CB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>0606,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>0606,>0000,>0000    ;
+       DATA >0606,>0606,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>2F06,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>0632,>0000,>0000    ;
+       DATA >0606,>0632,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F30,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>3300,>0000,>0000    ;
+       DATA >0606,>33CB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F2F,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>3200,>0000,>0000    ;
+       DATA >0606,>32CB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>0606    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0606,>0000,>0000,>0000    ;
+       DATA >0606,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>3006    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0633,>0000,>0000,>0000    ;
+       DATA >0633,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>2E06    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0631,>0000,>0000,>0000    ;
+       DATA >0631,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0F06    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0600,>0000,>0000,>0000    ;
+       DATA >06CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0F30    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >3300,>0000,>0000,>0000    ;
+       DATA >33CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0F2F    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >3200,>0000,>0000,>0000    ;
+       DATA >32CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0F2E    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >3100,>0000,>0000,>0000    ;
+       DATA >31CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >0606,>0606,>0606,>0606    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >3006,>0606,>0606,>0633    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >2F06,>0606,>0606,>0632    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >2E06,>0606,>0606,>0631    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F06,>0606,>0606,>0600    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F06,>0606,>0606,>06CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F30,>0606,>0606,>3300    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F30,>0606,>0606,>33CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F2F,>0606,>0606,>3200    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F2F,>0606,>0606,>32CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F2E,>0606,>0606,>3100    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F2E,>0606,>0606,>31CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0606,>0606,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0606,>0606,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>3006,>0633,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>3006,>0633,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>2F06,>0632,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>2F06,>0632,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>2E06,>0631,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>2E06,>0631,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F06,>0600,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F06,>06CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F30,>3300,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F30,>33CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F2F,>3200,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F2F,>32CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F2E,>3100,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F2E,>31CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #7 ==
 MC7    DATA 0                          ;
 MS7    DATA >0018,>0020,>0300          ; Width, Height, Size
@@ -794,127 +794,127 @@ MD7    DATA >0707,>0707,>0707,>0707    ;
 * -- Map Row 1 --
        DATA >0F36,>0707,>0707,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>0707,>0707,>3900    ;
+       DATA >0707,>0707,>0707,>39CA    ;
 * -- Map Row 2 --
        DATA >0F0F,>3507,>0707,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>0707,>0738,>0000    ;
+       DATA >0707,>0707,>0738,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F36,>0707,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>0707,>3900,>0000    ;
+       DATA >0707,>0707,>39CB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>0707,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>0707,>0000,>0000    ;
+       DATA >0707,>0707,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>3507,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>0738,>0000,>0000    ;
+       DATA >0707,>0738,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F36,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>3900,>0000,>0000    ;
+       DATA >0707,>39CB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F35,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>3800,>0000,>0000    ;
+       DATA >0707,>38CB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>0707    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0707,>0000,>0000,>0000    ;
+       DATA >0707,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>3607    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0739,>0000,>0000,>0000    ;
+       DATA >0739,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>3407    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0737,>0000,>0000,>0000    ;
+       DATA >0737,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0F07    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0700,>0000,>0000,>0000    ;
+       DATA >07CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0F36    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >3900,>0000,>0000,>0000    ;
+       DATA >39CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0F35    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >3800,>0000,>0000,>0000    ;
+       DATA >38CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0F34    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >3700,>0000,>0000,>0000    ;
+       DATA >37CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >0707,>0707,>0707,>0707    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >3607,>0707,>0707,>0739    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >3507,>0707,>0707,>0738    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >3407,>0707,>0707,>0737    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F07,>0707,>0707,>0700    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F07,>0707,>0707,>07CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F36,>0707,>0707,>3900    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F36,>0707,>0707,>39CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F35,>0707,>0707,>3800    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F35,>0707,>0707,>38CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F34,>0707,>0707,>3700    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F34,>0707,>0707,>37CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0707,>0707,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0707,>0707,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>3607,>0739,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>3607,>0739,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>3507,>0738,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>3507,>0738,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>3407,>0737,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>3407,>0737,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F07,>0700,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F07,>07CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F36,>3900,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F36,>39CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F35,>3800,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F35,>38CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F34,>3700,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F34,>37CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #8 ==
 MC8    DATA 0                          ;
 MS8    DATA >0018,>0020,>0300          ; Width, Height, Size
@@ -925,127 +925,127 @@ MD8    DATA >0808,>0808,>0808,>0808    ;
 * -- Map Row 1 --
        DATA >0F3C,>0808,>0808,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>0808,>0808,>3F00    ;
+       DATA >0808,>0808,>0808,>3FCA    ;
 * -- Map Row 2 --
        DATA >0F0F,>3B08,>0808,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>0808,>083E,>0000    ;
+       DATA >0808,>0808,>083E,>CACA    ;
 * -- Map Row 3 --
        DATA >0F0F,>0F3C,>0808,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>0808,>3F00,>0000    ;
+       DATA >0808,>0808,>3FCB,>CACA    ;
 * -- Map Row 4 --
        DATA >0F0F,>0F0F,>0808,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>0808,>0000,>0000    ;
+       DATA >0808,>0808,>CBCB,>CACA    ;
 * -- Map Row 5 --
        DATA >0F0F,>0F0F,>3B08,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>083E,>0000,>0000    ;
+       DATA >0808,>083E,>CBCB,>CACA    ;
 * -- Map Row 6 --
        DATA >0F0F,>0F0F,>0F3C,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>3F00,>0000,>0000    ;
+       DATA >0808,>3FCB,>CBCB,>CACA    ;
 * -- Map Row 7 --
        DATA >0F0F,>0F0F,>0F3B,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>3E00,>0000,>0000    ;
+       DATA >0808,>3ECB,>CBCB,>CACA    ;
 * -- Map Row 8 --
        DATA >0F0F,>0F0F,>0F0F,>0808    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0808,>0000,>0000,>0000    ;
+       DATA >0808,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 9 --
        DATA >0F0F,>0F0F,>0F0F,>3C08    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >083F,>0000,>0000,>0000    ;
+       DATA >083F,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 10 --
        DATA >0F0F,>0F0F,>0F0F,>3A08    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >083D,>0000,>0000,>0000    ;
+       DATA >083D,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 11 --
        DATA >0F0F,>0F0F,>0F0F,>0F08    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0800,>0000,>0000,>0000    ;
+       DATA >08CC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 12 --
        DATA >0F0F,>0F0F,>0F0F,>0F3C    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >3F00,>0000,>0000,>0000    ;
+       DATA >3FCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 13 --
        DATA >0F0F,>0F0F,>0F0F,>0F3B    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >3E00,>0000,>0000,>0000    ;
+       DATA >3ECC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 14 --
        DATA >0F0F,>0F0F,>0F0F,>0F3A    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >3D00,>0000,>0000,>0000    ;
+       DATA >3DCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 15 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >0808,>0808,>0808,>0808    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 16 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >3C08,>0808,>0808,>083F    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 17 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >3B08,>0808,>0808,>083E    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 18 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
        DATA >3A08,>0808,>0808,>083D    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 19 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F08,>0808,>0808,>0800    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F08,>0808,>0808,>08CC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 20 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F3C,>0808,>0808,>3F00    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F3C,>0808,>0808,>3FCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 21 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F3B,>0808,>0808,>3E00    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F3B,>0808,>0808,>3ECC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 22 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F3A,>0808,>0808,>3D00    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F3A,>0808,>0808,>3DCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 23 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0808,>0808,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0808,>0808,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 24 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>3C08,>083F,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>3C08,>083F,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 25 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>3B08,>083E,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>3B08,>083E,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 26 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>3A08,>083D,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>3A08,>083D,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 27 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F08,>0800,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F08,>08CC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 28 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F3C,>3F00,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F3C,>3FCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 29 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F3B,>3E00,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F3B,>3ECC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 30 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F3A,>3D00,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F3A,>3DCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * -- Map Row 31 --
        DATA >0F0F,>0F0F,>0F0F,>0F0F    ;
-       DATA >0F0F,>0F0F,>0000,>0000    ;
-       DATA >0000,>0000,>0000,>0000    ;
+       DATA >0F0F,>0F0F,>CCCC,>CCCC    ;
+       DATA >CCCC,>CBCB,>CBCB,>CACA    ;
 * == Map #9 ==
 MC9    DATA 0                          ;
 MS9    DATA >0018,>0020,>0300          ; Width, Height, Size
