@@ -154,6 +154,7 @@ main_loop:
        bl   @user_input
        bl   @move_enemies
        bl   @move_bullets
+       bl   @bullets_collisions
        bl   @draw_bullets
        jmp  main_loop
 
@@ -520,6 +521,8 @@ draw_objects:
        li   r4,objects
        mov  @n_objects,r5
 draw_objects_1:
+       mov  *r4,r0
+       jeq  draw_objects_2
        mov  @object_x(r4),r0
        s    @x,r0                      ; dx
        ci   r0,(max_object_distance-1)*256
@@ -729,6 +732,8 @@ move_enemies:
        li   r4,objects
        mov  @n_objects,r5
 move_enemies_1:
+       mov  *r4,r0
+       jeq  move_enemies_2
        mov  @object_type(r4),r0
        ci   r0,object_type_soldier
        jne  move_enemies_2
@@ -776,7 +781,6 @@ move_enemies_3:
 * Move bullets
 *
 move_bullets:
-       .proc
        abs  @bullet_active
        jeq  move_bullets_0
        a    @bullet_vx,@bullet_x
@@ -784,23 +788,64 @@ move_bullets:
        li   r0,bullet_accl_z
        a    r0,@bullet_vz
        a    @bullet_vz,@bullet_z
+       a    @bullet_speed,@bullet_distance
+move_bullets_0:
+       rt
+*// move_bullets
+
+*********************************************************************
+*
+* Bullet collisions
+*
+bullets_collisions:
+       .proc
+       abs  @bullet_active
+       jeq  bullets_collisions_0
+*      Check distance
+       mov  @bullet_distance,r0
+       ci   r0,max_bullet_distance*256
+       jgt  bullets_collisions_1
+*      Check for wall collision
        mov  @bullet_x,r0
        mov  @bullet_y,r1
        bl   @get_map_address
        movb *r2,r3
-       jeq  move_bullets_2
+       jeq  bullets_collisions_2
        movb @space,*r2
-       jmp  move_bullets_1
-move_bullets_2:
-       a    @bullet_speed,@bullet_distance
-       mov  @bullet_distance,r0
-       ci   r0,max_bullet_distance*256
-       jlt  move_bullets_0
-move_bullets_1:
+       jmp  bullets_collisions_1
+*      Check for enemy collison
+bullets_collisions_2:
+       li   r4,objects
+       mov  @n_objects,r5
+bullets_collisions_3:
+       mov  *r4,r2
+       jeq  bullets_collisions_4
+       mov  @object_type(r4),r2
+       ci   r2,object_type_soldier
+       jne  bullets_collisions_4
+       mov  @object_x(r4),r2
+       s    r0,r2
+       abs  r2
+       ci   r2,>0100
+       jgt  bullets_collisions_4
+       mov  @object_y(r4),r3
+       s    r1,r3
+       abs  r3
+       ci   r3,>0100
+       jgt  bullets_collisions_4
+       clr  *r4
+       jmp  bullets_collisions_1
+bullets_collisions_4:
+       ai   r4,object_size
+       dec  r5
+       jne  bullets_collisions_3
+       jmp  bullets_collisions_0
+*      Remove bullet
+bullets_collisions_1:
        clr  @bullet_active
-move_bullets_0:
+bullets_collisions_0:
        .endproc
-*// move_bullets
+*// bullets_collisions
 
 *********************************************************************
 *
@@ -1269,46 +1314,54 @@ door:
 **
 * Objects
 *
-object_type:
+object_active:
        equ  0
-object_x:
+object_type:
        equ  2
-object_y:
+object_x:
        equ  4
-object_depth_table:
+object_y:
        equ  6
-object_size:
+object_depth_table:
        equ  8
+object_size:
+       equ  10
 
 object_type_soldier:
        equ  1
 
 objects:
+       data 1
        data object_type_soldier
        data >0c00                      ; x
        data >1900                      ; y
        data soldier_depth_table
 
+       data 1
        data object_type_soldier
        data >2500                      ; x
        data >2f00                      ; y
        data soldier_depth_table
 
+       data 1
        data object_type_soldier
        data >3400                      ; x
        data >3c00                      ; y
        data soldier_depth_table
 
+       data 1
        data object_type_soldier
        data >3900                      ; x
        data >0400                      ; y
        data soldier_depth_table
 
+       data 1
        data object_type_soldier
        data >1000                      ; x
        data >0c00                      ; y
        data soldier_depth_table
 
+       data 1
        data object_type_soldier
        data >1b00                      ; x
        data >3d00                      ; y
