@@ -66,6 +66,8 @@ n_sprite_patterns:
        equ  20
 soldier_speed:
        equ  >0040
+gun_color:
+       equ  >07
 
 **
 * Scratch pad
