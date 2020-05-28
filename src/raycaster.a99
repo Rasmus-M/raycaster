@@ -73,7 +73,7 @@ bullet_speed_z:
 bullet_accl_z:
        equ  >0100
 gun_color:
-       equ  >07
+       equ  >0e
 
 **
 * Scratch pad
