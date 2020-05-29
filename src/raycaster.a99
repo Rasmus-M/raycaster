@@ -74,6 +74,8 @@ bullet_accl_z:
        equ  >0100
 gun_color:
        equ  >0e
+bullet_color:
+       equ  >01
 
 **
 * Scratch pad
@@ -877,16 +879,19 @@ draw_bullets:
        movb @bullet_z,*r15             ; y
        movb @r0lb,*r15                 ; x
        movb r1,*r15                    ; pattern
-       li   r1,>0e00                   ; color
-       movb r1,*r15
+       movb @bullet_color_byte,*r15    ; color
 *      End marker
 draw_bullets_0:
-       li   r1,>d000
-       movb r1,*r15
+       movb @end_marker_byte,*r15
        .endproc
 bullet_distance_pattern_table:
        byte >30,>34,>38,>3c,>40,>40,>44,>44
        byte >48,>48,>48,>4c,>4c,>4c,>4c,>4c
+       byte >4c,>4c
+bullet_color_byte:
+       byte bullet_color
+end_marker_byte:
+       byte >d0
 *// draw_bullets
 
 *********************************************************************
