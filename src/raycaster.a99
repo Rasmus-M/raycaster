@@ -63,7 +63,7 @@ max_bullet_distance:
 max_object_width:
        equ  8
 n_tile_patterns:
-       equ  205
+       equ  207
 n_sprite_patterns:
        equ  20
 soldier_speed:
@@ -73,9 +73,11 @@ bullet_speed_z:
 bullet_accl_z:
        equ  >0100
 gun_color:
-       equ  >0e
+       equ  >01
 bullet_color:
        equ  >01
+backdrop_color:
+       equ  >0b
 
 **
 * Scratch pad
@@ -140,7 +142,7 @@ pad_max:
 *
 * Main program
 *
-       aorg >a000
+       aorg >2000
 main:
        limi 0                          ; Interrupts off
        lwpi wrksp                      ; Setup workspace
@@ -1034,7 +1036,7 @@ vdp_registers:
        byte ptrntb/>800+>03            ; Pattern table
        byte spratb/>80                 ; Sprite attribute table
        byte sprptb/>800                ; Sprite pattern table
-       byte >0d                        ; Backdrop color
+       byte backdrop_color             ; Backdrop color
 *// graphics_mode
 
 *********************************************************************
@@ -1461,24 +1463,23 @@ floor_offset_from_center:
 *
 * Data files
 *
-columns:
-       copy "columns.a99"
-       copy "chars.a99"
-textures:
+       copy "math_tables.a99"
        copy "textures.a99"
-       copy "sprites.a99"
        copy "soldier.a99"
+       copy "sprites.a99"
 
-ram_max:
+lower_ram_max:
        equ  $
 **
-*      Lower RAM
+*      Upper RAM
 *
-       aorg >2000
+       aorg >a000
 
-       copy "map.a99"
-       copy "math_tables.a99"
+       copy "graphics.a99"
 map:
        equ  MD0
+
+upper_ram_max:
+       equ  $
 
        end  main
