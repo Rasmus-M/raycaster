@@ -35,7 +35,12 @@ nametb equ  >2800                      ; Name table base 1
 namet2 equ  >2c00                      ; Name table base 2
 spratb equ  >2f00                      ; Sprite attribute table base 1
 sprat2 equ  >2f80                      ; Sprite attribute table base 2
-colrt2 equ  >3000                      ; Color table base 2
+sprat3 equ  >3000                      ; Sprite attribute table base 3
+sprat4 equ  >3080                      ; Sprite attribute table base 4
+sprat5 equ  >3100                      ; Sprite attribute table base 5
+sprat6 equ  >3180                      ; Sprite attribute table base 6
+sprat7 equ  >3200                      ; Sprite attribute table base 7
+sprat8 equ  >3280                      ; Sprite attribute table base 8
 
 **
 * Constants
@@ -111,8 +116,12 @@ rand_no:
        equ  padvar+2
 dbl_buffer_flag:
        equ  rand_no+2
-x:                                     ; Player x FP 8.8
+sal_no:
        equ  dbl_buffer_flag+2
+sal_no_inc:
+       equ  sal_no+2
+x:                                     ; Player x FP 8.8
+       equ  sal_no_inc+2
 y:                                     ; Player y FP 8.8
        equ  x+2
 angle:                                 ; Player direction 0 - 2 * n_directions (even only)
@@ -190,9 +199,8 @@ set_vdp_regs:
        ori  r0,>020a
        bl   @vwtr
 *      Set sprite attribute table
-       mov  @dbl_buffer_flag,r0
-       andi r0,>0001
-       ori  r0,>055e
+       li   r0,>0500+(spratb/>80)
+       a    @sal_no,r0
        bl   @vwtr
 *      Flip flag
        inv  @dbl_buffer_flag
@@ -700,14 +708,12 @@ user_input_3:
        sra  r3,2
        s    r3,r1
        bl   @get_map_value
-       jne  user_input_6
-       mov  r0,@x
-       mov  r1,@y
-       jmp  user_input_6
+       jne  user_input_8
+       jmp  user_input_5
 user_input_4:
 *      Up
        tb   4
-       jeq  user_input_6
+       jeq  user_input_8
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
@@ -721,11 +727,28 @@ user_input_4:
        jeq  user_input_5
        cb   @door,r2
        jeq  user_input_5
-       jmp  user_input_6
+       jmp  user_input_8
+*      Move
 user_input_5:
        mov  r0,@x
        mov  r1,@y
+       mov  @sal_no,r0
+       mov  @sal_no_inc,r1
+       jlt  user_input_6
+       ci   r0,7
+       jlt  user_input_7
+       neg  r1
+       mov  r1,@sal_no_inc
+       jmp  user_input_7
 user_input_6:
+       ci   r0,0
+       jgt  user_input_7
+       neg  r1
+       mov  r1,@sal_no_inc
+user_input_7:
+       a    r1,r0
+       mov  r0,@sal_no
+user_input_8:
        .endproc
 *// user_input
 
@@ -859,8 +882,7 @@ bullets_collisions_0:
 *
 draw_bullets:
        .proc
-       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-       andi r0,>0001
+       mov  @sal_no,r0                 ; Which buffer to update?
        sla  r0,7
        ai   r0,spratb+(12*4)
        bl   @vwad                      ; Set VDP address
@@ -995,14 +1017,28 @@ one_time_init:
        li   r1,SPR0
        li   r2,n_sprite_patterns*32
        bl   @vmbw
+*      Sprite attribute tables
        li   r0,spratb
-       li   r1,SAL
-       li   r2,50
-       bl   @vmbw
-       li   r0,sprat2
-       li   r1,SAL2
-       li   r2,50
-       bl   @vmbw
+       li   r3,8
+       li   r4,>8f00
+one_time_init_1:
+       bl   @vwad
+       li   r2,12
+       li   r1,sal
+one_time_init_2:
+       movb *r1+,r5
+       ab   r4,r5
+       movb r5,*r15
+       movb *r1+,*r15
+       movb *r1+,*r15
+       movb *r1+,*r15
+       dec  r2
+       jne  one_time_init_2
+       ai   r0,>80
+       ai   r4,>0100
+       dec  r3
+       jne  one_time_init_1
+       inc  @sal_no_inc
        .endproc
 *// one_time_init
 
