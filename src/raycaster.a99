@@ -261,8 +261,8 @@ cast_rays_1:
        mov  @columns_set_table(r4),r4  ; Get columns set address
        mov  r2,r5                      ; Distance
        srl  r5,5                       ; To FP 13.3
-       sla  r5,1                       ; To word offset
-       mov  @dist_column_table(r5),r5  ; Get column index
+       movb @dist_column_table(r5),r5  ; Get column index
+       srl  r5,8
        li   r6,screen_height           ; Column byte size
        mpy  r6,r5                      ; Column index * column size
        a    r4,r6                      ; Add to column set base
@@ -558,20 +558,19 @@ draw_objects:
        li   r4,objects
        mov  @n_objects,r5
 draw_objects_1:
-       mov  *r4,r0
+       mov  *r4,r0                     ; Active?
        jeq  draw_objects_2
        mov  @object_x(r4),r0
        s    @x,r0                      ; dx
-       ci   r0,(max_object_distance-1)*256
-       jgt  draw_objects_2
-       ci   r0,-(max_object_distance-1)*256
-       jlt   draw_objects_2
        mov  @object_y(r4),r1
        s    @y,r1                      ; dy
-       ci   r1,(max_object_distance-1)*256
-       jgt  draw_objects_2
-       ci   r1,-(max_object_distance-1)*256
-       jlt   draw_objects_2
+       mov  r0,r2
+       abs  r2
+       mov  r1,r3
+       abs  r3
+       a    r2,r3                      ; Taxi distance
+       ci   r3,max_object_distance*256
+       jhe  draw_objects_2
 *      Look up angle
        bl   @atan2
        sb   @angle+1,r6                ; Subtract player angle
@@ -725,14 +724,16 @@ user_input_3:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-       sra  r3,2
+       sra  r3,1
        s    r3,r0
        mov  @y,r1
-       mov  @sin_table(r2),r3
-       sra  r3,2
-       s    r3,r1
+       mov  @sin_table(r2),r4
+       sra  r4,1
+       s    r4,r1
        bl   @get_map_value
        jne  user_input_8
+       neg  r3
+       neg  r4
        jmp  user_input_5
 user_input_4:
 *      Up
@@ -741,12 +742,12 @@ user_input_4:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-       sra  r3,2
+       sra  r3,1
        a    r3,r0
        mov  @y,r1
-       mov  @sin_table(r2),r3
-       sra  r3,2
-       a    r3,r1
+       mov  @sin_table(r2),r4
+       sra  r4,1
+       a    r4,r1
        bl   @get_map_value
        jeq  user_input_5
        cb   @door,r2
@@ -754,6 +755,10 @@ user_input_4:
        jmp  user_input_8
 *      Move
 user_input_5:
+       sra  r3,1
+       sra  r4,1
+       s    r3,r0
+       s    r4,r1
        mov  r0,@x
        mov  r1,@y
        mov  @sal_no,r0
@@ -1276,6 +1281,7 @@ rand:
 * Arcus tangent 2 function
 *
 * Calculates the angle of the vector with coordinates (x,y) = (r0,r1)
+* Uses r2-r3
 * Result in r6 as FP 8.8
 *
 atan2:
@@ -1432,6 +1438,8 @@ object_size:
 
 object_type_soldier:
        equ  1
+object_type_chest:
+       equ  2
 
 objects:
        data 1
@@ -1469,6 +1477,12 @@ objects:
        data >1b00                      ; x
        data >3d00                      ; y
        data soldier_depth_table
+
+       data 1
+       data object_type_chest
+       data >0e00                      ; x
+       data >1100                      ; y
+       data chest_depth_table
 objects_end:
        equ  $
 n_objects:
@@ -1503,32 +1517,32 @@ bullet_distance:
 * 23*8 = 192 entries (+1)
 *
 dist_column_table:
-       data 00,00,00,00,00,00,00,00
-       data 00,01,02,03,04,05,06,07
-       data 08,09,10,11,12,13,14,14
-       data 15,16,16,17,17,18,18,19
-       data 19,19,20,20,20,21,21,21
-       data 21,22,22,22,22,22,23,23
-       data 23,23,23,23,24,24,24,24
-       data 24,24,24,24,25,25,25,25
-       data 25,25,25,25,25,25,26,26
-       data 26,26,26,26,26,26,26,26
-       data 26,26,26,26,26,26,27,27
-       data 27,27,27,27,27,27,27,27
-       data 27,27,27,27,27,27,27,27
-       data 27,27,27,27,27,27,28,28
-       data 28,28,28,28,28,28,28,28
-       data 28,28,28,28,28,28,28,28
-       data 28,28,28,28,28,28,28,28
-       data 28,28,28,28,28,28,28,28
-       data 28,28,28,28,28,28,28,28
-       data 28,28,29,29,29,29,29,29
-       data 29,29,29,29,29,29,29,29
-       data 29,29,29,29,29,29,29,29
-       data 29,29,29,29,29,29,29,29
-       data 29,29,29,29,29,29,29,29
-       data 30,30,30,30,30,30,30,30    ; This row should actually be 29
-       data 31                         ; Used when max steps are reached
+       byte 00,00,00,00,00,00,00,00
+       byte 00,01,02,03,04,05,06,07
+       byte 08,09,10,11,12,13,14,14
+       byte 15,16,16,17,17,18,18,19
+       byte 19,19,20,20,20,21,21,21
+       byte 21,22,22,22,22,22,23,23
+       byte 23,23,23,23,24,24,24,24
+       byte 24,24,24,24,25,25,25,25
+       byte 25,25,25,25,25,25,26,26
+       byte 26,26,26,26,26,26,26,26
+       byte 26,26,26,26,26,26,27,27
+       byte 27,27,27,27,27,27,27,27
+       byte 27,27,27,27,27,27,27,27
+       byte 27,27,27,27,27,27,28,28
+       byte 28,28,28,28,28,28,28,28
+       byte 28,28,28,28,28,28,28,28
+       byte 28,28,28,28,28,28,28,28
+       byte 28,28,28,28,28,28,28,28
+       byte 28,28,28,28,28,28,28,28
+       byte 28,28,29,29,29,29,29,29
+       byte 29,29,29,29,29,29,29,29
+       byte 29,29,29,29,29,29,29,29
+       byte 29,29,29,29,29,29,29,29
+       byte 29,29,29,29,29,29,29,29
+       byte 30,30,30,30,30,30,30,30    ; This row should actually be 29
+       byte 31,00                      ; Used when max steps are reached
 
 **
 * These are the heights of the pre-drawn colums,
@@ -1559,7 +1573,7 @@ floor_offset_from_center:
 *
        copy "math_tables.a99"
        copy "textures.a99"
-       copy "soldier.a99"
+       copy "objects.a99"
        copy "sprites.a99"
 
 lower_ram_max:
