@@ -174,8 +174,9 @@ main_loop:
        bl   @user_input
        bl   @move_enemies
        bl   @move_bullets
-       bl   @bullets_collisions
        bl   @draw_bullets
+       bl   @bullets_collisions
+       bl   @object_collisions
        bl   @display_frame_rate
        jmp  main_loop
 
@@ -855,6 +856,49 @@ move_bullets_0:
 
 *********************************************************************
 *
+* Draw bullets
+*
+draw_bullets:
+       .proc
+       mov  @sal_no,r0                 ; Which buffer to update?
+       sla  r0,7
+       ai   r0,spratb+(12*4)
+       bl   @vwad                      ; Set VDP address
+       abs  @bullet_active
+       jeq  draw_bullets_0
+*      Check angle
+       mov  @bullet_angle,r0
+       s    @angle,r0                  ; Subtract player angle
+       ci   r0,-n_rays
+       jlt  draw_bullets_0
+       ci   r0,n_rays
+       jgt  draw_bullets_0
+       ai   r0,>78                     ; Center
+       mov  @bullet_distance,r1
+       srl  r1,8
+       movb @bullet_distance_pattern_table(r1),r1    ; Pattern
+*      Draw sprite
+       movb @bullet_z,*r15             ; y
+       movb @r0lb,*r15                 ; x
+       movb r1,*r15                    ; pattern
+       movb @bullet_color_byte,*r15    ; color
+*      End marker
+draw_bullets_0:
+       movb @end_marker_byte,*r15
+       bl   @check_int
+       .endproc
+bullet_distance_pattern_table:
+       byte >30,>34,>38,>3c,>40,>40,>44,>44
+       byte >48,>48,>48,>4c,>4c,>4c,>4c,>4c
+       byte >4c,>4c
+bullet_color_byte:
+       byte bullet_color
+end_marker_byte:
+       byte >d0
+*// draw_bullets
+
+*********************************************************************
+*
 * Bullet collisions
 *
 bullets_collisions:
@@ -910,46 +954,40 @@ bullets_collisions_0:
 
 *********************************************************************
 *
-* Draw bullets
+* Object collisions
 *
-draw_bullets:
+object_collisions:
        .proc
-       mov  @sal_no,r0                 ; Which buffer to update?
-       sla  r0,7
-       ai   r0,spratb+(12*4)
-       bl   @vwad                      ; Set VDP address
-       abs  @bullet_active
-       jeq  draw_bullets_0
-*      Check angle
-       mov  @bullet_angle,r0
-       s    @angle,r0                  ; Subtract player angle
-       ci   r0,-n_rays
-       jlt  draw_bullets_0
-       ci   r0,n_rays
-       jgt  draw_bullets_0
-       ai   r0,>78                     ; Center
-       mov  @bullet_distance,r1
-       srl  r1,8
-       movb @bullet_distance_pattern_table(r1),r1    ; Pattern
-*      Draw sprite
-       movb @bullet_z,*r15             ; y
-       movb @r0lb,*r15                 ; x
-       movb r1,*r15                    ; pattern
-       movb @bullet_color_byte,*r15    ; color
-*      End marker
-draw_bullets_0:
-       movb @end_marker_byte,*r15
+       li   r4,objects
+       mov  @n_objects,r5
+       mov  @x,r0
+       mov  @y,r1
+object_collisions_1:
+       mov  *r4,r2
+       jeq  object_collisions_2
+       mov  @object_type(r4),r2
+       ci   r2,object_type_chest
+       jne  object_collisions_2
+       mov  @object_x(r4),r2
+       s    r0,r2
+       abs  r2
+       ci   r2,>0100
+       jgt  object_collisions_2
+       mov  @object_y(r4),r3
+       s    r1,r3
+       abs  r3
+       ci   r3,>0100
+       jgt  object_collisions_2
+       clr  *r4
+       jmp  object_collisions_3
+object_collisions_2:
+       ai   r4,object_size
+       dec  r5
+       jne  object_collisions_1
+object_collisions_3:
        bl   @check_int
        .endproc
-bullet_distance_pattern_table:
-       byte >30,>34,>38,>3c,>40,>40,>44,>44
-       byte >48,>48,>48,>4c,>4c,>4c,>4c,>4c
-       byte >4c,>4c
-bullet_color_byte:
-       byte bullet_color
-end_marker_byte:
-       byte >d0
-*// draw_bullets
+*// object_collisions
 
 *********************************************************************
 *
