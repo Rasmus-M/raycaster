@@ -607,19 +607,19 @@ draw_object:
        srl  r8,5                       ; To FP 14.2 + word offset
        a    @object_depth_table(r4),r8 ; Add depth table base for object
        mov  *r8,r8                     ; Map address
-       jeq  draw_object_10
+       jeq  draw_object_10             ; Zero means don't draw
        mov  *r8+,r1                    ; Width
        mov  *r8+,r2                    ; Height
        inct r8                         ; Skip size word
 *      Screen address
        mov  @dbl_buffer_flag,r0        ; Which buffer to update?
        andi r0,>0001
-       sla  r0,10
-       ai   r0,nametb+(screen_width*(screen_height/2))
-       clr  r3
+       sla  r0,10                      ; x 1024
+       ai   r0,nametb+(screen_width*(screen_height/2)) ; Middle screen row
+       clr  r3                         ; For distance
        movb r7,@r3lb                   ; Distance integer
        sla  r3,1                       ; To word offset
-       mov  @floor_offset_from_center(r3),r3 ; Floor offset from center
+       mov  @floor_offset_from_center(r3),r3            ; Floor offset from center
        s    r2,r3                      ; Minus object height
        sla  r3,5                       ; * 32
        a    r3,r0                      ; Add row offset
@@ -632,30 +632,30 @@ draw_object:
        mov  r1,r13                     ; Adjusted width
 draw_object_5:
        mov  r6,r6                      ; Check if out of screen
-       jlt  draw_object_6
+       jlt  draw_object_6              ; Jump if out of screen
        c    r7,@depth_buffer(r12)      ; Check if behind wall
-       jhe  draw_object_6
+       jhe  draw_object_6              ; Jump if at or behind wall
        jmp  draw_object_7              ; Column OK
 draw_object_6:
        inc  r6                         ; Next column
-       inct r12
+       inct r12                        ; Next depth buffer index
        dec  r13                        ; Decrease width
        inc  r8                         ; Increase map address
-       dec  r3
-       jne  draw_object_5
+       dec  r3                         ; Decrease columns left
+       jne  draw_object_5              ; Loop until no more columns
        jmp  draw_object_10             ; No columns to render
 draw_object_7:
        a    r6,r0                      ; Add start column to screen address
 *      Find end column to render
 draw_object_8:
        ci   r6,screen_width-1          ; Check if out of screen
-       jgt  draw_object_9
+       jgt  draw_object_9              ; Jump if out of screen
        c    r7,@depth_buffer(r12)      ; Check if behind wall
-       jhe  draw_object_9
+       jhe  draw_object_9              ; Jump if at or behind wall
        inc  r6                         ; Next column
-       inct r12
-       dec  r3
-       jne  draw_object_8
+       inct r12                        ; Next depth buffer index
+       dec  r3                         ; Decrease columns left
+       jne  draw_object_8              ; Loop until no more columns
 draw_object_9:
        s    r3,r13                     ; Substract remaining columns from width
        jeq  draw_object_10             ; No columns to render
@@ -664,22 +664,22 @@ draw_object_1:
        bl   @vwad                      ; Set VDP address
        mov  r13,r3                     ; Column counter
 draw_object_2:
-       movb *r8+,r9
-       jeq  draw_object_3
-       movb r9,*r15
-       dec  r3
-       jne  draw_object_2
-       jmp  draw_object_4
+       movb *r8+,r9                    ; Get map byte
+       jeq  draw_object_3              ; Zero is transparent
+       movb r9,*r15                    ; Write to VDP
+       dec  r3                         ; Decrease colum counter
+       jne  draw_object_2              ; Loop until done
+       jmp  draw_object_4              ; To next row
 draw_object_3:
-       movb @vdprd,r9
-       dec  r3
-       jne  draw_object_2
+       movb @vdprd,r9                  ; Increment VDP address
+       dec  r3                         ; Decrease colum counter
+       jne  draw_object_2              ; Loop until done
 draw_object_4:
        a    r1,r8                      ; Add width to map address
        s    r13,r8                     ; Substract adjusted width
-       ai   r0,screen_width
-       dec  r2
-       jne  draw_object_1
+       ai   r0,screen_width            ; One VDP row down
+       dec  r2                         ; Decrease row counter
+       jne  draw_object_1              ; Loop until done
 draw_object_10:
        bl   @check_int
        .endproc
@@ -1565,8 +1565,25 @@ columns_set_table:
 * Floor offset from vertical center of screen at different distances
 *
 floor_offset_from_center:
-;      data 12, 12, 6, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1
-       data 12, 8, 4, 3, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+* Rounded to nearest
+       data 12                         ; 12/0 = Inf
+       data 12                         ; 12/1 = 12
+       data 6                          ; 12/2 = 6
+       data 4                          ; 12/3 = 4
+       data 3                          ; 12/4 = 3
+       data 2                          ; 12/5 = 2.4
+       data 2                          ; 12/6 = 2
+       data 2                          ; 12/7 = 1.7
+       data 2                          ; 12/8 = 1.5
+       data 1                          ; 12/9 = 1.3
+       data 1                          ; 12/10 = 1.2
+       data 1                          ; 12/11 = 1.1
+       data 1                          ; 12/12 = 1
+       data 1                          ; 12/13 = 0.9
+       data 1                          ; 12/14 = 0.9
+       data 1                          ; 12/15 = 0.8
+       data 1                          ; 12/16 = 0.8
+
 ***************************************************************
 *
 * Data files
