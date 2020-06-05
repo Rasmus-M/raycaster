@@ -67,6 +67,8 @@ max_bullet_distance:
        equ  16
 max_object_width:
        equ  8
+max_objects:
+       equ  16
 n_tile_patterns:
        equ  256
 n_sprite_patterns:
@@ -161,9 +163,7 @@ main:
        lwpi wrksp                      ; Setup workspace
        li   r10,stack                  ; Setup stack pointer
        bl   @one_time_init
-       mov  @start_x,@x
-       mov  @start_y,@y
-       mov  @start_dir,@angle
+       bl   @init_level
 main_loop:
        clr  @interrupt_count
        bl   @vsync
@@ -558,6 +558,7 @@ draw_objects:
        .proc
        li   r4,objects
        mov  @n_objects,r5
+       jeq  draw_objects_3
 draw_objects_1:
        mov  *r4,r0                     ; Active?
        jeq  draw_objects_2
@@ -590,6 +591,7 @@ draw_objects_2:
        ai   r4,object_size
        dec  r5
        jne  draw_objects_1
+draw_objects_3:
        .endproc
 *// draw_objects
 
@@ -791,6 +793,7 @@ move_enemies:
        .proc
        li   r4,objects
        mov  @n_objects,r5
+       jeq  move_enemies_3
 move_enemies_1:
        mov  *r4,r0
        jeq  move_enemies_2
@@ -921,6 +924,7 @@ bullets_collisions:
 bullets_collisions_2:
        li   r4,objects
        mov  @n_objects,r5
+       jeq  bullets_collisions_0
 bullets_collisions_3:
        mov  *r4,r2
        jeq  bullets_collisions_4
@@ -930,14 +934,14 @@ bullets_collisions_3:
        mov  @object_x(r4),r2
        s    r0,r2
        abs  r2
-       ci   r2,>0100
+       ci   r2,>0080
        jgt  bullets_collisions_4
        mov  @object_y(r4),r3
        s    r1,r3
        abs  r3
-       ci   r3,>0100
+       ci   r3,>0080
        jgt  bullets_collisions_4
-       clr  *r4
+       bl   @remove_object
        jmp  bullets_collisions_1
 bullets_collisions_4:
        ai   r4,object_size
@@ -960,6 +964,7 @@ object_collisions:
        .proc
        li   r4,objects
        mov  @n_objects,r5
+       jeq  object_collisions_3
        mov  @x,r0
        mov  @y,r1
 object_collisions_1:
@@ -978,7 +983,7 @@ object_collisions_1:
        abs  r3
        ci   r3,>0100
        jgt  object_collisions_2
-       clr  *r4
+       bl   @remove_object
        jmp  object_collisions_3
 object_collisions_2:
        ai   r4,object_size
@@ -1074,6 +1079,126 @@ get_map_address:
        ai   r2,map
        rt
 *// get_map_address
+
+*********************************************************************
+*
+* Reset objects
+*
+reset_objects:
+       li   r5,objects
+       li   r6,max_objects
+reset_objects_1:
+       clr  *r5
+       ai   r5,object_size
+       dec  r6
+       jne  reset_objects_1
+       rt
+*// reset_objects
+
+*********************************************************************
+*
+* Create object
+*
+* r0: x FP 8.8
+* r1: y FP 8.8
+* r2: Object type
+*
+* On return r5 contains the address of the object, or 0 if it failed
+*
+create_object:
+       li   r5,objects
+       clr  r6
+create_object_1:
+       mov  *r5,r7                     ; Object active?
+       jne  create_object_2
+       li   r7,1
+       mov  r7,*r5
+       mov  r2,@object_type(r5)
+       mov  r0,@object_x(r5)
+       mov  r1,@object_y(r5)
+       mov  r2,r7
+       sla  r7,1
+       mov  @object_depth_tables(r7),@object_depth_table(r5)
+       c    r6,@n_objects
+       jlt  create_object_3
+       inc  @n_objects
+       jmp  create_object_3
+create_object_2:
+       ai   r5,object_size
+       inc  r6
+       ci   r6,max_objects
+       jlt  create_object_1
+       clr  r5
+create_object_3:
+       rt
+*// create_object
+
+*********************************************************************
+*
+* Remove object
+*
+* r4: Address of object
+*
+remove_object:
+       .proc
+       mov  r4,r0
+       ai   r0,object_size
+       mov  r4,r1
+       li   r2,objects+(object_size*max_objects)
+       s    r4,r2
+       bl   @copy
+       li   r0,objects+(object_size*(max_objects-1))
+       clr  *r0
+       dec  @n_objects
+       .endproc
+*// remove_object
+
+*********************************************************************
+*
+* Initialize level
+*
+init_level:
+       .proc
+       mov  @start_x,@x
+       mov  @start_y,@y
+       mov  @start_dir,@angle
+*      Init objects
+       bl   @reset_objects
+       li   r3,object_init_data
+       li   r4,(object_init_data_end-object_init_data)/6
+init_level_1:
+       mov  *r3+,r2
+       mov  *r3+,r0
+       mov  *r3+,r1
+       bl   @create_object
+       dec  r4
+       jne  init_level_1
+       .endproc
+object_init_data:
+       data object_type_soldier
+       data >0c00                      ; x
+       data >1900                      ; y
+       data object_type_soldier
+       data >2500                      ; x
+       data >2f00                      ; y
+       data object_type_soldier
+       data >3400                      ; x
+       data >3c00                      ; y
+       data object_type_soldier
+       data >3900                      ; x
+       data >0400                      ; y
+       data object_type_soldier
+       data >1000                      ; x
+       data >0c00                      ; y
+       data object_type_soldier
+       data >1b00                      ; x
+       data >3d00                      ; y
+       data object_type_chest
+       data >0e00                      ; x
+       data >1100                      ; y
+object_init_data_end:
+       equ  $
+*// init_level
 
 *********************************************************************
 *
@@ -1461,7 +1586,7 @@ door:
 **
 * Objects
 *
-object_active:
+object_active:                         ; 0 = inactive, <> 0 = active,
        equ  0
 object_type:
        equ  2
@@ -1479,52 +1604,15 @@ object_type_soldier:
 object_type_chest:
        equ  2
 
-objects:
-       data 1
-       data object_type_soldier
-       data >0c00                      ; x
-       data >1900                      ; y
-       data soldier_depth_table
-
-       data 1
-       data object_type_soldier
-       data >2500                      ; x
-       data >2f00                      ; y
-       data soldier_depth_table
-
-       data 1
-       data object_type_soldier
-       data >3400                      ; x
-       data >3c00                      ; y
-       data soldier_depth_table
-
-       data 1
-       data object_type_soldier
-       data >3900                      ; x
-       data >0400                      ; y
-       data soldier_depth_table
-
-       data 1
-       data object_type_soldier
-       data >1000                      ; x
-       data >0c00                      ; y
-       data soldier_depth_table
-
-       data 1
-       data object_type_soldier
-       data >1b00                      ; x
-       data >3d00                      ; y
-       data soldier_depth_table
-
-       data 1
-       data object_type_chest
-       data >0e00                      ; x
-       data >1100                      ; y
-       data chest_depth_table
-objects_end:
-       equ  $
 n_objects:
-       data (objects_end-objects)/object_size
+       data 0
+objects:
+       bss  object_size*16
+
+object_depth_tables:
+       data 0
+       data soldier_depth_table
+       data chest_depth_table
 
 bullet_active:
        data 0
