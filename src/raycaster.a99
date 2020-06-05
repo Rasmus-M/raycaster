@@ -1186,6 +1186,9 @@ init_level_1:
        bl   @create_object
        dec  r4
        jne  init_level_1
+*      Speak
+       li   r1,green_things_near
+       bl   @say_phrase
        .endproc
 object_init_data:
        data object_type_soldier

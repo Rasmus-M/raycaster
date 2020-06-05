@@ -844,4 +844,6 @@ hand_up:
        data sp_hand,sp_up,0
 come_and_get_me:
        data sp_come,sp_and,sp_get,sp_me,0
+green_things_near:
+       data sp_uhoh,sp_green,sp_things,sp_near,0
 
