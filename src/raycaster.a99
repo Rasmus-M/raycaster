@@ -146,8 +146,14 @@ column_ptrs:
        equ  column_ptr+2
 tmp:
        equ  column_ptrs+(n_rays*2)
-cast_ray_loop_pad:
+get_speech_status:
        equ  tmp+2
+speech_ptr:
+       equ  get_speech_status+6
+speech_on:
+       equ  speech_ptr+2
+cast_ray_loop_pad:
+       equ  speech_on+2
 depth_buffer:
        equ  cast_ray_loop_pad+40
 pad_max:
@@ -177,6 +183,7 @@ main_loop:
        bl   @draw_bullets
        bl   @bullets_collisions
        bl   @object_collisions
+       bl   @speak
        bl   @display_frame_rate
        jmp  main_loop
 
@@ -683,6 +690,11 @@ draw_object_4:
        ai   r0,screen_width            ; One VDP row down
        dec  r2                         ; Decrease row counter
        jne  draw_object_1              ; Loop until done
+*      Speak first time
+       mov  @object_speech(r4),r1
+       jeq  draw_object_10
+       bl   @say_phrase
+       clr  @object_speech(r4)
 draw_object_10:
        bl   @check_int
        .endproc
@@ -1119,6 +1131,7 @@ create_object_1:
        mov  r2,r7
        sla  r7,1
        mov  @object_depth_tables(r7),@object_depth_table(r5)
+       mov  @object_speech_table(r7),@object_speech(r5)
        c    r6,@n_objects
        jlt  create_object_3
        inc  @n_objects
@@ -1218,6 +1231,8 @@ one_time_init:
        li   r1,cast_ray_loop_pad
        li   r2,cast_ray_loop_end-cast_ray_loop
        bl   @copy
+*      Init speech
+       bl   @init_speech
 *      Patterns
        li   r0,ptrntb
        li   r1,PAT0
@@ -1596,8 +1611,10 @@ object_y:
        equ  6
 object_depth_table:
        equ  8
-object_size:
+object_speech:
        equ  10
+object_size:
+       equ  12
 
 object_type_soldier:
        equ  1
@@ -1613,6 +1630,10 @@ object_depth_tables:
        data 0
        data soldier_depth_table
        data chest_depth_table
+object_speech_table:
+       data 0
+       data hand_up
+       data come_and_get_me
 
 bullet_active:
        data 0
@@ -1729,6 +1750,7 @@ lower_ram_max:
        copy "graphics.a99"
 map:
        equ  MD0
+       copy "speech.a99"
 
 upper_ram_max:
        equ  $

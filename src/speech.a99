@@ -1,0 +1,847 @@
+sp_0:
+       equ >13c3
+sp_1:
+       equ >1409
+sp_2:
+       equ >145c
+sp_3:
+       equ >149a
+sp_4:
+       equ >14e7
+sp_5:
+       equ >1531
+sp_6:
+       equ >15a8
+sp_7:
+       equ >15e8
+sp_8:
+       equ >1637
+sp_9:
+       equ >1664
+sp_a1:
+       equ >1700
+sp_a:
+       equ >16e4
+sp_about:
+       equ >1714
+sp_after:
+       equ >1769
+sp_again:
+       equ >17a5
+sp_all:
+       equ >1807
+sp_am:
+       equ >1830
+sp_an:
+       equ >1876
+sp_and:
+       equ >18ac
+sp_answer:
+       equ >1913
+sp_any:
+       equ >1962
+sp_are:
+       equ >556e
+sp_as:
+       equ >19a7
+sp_assume:
+       equ >19e8
+sp_at:
+       equ >1a25
+sp_b:
+       equ >1a42
+sp_back:
+       equ >1a64
+sp_base:
+       equ >1a8f
+sp_be:
+       equ >1a42
+sp_between:
+       equ >1ade
+sp_black:
+       equ >1b47
+sp_blue:
+       equ >1b8a
+sp_both:
+       equ >1bb6
+sp_bottom:
+       equ >1bea
+sp_but:
+       equ >1c20
+sp_buy:
+       equ >1c48
+sp_by:
+       equ >1c48
+sp_bye:
+       equ >1c48
+sp_c:
+       equ >1c86
+sp_can:
+       equ >1cd9
+sp_cassette:
+       equ >1d10
+sp_center:
+       equ >1d47
+sp_check:
+       equ >1d82
+sp_choice:
+       equ >1da2
+sp_clear:
+       equ >1de6
+sp_color:
+       equ >1e20
+sp_come:
+       equ >1e54
+sp_comes:
+       equ >1e87
+sp_comma:
+       equ >1ede
+sp_command:
+       equ >1f1a
+sp_complete:
+       equ >1f71
+sp_completed:
+       equ >1fcd
+sp_computer:
+       equ >2034
+sp_connected:
+       equ >208b
+sp_console:
+       equ >20f3
+sp_correct:
+       equ >213c
+sp_course:
+       equ >2182
+sp_cyan:
+       equ >21c0
+sp_d:
+       equ >2203
+sp_data:
+       equ >223c
+sp_decide:
+       equ >2294
+sp_device:
+       equ >22fd
+sp_did:
+       equ >2366
+sp_different:
+       equ >23c4
+sp_diskette:
+       equ >242d
+sp_do:
+       equ >2480
+sp_does:
+       equ >24b3
+sp_doing:
+       equ >24ea
+sp_done:
+       equ >253e
+sp_double:
+       equ >2599
+sp_down:
+       equ >25d3
+sp_draw:
+       equ >2612
+sp_drawing:
+       equ >2668
+sp_e:
+       equ >26cb
+sp_each:
+       equ >26f0
+sp_eight:
+       equ >1637
+sp_eighty:
+       equ >2723
+sp_eleven:
+       equ >2759
+sp_else:
+       equ >27b6
+sp_end:
+       equ >27f5
+sp_ends:
+       equ >2866
+sp_enter:
+       equ >28ad
+sp_error:
+       equ >28ef
+sp_exactly:
+       equ >2937
+sp_eye:
+       equ >3793
+sp_f:
+       equ >299f
+sp_fifteen:
+       equ >29c2
+sp_fifty:
+       equ >2a1d
+sp_figure:
+       equ >2a60
+sp_find:
+       equ >2ad7
+sp_fine:
+       equ >2b1e
+sp_finish:
+       equ >2b5b
+sp_finished:
+       equ >2b94
+sp_first:
+       equ >2bd7
+sp_fit:
+       equ >2c14
+sp_five:
+       equ >1531
+sp_for:
+       equ >14e7
+sp_forty:
+       equ >2c3e
+sp_four:
+       equ >14e7
+sp_fourteen:
+       equ >2c7f
+sp_fourth:
+       equ >2d19
+sp_from:
+       equ >2d74
+sp_front:
+       equ >2dbc
+sp_g:
+       equ >2deb
+sp_games:
+       equ >2e28
+sp_get:
+       equ >2e8c
+sp_getting:
+       equ >2eba
+sp_give:
+       equ >2f38
+sp_gives:
+       equ >2f8d
+sp_go:
+       equ >2ffc
+sp_goes:
+       equ >3031
+sp_going:
+       equ >3079
+sp_good:
+       equ >30d6
+sp_good_work:
+       equ >30fa
+sp_goodbye:
+       equ >3148
+sp_got:
+       equ >31a0
+sp_gray:
+       equ >31d1
+sp_green:
+       equ >321d
+sp_guess:
+       equ >327e
+sp_h:
+       equ >32c0
+sp_had:
+       equ >32ef
+sp_hand:
+       equ >3339
+sp_handheld_unit:
+       equ >337f
+sp_has:
+       equ >3405
+sp_have:
+       equ >344a
+sp_head:
+       equ >348c
+sp_hear:
+       equ >34e5
+sp_hello:
+       equ >351a
+sp_help:
+       equ >3571
+sp_here:
+       equ >34e5
+sp_higher:
+       equ >35ae
+sp_hit:
+       equ >360a
+sp_home:
+       equ >363e
+sp_how:
+       equ >3689
+sp_hundred:
+       equ >36ef
+sp_hurry:
+       equ >3757
+sp_i:
+       equ >3793
+sp_i_win:
+       equ >37cf
+sp_if:
+       equ >3850
+sp_in:
+       equ >3872
+sp_inch:
+       equ >38b5
+sp_inches:
+       equ >38fa
+sp_instruction:
+       equ >394b
+sp_instructions:
+       equ >39bd
+sp_is:
+       equ >3a32
+sp_it:
+       equ >3a7a
+sp_j:
+       equ >3aae
+sp_joystick:
+       equ >3aed
+sp_just:
+       equ >3b4c
+sp_k:
+       equ >3b8a
+sp_key:
+       equ >3bb9
+sp_keyboard:
+       equ >3be9
+sp_know:
+       equ >3c4f
+sp_l:
+       equ >3c8f
+sp_large:
+       equ >3cd0
+sp_larger:
+       equ >3d19
+sp_largest:
+       equ >3d67
+sp_last:
+       equ >3dde
+sp_learn:
+       equ >3e1e
+sp_left:
+       equ >3e78
+sp_less:
+       equ >3eb2
+sp_let:
+       equ >3f08
+sp_like:
+       equ >3f2f
+sp_likes:
+       equ >3f6a
+sp_line:
+       equ >3fd5
+sp_load:
+       equ >404b
+sp_long:
+       equ >40d3
+sp_look:
+       equ >413d
+sp_looks:
+       equ >4191
+sp_lower:
+       equ >41e7
+sp_m:
+       equ >4233
+sp_made:
+       equ >4267
+sp_magenta:
+       equ >42ae
+sp_make:
+       equ >432e
+sp_me:
+       equ >437d
+sp_mean:
+       equ >43bd
+sp_memory:
+       equ >4405
+sp_message:
+       equ >446c
+sp_messages:
+       equ >44d7
+sp_middle:
+       equ >4551
+sp_might:
+       equ >4593
+sp_minus:
+       equ >48dc
+sp_module:
+       equ >45df
+sp_more:
+       equ >4642
+sp_most:
+       equ >4693
+sp_move:
+       equ >46df
+sp_must:
+       equ >473d
+sp_n:
+       equ >4786
+sp_name:
+       equ >47c0
+sp_near:
+       equ >4833
+sp_need:
+       equ >4880
+sp_negative:
+       equ >48dc
+sp_next:
+       equ >4959
+sp_nice_try:
+       equ >49a5
+sp_nine:
+       equ >1664
+sp_ninety:
+       equ >4a4e
+sp_no:
+       equ >3c4f
+sp_not:
+       equ >4aab
+sp_now:
+       equ >4ada
+sp_number:
+       equ >4b20
+sp_o:
+       equ >4b7d
+sp_of:
+       equ >4bba
+sp_off:
+       equ >4c13
+sp_oh:
+       equ >4b7d
+sp_on:
+       equ >4c41
+sp_one:
+       equ >1409
+sp_only:
+       equ >4c8b
+sp_or:
+       equ >4cdc
+sp_order:
+       equ >4d34
+sp_other:
+       equ >4d8a
+sp_out:
+       equ >4dd4
+sp_over:
+       equ >4e0a
+sp_p:
+       equ >4e66
+sp_part:
+       equ >4e9f
+sp_partner:
+       equ >4ee0
+sp_parts:
+       equ >4f31
+sp_period:
+       equ >4f81
+sp_play:
+       equ >4fe5
+sp_plays:
+       equ >502d
+sp_please:
+       equ >5093
+sp_plus:
+       equ >51b3
+sp_point:
+       equ >50ec
+sp_position:
+       equ >5148
+sp_positive:
+       equ >51b3
+sp_press:
+       equ >5231
+sp_print:
+       equ >526d
+sp_printer:
+       equ >52aa
+sp_problem:
+       equ >52f9
+sp_problems:
+       equ >5360
+sp_program:
+       equ >53ee
+sp_put:
+       equ >5477
+sp_putting:
+       equ >54aa
+sp_q:
+       equ >5520
+sp_r:
+       equ >556e
+sp_randomly:
+       equ >55a0
+sp_read1:
+       equ >57c1
+sp_read:
+       equ >5652
+sp_ready_to_start:
+       equ >56b3
+sp_recorder:
+       equ >5745
+sp_red:
+       equ >57c1
+sp_refer:
+       equ >5801
+sp_remember:
+       equ >5861
+sp_return:
+       equ >58cf
+sp_rewind:
+       equ >593a
+sp_right:
+       equ >7c38
+sp_round:
+       equ >59c2
+sp_s:
+       equ >5a5a
+sp_said:
+       equ >5aa1
+sp_save:
+       equ >5aef
+sp_say:
+       equ >5b65
+sp_says:
+       equ >5ba2
+sp_screen:
+       equ >5bfb
+sp_second:
+       equ >5c5b
+sp_see:
+       equ >1c86
+sp_sees:
+       equ >5cbf
+sp_set:
+       equ >5d1b
+sp_seven:
+       equ >15e8
+sp_seventy:
+       equ >5d50
+sp_shape:
+       equ >5da5
+sp_shapes:
+       equ >5dde
+sp_shift:
+       equ >5e27
+sp_short:
+       equ >5e5c
+sp_shorter:
+       equ >5ea5
+sp_should:
+       equ >5f24
+sp_side:
+       equ >5f6d
+sp_sides:
+       equ >5fc8
+sp_six:
+       equ >15a8
+sp_sixty:
+       equ >601a
+sp_small:
+       equ >6070
+sp_smaller:
+       equ >60ae
+sp_smallest:
+       equ >60f1
+sp_so:
+       equ >6153
+sp_some:
+       equ >6197
+sp_sorry:
+       equ >61c6
+sp_space:
+       equ >6226
+sp_spaces:
+       equ >625d
+sp_spell:
+       equ >62cc
+sp_square:
+       equ >6333
+sp_start:
+       equ >637c
+sp_step:
+       equ >63c5
+sp_stop:
+       equ >63f7
+sp_sum:
+       equ >6197
+sp_supposed:
+       equ >6423
+sp_supposed_to:
+       equ >6489
+sp_sure:
+       equ >64f4
+sp_t:
+       equ >6551
+sp_take:
+       equ >658b
+sp_teen:
+       equ >65bf
+sp_tell:
+       equ >6603
+sp_ten:
+       equ >664e
+sp_texas_instruments:
+       equ >6696
+sp_than:
+       equ >675b
+sp_that:
+       equ >67b6
+sp_that_is_incorrect:
+       equ >6816
+sp_that_is_right:
+       equ >68fe
+sp_the1:
+       equ >69b6
+sp_the:
+       equ >6974
+sp_their:
+       equ >6a72
+sp_then:
+       equ >69e1
+sp_there:
+       equ >6a72
+sp_these:
+       equ >6ade
+sp_they:
+       equ >6b47
+sp_thing:
+       equ >6ba0
+sp_things:
+       equ >6c0f
+sp_think:
+       equ >6c73
+sp_third:
+       equ >6cbc
+sp_thirteen:
+       equ >6d11
+sp_thirty:
+       equ >6da2
+sp_this:
+       equ >6dde
+sp_three:
+       equ >149a
+sp_threw:
+       equ >6e26
+sp_through:
+       equ >6e26
+sp_time:
+       equ >6e69
+sp_to:
+       equ >145c
+sp_together:
+       equ >6eb0
+sp_tone:
+       equ >6f1f
+sp_too:
+       equ >145c
+sp_top:
+       equ >6f8d
+sp_try:
+       equ >6fbb
+sp_try_again:
+       equ >700f
+sp_turn:
+       equ >7092
+sp_twelve:
+       equ >70ce
+sp_twenty:
+       equ >7119
+sp_two:
+       equ >145c
+sp_type:
+       equ >7170
+sp_u:
+       equ >71be
+sp_uhoh:
+       equ >71f4
+sp_under:
+       equ >7245
+sp_understand:
+       equ >729d
+sp_until:
+       equ >732f
+sp_up:
+       equ >739f
+sp_upper:
+       equ >73c3
+sp_use:
+       equ >7403
+sp_v:
+       equ >7449
+sp_vary:
+       equ >7487
+sp_very:
+       equ >74da
+sp_w:
+       equ >7520
+sp_wait:
+       equ >759d
+sp_want:
+       equ >75df
+sp_wants:
+       equ >7621
+sp_way:
+       equ >76b0
+sp_we:
+       equ >767d
+sp_weigh:
+       equ >76b0
+sp_weight:
+       equ >759d
+sp_well:
+       equ >7717
+sp_were:
+       equ >775c
+sp_what:
+       equ >77bc
+sp_what_was_that:
+       equ >77e9
+sp_when:
+       equ >7875
+sp_where:
+       equ >78ab
+sp_which:
+       equ >78f4
+sp_white:
+       equ >7924
+sp_who:
+       equ >7969
+sp_why:
+       equ >79b4
+sp_will:
+       equ >7a11
+sp_with:
+       equ >7a6b
+sp_won:
+       equ >1409
+sp_word:
+       equ >7aab
+sp_words:
+       equ >7b0a
+sp_work:
+       equ >7b75
+sp_working:
+       equ >7bbc
+sp_write:
+       equ >7c38
+sp_x:
+       equ >7c8d
+sp_y:
+       equ >7cb2
+sp_yellow:
+       equ >7cf8
+sp_yes:
+       equ >7d58
+sp_yet:
+       equ >7d99
+sp_you:
+       equ >71be
+sp_you_win:
+       equ >7ddb
+sp_your:
+       equ >7e4d
+sp_z:
+       equ >7e99
+sp_zero:
+       equ >13c3
+
+*********************************************************************
+*
+* Speak
+*
+speak:
+       .proc
+       abs  @speech_on
+       jeq  speak_2
+       mov  @speech_ptr,r1
+       jeq  speak_2
+       mov  *r1,r0
+       jeq  speak_1
+*      Check speech status
+       bl   @get_speech_status
+       andi r1,>8000
+       jne  speak_2
+       bl   @say_word
+       inct @speech_ptr
+       jmp  speak_2
+speak_1:
+       clr  @speech_ptr
+speak_2:
+       .endproc
+*// speak
+
+*********************************************************************
+*
+* Speak a phrase consisting of multiple words
+*
+* r1: points to the phrase to say.
+*
+say_phrase:
+       .proc
+       mov  *r1+,r0
+       mov  r1,@speech_ptr
+       bl   @say_word
+       .endproc
+*// say_phrase
+
+*********************************************************************
+*
+* Speak a word from the resident vocabulary
+*
+* r0: points to the word to say.
+*
+say_word:
+       abs  @speech_on
+       jeq  say_word_3
+*      Load address
+       li   r2,4
+say_word_1:
+       src  r0,4
+       mov  r0,r1
+       src  r1,4
+       andi r1,>0f00
+       ori  r1,>4000
+       movb r1,@spchwt
+       dec  r2
+       jne  say_word_1
+       li   r0,>4000
+       movb r0,@spchwt
+*      Speak
+       li   r0,>5000
+       movb r0,@spchwt
+say_word_3:
+       rt
+*// say_word
+
+*********************************************************************************
+*
+* Init speech
+*
+init_speech:
+       .proc
+       li   r0,speech_status_code
+       li   r1,get_speech_status
+       li   r2,speech_status_code_end-speech_status_code
+       bl   @copy
+       seto @speech_on
+       clr  @speech_ptr
+       .endproc
+*// init_speech
+
+*********************************************************************************
+*
+* Speech status read routine code, must be copied to scratchpad
+*
+speech_status_code:
+       movb @spchrd,r1
+       rt
+speech_status_code_end
+*// speech_status_code
+
+*********************************************************************
+*
+* Speech data
+*
+hand_up:
+       data sp_hand,sp_up,0
+come_and_get_me:
+       data sp_come,sp_and,sp_get,sp_me,0
+
