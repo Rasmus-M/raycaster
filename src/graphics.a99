@@ -599,6 +599,22 @@ SPR19  DATA >0000,>0000,>0000,>0001    ; Color 1
        DATA >0100,>0000,>0000,>0000    ; 
        DATA >0000,>0000,>0000,>0080    ; 
        DATA >8000,>0000,>0000,>0000    ; 
+SPR20  DATA >AAAA,>AAAA,>AAAA,>AAAA    ; Color 8
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
+       DATA >AAAA,>AAAA,>AAAA,>AAAA    ; 
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
+SPR21  DATA >AAAA,>AAAA,>AAAA,>AAAA    ; Color 11
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
+       DATA >AAAA,>AAAA,>AAAA,>AAAA    ; 
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
+SPR22  DATA >AAAA,>AAAA,>AAAA,>AAAA    ; Color 3
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
+       DATA >AAAA,>AAAA,>AAAA,>AAAA    ; 
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
+SPR23  DATA >AAAA,>AAAA,>AAAA,>AAAA    ; Color 12
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
+       DATA >AAAA,>AAAA,>AAAA,>AAAA    ; 
+       DATA >AAAA,>AAAA,>0000,>0000    ; 
 ****************************************
 * Map Data                              
 ****************************************
@@ -1183,7 +1199,7 @@ MD0    DATA >0101,>0101,>0101,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
        DATA >0101,>0101,>0101,>0101    ;
 * Sprite Locations                      
-SL0    DATA 256,256,0,1                ; y, x, pattern#, color#
+SL0    BYTE 255,256,0,1                ; y, x, pattern#, color#
 * == Map #1 ==                          
 MC1    DATA 0                          ;
 MS1    DATA >0018,>0020,>0300          ; Width, Height, Size
