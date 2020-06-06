@@ -716,8 +716,6 @@ draw_object_4:
        ai   r0,screen_width            ; One VDP row down
        dec  r2                         ; Decrease row counter
        jne  draw_object_1              ; Loop until done
-*      Fire
-       dec  @health
 *      Speak first time
        mov  @object_speech(r4),r1
        jeq  draw_object_10
@@ -846,6 +844,20 @@ move_enemies_1:
        mov  @object_x(r4),r0
        mov  @x,r2
        s    r0,r2
+       mov  r2,r6
+*      y
+       mov  @object_y(r4),r1
+       mov  @y,r3
+       s    r1,r3
+       mov  r3,r7
+*      Check distance
+       abs  r6
+       abs  r7
+       a    r6,r7
+       ci   r7,max_object_distance*256
+       jhe  move_enemies_3
+*      x
+       mov  r2,r2
        jeq  move_enemies_5
        jlt  move_enemies_4
        li   r2,guard_speed
@@ -853,11 +865,8 @@ move_enemies_1:
 move_enemies_4:
        li   r2,-guard_speed
 move_enemies_5:
-       a    r2,r0
 *      y
-       mov  @object_y(r4),r1
-       mov  @y,r3
-       s    r1,r3
+       mov  r3,r3
        jeq  move_enemies_7
        jlt  move_enemies_6
        li   r3,guard_speed
@@ -865,11 +874,31 @@ move_enemies_5:
 move_enemies_6:
        li   r3,-guard_speed
 move_enemies_7:
+*      Check map
+       a    r2,r0
        a    r3,r1
        bl   @get_map_value
+       jeq  move_enemies_8
+       s    r2,r0
+       bl   @get_map_value
+       jeq  move_enemies_8
+       a    r2,r0
+       s    r3,r1
+       bl   @get_map_value
        jne  move_enemies_2
+move_enemies_8:
+*      Move
        mov  r0,@object_x(r4)
        mov  r1,@object_y(r4)
+*      Shoot
+move_enemies_9:
+*      Fire
+       bl   @rand
+       ci   r0,>c000
+       jl   move_enemies_2
+       dec  @health
+       bl   @play_shot_2
+*      Next object
 move_enemies_2:
        ai   r4,object_size
        dec  r5
