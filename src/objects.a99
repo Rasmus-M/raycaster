@@ -1,4 +1,4 @@
-soldier_depth_table:
+guard_depth_table:
 *      Floor offset 12
 *      Height 16,12
        data 0,0,MS13,MS13              ; 0: inf, 64, 32, 21

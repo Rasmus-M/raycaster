@@ -76,7 +76,7 @@ n_sprite_patterns:
        equ  25
 n_fixed_sprites:
        equ  16
-soldier_speed:
+guard_speed:
        equ  >0040
 bullet_speed_z:
        equ  ->0c00
@@ -837,7 +837,7 @@ move_enemies_1:
        mov  *r4,r0
        jeq  move_enemies_2
        mov  @object_type(r4),r0
-       ci   r0,object_type_soldier
+       ci   r0,object_type_guard
        jne  move_enemies_2
        bl   @rand
        ci   r0,>e000
@@ -848,10 +848,10 @@ move_enemies_1:
        s    r0,r2
        jeq  move_enemies_5
        jlt  move_enemies_4
-       li   r2,soldier_speed
+       li   r2,guard_speed
        jmp  move_enemies_5
 move_enemies_4:
-       li   r2,-soldier_speed
+       li   r2,-guard_speed
 move_enemies_5:
        a    r2,r0
 *      y
@@ -860,10 +860,10 @@ move_enemies_5:
        s    r1,r3
        jeq  move_enemies_7
        jlt  move_enemies_6
-       li   r3,soldier_speed
+       li   r3,guard_speed
        jmp  move_enemies_7
 move_enemies_6:
-       li   r3,-soldier_speed
+       li   r3,-guard_speed
 move_enemies_7:
        a    r3,r1
        bl   @get_map_value
@@ -968,7 +968,7 @@ bullets_collisions_3:
        mov  *r4,r2
        jeq  bullets_collisions_4
        mov  @object_type(r4),r2
-       ci   r2,object_type_soldier
+       ci   r2,object_type_guard
        jne  bullets_collisions_4
        mov  @object_x(r4),r2
        s    r0,r2
@@ -1273,22 +1273,22 @@ init_level_1:
        bl   @say_phrase
        .endproc
 object_init_data:
-       data object_type_soldier
+       data object_type_guard
        data >0c00                      ; x
        data >1900                      ; y
-       data object_type_soldier
+       data object_type_guard
        data >2500                      ; x
        data >2f00                      ; y
-       data object_type_soldier
+       data object_type_guard
        data >3400                      ; x
        data >3c00                      ; y
-       data object_type_soldier
+       data object_type_guard
        data >3900                      ; x
        data >0400                      ; y
-       data object_type_soldier
+       data object_type_guard
        data >1000                      ; x
        data >0c00                      ; y
-       data object_type_soldier
+       data object_type_guard
        data >1b00                      ; x
        data >3d00                      ; y
        data object_type_chest
@@ -1717,7 +1717,7 @@ object_fire:
 object_size:
        equ  14
 
-object_type_soldier:
+object_type_guard:
        equ  1
 object_type_chest:
        equ  2
@@ -1729,7 +1729,7 @@ objects:
 
 object_depth_tables:
        data 0
-       data soldier_depth_table
+       data guard_depth_table
        data chest_depth_table
 object_speech_table:
        data 0
