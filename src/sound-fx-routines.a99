@@ -21,90 +21,24 @@ mute_table:
 
 *********************************************************************
 *
-* Play jump
+* Play shot 1
 *
-play_jump:
+play_shot_1:
        .proc
-       li   r0,snd_jump
+       li   r0,snd_shot_1
        li   r1,snd_channel_1
-       li   r2,>0230
        bl   @play_snd
        .endproc
-*// play_axe
+*// play_shot_1
 
 *********************************************************************
 *
-* Play long jump
+* Play shot 2
 *
-play_long_jump:
+play_shot_2:
        .proc
-       li   r0,snd_long_jump
-       li   r1,snd_channel_1
-       li   r2,>0230
+       li   r0,snd_shot_2
+       li   r1,snd_channel_2
        bl   @play_snd
        .endproc
-*// play_bomb
-
-*********************************************************************
-*
-* Play star
-*
-play_star:
-       .proc
-       li   r0,snd_star
-       li   r1,snd_channel_1
-       li   r2,>0040
-       bl   @play_snd
-       .endproc
-*// play_star
-
-*********************************************************************
-*
-* Play slow
-*
-play_slow:
-       .proc
-       li   r0,snd_slow
-       li   r1,snd_channel_1
-       li   r2,>0040
-       bl   @play_snd
-       .endproc
-*// play_slow
-
-*********************************************************************
-*
-* Play normal
-*
-play_normal:
-       .proc
-       li   r0,snd_normal
-       li   r1,snd_channel_1
-       li   r2,>0340
-       bl   @play_snd
-       .endproc
-*// play_normal
-
-*********************************************************************
-*
-* Play die
-*
-play_die:
-       .proc
-       li   r0,snd_die
-       li   r1,snd_channel_4
-       bl   @play_snd
-       .endproc
-*// play_die
-
-*********************************************************************
-*
-* Play finish
-*
-play_finish:
-       .proc
-       li   r0,snd_finish
-       li   r1,snd_channel_1
-       li   r2,>03ff
-       bl   @play_snd
-       .endproc
-*// play_finish
+*// play_shot_2

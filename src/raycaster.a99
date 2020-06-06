@@ -206,7 +206,7 @@ main_loop:
        bl   @object_collisions
        bl   @update_health_bar
        bl   @speak
-       bl   @display_frame_rate
+;      bl   @display_frame_rate
        jmp  main_loop
 
 *********************************************************************
@@ -235,9 +235,7 @@ check_int:
        inc  @interrupt_count
        movb @vdpsta,r12
        .push r11
-       .push r4
        bl   @snd_player
-       .pop r4
        .pop r11
 check_int_1:
        rt
@@ -626,6 +624,7 @@ draw_objects_2:
        dec  r5
        jne  draw_objects_1
 draw_objects_3:
+       bl   @check_int
        .endproc
 *// draw_objects
 
@@ -725,7 +724,6 @@ draw_object_4:
        bl   @say_phrase
        clr  @object_speech(r4)
 draw_object_10:
-       bl   @check_int
        .endproc
 *// draw_object
 
@@ -1083,7 +1081,7 @@ fire_bullet:
        mov  r3,@bullet_speed
        clr  @bullet_distance
        seto @bullet_active
-       bl   @play_jump
+       bl   @play_shot_1
        .endproc
 *// fire_bullet
 
@@ -1672,6 +1670,10 @@ euclidian_distance:
 * Program files
 *
        copy "vdp.a99"
+       copy "speech.a99"
+       copy "sound-fx-routines.a99"
+;      copy "music-player.a99"
+       copy "sound-player.a99"
 
 ***************************************************************
 *
@@ -1850,12 +1852,9 @@ lower_ram_max:
        copy "graphics.a99"
 map:
        equ  MD0
-       copy "speech.a99"
-       copy "music-player.a99"
-       copy "sound-player.a99"
-       copy "sound-fx-routines.a99"
 
 upper_ram_max:
        equ  $
 
        end  main
+
