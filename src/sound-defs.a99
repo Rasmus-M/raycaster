@@ -1,0 +1,163 @@
+* Sound channel structure
+snd_channel_addr:
+       equ  0
+snd_channel_duration:
+       equ  2
+snd_channel_attn:
+       equ  3
+snd_channel_freq:
+       equ  4
+snd_channel_size:
+       equ  6
+
+* Sound track structure
+snd_track_channel:                     ; Channel to play track in, zero if track inactive
+       equ  0
+snd_track_location:                    ; Location in track, points to sequence pointer or command
+       equ  2
+snd_track_seq_location:                ; Location in active sequecne
+       equ  4
+snd_track_duration_count:              ; Node (within sequence) duration counter
+       equ  6
+snd_track_repeat_count:                ; Repeat count for track loops
+       equ  7
+snd_track_size:
+       equ  8
+
+**
+* Sound structure
+*
+snd_operation:                         ; 80=T1, A0=T2, C0=T3, E4=W0, E5=W1, E6=W2
+       equ  0
+snd_duration:                          ; Number of frames
+       equ  1
+snd_attn_start:                        ; 0-255
+       equ  2
+snd_attn_step:                         ; Signed byte
+       equ  3
+snd_freq_step:                         ; Signed word, n/a for noise
+       equ  4
+
+**
+* Operations
+*
+T1     equ  >80                        ; 1000ffff Tone generator 1
+T2     equ  >A0                        ; 1010ffff Tone generator 2
+T3     equ  >C0                        ; 1100ffff Tone generator 3
+P0     equ  >E0                        ; 11100000 Periodic noise type 0
+P1     equ  >E1                        ; 11100001 Periodic noise type 1
+P2     equ  >E2                        ; 11100010 Periodic noise type 2
+P3     equ  >E3                        ; 11100011 Periodic noise type 3
+W0     equ  >E4                        ; 11100100 White noise type 0
+W1     equ  >E5                        ; 11100101 White noise type 1
+W2     equ  >E6                        ; 11100110 White noise type 2
+W3     equ  >E7                        ; 11100111 White noise type 3
+
+**
+* Note frequencies
+*
+A1     equ  >03f9
+A#1    equ  >03c0
+B1     equ  >038a
+C1     equ  >0357
+C#1    equ  >0327
+D1     equ  >02fa
+D#1    equ  >02cf
+E1     equ  >02a7
+F1     equ  >0281
+F#1    equ  >025d
+G1     equ  >023b
+G#1    equ  >021b
+A2     equ  >01fc
+A#2    equ  >01e0
+B2     equ  >01c5
+C2     equ  >01ac
+C#2    equ  >0194
+D2     equ  >017d
+D#2    equ  >0168
+E2     equ  >0153
+F2     equ  >0140
+F#2    equ  >012e
+G2     equ  >011d
+G#2    equ  >010d
+A3     equ  >00fe
+A#3    equ  >00f0
+B3     equ  >00e2
+C3     equ  >00d6
+C#3    equ  >00ca
+D3     equ  >00be
+D#3    equ  >00b4
+E3     equ  >00aa
+F3     equ  >00a0
+F#3    equ  >0097
+G3     equ  >008f
+G#3    equ  >0087
+A4     equ  >007f
+A#4    equ  >0078
+B4     equ  >0071
+C4     equ  >006b
+C#4    equ  >0065
+D4     equ  >005f
+D#4    equ  >005a
+E4     equ  >0055
+F4     equ  >0050
+F#4    equ  >004c
+G4     equ  >0047
+G#4    equ  >0043
+A5     equ  >0040
+A#5    equ  >003c
+B5     equ  >0039
+C5     equ  >0035
+C#5    equ  >0032
+D5     equ  >0030
+D#5    equ  >002d
+E5     equ  >002a
+F5     equ  >0028
+F#5    equ  >0026
+G5     equ  >0024
+G#5    equ  >0022
+A6     equ  >0020
+A#6    equ  >001e
+B6     equ  >001c
+C6     equ  >001b
+C#6    equ  >0019
+D6     equ  >0018
+D#6    equ  >0016
+E6     equ  >0015
+F6     equ  >0014
+F#6    equ  >0013
+G6     equ  >0012
+G#6    equ  >0011
+
+**
+* Module structure
+*
+* First word is the speed 0-x.
+* Then follows a zero terminated list of pointers to up to 4 tracks.
+*
+* Track structure
+*
+* First word is a pointer to the channel where the track is played.
+* Then follows a zero terminated list of words.
+* Each word can either be a pointer to a sequence,
+* or it can be a repeat command.
+* A repeat command consists of two words:
+* - The number of repeats, which must be smaller than 256 to distinguish it from a sequence pointer
+* - The repeat address
+*
+* Sequence structure
+*
+* A sequence is a zero terminated list of words.
+* Each word can either be pointer to a note,
+* or it can be the number of frames to wait,
+* which must be smaller than 256 to distinguish it from a note pointer
+*
+* Note structure
+*
+* A note consists of a pointer to an instrument,
+* followed by the frequency of the note.
+*
+note_instr:
+       equ  0
+note_freq:
+       equ  2

@@ -1,0 +1,110 @@
+*********************************************************************
+*
+* Mute sound
+*
+mute_sound:
+       li   r0,mute_table              ; Mute all
+       li   r2,4
+mute_sound_1:
+       movb *r0+,@sound
+       dec  r2
+       jne  mute_sound_1
+       clr  @snd_channel_1
+       clr  @snd_channel_2
+       clr  @snd_channel_3
+       clr  @snd_channel_4
+*      Return
+       rt
+mute_table:
+       byte >9f, >bf, >df, >ff
+*// mute_sound
+
+*********************************************************************
+*
+* Play jump
+*
+play_jump:
+       .proc
+       li   r0,snd_jump
+       li   r1,snd_channel_1
+       li   r2,>0230
+       bl   @play_snd
+       .endproc
+*// play_axe
+
+*********************************************************************
+*
+* Play long jump
+*
+play_long_jump:
+       .proc
+       li   r0,snd_long_jump
+       li   r1,snd_channel_1
+       li   r2,>0230
+       bl   @play_snd
+       .endproc
+*// play_bomb
+
+*********************************************************************
+*
+* Play star
+*
+play_star:
+       .proc
+       li   r0,snd_star
+       li   r1,snd_channel_1
+       li   r2,>0040
+       bl   @play_snd
+       .endproc
+*// play_star
+
+*********************************************************************
+*
+* Play slow
+*
+play_slow:
+       .proc
+       li   r0,snd_slow
+       li   r1,snd_channel_1
+       li   r2,>0040
+       bl   @play_snd
+       .endproc
+*// play_slow
+
+*********************************************************************
+*
+* Play normal
+*
+play_normal:
+       .proc
+       li   r0,snd_normal
+       li   r1,snd_channel_1
+       li   r2,>0340
+       bl   @play_snd
+       .endproc
+*// play_normal
+
+*********************************************************************
+*
+* Play die
+*
+play_die:
+       .proc
+       li   r0,snd_die
+       li   r1,snd_channel_4
+       bl   @play_snd
+       .endproc
+*// play_die
+
+*********************************************************************
+*
+* Play finish
+*
+play_finish:
+       .proc
+       li   r0,snd_finish
+       li   r1,snd_channel_1
+       li   r2,>03ff
+       bl   @play_snd
+       .endproc
+*// play_finish

@@ -1,0 +1,46 @@
+**
+* Sound FXs
+*
+snd_jump:
+       byte T1
+       byte 16                         ; Frames
+       byte 0                          ; Attn start
+       byte 16                         ; Attn step
+       data -8                         ; Freq step
+snd_long_jump:
+       byte T1
+       byte 48                         ; Frames
+       byte 0                          ; Attn start
+       byte 4                          ; Attn step
+       data -10                        ; Freq step
+snd_star:
+       byte T1
+       byte 64                         ; Frames
+       byte 0                          ; Attn start
+       byte 4                          ; Attn step
+       data 0                          ; Freq step
+snd_slow:
+       byte T1
+       byte 32                         ; Frames
+       byte 0                          ; Attn start
+       byte 4                          ; Attn step
+       data 24                         ; Freq step
+snd_normal:
+       byte T1
+       byte 32                         ; Frames
+       byte 0                          ; Attn start
+       byte 4                          ; Attn step
+       data -24                        ; Freq step
+snd_die:
+       byte W0
+       byte 64                         ; Frames
+       byte 0                          ; Attn start
+       byte 4                          ; Attn step
+snd_finish:
+       byte T1
+       byte 127                        ; Frames
+       byte 0                          ; Attn start
+       byte 0                          ; Attn step
+       data -8                         ; Freq step
+
+       even

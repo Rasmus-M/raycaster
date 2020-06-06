@@ -1,0 +1,90 @@
+*********************************************************************
+*
+* Play sound
+*
+* r0: Address of sound to play
+* r1: Channel address
+* r2: Frequency
+*
+* Modifies r0-r2,r4
+*
+play_snd:
+       mov  r0,*r1+                    ; Init address
+       movb *r0+,r4                    ; Operation
+       movb *r0+,*r1+                  ; Init duration
+       movb *r0+,*r1+                  ; Init attenuation
+       inc  r0                         ; Skip attenuation step byte
+       ci   r4,>e000                   ; Test for noise
+       jl   play_snd_1
+*      Noise - init PSG
+       movb r4,@sound
+       ori  r4,>1f00                   ; Change operation to full attenuation
+       movb r4,@sound
+       jmp  play_snd_3
+*      Tone
+play_snd_1:
+       mov  r2,*r1                     ; Init frequency
+       mov  *r0,r1                     ; Check frequency step
+       jne  play_snd_3
+*      Tone - init PSG
+       mov  r2,r1                      ; Copy frequency
+       andi r1,>000f                   ; Isolate lower nybble
+       socb @r1lb,r4                   ; Combine with operation
+       movb r4,@sound                  ; Write operation and lower frequency nybble
+       sla  r2,4                       ; Shift upper byte into place
+       movb r2,@sound                  ; Write upper frequency byte
+       ori  r4,>1f00                   ; Change operation to full attenuation
+       movb r4,@sound
+play_snd_3:
+       rt
+
+*********************************************************************
+*
+* Sound player
+*
+* Modifies r0-r4
+*
+snd_player:
+       li   r2,snd_channel_4           ; Start with last channel
+snd_player_1:
+       mov  *r2,r3                     ; Get sound address
+       jeq  snd_player_4               ; If not active do next
+       movb *r3,r4                     ; Get operation
+       movb @snd_channel_duration(r2),r0     ; Are we done?
+       jne  snd_player_2               ; No - jump
+*      Sound finished
+       clr  *r2                        ; Finished - clear sound address
+       ori  r4,>1f00                   ; Full attenuation
+       movb r4,@sound                  ; Mute
+       jmp  snd_player_4               ; Return
+snd_player_2:
+*      Check noise or tone
+       ci   r4,>e000                   ; Noise?
+       jhe  snd_player_3               ; Yes, skip frequency
+       mov  @snd_freq_step(r3),r0      ; Check frequency step
+       jeq  snd_player_3               ; If zero skip frequency
+*      Frequency
+       mov  @snd_channel_freq(r2),r0   ; Get frequency
+       mov  r0,r1                      ; Copy frequency
+       andi r1,>000f                   ; Isolate lower nybble
+       socb @r1lb,r4                   ; Combine with operation
+       movb r4,@sound                  ; Write operation and lower frequency nybble
+       sla  r0,4                       ; Shift upper byte into place
+       movb r0,@sound                  ; Write upper frequency byte
+       a    @snd_freq_step(r3),@snd_channel_freq(r2)    ; Change frequency
+*      Attenuation
+snd_player_3:
+       andi r4,>f000                   ; Clear operation lower nybble
+       ori  r4,>1000                   ; Change operation to attenuation
+       movb @snd_channel_attn(r2),r0   ; Get attenuation x 16
+       srl  r0,4                       ; Attenuation
+       socb r4,r0                      ; Combine with attenuation operation
+       movb r0,@sound                  ; Write attenuation
+       ab   @snd_attn_step(r3),@snd_channel_attn(r2)    ; Change attenuation
+*      Count down and loop
+       sb   @byte_01,@snd_channel_duration(r2)      ; Count down duration
+snd_player_4:
+       ai   r2,-snd_channel_size       ; Next (previous) channel
+       ci   r2,snd_channel_1           ; Are we done?
+       jhe  snd_player_1               ; No - loop
+       rt                              ; Return

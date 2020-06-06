@@ -615,6 +615,10 @@ SPR23  DATA >AAAA,>AAAA,>AAAA,>AAAA    ; Color 12
        DATA >AAAA,>AAAA,>0000,>0000    ; 
        DATA >AAAA,>AAAA,>AAAA,>AAAA    ; 
        DATA >AAAA,>AAAA,>0000,>0000    ; 
+SPR24  DATA >0010,>080C,>0607,>031F    ; Color 11
+       DATA >FF03,>0706,>0C08,>1000    ; 
+       DATA >0004,>0818,>3070,>E0FF    ; 
+       DATA >F8E0,>F030,>1808,>0400    ; 
 ****************************************
 * Map Data                              
 ****************************************

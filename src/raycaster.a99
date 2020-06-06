@@ -8,6 +8,7 @@
 *
 
        copy "macros.a99"
+       copy "sound-defs.a99"
 
 **
 * Memory mapped addresses
@@ -72,7 +73,7 @@ max_objects:
 n_tile_patterns:
        equ  256
 n_sprite_patterns:
-       equ  24
+       equ  25
 n_fixed_sprites:
        equ  16
 soldier_speed:
@@ -118,12 +119,8 @@ padvar equ  stack+>10                  ; Start of pad variables
 **
 * PAD variables
 *
-health:
-       equ  padvar
-old_health:
-       equ  health+2
 interrupt_count:
-       equ  old_health+2
+       equ  padvar
 rand_no:
        equ  interrupt_count+2
 dbl_buffer_flag:
@@ -132,8 +129,12 @@ sal_no:
        equ  dbl_buffer_flag+2
 sal_no_inc:
        equ  sal_no+2
-x:                                     ; Player x FP 8.8
+health:
        equ  sal_no_inc+2
+old_health:
+       equ  health+2
+x:                                     ; Player x FP 8.8
+       equ  old_health+2
 y:                                     ; Player y FP 8.8
        equ  x+2
 angle:                                 ; Player direction 0 - 2 * n_directions (even only)
@@ -152,8 +153,24 @@ column_ptrs:
        equ  column_ptr+2
 tmp:
        equ  column_ptrs+(n_rays*2)
-get_speech_status:
+snd_channel_1:
        equ  tmp+2
+snd_channel_2:
+       equ  snd_channel_1+snd_channel_size
+snd_channel_3:
+       equ  snd_channel_2+snd_channel_size
+snd_channel_4:
+       equ  snd_channel_3+snd_channel_size
+snd_track_1:
+       equ  snd_channel_4+snd_channel_size
+snd_track_2:
+       equ  snd_track_1+snd_track_size
+snd_track_3:
+       equ  snd_track_2+snd_track_size
+module_speed:
+       equ  snd_track_3+snd_track_size
+get_speech_status:
+       equ  module_speed+2
 speech_ptr:
        equ  get_speech_status+6
 speech_on:
@@ -217,6 +234,11 @@ check_int:
        jeq  check_int_1
        inc  @interrupt_count
        movb @vdpsta,r12
+       .push r11
+       .push r4
+       bl   @snd_player
+       .pop r4
+       .pop r11
 check_int_1:
        rt
 *// check_int
@@ -695,6 +717,8 @@ draw_object_4:
        ai   r0,screen_width            ; One VDP row down
        dec  r2                         ; Decrease row counter
        jne  draw_object_1              ; Loop until done
+*      Fire
+       dec  @health
 *      Speak first time
        mov  @object_speech(r4),r1
        jeq  draw_object_10
@@ -1044,6 +1068,7 @@ frame_rate_from_ints:
 * Fire bullet
 *
 fire_bullet:
+       .proc
        mov  @x,@bullet_x
        mov  @y,@bullet_y
        li   r3,>9000
@@ -1058,7 +1083,8 @@ fire_bullet:
        mov  r3,@bullet_speed
        clr  @bullet_distance
        seto @bullet_active
-       rt
+       bl   @play_jump
+       .endproc
 *// fire_bullet
 
 *********************************************************************
@@ -1137,6 +1163,7 @@ create_object_1:
        sla  r7,1
        mov  @object_depth_tables(r7),@object_depth_table(r5)
        mov  @object_speech_table(r7),@object_speech(r5)
+       clr  @object_fire(r5)
        c    r6,@n_objects
        jlt  create_object_3
        inc  @n_objects
@@ -1660,6 +1687,11 @@ space:
        byte 0
 door:
        byte 10
+byte_00:
+       byte 00
+byte_01:
+       byte 01
+
 depth_buffer:
        bss  n_rays*2
 
@@ -1678,8 +1710,10 @@ object_depth_table:
        equ  8
 object_speech:
        equ  10
-object_size:
+object_fire:
        equ  12
+object_size:
+       equ  14
 
 object_type_soldier:
        equ  1
@@ -1804,6 +1838,7 @@ floor_offset_from_center:
        copy "textures.a99"
        copy "objects.a99"
        copy "sprites.a99"
+       copy "sound-fx.a99"
 
 lower_ram_max:
        equ  $
@@ -1816,6 +1851,9 @@ lower_ram_max:
 map:
        equ  MD0
        copy "speech.a99"
+       copy "music-player.a99"
+       copy "sound-player.a99"
+       copy "sound-fx-routines.a99"
 
 upper_ram_max:
        equ  $
