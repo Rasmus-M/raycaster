@@ -799,8 +799,8 @@ user_input_4:
        a    r4,r1
        bl   @get_map_value
        jeq  user_input_5
-       cb   @door,r2
-       jeq  user_input_5
+;      cb   @door,r2
+;      jeq  user_input_5
        jmp  user_input_8
 *      Move
 user_input_5:
@@ -1011,6 +1011,8 @@ bullets_collisions:
        bl   @get_map_address
        movb *r2,r3
        jeq  bullets_collisions_2
+       cb   *r2,@door
+       jne  bullets_collisions_1
        movb @space,*r2
        jmp  bullets_collisions_1
 *      Check for enemy collison
