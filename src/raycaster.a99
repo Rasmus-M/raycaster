@@ -77,7 +77,7 @@ n_sprite_patterns:
 n_fixed_sprites:
        equ  16
 guard_speed:
-       equ  >0010
+       equ  >0004
 bullet_speed_z:
        equ  ->0c00
 bullet_accl_z:
@@ -153,8 +153,10 @@ column_ptrs:
        equ  column_ptr+2
 tmp:
        equ  column_ptrs+(n_rays*2)
-snd_channel_1:
+muzzle_flash:
        equ  tmp+2
+snd_channel_1:
+       equ  muzzle_flash+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -718,9 +720,16 @@ draw_object_4:
        jne  draw_object_1              ; Loop until done
 *      Speak first time
        mov  @object_speech(r4),r1
-       jeq  draw_object_10
+       jeq  draw_object_11
        bl   @say_phrase
        clr  @object_speech(r4)
+*      Muzzle flash
+draw_object_11:
+       abs  @object_fire(r4)
+       jeq  draw_object_10
+       li   r0,>6080
+       mov  r0,@muzzle_flash
+       clr  @object_fire(r4)
 draw_object_10:
        .endproc
 *// draw_object
@@ -837,9 +846,6 @@ move_enemies_1:
        mov  @object_type(r4),r0
        ci   r0,object_type_guard
        jne  move_enemies_2
-       bl   @rand
-       ci   r0,>3000
-       jl   move_enemies_2
 *      x
        mov  @object_x(r4),r0
        mov  @x,r2
@@ -855,7 +861,7 @@ move_enemies_1:
        abs  r7
        a    r6,r7
        ci   r7,max_object_distance*256
-       jhe  move_enemies_3
+       jhe  move_enemies_2
 *      x
        mov  r2,r2
        jeq  move_enemies_5
@@ -904,6 +910,7 @@ move_enemies_9:
        bl   @rand
        ci   r0,>f800
        jl   move_enemies_2
+       seto @object_fire(r4)
        dec  @health
        bl   @play_shot_2
 *      Next object
@@ -961,8 +968,18 @@ draw_bullets:
        movb @r0lb,*r15                 ; x
        movb r1,*r15                    ; pattern
        movb @bullet_color_byte,*r15    ; color
-*      End marker
+*      Muzzle flash
 draw_bullets_0:
+       mov  @muzzle_flash,r0
+       jeq  draw_bullets_1
+       movb r0,*r15
+       movb @r0lb,*r15
+       li   r0,>600b
+       movb r0,*r15
+       movb @r0lb,*r15
+       clr  @muzzle_flash
+*      End marker
+draw_bullets_1:
        movb @end_marker_byte,*r15
        bl   @check_int
        .endproc
