@@ -1,0 +1,98 @@
+**
+* Door structure
+*
+door_x:
+       equ  0
+door_y:
+       equ  2
+door_n_objects:
+       equ  4
+door_object_inits:
+       equ  6
+door_size:
+       equ  8
+
+door_1:
+       data >3700
+       data >3700
+       data 1
+       data door_1_init
+door_2:
+       data >1400
+       data >3a00
+       data 1
+       data door_2_init
+door_3:
+       data >0400
+       data >0e00
+       data 2
+       data door_3_init
+door_4:
+       data >0800
+       data >1c00
+       data 2
+       data door_4_init
+door_5:
+       data >2800
+       data >1c00
+       data 2
+       data door_5_init
+door_6:
+       data >0800
+       data >3d00
+       data 1
+       data door_6_7_init
+door_7:
+       data >0100
+       data >3a00
+       data 1
+       data door_6_7_init
+n_doors:
+       data (n_doors - doors) / door_size
+
+object_init_data:
+       data object_type_guard
+       data >0c00                      ; x
+       data >1900                      ; y
+       data object_type_guard
+       data >1000                      ; x
+       data >0c00                      ; y
+       data object_type_guard
+       data >2500                      ; x
+       data >2f00                      ; y
+       data object_type_guard
+       data >3900                      ; x
+       data >0400                      ; y
+door_1_init:
+       data object_type_guard
+       data >3400                      ; x
+       data >3c00                      ; y
+door_2_init:
+       data object_type_guard
+       data >1b00                      ; x
+       data >3d00                      ; y
+door_3_init:
+       data object_type_guard
+       data >0100                      ; x
+       data >1000                      ; y
+       data object_type_chest
+       data >0e00                      ; x
+       data >1100                      ; y
+door_4_init:
+       data object_type_guard
+       data >0400                      ; x
+       data >1800                      ; y
+       data object_type_guard
+       data >0400                      ; x
+       data >2000                      ; y
+door_5_init:
+       data object_type_guard
+       data >2700                      ; x
+       data >1800                      ; y
+       data object_type_guard
+       data >2900                      ; x
+       data >1800                      ; y
+door_6_7_init:
+       data object_type_chest
+       data >0200                      ; x
+       data >3d00                      ; y

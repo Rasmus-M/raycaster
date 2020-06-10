@@ -1011,9 +1011,9 @@ bullets_collisions:
        bl   @get_map_address
        movb *r2,r3
        jeq  bullets_collisions_2
-       cb   *r2,@door
+       cb   r3,@door
        jne  bullets_collisions_1
-       movb @space,*r2
+       bl   @open_door
        jmp  bullets_collisions_1
 *      Check for enemy collison
 bullets_collisions_2:
@@ -1144,6 +1144,40 @@ fire_bullet:
 
 *********************************************************************
 *
+* Open door
+*
+* r0: x FP 8.8
+* r1: y FP 8.8
+* r2: Map address
+*
+open_door:
+       .proc
+       movb @space,*r2
+       li   r8,doors
+       mov  @n_doors,r9
+open_door_1:
+       cb   r0,@door_x(r8)
+       jne  open_door_2
+       cb   r1,@door_y(r8)
+       jne  open_door_2
+       mov  @door_object_inits(r8),r4
+       mov  @door_n_objects(r8),r5
+open_door_4:
+       bl   @create_object
+       ai   r4,object_init_size
+       dec  r5
+       jne  open_door_4
+       jmp  open_door_3
+open_door_2:
+       ai   r8,door_size
+       dec  r9
+       jne  open_door_1
+open_door_3:
+       .endproc
+*// open_door
+
+*********************************************************************
+*
 * Get map value
 *
 * r0: x FP 8.8
@@ -1197,38 +1231,37 @@ reset_objects_1:
 *
 * Create object
 *
-* r0: x FP 8.8
-* r1: y FP 8.8
-* r2: Object type
+* r4: Object init data
 *
-* On return r5 contains the address of the object, or 0 if it failed
+* On return r6 contains the address of the object, or 0 if it failed
+* Uses: r2,r3,r6,r7
 *
 create_object:
-       li   r5,objects
-       clr  r6
+       li   r6,objects
+       clr  r7
 create_object_1:
-       mov  *r5,r7                     ; Object active?
+       mov  *r6,r3                     ; Object active?
        jne  create_object_2
-       li   r7,1
-       mov  r7,*r5
-       mov  r2,@object_type(r5)
-       mov  r0,@object_x(r5)
-       mov  r1,@object_y(r5)
-       mov  r2,r7
-       sla  r7,1
-       mov  @object_depth_tables(r7),@object_depth_table(r5)
-       mov  @object_speech_table(r7),@object_speech(r5)
-       clr  @object_fire(r5)
-       c    r6,@n_objects
+       inc  *r6                        ; set active
+       mov  @object_init_type(r4),r2
+       mov  r2,@object_type(r6)
+       mov  @object_init_x(r4),@object_x(r6)
+       mov  @object_init_y(r4),@object_y(r6)
+       mov  r2,r3
+       sla  r3,1
+       mov  @object_depth_tables(r3),@object_depth_table(r6)
+       mov  @object_speech_table(r3),@object_speech(r6)
+       clr  @object_fire(r6)
+       c    r7,@n_objects
        jlt  create_object_3
        inc  @n_objects
        jmp  create_object_3
 create_object_2:
-       ai   r5,object_size
-       inc  r6
-       ci   r6,max_objects
+       ai   r6,object_size
+       inc  r7
+       ci   r7,max_objects
        jlt  create_object_1
-       clr  r5
+       clr  r6
 create_object_3:
        rt
 *// create_object
@@ -1316,43 +1349,17 @@ init_level:
        mov  r0,@old_health
 *      Init objects
        bl   @reset_objects
-       li   r3,object_init_data
-       li   r4,(object_init_data_end-object_init_data)/6
+       li   r4,object_init_data
+       li   r5,4
 init_level_1:
-       mov  *r3+,r2
-       mov  *r3+,r0
-       mov  *r3+,r1
        bl   @create_object
-       dec  r4
+       ai   r4,object_init_size
+       dec  r5
        jne  init_level_1
 *      Speak
        li   r1,green_things_near
        bl   @say_phrase
        .endproc
-object_init_data:
-       data object_type_guard
-       data >0c00                      ; x
-       data >1900                      ; y
-       data object_type_guard
-       data >2500                      ; x
-       data >2f00                      ; y
-       data object_type_guard
-       data >3400                      ; x
-       data >3c00                      ; y
-       data object_type_guard
-       data >3900                      ; x
-       data >0400                      ; y
-       data object_type_guard
-       data >1000                      ; x
-       data >0c00                      ; y
-       data object_type_guard
-       data >1b00                      ; x
-       data >3d00                      ; y
-       data object_type_chest
-       data >0e00                      ; x
-       data >1100                      ; y
-object_init_data_end:
-       equ  $
 *// init_level
 
 *********************************************************************
@@ -1779,6 +1786,15 @@ object_type_guard:
 object_type_chest:
        equ  2
 
+object_init_type:
+       equ  0
+object_init_x:
+       equ  2
+object_init_y:
+       equ  4
+object_init_size:
+       equ  6
+
 n_objects:
        data 0
 objects:
@@ -1909,6 +1925,9 @@ lower_ram_max:
        copy "graphics.a99"
 map:
        equ  MD0
+
+doors:
+       copy "doors.a99"
 
 upper_ram_max:
        equ  $
