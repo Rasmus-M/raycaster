@@ -635,7 +635,7 @@ draw_objects_3:
 * Draw object
 *
 * r4: object to draw
-* r6: angle relative to player
+* r6: angle relative to player (2 units per column)
 * r7: distance FP 8.8 (last 6 bits are zero)
 *
 draw_object:
@@ -727,7 +727,10 @@ draw_object_4:
 draw_object_11:
        abs  @object_fire(r4)
        jeq  draw_object_10
-       li   r0,>6080
+       mov  r6,r0
+       dec  r0
+       sla  r0,3
+       ori  r0,>6000
        mov  r0,@muzzle_flash
        clr  @object_fire(r4)
 draw_object_10:
