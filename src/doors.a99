@@ -4,49 +4,81 @@
 door_x:
        equ  0
 door_y:
-       equ  2
+       equ  1
 door_n_objects:
-       equ  4
+       equ  2
 door_object_inits:
-       equ  6
+       equ  4
 door_size:
-       equ  8
+       equ  6
 
 door_1:
-       data >3700
-       data >3700
+       byte >37
+       byte >37
        data 1
        data door_1_init
 door_2:
-       data >1400
-       data >3a00
+       byte >14
+       byte >3a
        data 1
        data door_2_init
 door_3:
-       data >0400
-       data >0e00
+       byte >04
+       byte >0e
        data 2
        data door_3_init
 door_4:
-       data >0800
-       data >1c00
+       byte >08
+       byte >1c
        data 2
        data door_4_init
 door_5:
-       data >2800
-       data >1c00
+       byte >28
+       byte >1c
        data 2
        data door_5_init
 door_6:
-       data >0800
-       data >3d00
+       byte >08
+       byte >3d
        data 1
        data door_6_7_init
 door_7:
-       data >0100
-       data >3a00
+       byte >01
+       byte >3a
        data 1
        data door_6_7_init
+door_8:
+       byte >04
+       byte >23
+       data 2
+       data door_8_init
+door_9:
+       byte >0b
+       byte >02
+       data 2
+       data door_9_init
+door_10:
+       byte >30
+       byte >1e
+       data 2
+       data door_10_init
+door_11:
+       byte >36
+       byte >21
+       data 2
+       data door_11_init
+door_12:
+       byte >30
+       byte >2e
+       data 1
+       data door_12_init
+door_13:
+       byte >3a
+       byte >27
+       data 3
+       data door_13_init
+
+
 n_doors:
        data (n_doors - doors) / door_size
 
@@ -96,3 +128,45 @@ door_6_7_init:
        data object_type_chest
        data >0200                      ; x
        data >3d00                      ; y
+door_8_init:
+       data object_type_guard
+       data >0400                      ; x
+       data >2e00                      ; y
+       data object_type_guard
+       data >0800                      ; x
+       data >2e00                      ; y
+door_9_init:
+       data object_type_guard
+       data >0a00                      ; x
+       data >0700                      ; y
+       data object_type_chest
+       data >0500                      ; x
+       data >0800                      ; y
+door_10_init:
+       data object_type_guard
+       data >2e00                      ; x
+       data >2100                      ; y
+       data object_type_guard
+       data >3100                      ; x
+       data >2100                      ; y
+door_11_init:
+       data object_type_guard
+       data >3900                      ; x
+       data >2100                      ; y
+       data object_type_chest
+       data >3700                      ; x
+       data >1f00                      ; y
+door_12_init:
+       data object_type_guard
+       data >2e00                      ; x
+       data >2900                      ; y
+door_13_init:
+       data object_type_guard
+       data >3700                      ; x
+       data >2800                      ; y
+       data object_type_guard
+       data >3e00                      ; x
+       data >2800                      ; y
+       data object_type_guard
+       data >3a00                      ; x
+       data >2c00                      ; y

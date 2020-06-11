@@ -77,7 +77,7 @@ n_sprite_patterns:
 n_fixed_sprites:
        equ  16
 guard_speed:
-       equ  >0004
+       equ  >0008
 bullet_speed_z:
        equ  ->0c00
 bullet_accl_z:
@@ -907,9 +907,8 @@ move_enemies_8:
 *      Move
        mov  r0,@object_x(r4)
        mov  r1,@object_y(r4)
-*      Shoot
-move_enemies_9:
 *      Fire
+move_enemies_9:
        bl   @rand
        ci   r0,>f800
        jl   move_enemies_2
