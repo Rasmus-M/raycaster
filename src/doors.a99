@@ -77,7 +77,11 @@ door_13:
        byte >27
        data 3
        data door_13_init
-
+door_14:
+       byte >34
+       byte >0e
+       data 1
+       data door_14_init
 
 n_doors:
        data (n_doors - doors) / door_size
@@ -170,3 +174,7 @@ door_13_init:
        data object_type_guard
        data >3a00                      ; x
        data >2c00                      ; y
+door_14_init:
+       data object_type_chest
+       data >3e00                      ; x
+       data >0e00                      ; y
