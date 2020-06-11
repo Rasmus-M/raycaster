@@ -82,99 +82,123 @@ door_14:
        byte >0e
        data 1
        data door_14_init
+door_15:
+       byte >16
+       byte >2b
+       data 3
+       data door_15_init
+door_16:
+       byte >20
+       byte >27
+       data 1
+       data door_16_init
 
 n_doors:
        data (n_doors - doors) / door_size
 
 object_init_data:
        data object_type_guard
-       data >0c00                      ; x
-       data >1900                      ; y
+       byte >0c                      ; x
+       byte >19                      ; y
        data object_type_guard
-       data >1000                      ; x
-       data >0c00                      ; y
+       byte >10                      ; x
+       byte >0c                      ; y
        data object_type_guard
-       data >2500                      ; x
-       data >2f00                      ; y
+       byte >25                      ; x
+       byte >2f                      ; y
        data object_type_guard
-       data >3900                      ; x
-       data >0400                      ; y
+       byte >39                      ; x
+       byte >04                      ; y
 door_1_init:
        data object_type_guard
-       data >3400                      ; x
-       data >3c00                      ; y
+       byte >34                      ; x
+       byte >3c                      ; y
 door_2_init:
        data object_type_guard
-       data >1b00                      ; x
-       data >3d00                      ; y
+       byte >1b                      ; x
+       byte >3d                      ; y
 door_3_init:
        data object_type_guard
-       data >0100                      ; x
-       data >1000                      ; y
+       byte >01                      ; x
+       byte >10                      ; y
        data object_type_chest
-       data >0e00                      ; x
-       data >1100                      ; y
+       byte >0e                      ; x
+       byte >11                      ; y
 door_4_init:
        data object_type_guard
-       data >0400                      ; x
-       data >1800                      ; y
+       byte >04                      ; x
+       byte >18                      ; y
        data object_type_guard
-       data >0400                      ; x
-       data >2000                      ; y
+       byte >04                      ; x
+       byte >20                      ; y
 door_5_init:
        data object_type_guard
-       data >2700                      ; x
-       data >1800                      ; y
+       byte >27                      ; x
+       byte >18                      ; y
        data object_type_guard
-       data >2900                      ; x
-       data >1800                      ; y
+       byte >29                      ; x
+       byte >18                      ; y
 door_6_7_init:
        data object_type_chest
-       data >0200                      ; x
-       data >3d00                      ; y
+       byte >02                      ; x
+       byte >3d                      ; y
 door_8_init:
        data object_type_guard
-       data >0400                      ; x
-       data >2e00                      ; y
+       byte >04                      ; x
+       byte >2e                      ; y
        data object_type_guard
-       data >0800                      ; x
-       data >2e00                      ; y
+       byte >08                      ; x
+       byte >2e                      ; y
 door_9_init:
        data object_type_guard
-       data >0a00                      ; x
-       data >0700                      ; y
+       byte >0a                      ; x
+       byte >07                      ; y
        data object_type_chest
-       data >0500                      ; x
-       data >0800                      ; y
+       byte >05                      ; x
+       byte >08                      ; y
 door_10_init:
        data object_type_guard
-       data >2e00                      ; x
-       data >2100                      ; y
+       byte >2e                      ; x
+       byte >21                      ; y
        data object_type_guard
-       data >3100                      ; x
-       data >2100                      ; y
+       byte >31                      ; x
+       byte >21                      ; y
 door_11_init:
        data object_type_guard
-       data >3900                      ; x
-       data >2100                      ; y
+       byte >39                      ; x
+       byte >21                      ; y
        data object_type_chest
-       data >3700                      ; x
-       data >1f00                      ; y
+       byte >38                      ; x
+       byte >1f                      ; y
 door_12_init:
        data object_type_guard
-       data >2e00                      ; x
-       data >2900                      ; y
+       byte >2e                      ; x
+       byte >29                      ; y
 door_13_init:
        data object_type_guard
-       data >3700                      ; x
-       data >2800                      ; y
+       byte >37                      ; x
+       byte >28                      ; y
        data object_type_guard
-       data >3e00                      ; x
-       data >2800                      ; y
+       byte >3e                      ; x
+       byte >28                      ; y
        data object_type_guard
-       data >3a00                      ; x
-       data >2c00                      ; y
+       byte >3a                      ; x
+       byte >2c                      ; y
 door_14_init:
        data object_type_chest
-       data >3e00                      ; x
-       data >0e00                      ; y
+       byte >3e                      ; x
+       byte >0e                      ; y
+door_15_init:
+       data object_type_guard
+       byte >10                      ; x
+       byte >2d                      ; y
+       data object_type_guard
+       byte >1c                      ; x
+       byte >2d                      ; y
+       data object_type_chest
+       byte >16                      ; x
+       byte >35                      ; y
+door_16_init:
+       data object_type_chest
+       byte >22                      ; x
+       byte >25                      ; y

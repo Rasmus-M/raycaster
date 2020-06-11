@@ -129,8 +129,10 @@ sal_no:
        equ  dbl_buffer_flag+2
 sal_no_inc:
        equ  sal_no+2
-health:
+score:
        equ  sal_no_inc+2
+health:
+       equ  score+2
 old_health:
        equ  health+2
 x:                                     ; Player x FP 8.8
@@ -192,6 +194,7 @@ main:
        lwpi wrksp                      ; Setup workspace
        li   r10,stack                  ; Setup stack pointer
        bl   @one_time_init
+restart:
        bl   @init_level
 main_loop:
        clr  @interrupt_count
@@ -207,9 +210,12 @@ main_loop:
        bl   @bullets_collisions
        bl   @object_collisions
        bl   @update_health_bar
+       bl   @display_score
        bl   @speak
 ;      bl   @display_frame_rate
-       jmp  main_loop
+       mov  @health,r0
+       jne  main_loop
+       jmp  restart
 
 *********************************************************************
 *
@@ -1082,6 +1088,7 @@ object_collisions_1:
        ci   r3,>0100
        jgt  object_collisions_2
        bl   @remove_object
+       inc  @score
        jmp  object_collisions_3
 object_collisions_2:
        ai   r4,object_size
@@ -1091,6 +1098,79 @@ object_collisions_3:
        bl   @check_int
        .endproc
 *// object_collisions
+
+*********************************************************************
+*
+* Update health bar
+*
+update_health_bar:
+       .proc
+       mov  @old_health,r3
+       s    @health,r3
+       jeq  update_health_bar_4
+       mov  @health,r0
+       jlt  update_health_bar_4
+       mov  r0,r1
+       mov  r0,r2
+       srl  r0,4                       ; Which sprite 0-3 to update
+       sla  r0,5                       ; Sprite pattern offset
+       andi r1,>0008                   ; Isolate column bit
+       sla  r1,1                       ; Column offset
+       a    r1,r0                      ; Add to address
+       ai   r0,sprptb+(20*32)          ; Add base address
+       bl   @vwad
+*      Pixels within column
+       li   r1,>00aa                   ; Pattern
+       andi r2,>0007                   ; Number of pixels to show
+       li   r0,8
+       s    r2,r0                      ; Number of pixels to clear
+       srl  r1,0
+       sla  r1,0
+       swpb r1
+       li   r2,12
+update_health_bar_1:
+       movb r1,*r15
+       movb r1,*r15
+       dect r2
+       jne  update_health_bar_1
+*      Full columns to clear
+       srl  r3,3                       ; columns
+       jeq  update_health_bar_3
+       sla  r3,4                       ; columns * 16
+update_health_bar_2:
+       clr  *r15
+       clr  *r15
+       dect r3
+       jne  update_health_bar_2
+update_health_bar_3:
+       mov  @health,@old_health
+update_health_bar_4:
+       .endproc
+*// update_health_bar
+
+*********************************************************************
+*
+* Display score
+*
+display_score:
+       .proc
+       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
+       andi r0,>0001
+       sla  r0,10
+       ai   r0,nametb+30
+       bl   @vwad                      ; Set VDP address
+       mov  @score,r0
+       mov  r0,r1
+       sra  r1,4
+       andi r1,>0f00
+       ai   r1,char_0*256
+       movb r1,*r15
+       andi r0,>000f
+       swpb r0
+       ai   r0,char_0*256
+       movb r0,*r15
+       .endproc
+*// display_score
 
 *********************************************************************
 *
@@ -1247,8 +1327,10 @@ create_object_1:
        inc  *r6                        ; set active
        mov  @object_init_type(r4),r2
        mov  r2,@object_type(r6)
-       mov  @object_init_x(r4),@object_x(r6)
-       mov  @object_init_y(r4),@object_y(r6)
+       movb @object_init_x(r4),@object_x(r6)
+       movb @byte_00,@object_x+1(r6)
+       movb @object_init_y(r4),@object_y(r6)
+       movb @byte_00,@object_y+1(r6)
        mov  r2,r3
        sla  r3,1
        mov  @object_depth_tables(r3),@object_depth_table(r6)
@@ -1290,55 +1372,6 @@ remove_object:
 
 *********************************************************************
 *
-* Update health bar
-*
-update_health_bar:
-       .proc
-       mov  @old_health,r3
-       s    @health,r3
-       jeq  update_health_bar_4
-       mov  @health,r0
-       jlt  update_health_bar_4
-       mov  r0,r1
-       mov  r0,r2
-       srl  r0,4                       ; Which sprite 0-3 to update
-       sla  r0,5                       ; Sprite pattern offset
-       andi r1,>0008                   ; Isolate column bit
-       sla  r1,1                       ; Column offset
-       a    r1,r0                      ; Add to address
-       ai   r0,sprptb+(20*32)          ; Add base address
-       bl   @vwad
-*      Pixels within column
-       li   r1,>00aa                   ; Pattern
-       andi r2,>0007                   ; Number of pixels to show
-       li   r0,8
-       s    r2,r0                      ; Number of pixels to clear
-       srl  r1,0
-       sla  r1,0
-       swpb r1
-       li   r2,12
-update_health_bar_1:
-       movb r1,*r15
-       movb r1,*r15
-       dect r2
-       jne  update_health_bar_1
-*      Full columns to clear
-       srl  r3,3                       ; columns
-       jeq  update_health_bar_3
-       sla  r3,4                       ; columns * 16
-update_health_bar_2:
-       clr  *r15
-       clr  *r15
-       dect r3
-       jne  update_health_bar_2
-update_health_bar_3:
-       mov  @health,@old_health
-update_health_bar_4:
-       .endproc
-*// update_health_bar
-
-*********************************************************************
-*
 * Initialize level
 *
 init_level:
@@ -1349,6 +1382,7 @@ init_level:
        li   r0,63
        mov  r0,@health
        mov  r0,@old_health
+       clr  @score
 *      Init objects
        bl   @reset_objects
        li   r4,object_init_data
@@ -1361,6 +1395,11 @@ init_level_1:
 *      Speak
        li   r1,green_things_near
        bl   @say_phrase
+*      Sprite patterns
+       li   r0,sprptb+(20*32)
+       li   r1,SPR20
+       li   r2,4*32
+       bl   @vmbw
        .endproc
 *// init_level
 
@@ -1756,9 +1795,9 @@ space:
 door:
        byte 10
 byte_00:
-       byte 00
+       byte >00
 byte_01:
-       byte 01
+       byte >01
 
 depth_buffer:
        bss  n_rays*2
@@ -1793,9 +1832,9 @@ object_init_type:
 object_init_x:
        equ  2
 object_init_y:
-       equ  4
+       equ  3
 object_init_size:
-       equ  6
+       equ  4
 
 n_objects:
        data 0
