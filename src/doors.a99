@@ -38,15 +38,15 @@ door_5:
        data 2
        data door_5_init
 door_6:
-       byte >08
-       byte >3d
+       byte >1a
+       byte >10
        data 1
-       data door_6_7_init
+       data door_6_init
 door_7:
        byte >01
        byte >3a
        data 1
-       data door_6_7_init
+       data door_7_init
 door_8:
        byte >04
        byte >23
@@ -92,6 +92,21 @@ door_16:
        byte >27
        data 1
        data door_16_init
+door_17:
+       byte >12
+       byte >07
+       data 2
+       data door_17_init
+door_18:
+       byte >21
+       byte >0e
+       data 2
+       data door_18_init
+door_19:
+       byte >37
+       byte >33
+       data 1
+       data door_19_init
 
 n_doors:
        data (n_doors - doors) / door_size
@@ -138,7 +153,11 @@ door_5_init:
        data object_type_guard
        byte >29                      ; x
        byte >18                      ; y
-door_6_7_init:
+door_6_init:
+       data object_type_chest
+       byte >17                      ; x
+       byte >14                      ; y
+door_7_init:
        data object_type_chest
        byte >02                      ; x
        byte >3d                      ; y
@@ -202,3 +221,21 @@ door_16_init:
        data object_type_chest
        byte >22                      ; x
        byte >25                      ; y
+door_17_init:
+       data object_type_guard
+       byte >17                      ; x
+       byte >04                      ; y
+       data object_type_guard
+       byte >1d                      ; x
+       byte >10                      ; y
+door_18_init:
+       data object_type_guard
+       byte >2f                      ; x
+       byte >0a                      ; y
+       data object_type_guard
+       byte >2f                      ; x
+       byte >13                      ; y
+door_19_init:
+       data object_type_chest
+       byte >3a                      ; x
+       byte >3c                      ; y

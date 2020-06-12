@@ -1,8 +1,8 @@
 sal:
-       byte >08,>08,>50,>08            ; health bar
-       byte >08,>18,>54,>0a
-       byte >08,>28,>58,>0b
-       byte >08,>38,>5c,>03
+       byte >04,>08,>50,>08            ; health bar
+       byte >04,>18,>54,>0a
+       byte >04,>28,>58,>0b
+       byte >04,>38,>5c,>03
        byte >90,>60,>00,gun_color
        byte >90,>70,>04,gun_color
        byte >90,>80,>08,gun_color

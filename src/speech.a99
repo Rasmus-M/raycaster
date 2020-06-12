@@ -842,8 +842,12 @@ speech_status_code_end
 *
 hand_up:
        data sp_hand,sp_up,0
+what_was_that:
+       data sp_what_was_that,0
 come_and_get_me:
        data sp_come,sp_and,sp_get,sp_me,0
 green_things_near:
        data sp_uhoh,sp_green,sp_things,sp_near,0
+start_of_level:
+       data sp_uhoh,sp_how,sp_did,sp_i,sp_get,sp_here,0
 

@@ -131,12 +131,16 @@ sal_no_inc:
        equ  sal_no+2
 score:
        equ  sal_no_inc+2
-health:
+old_score:
        equ  score+2
+health:
+       equ  old_score+2
 old_health:
        equ  health+2
-x:                                     ; Player x FP 8.8
+status:
        equ  old_health+2
+x:                                     ; Player x FP 8.8
+       equ  status+2
 y:                                     ; Player y FP 8.8
        equ  x+2
 angle:                                 ; Player direction 0 - 2 * n_directions (even only)
@@ -207,14 +211,26 @@ main_loop:
        bl   @move_enemies
        bl   @move_bullets
        bl   @draw_bullets
-       bl   @bullets_collisions
+       bl   @bullet_collisions
        bl   @object_collisions
        bl   @update_health_bar
        bl   @display_score
        bl   @speak
 ;      bl   @display_frame_rate
-       mov  @health,r0
-       jne  main_loop
+       mov  @status,r0
+       jeq  main_loop
+       bl   @play_die
+       jmp  pause
+       jgt  finish
+finish:
+       bl   @play_finish
+pause:
+       li   r2,240
+       mov  r2,@tmp
+pause_loop:
+       bl   @vsync
+       dec  @tmp
+       jne  pause_loop
        jmp  restart
 
 *********************************************************************
@@ -229,6 +245,9 @@ vsync_1:
        jeq  vsync_1
        inc  @interrupt_count
        movb @vdpsta,r12
+       .push r11
+       bl   @snd_player
+       .pop r11
        rt
 *// vsync
 
@@ -808,8 +827,9 @@ user_input_4:
        a    r4,r1
        bl   @get_map_value
        jeq  user_input_5
-;      cb   @door,r2
-;      jeq  user_input_5
+       cb   @goal,r2
+       jne  user_input_8
+       inc  @status                    ; Finish
        jmp  user_input_8
 *      Move
 user_input_5:
@@ -1005,60 +1025,62 @@ end_marker_byte:
 *
 * Bullet collisions
 *
-bullets_collisions:
+bullet_collisions:
        .proc
        abs  @bullet_active
-       jeq  bullets_collisions_0
+       jeq  bullet_collisions_0
 *      Check distance
        mov  @bullet_distance,r0
        ci   r0,max_bullet_distance*256
-       jgt  bullets_collisions_1
+       jgt  bullet_collisions_1
 *      Check for wall collision
        mov  @bullet_x,r0
        mov  @bullet_y,r1
        bl   @get_map_address
        movb *r2,r3
-       jeq  bullets_collisions_2
+       jeq  bullet_collisions_2
        cb   r3,@door
-       jne  bullets_collisions_1
+       jne  bullet_collisions_1
        bl   @open_door
-       jmp  bullets_collisions_1
+       jmp  bullet_collisions_1
 *      Check for enemy collison
-bullets_collisions_2:
+bullet_collisions_2:
        li   r4,objects
        mov  @n_objects,r5
-       jeq  bullets_collisions_0
-bullets_collisions_3:
+       jeq  bullet_collisions_0
+bullet_collisions_3:
        mov  *r4,r2
-       jeq  bullets_collisions_4
+       jeq  bullet_collisions_4
        mov  @object_type(r4),r2
        ci   r2,object_type_guard
-       jne  bullets_collisions_4
+       jne  bullet_collisions_4
        mov  @object_x(r4),r2
        s    r0,r2
        abs  r2
        ci   r2,>0080
-       jgt  bullets_collisions_4
+       jgt  bullet_collisions_4
        mov  @object_y(r4),r3
        s    r1,r3
        abs  r3
        ci   r3,>0080
-       jgt  bullets_collisions_4
+       jgt  bullet_collisions_4
 *      hit
        bl   @remove_object
-       jmp  bullets_collisions_1
-bullets_collisions_4:
+       li   r0,25
+       a    r0,@score
+       jmp  bullet_collisions_1
+bullet_collisions_4:
        ai   r4,object_size
        dec  r5
-       jne  bullets_collisions_3
-       jmp  bullets_collisions_0
+       jne  bullet_collisions_3
+       jmp  bullet_collisions_0
 *      Remove bullet
-bullets_collisions_1:
+bullet_collisions_1:
        clr  @bullet_active
-bullets_collisions_0:
+bullet_collisions_0:
        bl   @check_int
        .endproc
-*// bullets_collisions
+*// bullet_collisions
 
 *********************************************************************
 *
@@ -1088,7 +1110,8 @@ object_collisions_1:
        ci   r3,>0100
        jgt  object_collisions_2
        bl   @remove_object
-       inc  @score
+       li   r0,100
+       a    r0,@score
        jmp  object_collisions_3
 object_collisions_2:
        ai   r4,object_size
@@ -1109,7 +1132,11 @@ update_health_bar:
        s    @health,r3
        jeq  update_health_bar_4
        mov  @health,r0
+       jgt  update_health_bar_0
+       dec  @status
+       mov  r0,r0
        jlt  update_health_bar_4
+update_health_bar_0:
        mov  r0,r1
        mov  r0,r2
        srl  r0,4                       ; Which sprite 0-3 to update
@@ -1154,21 +1181,13 @@ update_health_bar_4:
 *
 display_score:
        .proc
-       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-       andi r0,>0001
-       sla  r0,10
-       ai   r0,nametb+30
-       bl   @vwad                      ; Set VDP address
-       mov  @score,r0
-       mov  r0,r1
-       sra  r1,4
-       andi r1,>0f00
-       ai   r1,char_0*256
-       movb r1,*r15
-       andi r0,>000f
-       swpb r0
-       ai   r0,char_0*256
-       movb r0,*r15
+       mov  @score,r1
+       c    r1,@old_score
+       jeq  display_score_1
+       li   r0,26+32
+       li   r2,5
+       bl   @display_decimal
+display_score_1:
        .endproc
 *// display_score
 
@@ -1383,6 +1402,8 @@ init_level:
        mov  r0,@health
        mov  r0,@old_health
        clr  @score
+       seto @old_score
+       clr  @status
 *      Init objects
        bl   @reset_objects
        li   r4,object_init_data
@@ -1393,7 +1414,7 @@ init_level_1:
        dec  r5
        jne  init_level_1
 *      Speak
-       li   r1,green_things_near
+       li   r1,start_of_level
        bl   @say_phrase
 *      Sprite patterns
        li   r0,sprptb+(20*32)
@@ -1506,6 +1527,58 @@ vdp_registers:
        byte sprptb/>800                ; Sprite pattern table
        byte backdrop_color             ; Backdrop color
 *// graphics_mode
+
+*********************************************************************
+*
+* Display decimal number
+*
+* r0: Screen offset
+* r1: Number to display
+* r2: Number of digits
+*
+display_decimal:
+       .proc
+       ai   r0,nametb
+       mov  r0,r4
+       bl   @vwad
+       li   r5,buffer
+       li   r3,5
+       s    r2,r3
+       sla  r3,1
+       ai   r3,d10000
+       dec  r2
+display_decimal_1:
+       clr  r0
+       div  *r3+,r0
+       ai   r0,char_0
+       swpb r0
+       movb r0,*r15
+       movb r0,*r5+
+       dec  r2
+       jne  display_decimal_1
+       ai   r1,char_0
+       swpb r1
+       movb r1,*r15
+       movb r1,*r5+
+*      2nd name table buffer
+       mov  r4,r0
+       ai   r0,namet2-nametb
+       li   r1,buffer
+       mov  r5,r2
+       ai   r2,-buffer
+       bl   @vmbw
+       .endproc
+buffer:
+       bss  6
+d10000:
+       data 10000
+d1000:
+       data 1000
+d100:
+       data 100
+d10:
+       data 10
+*// display_decimal
 
 *********************************************************************
 *
@@ -1794,6 +1867,10 @@ space:
        byte 0
 door:
        byte 10
+goal:
+       byte 11
+secret:
+       byte 13
 byte_00:
        byte >00
 byte_01:
