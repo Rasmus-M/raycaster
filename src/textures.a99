@@ -1,5 +1,9 @@
 textures:
        equ  $
+*      Subtract 2 from the map number in Magellan
+texture_0:
+       data 2,9,9,9,9,9,9,2
+       data 2,9,9,9,9,9,9,2
 texture_1:
        data 2,2,8,8,8,8,8,8
        data 8,8,8,8,8,8,2,2

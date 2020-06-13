@@ -45,12 +45,27 @@ play_shot_2:
 
 *********************************************************************
 *
+* Play chest
+*
+play_chest:
+       .proc
+       li   r0,snd_chest
+       li   r1,snd_channel_3
+       li   r2,>0040
+       bl   @play_snd
+       .endproc
+*// play_chest
+
+
+*********************************************************************
+*
 * Play die
 *
 play_die:
        .proc
        li   r0,snd_die
        li   r1,snd_channel_3
+       li   r2,>0040
        bl   @play_snd
        .endproc
 *// play_die
@@ -63,6 +78,7 @@ play_finish:
        .proc
        li   r0,snd_finish
        li   r1,snd_channel_3
+       li   r2,>03ff
        bl   @play_snd
        .endproc
 *// play_finish

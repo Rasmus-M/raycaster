@@ -11,6 +11,12 @@ snd_shot_2:
        byte 16                         ; Frames
        byte 0                          ; Attn start
        byte 16                         ; Attn step
+snd_chest:
+       byte T1
+       byte 64                         ; Frames
+       byte 0                          ; Attn start
+       byte 4                          ; Attn step
+       data 0                          ; Freq step
 snd_die:
        byte T1
        byte 32                         ; Frames

@@ -90,6 +90,8 @@ backdrop_color:
        equ  >0b
 char_0:
        equ  >f0
+first_texture_index:
+       equ  12
 
 **
 * Scratch pad
@@ -219,9 +221,9 @@ main_loop:
 ;      bl   @display_frame_rate
        mov  @status,r0
        jeq  main_loop
+       jgt  finish
        bl   @play_die
        jmp  pause
-       jgt  finish
 finish:
        bl   @play_finish
 pause:
@@ -359,18 +361,20 @@ fish_eye_correction:
 *********************************************************************
 *
 * Calculate column set from map color
+* r3: 0 = x face, 1 = y face
 * r4: map color
 * Returns columns set index in r4
 *
 get_column_set:
        mov  r4,r4                      ; Color
        jeq  get_column_set_6           ; Return if no wall
-       ci   r4,10
+       ci   r4,first_texture_index     ; Check for texture
        jhe  get_column_set_1
 *      Single column set
-       dec  r4                         ; Color--
+       andi r4,>fffe                   ; Clear secret door bit
+       dect r4                         ; Shift to zero base
        a    r3,r4                      ; Different color on x/y facing walls
-       jmp  get_column_set_6
+       jmp  get_column_set_6           ; Return
 *      Texture
 get_column_set_1:
        mov  @ray_angle,r12             ; Ray direction
@@ -409,7 +413,7 @@ get_column_set_4:
        neg  r12
        a    @x,r12                     ; playerY + sin(a)
 get_column_set_5:
-       ai   r4,-10                     ; Texture index
+       ai   r4,-first_texture_index    ; Texture index
        sla  r4,5                       ; * 32
        andi r12,>00f0                  ; Isolate the bits we need
        srl  r12,3                      ; Shift to word offset
@@ -827,10 +831,15 @@ user_input_4:
        a    r4,r1
        bl   @get_map_value
        jeq  user_input_5
-       cb   @goal,r2
-       jne  user_input_8
+       cb   @goal,r2                   ; Check for goal
+       jne  user_input_9
        inc  @status                    ; Finish
        jmp  user_input_8
+user_input_9:
+       ci   r2,first_texture_index*256 ; Check for texture
+       jhe  user_input_8               ; Cannot move through texture
+       andi r2,>0100                   ; Test secret door bit
+       jeq  user_input_8               ; If not set we cannot move
 *      Move
 user_input_5:
        sra  r3,1
@@ -918,14 +927,15 @@ move_enemies_6:
        li   r3,-guard_speed
 move_enemies_7:
 *      Check map
+       mov  r2,r6
        a    r2,r0
        a    r3,r1
        bl   @get_map_value
        jeq  move_enemies_8
-       s    r2,r0
+       s    r6,r0
        bl   @get_map_value
        jeq  move_enemies_8
-       a    r2,r0
+       a    r6,r0
        s    r3,r1
        bl   @get_map_value
        jne  move_enemies_2
@@ -1112,6 +1122,7 @@ object_collisions_1:
        bl   @remove_object
        li   r0,100
        a    r0,@score
+       bl   @play_chest
        jmp  object_collisions_3
 object_collisions_2:
        ai   r4,object_size
@@ -1866,11 +1877,11 @@ start_dir:
 space:
        byte 0
 door:
-       byte 10
-goal:
-       byte 11
-secret:
        byte 13
+goal:
+       byte 14
+checkered:
+       byte 15
 byte_00:
        byte >00
 byte_01:
