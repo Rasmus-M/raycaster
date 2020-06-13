@@ -231,12 +231,16 @@ main_loop:
 finish:
        bl   @play_finish
 pause:
-       li   r2,240
+       li   r2,120
        mov  r2,@tmp
 pause_loop:
        bl   @vsync
        dec  @tmp
        jne  pause_loop
+pause_loop_1:
+       li   r0,KEY_FI
+       bl   @check_key
+       jeq  pause_loop_1
        jmp  restart
 
 *********************************************************************
