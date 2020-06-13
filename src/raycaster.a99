@@ -92,6 +92,10 @@ char_0:
        equ  >f0
 first_texture_index:
        equ  12
+initial_objects:
+       equ  5
+initial_health:
+       equ  63
 
 **
 * Scratch pad
@@ -1274,6 +1278,7 @@ open_door_1:
        jne  open_door_2
        mov  @door_object_inits(r8),r4
        mov  @door_n_objects(r8),r5
+       jeq  open_door_3
 open_door_4:
        bl   @create_object
        ai   r4,object_init_size
@@ -1409,21 +1414,34 @@ init_level:
        mov  @start_x,@x
        mov  @start_y,@y
        mov  @start_dir,@angle
-       li   r0,63
+       li   r0,initial_health
        mov  r0,@health
        mov  r0,@old_health
        clr  @score
        seto @old_score
        clr  @status
+*      Init doors
+       li   r4,doors
+       mov  @n_doors,r5
+init_level_1:
+       clr  r0
+       movb @door_x(r4),r0
+       clr  r1
+       movb @door_y(r4),r1
+       bl   @get_map_address
+       movb @door,*r2
+       ai   r4,door_size
+       dec  r5
+       jne  init_level_1
 *      Init objects
        bl   @reset_objects
        li   r4,object_init_data
-       li   r5,4
-init_level_1:
+       li   r5,initial_objects
+init_level_2:
        bl   @create_object
        ai   r4,object_init_size
        dec  r5
-       jne  init_level_1
+       jne  init_level_2
 *      Speak
        li   r1,start_of_level
        bl   @say_phrase
