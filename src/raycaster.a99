@@ -1148,14 +1148,12 @@ object_collisions_3:
 *
 update_health_bar:
        .proc
-       mov  @old_health,r3
-       s    @health,r3
+       c    @health,@old_health
        jeq  update_health_bar_4
        mov  @health,r0
        jgt  update_health_bar_0
        dec  @status
-       mov  r0,r0
-       jlt  update_health_bar_4
+       clr  r0
 update_health_bar_0:
        mov  r0,r1
        mov  r0,r2
@@ -1181,13 +1179,18 @@ update_health_bar_1:
        dect r2
        jne  update_health_bar_1
 *      Full columns to clear
-       srl  r3,3                       ; columns
+       mov  @old_health,r2
+       srl  r2,3                       ; Old column
+       mov  @health,r2
+       srl  r0,3                       ; New column
+       s    r0,r2                      ; Column difference
        jeq  update_health_bar_3
-       sla  r3,4                       ; columns * 16
+       jlt  update_health_bar_3
+       sla  r2,4                       ; columns * 16
 update_health_bar_2:
        clr  *r15
        clr  *r15
-       dect r3
+       dect r2
        jne  update_health_bar_2
 update_health_bar_3:
        mov  @health,@old_health
