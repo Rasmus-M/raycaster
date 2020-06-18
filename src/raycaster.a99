@@ -238,6 +238,7 @@ pause_loop:
        dec  @tmp
        jne  pause_loop
 pause_loop_1:
+       bl   @vsync
        li   r0,KEY_FI
        bl   @check_key
        jeq  pause_loop_1
