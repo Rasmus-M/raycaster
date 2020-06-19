@@ -29,19 +29,21 @@ grmwa  equ  >9C02                      ; GROM address write
 * VDP memory map
 *
 ptrntb equ  >0000                      ; Pattern table base 1
-ptrnt2 equ  >1000                      ; Pattern table base 2
+ptrnt2 equ  >0800                      ; Pattern table base 1
+ptrnt3 equ  >1000                      ; Pattern table base 1
 sprptb equ  >1800                      ; Sprite pattern table base
 colrtb equ  >2000                      ; Color table base 1
-nametb equ  >2800                      ; Name table base 1
-namet2 equ  >2c00                      ; Name table base 2
-spratb equ  >2f00                      ; Sprite attribute table base 1
-sprat2 equ  >2f80                      ; Sprite attribute table base 2
-sprat3 equ  >3000                      ; Sprite attribute table base 3
-sprat4 equ  >3080                      ; Sprite attribute table base 4
-sprat5 equ  >3100                      ; Sprite attribute table base 5
-sprat6 equ  >3180                      ; Sprite attribute table base 6
-sprat7 equ  >3200                      ; Sprite attribute table base 7
-sprat8 equ  >3280                      ; Sprite attribute table base 8
+colrt2 equ  >2800                      ; Color table base 1
+nametb equ  >3000                      ; Name table base 1
+namet2 equ  >3400                      ; Name table base 2
+spratb equ  >3700                      ; Sprite attribute table base 1
+sprat2 equ  >3780                      ; Sprite attribute table base 2
+sprat3 equ  >3800                      ; Sprite attribute table base 3
+sprat4 equ  >3880                      ; Sprite attribute table base 4
+sprat5 equ  >3900                      ; Sprite attribute table base 5
+sprat6 equ  >3980                      ; Sprite attribute table base 6
+sprat7 equ  >3a00                      ; Sprite attribute table base 7
+sprat8 equ  >3a80                      ; Sprite attribute table base 8
 
 **
 * Constants
@@ -288,7 +290,7 @@ set_vdp_regs:
 *      Set name table
        mov  @dbl_buffer_flag,r0
        andi r0,>0001
-       ori  r0,>020a
+       ori  r0,>0200+(nametb/>400)
        bl   @vwtr
 *      Set sprite attribute table
        li   r0,>0500+(spratb/>80)
@@ -1486,16 +1488,20 @@ one_time_init:
        li   r1,PAT0
        li   r2,n_tile_patterns*8
        bl   @vmbw
-       li   r0,ptrntb+>800
+       li   r0,ptrnt2
        li   r1,PAT0
        li   r2,n_tile_patterns*8
        bl   @vmbw
-       li   r0,ptrntb+>1000
+       li   r0,ptrnt3
        li   r1,PAT0
        li   r2,n_tile_patterns*8
        bl   @vmbw
 *      Colors
        li   r0,colrtb
+       li   r1,COL0
+       li   r2,n_tile_patterns*8
+       bl   @vmbw
+       li   r0,colrt2
        li   r1,COL0
        li   r2,n_tile_patterns*8
        bl   @vmbw
@@ -1558,8 +1564,8 @@ vdp_registers:
        byte >02                        ; Graphics II mode
        byte >e2                        ; 16K, display on, interrupt enabled
        byte nametb/>400                ; Name table
-       byte >9f                        ; Color table
-       byte ptrntb/>800+>03            ; Pattern table
+       byte >bf                        ; 2 color tables
+       byte ptrntb/>800+>03            ; 3 pattern tables
        byte spratb/>80                 ; Sprite attribute table
        byte sprptb/>800                ; Sprite pattern table
        byte backdrop_color             ; Backdrop color
