@@ -876,6 +876,11 @@ user_input_7:
        a    r1,r0
        mov  r0,@sal_no
 user_input_8:
+       li   r0,KEY_M
+       bl   @check_key
+       jeq  user_input_10
+       bl   @display_map
+user_input_10:
        bl   @check_int
        .endproc
 *// user_input
@@ -1243,6 +1248,102 @@ frame_rate_from_ints:
        byte char_0+1,char_0+0
        byte char_0+0,char_0+9
 *// display_frame_rate
+
+*********************************************************************
+*
+* Display map
+*
+display_map:
+       .proc
+*      Set patterns and colors
+       li   r0,ptrnt2
+       clr  r1
+       li   r2,>800
+       bl   @vsmw
+       li   r0,colrt2
+       li   r1,>f100
+       li   r2,>800
+       bl   @vsmw
+*      Set name table
+       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
+       inv  r0
+       andi r0,>0001
+       sla  r0,10
+       ai   r0,nametb+>100
+       mov  r0,r3
+       clr  r1                         ; Fill a 3rd of the screen with blanks
+       li   r2,>100
+       bl   @vsmw
+       mov  r3,r0                      ; Set name table for the map
+       ai   r0,12                      ; Center
+       li   r1,>8000                   ; First map character
+       li   r3,8                       ; Rows
+display_map_3:
+       bl   @vwad
+       li   r2,8                       ; Columns
+display_map_4:
+       movb r1,*r15
+       ai   r1,>0800
+       dec  r2
+       jne  display_map_4              ; Next column
+       ai   r0,screen_width
+       ai   r1,->3f00
+       dec  r3
+       jne  display_map_3              ; Next row
+*      Display map
+       li   r0,ptrnt2+>400
+       bl   @vwad
+       li   r6,>0080                   ; A bit to set
+       li   r0,map                     ; Source address
+       li   r3,map_width/8             ; Column counter
+*      Column loop
+display_map_7:
+       li   r4,map_height            ; Row counter
+*      Line loop
+display_map_6:
+       clr  r2                         ; Result byte to write to VDP
+       li   r5,8                       ; Bits in a byte
+*      Bit loop
+display_map_8:
+       movb *r0+,r1                    ; Get map byte
+       jeq  display_map_5              ; Don't set map bit if zero
+       soc  r6,r2                      ; Set bit
+display_map_5:
+       sla  r2,1                       ; Shift result left to accept next bit
+       dec  r5
+       jne  display_map_8              ; Next bit
+       movb r2,*r15                    ; Write 8 pixels to VDP
+       ai   r0,map_width-8             ; Next row of map
+       dec  r4
+       jne  display_map_6
+       ai   r0,(-map_height*map_width)+8
+       dec  r3
+       jne  display_map_7              ; Next column
+*      Display player position
+;       mov  @sal_no,r0                 ; Which buffer to update?
+;       sla  r0,7
+;       ai   r0,spratb+(n_fixed_sprites*4)
+;       bl   @vwad                      ; Set VDP address
+*      Wait key
+display_map_1:
+       li   r0,KEY_M
+       bl   @check_key
+       jne  display_map_1
+display_map_2:
+       li   r0,KEY_UP
+       bl   @check_key
+       jeq  display_map_2
+*      Restore patterns and colors
+       li   r0,ptrnt2
+       li   r1,PAT0
+       li   r2,n_tile_patterns*8
+       bl   @vmbw
+       li   r0,colrt2
+       li   r1,COL0
+       li   r2,n_tile_patterns*8
+       bl   @vmbw
+       .endproc
+*// display_map
 
 *********************************************************************
 *
