@@ -783,6 +783,14 @@ draw_object_10:
 *
 user_input:
        .proc
+*      Map
+       li   r0,KEY_M
+       bl   @check_key
+       jeq  user_input_0
+       bl   @display_map
+       jmp  user_input_8
+*      Joystick
+user_input_0:
        li   r0,JOY_FI
        bl   @check_key
 *      Fire
@@ -876,11 +884,6 @@ user_input_7:
        a    r1,r0
        mov  r0,@sal_no
 user_input_8:
-       li   r0,KEY_M
-       bl   @check_key
-       jeq  user_input_10
-       bl   @display_map
-user_input_10:
        bl   @check_int
        .endproc
 *// user_input
@@ -1255,6 +1258,17 @@ frame_rate_from_ints:
 *
 display_map:
        .proc
+*      Name table address
+       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
+       inv  r0
+       andi r0,>0001
+       sla  r0,10
+       ai   r0,nametb+>100
+       mov  r0,r14
+*      Clear name table
+       clr  r1                         ; Fill a 3rd of the screen with blanks
+       li   r2,>100
+       bl   @vsmw
 *      Set patterns and colors
        li   r0,ptrnt2
        clr  r1
@@ -1264,32 +1278,6 @@ display_map:
        li   r1,>f100
        li   r2,>800
        bl   @vsmw
-*      Set name table
-       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-       inv  r0
-       andi r0,>0001
-       sla  r0,10
-       ai   r0,nametb+>100
-       mov  r0,r3
-       clr  r1                         ; Fill a 3rd of the screen with blanks
-       li   r2,>100
-       bl   @vsmw
-       mov  r3,r0                      ; Set name table for the map
-       ai   r0,12                      ; Center
-       li   r1,>8000                   ; First map character
-       li   r3,8                       ; Rows
-display_map_3:
-       bl   @vwad
-       li   r2,8                       ; Columns
-display_map_4:
-       movb r1,*r15
-       ai   r1,>0800
-       dec  r2
-       jne  display_map_4              ; Next column
-       ai   r0,screen_width
-       ai   r1,->3f00
-       dec  r3
-       jne  display_map_3              ; Next row
 *      Display map
        li   r0,ptrnt2+>400
        bl   @vwad
@@ -1319,11 +1307,37 @@ display_map_5:
        ai   r0,(-map_height*map_width)+8
        dec  r3
        jne  display_map_7              ; Next column
+*      Set name table
+       mov  r14,r0                      ; Set name table for the map
+       ai   r0,12                      ; Center
+       li   r1,>8000                   ; First map character
+       li   r3,8                       ; Rows
+display_map_3:
+       bl   @vwad
+       li   r2,8                       ; Columns
+display_map_4:
+       movb r1,*r15
+       ai   r1,>0800
+       dec  r2
+       jne  display_map_4              ; Next column
+       ai   r0,screen_width
+       ai   r1,->3f00
+       dec  r3
+       jne  display_map_3              ; Next row
 *      Display player position
-;       mov  @sal_no,r0                 ; Which buffer to update?
-;       sla  r0,7
-;       ai   r0,spratb+(n_fixed_sprites*4)
-;       bl   @vwad                      ; Set VDP address
+       mov  @sal_no,r0                 ; Which table to update?
+       sla  r0,7
+       ai   r0,spratb+(n_fixed_sprites*4)
+       bl   @vwad                      ; Set VDP address
+       movb @y,r0
+       ab   @map_y,r0
+       movb r0,*r15
+       movb @x,r0
+       ab   @map_x,r0
+       movb r0,*r15
+       li   r0,>4805
+       movb r0,*r15
+       movb @r0lb,*r15
 *      Wait key
 display_map_1:
        li   r0,KEY_M
@@ -1333,6 +1347,11 @@ display_map_2:
        li   r0,KEY_UP
        bl   @check_key
        jeq  display_map_2
+*      Clear name table
+       mov  r14,r0
+       clr  r1                         ; Fill a 3rd of the screen with blanks
+       li   r2,>100
+       bl   @vsmw
 *      Restore patterns and colors
        li   r0,ptrnt2
        li   r1,PAT0
@@ -1343,6 +1362,11 @@ display_map_2:
        li   r2,n_tile_patterns*8
        bl   @vmbw
        .endproc
+map_x:
+       byte 96-8
+map_y:
+       byte 64-9
+
 *// display_map
 
 *********************************************************************
