@@ -1094,6 +1094,8 @@ bullet_collisions_3:
        ci   r3,>0080
        jgt  bullet_collisions_4
 *      hit
+       dec  @object_health(r4)
+       jgt  bullet_collisions_4
        bl   @remove_object
        li   r0,25
        a    r0,@score
@@ -1505,7 +1507,9 @@ create_object_1:
        sla  r3,1
        mov  @object_depth_tables(r3),@object_depth_table(r6)
        mov  @object_speech_table(r3),@object_speech(r6)
+       mov  @object_health_table(r3),@object_health(r6)
        clr  @object_fire(r6)
+*      Next object
        c    r7,@n_objects
        jlt  create_object_3
        inc  @n_objects
@@ -2064,8 +2068,10 @@ object_speech:
        equ  10
 object_fire:
        equ  12
-object_size:
+object_health:
        equ  14
+object_size:
+       equ  16
 
 object_type_guard:
        equ  1
@@ -2090,14 +2096,19 @@ objects:
 
 object_depth_tables:
        data 0
-       data guard_depth_table
-       data boss_depth_table
-       data chest_depth_table
+       data guard_depth_table          ; Guard
+       data boss_depth_table           ; Boss
+       data chest_depth_table          ; Chest
 object_speech_table:
        data 0
-       data hand_up
-       data your_time_is_up
-       data come_and_get_me
+       data hand_up                    ; Guard
+       data your_time_is_up            ; Boss
+       data come_and_get_me            ; Chest
+object_health_table:
+       data 0
+       data 1                          ; Guard
+       data 5                          ; Boss
+       data 0                          ; Chest
 
 bullet_active:
        data 0
