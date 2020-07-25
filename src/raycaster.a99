@@ -29,11 +29,11 @@ grmwa  equ  >9C02                      ; GROM address write
 * VDP memory map
 *
 ptrntb equ  >0000                      ; Pattern table base 1
-ptrnt2 equ  >0800                      ; Pattern table base 1
-ptrnt3 equ  >1000                      ; Pattern table base 1
+ptrnt2 equ  >0800                      ; Pattern table base 2
+ptrnt3 equ  >1000                      ; Pattern table base 3
 sprptb equ  >1800                      ; Sprite pattern table base
 colrtb equ  >2000                      ; Color table base 1
-colrt2 equ  >2800                      ; Color table base 1
+colrt2 equ  >2800                      ; Color table base 2
 nametb equ  >3000                      ; Name table base 1
 namet2 equ  >3400                      ; Name table base 2
 spratb equ  >3700                      ; Sprite attribute table base 1
@@ -901,8 +901,8 @@ move_enemies_1:
        mov  *r4,r0
        jeq  move_enemies_2
        mov  @object_type(r4),r0
-       ci   r0,object_type_guard
-       jne  move_enemies_2
+       ci   r0,object_type_chest
+       jeq  move_enemies_2
 *      x
        mov  @object_x(r4),r0
        mov  @x,r2
@@ -1081,8 +1081,8 @@ bullet_collisions_3:
        mov  *r4,r2
        jeq  bullet_collisions_4
        mov  @object_type(r4),r2
-       ci   r2,object_type_guard
-       jne  bullet_collisions_4
+       ci   r2,object_type_chest
+       jeq  bullet_collisions_4
        mov  @object_x(r4),r2
        s    r0,r2
        abs  r2
@@ -2069,8 +2069,10 @@ object_size:
 
 object_type_guard:
        equ  1
-object_type_chest:
+object_type_boss:
        equ  2
+object_type_chest:
+       equ  3
 
 object_init_type:
        equ  0
@@ -2089,10 +2091,12 @@ objects:
 object_depth_tables:
        data 0
        data guard_depth_table
+       data boss_depth_table
        data chest_depth_table
 object_speech_table:
        data 0
        data hand_up
+       data your_time_is_up
        data come_and_get_me
 
 bullet_active:

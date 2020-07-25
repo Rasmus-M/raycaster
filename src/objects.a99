@@ -29,6 +29,25 @@ guard_depth_table:
        data MS20,MS20,MS20,MS20        ; 15: 1, 1, 1, 1
        data MS20,0,0,0                 ; 16: 1, 0, 0, 0
 
+boss_depth_table:
+       data MS25,MS25,MS25,MS25        ; 0: inf, 64, 32, 21
+       data MS25,MS26,MS26,MS26        ; 1: 16, 13, 11, 9
+       data MS26,MS26,MS26,MS26        ; 2: 8, 7, 6, 6
+       data MS27,MS27,MS27,MS27        ; 3: 5, 5, 5, 4
+       data MS27,MS27,MS27,MS27        ; 4: 4, 4, 4, 3
+       data MS27,MS27,MS27,MS27        ; 5: 3, 3, 3, 3
+       data MS27,MS27,MS27,MS27        ; 6: 3, 3, 2, 2
+       data MS27,MS27,MS27,MS27        ; 7: 2, 2, 2, 2
+       data MS27,MS27,MS27,MS27        ; 8: 2, 2, 2, 2
+       data MS28,MS28,MS28,MS28        ; 9: 2, 2, 2, 2
+       data MS28,MS28,MS28,MS28        ; 10: 2, 2, 2, 1
+       data MS28,MS28,MS28,MS28        ; 11: 1, 1, 1, 1
+       data MS28,MS28,MS28,MS28        ; 12: 1, 1, 1, 1
+       data MS28,MS28,MS28,MS28        ; 13: 1, 1, 1, 1
+       data MS28,MS28,MS28,MS28        ; 14: 1, 1, 1, 1
+       data MS28,MS28,MS28,MS28        ; 15: 1, 1, 1, 1
+       data MS28,0,0,0                 ; 16: 1, 0, 0, 0
+
 chest_depth_table:
 *      Floor offset 12
        data 0,MS21,MS21,MS21           ; 0: inf, 64, 32, 21

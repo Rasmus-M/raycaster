@@ -122,7 +122,7 @@ n_doors:
        data (n_doors - door_1) / door_size
 
 object_init_data:
-       data object_type_guard
+       data object_type_boss
        byte >0c                      ; x
        byte >19                      ; y
        data object_type_guard
