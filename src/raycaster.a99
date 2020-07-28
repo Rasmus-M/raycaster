@@ -34,16 +34,16 @@ ptrnt3 equ  >1000                      ; Pattern table base 3
 sprptb equ  >1800                      ; Sprite pattern table base
 colrtb equ  >2000                      ; Color table base 1
 colrt2 equ  >2800                      ; Color table base 2
-nametb equ  >3000                      ; Name table base 1
-namet2 equ  >3400                      ; Name table base 2
-spratb equ  >3700                      ; Sprite attribute table base 1
-sprat2 equ  >3780                      ; Sprite attribute table base 2
-sprat3 equ  >3800                      ; Sprite attribute table base 3
-sprat4 equ  >3880                      ; Sprite attribute table base 4
-sprat5 equ  >3900                      ; Sprite attribute table base 5
-sprat6 equ  >3980                      ; Sprite attribute table base 6
-sprat7 equ  >3a00                      ; Sprite attribute table base 7
-sprat8 equ  >3a80                      ; Sprite attribute table base 8
+colrt3 equ  >3000                      ; Color table base 3
+nametb equ  >3800                      ; Name table base
+spratb equ  >3c00                      ; Sprite attribute table base 1
+sprat2 equ  >3c80                      ; Sprite attribute table base 2
+sprat3 equ  >3d00                      ; Sprite attribute table base 3
+sprat4 equ  >3d80                      ; Sprite attribute table base 4
+sprat5 equ  >3e00                      ; Sprite attribute table base 5
+sprat6 equ  >3e80                      ; Sprite attribute table base 6
+sprat7 equ  >3f00                      ; Sprite attribute table base 7
+sprat8 equ  >3f80                      ; Sprite attribute table base 8
 
 **
 * Constants
@@ -53,11 +53,11 @@ map_width:
 map_height:
        equ  64
 screen_width:
-       equ  32
+       equ  64
 screen_height:
-       equ  24
+       equ  192
 n_directions:
-       equ  128
+       equ  256
 angle_mask:
        equ  2*n_directions-1
 n_rays:
@@ -72,8 +72,6 @@ max_object_width:
        equ  8
 max_objects:
        equ  16
-n_tile_patterns:
-       equ  256
 n_sprite_patterns:
        equ  25
 n_fixed_sprites:
@@ -91,7 +89,7 @@ bullet_color:
 backdrop_color:
        equ  >0b
 char_0:
-       equ  >f0
+       equ  >30
 first_texture_index:
        equ  12
 initial_objects:
@@ -131,10 +129,8 @@ interrupt_count:
        equ  padvar
 rand_no:
        equ  interrupt_count+2
-dbl_buffer_flag:
-       equ  rand_no+2
 sal_no:
-       equ  dbl_buffer_flag+2
+       equ  rand_no+2
 sal_no_inc:
        equ  sal_no+2
 score:
@@ -163,12 +159,8 @@ depth_buffer_ptr:
        equ  distance+2
 column_ptr:
        equ  depth_buffer_ptr+2
-column_ptrs:
-       equ  column_ptr+2
-tmp:
-       equ  column_ptrs+(n_rays*2)
 muzzle_flash:
-       equ  tmp+2
+       equ  column_ptr+2
 snd_channel_1:
        equ  muzzle_flash+2
 snd_channel_2:
@@ -213,18 +205,18 @@ main_loop:
        bl   @vsync
        bl   @set_vdp_regs
        bl   @cast_rays
+       bl   @draw_screen
+;       bl   @draw_objects
        bl   @upload_screen
-       bl   @draw_objects
        bl   @user_input
-       bl   @move_enemies
-       bl   @move_bullets
-       bl   @draw_bullets
-       bl   @bullet_collisions
-       bl   @object_collisions
-       bl   @update_health_bar
-       bl   @display_score
+;       bl   @move_enemies
+;       bl   @move_bullets
+;       bl   @draw_bullets
+;       bl   @bullet_collisions
+;       bl   @object_collisions
+;       bl   @update_health_bar
+;       bl   @display_score
        bl   @speak
-;      bl   @display_frame_rate
        mov  @status,r0
        jeq  main_loop
        jgt  finish
@@ -233,11 +225,10 @@ main_loop:
 finish:
        bl   @play_finish
 pause:
-       li   r2,120
-       mov  r2,@tmp
+       li   r14,120
 pause_loop:
        bl   @vsync
-       dec  @tmp
+       dec  r14
        jne  pause_loop
 pause_loop_1:
        bl   @vsync
@@ -287,17 +278,10 @@ check_int_1:
 *
 set_vdp_regs:
        .proc
-*      Set name table
-       mov  @dbl_buffer_flag,r0
-       andi r0,>0001
-       ori  r0,>0200+(nametb/>400)
-       bl   @vwtr
 *      Set sprite attribute table
        li   r0,>0500+(spratb/>80)
        a    @sal_no,r0
        bl   @vwtr
-*      Flip flag
-       inv  @dbl_buffer_flag
        .endproc
 *// set_vdp_regs
 
@@ -307,7 +291,7 @@ set_vdp_regs:
 *
 cast_rays:
        .proc
-       li   r0,column_ptrs
+       li   r0,columns
        mov  r0,@column_ptr
        li   r0,depth_buffer
        mov  r0,@depth_buffer_ptr
@@ -328,20 +312,11 @@ cast_rays_1:
        mov  r2,*r5+
        mov  r5,@depth_buffer_ptr
        bl   @fish_eye_correction       ; Adjust distance in r2
-*      Calculate which column to display
-       bl   @get_column_set            ; Returns column set index in r4
-       sla  r4,1                       ; To word offset
-       mov  @columns_set_table(r4),r4  ; Get columns set address
-       mov  r2,r5                      ; Distance
-       srl  r5,5                       ; To FP 13.3
-       movb @dist_column_table(r5),r5  ; Get column index
-       srl  r5,8
-       li   r6,screen_height           ; Column byte size
-       mpy  r6,r5                      ; Column index * column size
-       a    r4,r6                      ; Add to column set base
-       mov  @column_ptr,r7             ; Get address of column pointer
-       mov  r6,*r7+                    ; Set column pointer and increment
-       mov  r7,@column_ptr             ; Save address of next column pointer
+*      Calculate height/color of column
+;      TODO
+;      r2: distance
+;      r3: 0 = x face, 1 = y face
+;      r4: map color
 *      Next ray
        mov  @ray_angle,r2              ; Get ray direction
        inct r2                         ; Increment it
@@ -361,7 +336,7 @@ cast_rays_1:
 fish_eye_correction:
        mov  @ray_angle,r12             ; Ray direction
        s    @angle,r12                 ; Angle offset
-       andi r12,angle_mask         ; Wrap around
+       andi r12,angle_mask             ; Wrap around
        mov  @cos_table(r12),r12        ; Cosine of angle (positive)
        mpy  r2,r12                     ; Multiply by distance
        movb @r12lb,r2                  ; Move result back
@@ -379,8 +354,8 @@ fish_eye_correction:
 get_column_set:
        mov  r4,r4                      ; Color
        jeq  get_column_set_6           ; Return if no wall
-       ci   r4,first_texture_index     ; Check for texture
-       jhe  get_column_set_1
+;      ci   r4,first_texture_index     ; Check for texture
+;      jhe  get_column_set_1
 *      Single column set
        andi r4,>fffe                   ; Clear secret door bit
        dect r4                         ; Shift to zero base
@@ -425,11 +400,7 @@ get_column_set_4:
        a    @x,r12                     ; playerY + sin(a)
 get_column_set_5:
        ai   r4,-first_texture_index    ; Texture index
-       sla  r4,5                       ; * 32
-       andi r12,>00f0                  ; Isolate the bits we need
-       srl  r12,3                      ; Shift to word offset
-       a    r12,r4                     ; Add to texture index
-       mov  @textures(r4),r4           ; Get column set index
+;      TODO r12 holds where blobk was hit
 get_column_set_6:
        rt
 *// get_column_set
@@ -566,63 +537,14 @@ cast_ray_loop_end:
 
 *********************************************************************
 *
-* Upload screen
+* Draw screen
 *
-upload_screen:
+draw_screen:
        .proc
-       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-       andi r0,>0001
-       sla  r0,10
-       ai   r0,nametb
-       bl   @vwad                      ; Set VDP address
-       li   r3,screen_height           ; Row counter
-upload_screen_loop:
-       lwpi column_ptrs
-       mov  r15,@tmp
-       li   r15,vdpwd
-       movb *r0+,*r15
-       movb *r1+,*r15
-       movb *r2+,*r15
-       movb *r3+,*r15
-       movb *r4+,*r15
-       movb *r5+,*r15
-       movb *r6+,*r15
-       movb *r7+,*r15
-       movb *r8+,*r15
-       movb *r9+,*r15
-       movb *r10+,*r15
-       movb *r11+,*r15
-       movb *r12+,*r15
-       movb *r13+,*r15
-       movb *r14+,*r15
-       mov  @tmp,r15
-       movb *r15+,@vdpwd
-       lwpi column_ptrs+32
-       mov  r15,@tmp
-       li   r15,vdpwd
-       movb *r0+,*r15
-       movb *r1+,*r15
-       movb *r2+,*r15
-       movb *r3+,*r15
-       movb *r4+,*r15
-       movb *r5+,*r15
-       movb *r6+,*r15
-       movb *r7+,*r15
-       movb *r8+,*r15
-       movb *r9+,*r15
-       movb *r10+,*r15
-       movb *r11+,*r15
-       movb *r12+,*r15
-       movb *r13+,*r15
-       movb *r14+,*r15
-       mov  @tmp,r15
-       movb *r15+,@vdpwd
-       lwpi wrksp
-       dec  r3
-       jne  upload_screen_loop         ; Next row
+;      TODO
        bl   @check_int
        .endproc
-*// upload_screen
+*// draw_screen
 
 *********************************************************************
 *
@@ -680,102 +602,113 @@ draw_objects_3:
 *
 draw_object:
        .proc
-*      Find map to use
-       mov  r7,r8                      ; Distance FP 8.8
-       srl  r8,5                       ; To FP 14.2 + word offset
-       a    @object_depth_table(r4),r8 ; Add depth table base for object
-       mov  *r8,r8                     ; Map address
-       jeq  draw_object_10             ; Zero means don't draw
-       mov  *r8+,r1                    ; Width
-       mov  *r8+,r2                    ; Height
-       inct r8                         ; Skip size word
-*      Screen address
-       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-       andi r0,>0001
-       sla  r0,10                      ; x 1024
-       ai   r0,nametb+(screen_width*(screen_height/2)) ; Middle screen row
-       clr  r3                         ; For distance
-       movb r7,@r3lb                   ; Distance integer
-       sla  r3,1                       ; To word offset
-       mov  @floor_offset_from_center(r3),r3            ; Floor offset from center
-       s    r2,r3                      ; Minus object height
-       sla  r3,5                       ; * 32
-       a    r3,r0                      ; Add row offset
-*      Find start column to render
-       ai   r6,screen_width            ; Center screen column * 2
-       s    r1,r6                      ; Leftmost screen column * 2
-       mov  r6,r12                     ; Index to depth buffer
-       sra  r6,1                       ; Leftmost screen column
-       mov  r1,r3                      ; Column counter
-       mov  r1,r13                     ; Adjusted width
-draw_object_5:
-       mov  r6,r6                      ; Check if out of screen
-       jlt  draw_object_6              ; Jump if out of screen
-       c    r7,@depth_buffer(r12)      ; Check if behind wall
-       jhe  draw_object_6              ; Jump if at or behind wall
-       jmp  draw_object_7              ; Column OK
-draw_object_6:
-       inc  r6                         ; Next column
-       inct r12                        ; Next depth buffer index
-       dec  r13                        ; Decrease width
-       inc  r8                         ; Increase map address
-       dec  r3                         ; Decrease columns left
-       jne  draw_object_5              ; Loop until no more columns
-       jmp  draw_object_10             ; No columns to render
-draw_object_7:
-       a    r6,r0                      ; Add start column to screen address
-*      Find end column to render
-draw_object_8:
-       ci   r6,screen_width-1          ; Check if out of screen
-       jgt  draw_object_9              ; Jump if out of screen
-       c    r7,@depth_buffer(r12)      ; Check if behind wall
-       jhe  draw_object_9              ; Jump if at or behind wall
-       inc  r6                         ; Next column
-       inct r12                        ; Next depth buffer index
-       dec  r3                         ; Decrease columns left
-       jne  draw_object_8              ; Loop until no more columns
-draw_object_9:
-       s    r3,r13                     ; Substract remaining columns from width
-       jeq  draw_object_10             ; No columns to render
-*      Draw to VDP
-draw_object_1:
-       bl   @vwad                      ; Set VDP address
-       mov  r13,r3                     ; Column counter
-draw_object_2:
-       movb *r8+,r9                    ; Get map byte
-       jeq  draw_object_3              ; Zero is transparent
-       movb r9,*r15                    ; Write to VDP
-       dec  r3                         ; Decrease colum counter
-       jne  draw_object_2              ; Loop until done
-       jmp  draw_object_4              ; To next row
-draw_object_3:
-       movb @vdprd,r9                  ; Increment VDP address
-       dec  r3                         ; Decrease colum counter
-       jne  draw_object_2              ; Loop until done
-draw_object_4:
-       a    r1,r8                      ; Add width to map address
-       s    r13,r8                     ; Substract adjusted width
-       ai   r0,screen_width            ; One VDP row down
-       dec  r2                         ; Decrease row counter
-       jne  draw_object_1              ; Loop until done
-*      Speak first time
-       mov  @object_speech(r4),r1
-       jeq  draw_object_11
-       bl   @say_phrase
-       clr  @object_speech(r4)
-*      Muzzle flash
-draw_object_11:
-       abs  @object_fire(r4)
-       jeq  draw_object_10
-       mov  r6,r0
-       dec  r0
-       sla  r0,3
-       ori  r0,>6000
-       mov  r0,@muzzle_flash
-       clr  @object_fire(r4)
-draw_object_10:
+;*      Find map to use
+;       mov  r7,r8                      ; Distance FP 8.8
+;       srl  r8,5                       ; To FP 14.2 + word offset
+;       a    @object_depth_table(r4),r8 ; Add depth table base for object
+;       mov  *r8,r8                     ; Map address
+;       jeq  draw_object_10             ; Zero means don't draw
+;       mov  *r8+,r1                    ; Width
+;       mov  *r8+,r2                    ; Height
+;       inct r8                         ; Skip size word
+;*      Screen address
+;       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
+;       andi r0,>0001
+;       sla  r0,10                      ; x 1024
+;       ai   r0,nametb+(screen_width*(screen_height/2)) ; Middle screen row
+;       clr  r3                         ; For distance
+;       movb r7,@r3lb                   ; Distance integer
+;       sla  r3,1                       ; To word offset
+;       mov  @floor_offset_from_center(r3),r3            ; Floor offset from center
+;       s    r2,r3                      ; Minus object height
+;       sla  r3,5                       ; * 32
+;       a    r3,r0                      ; Add row offset
+;*      Find start column to render
+;       ai   r6,screen_width            ; Center screen column * 2
+;       s    r1,r6                      ; Leftmost screen column * 2
+;       mov  r6,r12                     ; Index to depth buffer
+;       sra  r6,1                       ; Leftmost screen column
+;       mov  r1,r3                      ; Column counter
+;       mov  r1,r13                     ; Adjusted width
+;draw_object_5:
+;       mov  r6,r6                      ; Check if out of screen
+;       jlt  draw_object_6              ; Jump if out of screen
+;       c    r7,@depth_buffer(r12)      ; Check if behind wall
+;       jhe  draw_object_6              ; Jump if at or behind wall
+;       jmp  draw_object_7              ; Column OK
+;draw_object_6:
+;       inc  r6                         ; Next column
+;       inct r12                        ; Next depth buffer index
+;       dec  r13                        ; Decrease width
+;       inc  r8                         ; Increase map address
+;       dec  r3                         ; Decrease columns left
+;       jne  draw_object_5              ; Loop until no more columns
+;       jmp  draw_object_10             ; No columns to render
+;draw_object_7:
+;       a    r6,r0                      ; Add start column to screen address
+;*      Find end column to render
+;draw_object_8:
+;       ci   r6,screen_width-1          ; Check if out of screen
+;       jgt  draw_object_9              ; Jump if out of screen
+;       c    r7,@depth_buffer(r12)      ; Check if behind wall
+;       jhe  draw_object_9              ; Jump if at or behind wall
+;       inc  r6                         ; Next column
+;       inct r12                        ; Next depth buffer index
+;       dec  r3                         ; Decrease columns left
+;       jne  draw_object_8              ; Loop until no more columns
+;draw_object_9:
+;       s    r3,r13                     ; Substract remaining columns from width
+;       jeq  draw_object_10             ; No columns to render
+;*      Draw to VDP
+;draw_object_1:
+;       bl   @vwad                      ; Set VDP address
+;       mov  r13,r3                     ; Column counter
+;draw_object_2:
+;       movb *r8+,r9                    ; Get map byte
+;       jeq  draw_object_3              ; Zero is transparent
+;       movb r9,*r15                    ; Write to VDP
+;       dec  r3                         ; Decrease colum counter
+;       jne  draw_object_2              ; Loop until done
+;       jmp  draw_object_4              ; To next row
+;draw_object_3:
+;       movb @vdprd,r9                  ; Increment VDP address
+;       dec  r3                         ; Decrease colum counter
+;       jne  draw_object_2              ; Loop until done
+;draw_object_4:
+;       a    r1,r8                      ; Add width to map address
+;       s    r13,r8                     ; Substract adjusted width
+;       ai   r0,screen_width            ; One VDP row down
+;       dec  r2                         ; Decrease row counter
+;       jne  draw_object_1              ; Loop until done
+;*      Speak first time
+;       mov  @object_speech(r4),r1
+;       jeq  draw_object_11
+;       bl   @say_phrase
+;       clr  @object_speech(r4)
+;*      Muzzle flash
+;draw_object_11:
+;       abs  @object_fire(r4)
+;       jeq  draw_object_10
+;       mov  r6,r0
+;       dec  r0
+;       sla  r0,3
+;       ori  r0,>6000
+;       mov  r0,@muzzle_flash
+;       clr  @object_fire(r4)
+;draw_object_10:
        .endproc
 *// draw_object
+
+*********************************************************************
+*
+* Upload screen
+*
+upload_screen:
+       .proc
+       ;      TODO
+       bl   @check_int
+       .endproc
+*// upload_screen
 
 *********************************************************************
 *
@@ -1228,58 +1161,17 @@ display_score_1:
 
 *********************************************************************
 *
-* Display frame rate
-*
-display_frame_rate:
-       .proc
-       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-       andi r0,>0001
-       sla  r0,10
-       ai   r0,nametb+30
-       bl   @vwad                      ; Set VDP address
-       mov  @interrupt_count,r2
-       sla  r2,1
-       ai   r2,frame_rate_from_ints
-       movb *r2+,*r15
-       movb *r2,*r15
-       .endproc
-frame_rate_from_ints:
-       byte char_0+0,char_0+0
-       byte char_0+6,char_0+0
-       byte char_0+3,char_0+0
-       byte char_0+2,char_0+0
-       byte char_0+1,char_0+5
-       byte char_0+1,char_0+2
-       byte char_0+1,char_0+0
-       byte char_0+0,char_0+9
-*// display_frame_rate
-
-*********************************************************************
-*
 * Display map
 *
 display_map:
        .proc
-*      Name table address
-       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-       inv  r0
-       andi r0,>0001
-       sla  r0,10
-       ai   r0,nametb+>100
-       mov  r0,r14
 *      Clear name table
+       li   r0,nametb+>100
        clr  r1                         ; Fill a 3rd of the screen with blanks
        li   r2,>100
        bl   @vsmw
 *      Set patterns and colors
-       li   r0,ptrnt2
-       clr  r1
-       li   r2,>800
-       bl   @vsmw
-       li   r0,colrt2
-       li   r1,>f100
-       li   r2,>800
-       bl   @vsmw
+;      TODO
 *      Display map
        li   r0,ptrnt2+>400
        bl   @vwad
@@ -1310,8 +1202,7 @@ display_map_5:
        dec  r3
        jne  display_map_7              ; Next column
 *      Set name table
-       mov  r14,r0                      ; Set name table for the map
-       ai   r0,12                      ; Center
+       li   r0,nametb+12               ; Center
        li   r1,>8000                   ; First map character
        li   r3,8                       ; Rows
 display_map_3:
@@ -1350,19 +1241,12 @@ display_map_2:
        bl   @check_key
        jeq  display_map_2
 *      Clear name table
-       mov  r14,r0
+       li   r0,nametb
        clr  r1                         ; Fill a 3rd of the screen with blanks
        li   r2,>100
        bl   @vsmw
 *      Restore patterns and colors
-       li   r0,ptrnt2
-       li   r1,PAT0
-       li   r2,n_tile_patterns*8
-       bl   @vmbw
-       li   r0,colrt2
-       li   r1,COL0
-       li   r2,n_tile_patterns*8
-       bl   @vmbw
+;      TODO
        .endproc
 map_x:
        byte 96-8
@@ -1614,26 +1498,14 @@ one_time_init:
        bl   @init_speech
 *      Patterns
        li   r0,ptrntb
-       li   r1,PAT0
-       li   r2,n_tile_patterns*8
-       bl   @vmbw
-       li   r0,ptrnt2
-       li   r1,PAT0
-       li   r2,n_tile_patterns*8
-       bl   @vmbw
-       li   r0,ptrnt3
-       li   r1,PAT0
-       li   r2,n_tile_patterns*8
-       bl   @vmbw
+       li   r1,>f000
+       li   r2,>1800
+       bl   @vsmw
 *      Colors
        li   r0,colrtb
-       li   r1,COL0
-       li   r2,n_tile_patterns*8
-       bl   @vmbw
-       li   r0,colrt2
-       li   r1,COL0
-       li   r2,n_tile_patterns*8
-       bl   @vmbw
+       clr  r1
+       li   r2,>1800
+       bl   @vsmw
 *      Sprite patterns
        li   r0,sprptb
        li   r1,SPR0
@@ -1693,7 +1565,7 @@ vdp_registers:
        byte >02                        ; Graphics II mode
        byte >e2                        ; 16K, display on, interrupt enabled
        byte nametb/>400                ; Name table
-       byte >bf                        ; 2 color tables
+       byte >ff                        ; 3 color tables
        byte ptrntb/>800+>03            ; 3 pattern tables
        byte spratb/>80                 ; Sprite attribute table
        byte sprptb/>800                ; Sprite pattern table
@@ -1713,7 +1585,6 @@ display_decimal:
        ai   r0,nametb
        mov  r0,r4
        bl   @vwad
-       li   r5,buffer
        li   r3,5
        s    r2,r3
        sla  r3,1
@@ -1725,23 +1596,12 @@ display_decimal_1:
        ai   r0,char_0
        swpb r0
        movb r0,*r15
-       movb r0,*r5+
        dec  r2
        jne  display_decimal_1
        ai   r1,char_0
        swpb r1
        movb r1,*r15
-       movb r1,*r5+
-*      2nd name table buffer
-       mov  r4,r0
-       ai   r0,namet2-nametb
-       li   r1,buffer
-       mov  r5,r2
-       ai   r2,-buffer
-       bl   @vmbw
        .endproc
-buffer:
-       bss  6
 d10000:
        data 10000
 d1000:
@@ -2050,6 +1910,8 @@ byte_01:
 
 depth_buffer:
        bss  n_rays*2
+columns:
+       bss  n_rays*8
 
 **
 * Objects
@@ -2096,9 +1958,9 @@ objects:
 
 object_depth_tables:
        data 0
-       data guard_depth_table          ; Guard
-       data boss_depth_table           ; Boss
-       data chest_depth_table          ; Chest
+       data 0                          ; Guard
+       data 0                          ; Boss
+       data 0                          ; Chest
 object_speech_table:
        data 0
        data hand_up                    ; Guard
@@ -2131,88 +1993,11 @@ bullet_speed:
 bullet_distance:
        data 0
 
-**
-* This table lists, for each distance
-* 1 <= d < 24 step 0.125
-* the index of one of the 23 pre-drawn
-* columns to use.
-* 23*8 = 192 entries (+1)
-*
-dist_column_table:
-       byte 00,00,00,00,00,00,00,00
-       byte 00,01,02,03,04,05,06,07
-       byte 08,09,10,11,12,13,14,14
-       byte 15,16,16,17,17,18,18,19
-       byte 19,19,20,20,20,21,21,21
-       byte 21,22,22,22,22,22,23,23
-       byte 23,23,23,23,24,24,24,24
-       byte 24,24,24,24,25,25,25,25
-       byte 25,25,25,25,25,25,26,26
-       byte 26,26,26,26,26,26,26,26
-       byte 26,26,26,26,26,26,27,27
-       byte 27,27,27,27,27,27,27,27
-       byte 27,27,27,27,27,27,27,27
-       byte 27,27,27,27,27,27,28,28
-       byte 28,28,28,28,28,28,28,28
-       byte 28,28,28,28,28,28,28,28
-       byte 28,28,28,28,28,28,28,28
-       byte 28,28,28,28,28,28,28,28
-       byte 28,28,28,28,28,28,28,28
-       byte 28,28,29,29,29,29,29,29
-       byte 29,29,29,29,29,29,29,29
-       byte 29,29,29,29,29,29,29,29
-       byte 29,29,29,29,29,29,29,29
-       byte 29,29,29,29,29,29,29,29
-       byte 30,30,30,30,30,30,30,30    ; This row should actually be 29
-       byte 31,00                      ; Used when max steps are reached
-
-**
-* These are the heights of the pre-drawn colums,
-* but the numbers are not used for anything here.
-*
-*      24.0,21.5,19.0,17.5,16.0,15.0,13.5,13.0
-*      12.0,11.5,10.5,10.0,9.5,9.0,8.5,8.0
-*      7.5,7.0,6.5,6.0,5.5,5.0,4.5,4.0
-*      3.5,3.0,2.5,2.0,1.5,1.0,0.5,0.0
-
-**
-* Addresses of the different column sets,
-* each with a different color or texture.
-*
-columns_set_table:
-       data MD1,MD2,MD3,MD4,MD5,MD6,MD7,MD8
-       data MD9,MD10,MD11,MD12
-
-**
-* Floor offset from vertical center of screen at different distances
-*
-floor_offset_from_center:
-* Rounded to nearest
-       data 12                         ; 12/0 = Inf
-       data 12                         ; 12/1 = 12
-       data 6                          ; 12/2 = 6
-       data 4                          ; 12/3 = 4
-       data 3                          ; 12/4 = 3
-       data 2                          ; 12/5 = 2.4
-       data 2                          ; 12/6 = 2
-       data 2                          ; 12/7 = 1.7
-       data 2                          ; 12/8 = 1.5
-       data 1                          ; 12/9 = 1.3
-       data 1                          ; 12/10 = 1.2
-       data 1                          ; 12/11 = 1.1
-       data 1                          ; 12/12 = 1
-       data 1                          ; 12/13 = 0.9
-       data 1                          ; 12/14 = 0.9
-       data 1                          ; 12/15 = 0.8
-       data 1                          ; 12/16 = 0.8
-
 ***************************************************************
 *
 * Data files
 *
        copy "math_tables.a99"
-       copy "textures.a99"
-       copy "objects.a99"
        copy "sprites.a99"
        copy "sound-fx.a99"
 
