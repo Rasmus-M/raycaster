@@ -1506,6 +1506,22 @@ one_time_init:
        clr  r1
        li   r2,>1800
        bl   @vsmw
+*      Name table
+       li   r0,nametb
+       bl   @vwad
+       clr  r1
+       li   r3,24
+one_time_init_4:
+       li   r2,32
+one_time_init_5:
+       movb r1,*r15
+       ai   r1,>0800
+       dec  r2
+       jne  one_time_init_5
+       ai   r1,>0100
+       andi r1,>0700
+       dec  r3
+       jne  one_time_init_4
 *      Sprite patterns
        li   r0,sprptb
        li   r1,SPR0
