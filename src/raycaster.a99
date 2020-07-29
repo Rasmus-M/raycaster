@@ -2133,10 +2133,9 @@ bullet_distance:
 
 **
 * This table lists, for each distance
-* 1 <= d < 24 step 0.125
-* the index of one of the 23 pre-drawn
+* 0 <= d <= 24 step 0.125
+* the index of one of the 31 pre-drawn
 * columns to use.
-* 23*8 = 192 entries (+1)
 *
 dist_column_table:
        byte 00,00,00,00,00,00,00,00
@@ -2162,9 +2161,9 @@ dist_column_table:
        byte 29,29,29,29,29,29,29,29
        byte 29,29,29,29,29,29,29,29
        byte 29,29,29,29,29,29,29,29
-       byte 29,29,29,29,29,29,29,29
-       byte 30,30,30,30,30,30,30,30    ; This row should actually be 29
-       byte 31,00                      ; Used when max steps are reached
+       byte 30,30,30,30,30,30,30,30
+       byte 30                         ; Used when max steps are reached
+       byte 00                         ; Padding
 
 **
 * These are the heights of the pre-drawn colums,
