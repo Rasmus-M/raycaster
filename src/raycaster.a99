@@ -313,10 +313,13 @@ cast_rays_1:
        mov  r5,@depth_buffer_ptr
        bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate height/color of column
-;      TODO
+       mov  @column_ptr,r5
 ;      r2: distance
 ;      r3: 0 = x face, 1 = y face
 ;      r4: map color
+       mov  r4,@column_color(r5)
+       ai   r5,column_size
+       mov  r5,@column_ptr
 *      Next ray
        mov  @ray_angle,r2              ; Get ray direction
        inct r2                         ; Increment it
@@ -541,10 +544,38 @@ cast_ray_loop_end:
 *
 draw_screen:
        .proc
-;      TODO
+       li   r3,screen_buffer
+       li   r4,columns
+       li   r5,n_rays
+draw_screen_1:
+       bl   @draw_column
+       ai   r4,column_size
+       dec  r5
+       jne  draw_screen_1
        bl   @check_int
        .endproc
 *// draw_screen
+
+*********************************************************************
+*
+* Draw column
+*
+draw_column:
+       .proc
+       movb @column_color+1(r4),r1
+       li   r2,96
+draw_column_1:
+       movb r1,*r3+
+       dec  r2
+       jne  draw_column_1
+       li   r1,>AA00
+       li   r2,96
+draw_column_2:
+       movb r1,*r3+
+       dec  r2
+       jne  draw_column_2
+       .endproc
+*// draw_colum
 
 *********************************************************************
 *
@@ -1944,8 +1975,20 @@ byte_01:
 
 depth_buffer:
        bss  n_rays*2
+
+column_height:
+       equ  0
+column_color:
+       equ  2
+column_side:
+       equ  4
+column_hit_x:
+       equ  6
+column_size:
+       equ  8
+
 columns:
-       bss  n_rays*8
+       bss  n_rays*column_size
 
 **
 * Objects
