@@ -210,9 +210,9 @@ main_loop:
        bl   @upload_screen
        bl   @user_input
 ;       bl   @move_enemies
-;       bl   @move_bullets
-;       bl   @draw_bullets
-;       bl   @bullet_collisions
+       bl   @move_bullets
+       bl   @draw_bullets
+       bl   @bullet_collisions
 ;       bl   @object_collisions
 ;       bl   @update_health_bar
 ;       bl   @display_score
@@ -705,8 +705,26 @@ draw_object:
 *
 upload_screen:
        .proc
-       ;      TODO
+       li   r0,colrtb
+       bl   @vwad
+       li   r5,screen_buffer
+       li   r6,3
+upload_screen_1:
+       li   r7,32
+upload_screen_2:
+       li   r8,64
+upload_screen_3:
+       movb *r5+,*r15
+       movb *r5+,*r15
+       dect r8
+       jne  upload_screen_3
+       ai   r5,192-64
+       dec  r7
+       jne  upload_screen_2
        bl   @check_int
+       ai   r5,64-(32*192)
+       dec  r6
+       jne  upload_screen_1
        .endproc
 *// upload_screen
 
@@ -2013,7 +2031,6 @@ bullet_distance:
 *
 * Data files
 *
-       copy "math_tables.a99"
        copy "sprites.a99"
        copy "sound-fx.a99"
 
@@ -2024,12 +2041,20 @@ lower_ram_max:
 *
        aorg >a000
 
+       copy "math_tables.a99"
        copy "graphics.a99"
 map:
        equ  MD0
 
 doors:
        copy "doors.a99"
+
+*      Organised as 32 columns of 192 bytes
+*      First 192 bytes for column 0, next 192 bytes for column 1 etc.
+*      Each column contains 2 fat (4x1, 16 color) pixels horizontally
+*      and 192 pixels vertically.
+screen_buffer:
+       bss  >1800
 
 upper_ram_max:
        equ  $
