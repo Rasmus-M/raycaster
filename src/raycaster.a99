@@ -312,11 +312,21 @@ cast_rays_1:
        mov  r2,*r5+
        mov  r5,@depth_buffer_ptr
        bl   @fish_eye_correction       ; Adjust distance in r2
-*      Calculate height/color of column
+*      Calculate height and color of column
        mov  @column_ptr,r5
-;      r2: distance
-;      r3: 0 = x face, 1 = y face
-;      r4: map color
+       mov  r2,r0                      ; Distance as FP 8.8
+       jne  cast_rays_2
+       li   r0,8*192                   ; Max height
+       jmp  cast_rays_3
+cast_rays_2:
+;       clr  r0
+;       li   r1,screen_height*256       ; 192 as FP 24.8
+       li   r0,screen_height           ; 192 as FP 16.16
+       clr  r1
+       div  r2,r0                      ; height = 192 / distance as FP 8.8
+cast_rays_3:
+       mov  r0,@column_height(r5)
+       mov  r3,@column_side(r5)
        mov  r4,@column_color(r5)
        ai   r5,column_size
        mov  r5,@column_ptr
@@ -548,7 +558,15 @@ draw_screen:
        li   r4,columns
        li   r5,n_rays
 draw_screen_1:
-       bl   @draw_column
+       mov  r5,r0
+       andi r0,1
+       jne  draw_screen_2
+       bl   @draw_even_column
+       ai   r3,-screen_height
+       jmp  draw_screen_3
+draw_screen_2:
+       bl   @draw_odd_column
+draw_screen_3:
        ai   r4,column_size
        dec  r5
        jne  draw_screen_1
@@ -558,24 +576,103 @@ draw_screen_1:
 
 *********************************************************************
 *
-* Draw column
+* Draw even column
 *
-draw_column:
+draw_even_column:
        .proc
-       movb @column_color+1(r4),r1
-       li   r2,96
-draw_column_1:
+       movb @column_height(r4),r0
+       jlt  draw_even_column_0
+       srl  r0,8
+       ci   r0,screen_height
+       jle  draw_even_column_1
+draw_even_column_0:
+       li   r0,screen_height
+draw_even_column_1:
+*      Sky
+       li   r1,>7000
+       li   r2,screen_height
+       s    r0,r2
+       srl  r2,1
+       mov  r2,r6
+       jeq  draw_even_column_3
+draw_even_column_2:
        movb r1,*r3+
        dec  r2
-       jne  draw_column_1
-       li   r1,>AA00
-       li   r2,96
-draw_column_2:
+       jne  draw_even_column_2
+*      Middle column
+draw_even_column_3:
+       mov  r0,r2
+       jeq  draw_even_column_5
+       mov  @column_color(r4),r1       ; Color
+       sla  r1,12
+draw_even_column_4:
        movb r1,*r3+
        dec  r2
-       jne  draw_column_2
+       jne  draw_even_column_4
+*      Floor
+draw_even_column_5:
+       li   r2,screen_height
+       s    r0,r2
+       s    r6,r2
+       jeq  draw_even_column_7
+       li   r1,>A000
+draw_even_column_6:
+       movb r1,*r3+
+       dec  r2
+       jne  draw_even_column_6
+draw_even_column_7:
        .endproc
-*// draw_colum
+*// draw_even_column
+
+*********************************************************************
+*
+* Draw odd column
+*
+draw_odd_column:
+       .proc
+       movb @column_height(r4),r0
+       jlt  draw_odd_column_0
+       srl  r0,8
+       ci   r0,screen_height
+       jle  draw_odd_column_1
+draw_odd_column_0:
+       li   r0,screen_height
+draw_odd_column_1:
+*      Sky
+       li   r1,>0700
+       li   r2,screen_height
+       s    r0,r2
+       srl  r2,1
+       mov  r2,r6
+       jeq  draw_odd_column_3
+draw_odd_column_2:
+       socb r1,*r3+
+       dec  r2
+       jne  draw_odd_column_2
+*      Middle column
+draw_odd_column_3:
+       mov  r0,r2
+       jeq  draw_odd_column_5
+       mov  @column_color(r4),r1     ; Color
+       sla  r1,8
+draw_odd_column_4:
+       socb r1,*r3+
+       dec  r2
+       jne  draw_odd_column_4
+*      Floor
+draw_odd_column_5:
+       li   r2,screen_height
+       s    r0,r2
+       s    r6,r2
+       jeq  draw_odd_column_7
+       li   r1,>0A00
+draw_odd_column_6:
+       socb r1,*r3+
+       dec  r2
+       jne  draw_odd_column_6
+draw_odd_column_7:
+       .endproc
+*// draw_odd_column
 
 *********************************************************************
 *
