@@ -319,11 +319,9 @@ cast_rays_1:
        li   r0,8*192                   ; Max height
        jmp  cast_rays_3
 cast_rays_2:
-;       clr  r0
-;       li   r1,screen_height*256       ; 192 as FP 24.8
-       li   r0,screen_height           ; 192 as FP 16.16
-       clr  r1
-       div  r2,r0                      ; height = 192 / distance as FP 8.8
+       clr  r0
+       li   r1,screen_height*256       ; 192 as FP 24.8
+       div  r2,r0                      ; height = 192 / distance as FP 16.0
 cast_rays_3:
        mov  r0,@column_height(r5)
        mov  r3,@column_side(r5)
@@ -580,9 +578,7 @@ draw_screen_3:
 *
 draw_even_column:
        .proc
-       movb @column_height(r4),r0
-       jlt  draw_even_column_0
-       srl  r0,8
+       mov  @column_height(r4),r0
        ci   r0,screen_height
        jle  draw_even_column_1
 draw_even_column_0:
@@ -630,9 +626,7 @@ draw_even_column_7:
 *
 draw_odd_column:
        .proc
-       movb @column_height(r4),r0
-       jlt  draw_odd_column_0
-       srl  r0,8
+       mov  @column_height(r4),r0
        ci   r0,screen_height
        jle  draw_odd_column_1
 draw_odd_column_0:
