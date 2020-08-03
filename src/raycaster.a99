@@ -887,8 +887,7 @@ user_input_1:
        tb   1
        jeq  user_input_2
        mov  @angle,r0
-       dect r0                         ; Turn left
-       dect r0                         ; Turn left
+       ai   r0,-32                     ; Turn left
        andi r0,angle_mask
        mov  r0,@angle
        jmp  user_input_3
@@ -897,8 +896,7 @@ user_input_2:
        tb   2
        jeq  user_input_3
        mov  @angle,r0
-       inct r0                         ; Turn right
-       inct r0                         ; Turn right
+       ai   r0,32                      ; Turn right
        andi r0,angle_mask
        mov  r0,@angle
 user_input_3:
@@ -908,16 +906,16 @@ user_input_3:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-       sra  r3,1
+;       sra  r3,1
        s    r3,r0
        mov  @y,r1
        mov  @sin_table(r2),r4
-       sra  r4,1
+;       sra  r4,1
        s    r4,r1
        bl   @get_map_value
        jne  user_input_8
-       neg  r3
-       neg  r4
+;       neg  r3
+;       neg  r4
        jmp  user_input_5
 user_input_4:
 *      Up
@@ -926,11 +924,11 @@ user_input_4:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-       sra  r3,1
+;       sra  r3,1
        a    r3,r0
        mov  @y,r1
        mov  @sin_table(r2),r4
-       sra  r4,1
+;       sra  r4,1
        a    r4,r1
        bl   @get_map_value
        jeq  user_input_5
@@ -945,10 +943,10 @@ user_input_9:
        jeq  user_input_8               ; If not set we cannot move
 *      Move
 user_input_5:
-       sra  r3,1
-       sra  r4,1
-       s    r3,r0
-       s    r4,r1
+;       sra  r3,1
+;       sra  r4,1
+;       s    r3,r0
+;       s    r4,r1
        mov  r0,@x
        mov  r1,@y
        mov  @sal_no,r0
