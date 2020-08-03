@@ -91,7 +91,7 @@ backdrop_color:
 char_0:
        equ  >30
 first_texture_index:
-       equ  12
+       equ  10
 initial_objects:
        equ  5
 initial_health:
@@ -325,7 +325,7 @@ cast_rays_2:
 cast_rays_3:
        mov  r0,@column_height(r5)
        mov  r3,@column_side(r5)
-       mov  r4,@column_color(r5)
+       bl   @wall_color
        ai   r5,column_size
        mov  r5,@column_ptr
 *      Next ray
@@ -357,64 +357,75 @@ fish_eye_correction:
 
 *********************************************************************
 *
-* Calculate column set from map color
+* Calculate wall color from map color
 * r3: 0 = x face, 1 = y face
 * r4: map color
 * Returns columns set index in r4
 *
-get_column_set:
+wall_color:
        mov  r4,r4                      ; Color
-       jeq  get_column_set_6           ; Return if no wall
-;      ci   r4,first_texture_index     ; Check for texture
-;      jhe  get_column_set_1
-*      Single column set
+       jne  wall_color_0               ; Jump if wall
+       li   r4,15                      ; No wall color
+       jmp  wall_color_6               ; Return
+wall_color_0:
+       ci   r4,first_texture_index     ; Check for texture
+       jhe  wall_color_1               ; Jump if texture
+*      Single color
        andi r4,>fffe                   ; Clear secret door bit
        dect r4                         ; Shift to zero base
        a    r3,r4                      ; Different color on x/y facing walls
-       jmp  get_column_set_6           ; Return
+       sla  r4,1
+       mov  @wall_colors(r4),r4
+       jmp  wall_color_6               ; Return
 *      Texture
-get_column_set_1:
+wall_color_1:
        mov  @ray_angle,r12             ; Ray direction
        mov  r3,r3                      ; Check side
-       jne  get_column_set_3           ; Jump if y side
+       jne  wall_color_3               ; Jump if y side
 *      Texture x side
        mov  @sin_table(r12),r12        ; dirY
-       jlt  get_column_set_2
+       jlt  wall_color_2
        mpy  @distance,r12              ; Multiply by distance
        swpb r12                        ; Rearrange result
        movb r13,@r12lb                 ; as FP 8.8
        a    @y,r12                     ; playerY + sin(a)
-       jmp  get_column_set_5
-get_column_set_2:
+       jmp  wall_color_5
+wall_color_2:
        neg  r12
        mpy  @distance,r12              ; Multiply by distance
        swpb r12                        ; Rearrange result
        movb r13,@r12lb                 ; as FP 8.8
        neg  r12
        a    @y,r12                     ; playerY + sin(a)
-       jmp  get_column_set_5
+       jmp  wall_color_5
 *      Texture y side
-get_column_set_3:
+wall_color_3:
        mov  @cos_table(r12),r12        ; dirX
-       jlt  get_column_set_4
+       jlt  wall_color_4
        mpy  @distance,r12              ; Multiply by distance
        swpb r12                        ; Rearrange result
        movb r13,@r12lb                 ; as FP 8.8
        a    @x,r12                     ; playerY + sin(a)
-       jmp  get_column_set_5
-get_column_set_4:
+       jmp  wall_color_5
+wall_color_4:
        neg  r12
        mpy  @distance,r12              ; Multiply by distance
        swpb r12                        ; Rearrange result
        movb r13,@r12lb                 ; as FP 8.8
        neg  r12
        a    @x,r12                     ; playerY + sin(a)
-get_column_set_5:
+wall_color_5:
        ai   r4,-first_texture_index    ; Texture index
-;      TODO r12 holds where blobk was hit
-get_column_set_6:
+       mov  r12,@column_hit_x(r5)
+wall_color_6:
+       mov  r4,@column_color(r5)
        rt
-*// get_column_set
+wall_colors:
+       data 14,15
+       data 6,9
+       data 12,3
+       data 4,5
+*// wall_color
 
 ***************************************************************
 *
@@ -2050,7 +2061,7 @@ start_x:
 start_y:
        data >2000
 start_dir:
-       data >c0
+       data >180
 space:
        byte 0
 door:
