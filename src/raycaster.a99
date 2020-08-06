@@ -2186,6 +2186,7 @@ lower_ram_max:
 
        copy "math_tables.a99"
        copy "graphics.a99"
+       copy "textures.a99"
 map:
        equ  MD0
 
