@@ -660,7 +660,9 @@ draw_even_column_11:
        clr  r0
        movb r9,@r0lb
        a    r1,r0
-       movb *r0,*r3+
+       movb *r0,r12
+       andi r12,>f000
+       movb r12,*r3+
        a    r8,r9                      ; Add y-step to offset
        dec  r2
        jne  draw_even_column_11
@@ -672,6 +674,7 @@ draw_even_column_13:
        clr  r0
        movb r9,@r0lb
        a    r1,r0
+       clr  r12
        movb *r0,r12
        sla  r12,4
        movb r12,*r3+
