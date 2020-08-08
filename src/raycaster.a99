@@ -96,6 +96,12 @@ initial_objects:
        equ  5
 initial_health:
        equ  63
+texture_width:                         ; Width in fat pixels
+       equ  16
+texture_height:
+       equ  64
+texture_size:
+       equ  (texture_width/2)*texture_height;
 
 **
 * Scratch pad
@@ -358,9 +364,13 @@ fish_eye_correction:
 *********************************************************************
 *
 * Calculate wall color from map color
+*
 * r3: 0 = x face, 1 = y face
 * r4: map color
-* Returns columns set index in r4
+* r5: column to update
+*
+* Updates column.column_color and column.column_hit_x.
+* If no texture column.column_hit_x is set to -1.
 *
 wall_color:
        mov  r4,r4                      ; Color
@@ -376,6 +386,7 @@ wall_color_0:
        a    r3,r4                      ; Different color on x/y facing walls
        sla  r4,1
        mov  @wall_colors(r4),r4
+       seto @column_hit_x(r5)
        jmp  wall_color_6               ; Return
 *      Texture
 wall_color_1:
@@ -416,6 +427,7 @@ wall_color_4:
        a    @x,r12                     ; playerY + sin(a)
 wall_color_5:
        ai   r4,-first_texture_index    ; Texture index
+       andi r12,>00ff
        mov  r12,@column_hit_x(r5)
 wall_color_6:
        mov  r4,@column_color(r5)
@@ -565,7 +577,7 @@ draw_screen:
        .proc
        li   r3,screen_buffer
        li   r4,columns
-       li   r5,n_rays
+       clr  r5
 draw_screen_1:
        mov  r5,r0
        andi r0,1
@@ -577,8 +589,9 @@ draw_screen_2:
        bl   @draw_odd_column
 draw_screen_3:
        ai   r4,column_size
-       dec  r5
-       jne  draw_screen_1
+       inc  r5
+       ci   r5,n_rays
+       jlt  draw_screen_1
        bl   @check_int
        .endproc
 *// draw_screen
@@ -587,30 +600,87 @@ draw_screen_3:
 *
 * Draw even column
 *
+* r3: Screen buffer
+* r4: Column structure
+* r5: Column number
+*
 draw_even_column:
        .proc
-       mov  @column_height(r4),r0
-       ci   r0,screen_height
+       mov  @column_height(r4),r6      ; Wall height
+       ci   r6,screen_height
        jle  draw_even_column_1
 draw_even_column_0:
-       li   r0,screen_height
+       li   r6,screen_height
 draw_even_column_1:
 *      Sky
-       li   r1,>7000
-       li   r2,screen_height
-       s    r0,r2
-       srl  r2,1
-       mov  r2,r6
+       li   r1,>7000                   ; Color of sky
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       srl  r2,1                       ; Div 2
+       mov  r2,r7                      ; Save height of sky
        jeq  draw_even_column_3
 draw_even_column_2:
        movb r1,*r3+
        dec  r2
        jne  draw_even_column_2
-*      Middle column
+*      Wall
 draw_even_column_3:
-       mov  r0,r2
-       jeq  draw_even_column_5
-       mov  @column_color(r4),r1       ; Color
+       mov  r6,r2                      ; Wall height
+       jeq  draw_even_column_5         ; Jump if zero
+       mov  @column_color(r4),r1       ; Color / texture number
+       mov  @column_hit_x(r4),r0       ; Check for texture
+       jlt  draw_even_column_8         ; No texture if -1
+*      Wall textured
+       srl  r0,4                       ; Column of texture
+       mov  r0,r9                      ; save it
+       srl  r0,1                       ; Byte column of texture
+       sla  r0,6                       ; * 64
+       sla  r1,9                       ; texture number * 512
+       ai   r1,textures                ; Base texture source address
+       a    r0,r1                      ; Base texture column source address
+*      Calculate y-step
+       ci   r6,texture_height          ; Check how to calulate texture height / wall height
+       jgt  draw_even_column_9
+       clr  r8                         ; Texture height FP 24.8
+       li   r9,texture_height*256
+       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 8.8
+       jmp  draw_even_column_10
+draw_even_column_9:
+       li   r8,texture_height          ; Texture height FP 16.16
+       clr  r9
+       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 0.16
+       srl  r8,8                       ; y-step as FP 8.8
+*      Draw textured column
+draw_even_column_10:
+       andi r9,1
+       jne  draw_even_column_12
+*      Left pixel of texture byte
+       clr  r9                         ; Offset into texture column
+draw_even_column_11:
+       clr  r0
+       movb r9,@r0lb
+       a    r1,r0
+       movb *r0,*r3+
+       a    r8,r9                      ; Add y-step to offset
+       dec  r2
+       jne  draw_even_column_11
+       jmp  draw_even_column_5
+*      Right pixel of texture byte
+draw_even_column_12:
+       clr  r9                         ; Offset into texture column
+draw_even_column_13:
+       clr  r0
+       movb r9,@r0lb
+       a    r1,r0
+       movb *r0,r12
+       sla  r12,4
+       movb r12,*r3+
+       a    r8,r9                      ; Add y-step to offset
+       dec  r2
+       jne  draw_even_column_13
+       jmp  draw_even_column_5
+draw_even_column_8:
+*      Wall single color
        sla  r1,12
 draw_even_column_4:
        movb r1,*r3+
@@ -618,11 +688,11 @@ draw_even_column_4:
        jne  draw_even_column_4
 *      Floor
 draw_even_column_5:
-       li   r2,screen_height
-       s    r0,r2
-       s    r6,r2
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       s    r7,r2                      ; Minus sky height
        jeq  draw_even_column_7
-       li   r1,>A000
+       li   r1,>a000                   ; Color of floor
 draw_even_column_6:
        movb r1,*r3+
        dec  r2
@@ -635,30 +705,89 @@ draw_even_column_7:
 *
 * Draw odd column
 *
+* r3: Screen buffer
+* r4: Column structure
+* r5: Column number
+*
 draw_odd_column:
        .proc
-       mov  @column_height(r4),r0
-       ci   r0,screen_height
+       mov  @column_height(r4),r6      ; Wall height
+       ci   r6,screen_height
        jle  draw_odd_column_1
 draw_odd_column_0:
-       li   r0,screen_height
+       li   r6,screen_height
 draw_odd_column_1:
 *      Sky
-       li   r1,>0700
-       li   r2,screen_height
-       s    r0,r2
-       srl  r2,1
-       mov  r2,r6
+       li   r1,>0700                   ; Color of sky
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       srl  r2,1                       ; Div 2
+       mov  r2,r7                      ; Save height of sky
        jeq  draw_odd_column_3
 draw_odd_column_2:
        socb r1,*r3+
        dec  r2
        jne  draw_odd_column_2
-*      Middle column
+*      Wall
 draw_odd_column_3:
-       mov  r0,r2
-       jeq  draw_odd_column_5
-       mov  @column_color(r4),r1     ; Color
+       mov  r6,r2                      ; Wall height
+       jeq  draw_odd_column_5          ; Jump if zero
+       mov  @column_color(r4),r1       ; Color / texture number
+       mov  @column_hit_x(r4),r0       ; Check for texture
+       jlt  draw_odd_column_8          ; No texture if -1
+*      Wall textured
+       srl  r0,4                       ; Column of texture
+       mov  r0,r9                      ; save it
+       srl  r0,1                       ; Byte column of texture
+       sla  r0,6                       ; * 64
+       sla  r1,9                       ; texture number * 512
+       ai   r1,textures                ; Base texture source address
+       a    r0,r1                      ; Base texture column source address
+*      Calculate y-step
+       ci   r6,texture_height          ; Check how to calulate texture height / wall height
+       jgt  draw_odd_column_9
+       clr  r8                         ; Texture height FP 24.8
+       li   r9,texture_height*256
+       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 8.8
+       jmp  draw_odd_column_10
+draw_odd_column_9:
+       li   r8,texture_height          ; Texture height FP 16.16
+       clr  r9
+       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 0.16
+       srl  r8,8                       ; y-step as FP 8.8
+*      Draw textured column
+draw_odd_column_10:
+       andi r9,1
+       jne  draw_odd_column_12
+*      Left pixel of texture byte
+       clr  r9                         ; Offset into texture column
+draw_odd_column_11:
+       clr  r0
+       movb r9,@r0lb
+       a    r1,r0
+       movb *r0,r12
+       srl  r12,4
+       socb r12,*r3+
+       a    r8,r9                      ; Add y-step to offset
+       dec  r2
+       jne  draw_odd_column_11
+       jmp  draw_odd_column_5
+*      Right pixel of texture byte
+draw_odd_column_12:
+       clr  r9                         ; Offset into texture column
+draw_odd_column_13:
+       clr  r0
+       movb r9,@r0lb
+       a    r1,r0
+       movb *r0,r12
+       andi r12,>0f00
+       socb r12,*r3+
+       a    r8,r9                      ; Add y-step to offset
+       dec  r2
+       jne  draw_odd_column_13
+       jmp  draw_odd_column_5
+draw_odd_column_8:
+*      Wall single color
        sla  r1,8
 draw_odd_column_4:
        socb r1,*r3+
@@ -666,11 +795,11 @@ draw_odd_column_4:
        jne  draw_odd_column_4
 *      Floor
 draw_odd_column_5:
-       li   r2,screen_height
-       s    r0,r2
-       s    r6,r2
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       s    r7,r2                      ; Minus sky height
        jeq  draw_odd_column_7
-       li   r1,>0A00
+       li   r1,>0a00
 draw_odd_column_6:
        socb r1,*r3+
        dec  r2
@@ -2055,11 +2184,11 @@ euclidian_distance:
 * Data
 *
 start_x:
-       data >2000
+       data >0500
 start_y:
-       data >2000
+       data >2100
 start_dir:
-       data >180
+       data >140
 space:
        byte 0
 door:
