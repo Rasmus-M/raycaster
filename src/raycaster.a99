@@ -652,32 +652,32 @@ draw_even_column_9:
        srl  r8,8                       ; y-step as FP 8.8
 *      Draw textured column
 draw_even_column_10:
-       andi r9,1
+       andi r9,1                       ; Left or rigth pixel of texture byte?
        jne  draw_even_column_12
 *      Left pixel of texture byte
        clr  r9                         ; Offset into texture column
 draw_even_column_11:
-       clr  r0
-       movb r9,@r0lb
-       a    r1,r0
-       movb *r0,r12
-       andi r12,>f000
-       movb r12,*r3+
+       clr  r0                         ; Calculate texture address
+       movb r9,@r0lb                   ; Pixel offset
+       a    r1,r0                      ; Add column offset
+       movb *r0,r12                    ; Get texture byte
+       andi r12,>f000                  ; We need the left pixel
+       movb r12,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
-       jne  draw_even_column_11
+       jne  draw_even_column_11        ; Next row
        jmp  draw_even_column_5
 *      Right pixel of texture byte
 draw_even_column_12:
        clr  r9                         ; Offset into texture column
 draw_even_column_13:
-       clr  r0
-       movb r9,@r0lb
-       a    r1,r0
+       clr  r0                         ; Calculate texture address
+       movb r9,@r0lb                   ; Pixel offset
+       a    r1,r0                      ; Add column offset
        clr  r12
-       movb *r0,r12
-       sla  r12,4
-       movb r12,*r3+
+       movb *r0,r12                    ; Get texture byte
+       sla  r12,4                      ; Shift to upper nybble
+       movb r12,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
        jne  draw_even_column_13
@@ -765,12 +765,12 @@ draw_odd_column_10:
 *      Left pixel of texture byte
        clr  r9                         ; Offset into texture column
 draw_odd_column_11:
-       clr  r0
-       movb r9,@r0lb
-       a    r1,r0
-       movb *r0,r12
-       srl  r12,4
-       socb r12,*r3+
+       clr  r0                         ; Calculate texture address
+       movb r9,@r0lb                   ; Pixel offset
+       a    r1,r0                      ; Add column offset
+       movb *r0,r12                    ; Get texture byt
+       srl  r12,4                      ; Shift to second nybble
+       socb r12,*r3+                   ; write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
        jne  draw_odd_column_11
@@ -779,12 +779,12 @@ draw_odd_column_11:
 draw_odd_column_12:
        clr  r9                         ; Offset into texture column
 draw_odd_column_13:
-       clr  r0
-       movb r9,@r0lb
-       a    r1,r0
-       movb *r0,r12
-       andi r12,>0f00
-       socb r12,*r3+
+       clr  r0                         ; Calculate texture address
+       movb r9,@r0lb                   ; Pixel offset
+       a    r1,r0                      ; Add column offset
+       movb *r0,r12                    ; Get texture byte
+       andi r12,>0f00                  ; Isolate nybble
+       socb r12,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
        jne  draw_odd_column_13
