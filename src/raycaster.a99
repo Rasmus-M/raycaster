@@ -632,7 +632,7 @@ draw_even_column_3:
        jlt  draw_even_column_8         ; No texture if -1
 *      Wall textured
        srl  r0,4                       ; Column of texture
-       mov  r0,r9                      ; save it
+       mov  r0,r12                     ; save it
        srl  r0,1                       ; Byte column of texture
        sla  r0,6                       ; * 64
        sla  r1,9                       ; texture number * 512
@@ -652,7 +652,7 @@ draw_even_column_9:
        srl  r8,8                       ; y-step as FP 8.8
 *      Draw textured column
 draw_even_column_10:
-       andi r9,1                       ; Left or rigth pixel of texture byte?
+       andi r12,1                      ; Left or rigth pixel of texture byte?
        jne  draw_even_column_12
 *      Left pixel of texture byte
        clr  r9                         ; Offset into texture column
@@ -740,7 +740,7 @@ draw_odd_column_3:
        jlt  draw_odd_column_8          ; No texture if -1
 *      Wall textured
        srl  r0,4                       ; Column of texture
-       mov  r0,r9                      ; save it
+       mov  r0,r12                     ; save it
        srl  r0,1                       ; Byte column of texture
        sla  r0,6                       ; * 64
        sla  r1,9                       ; texture number * 512
@@ -760,7 +760,7 @@ draw_odd_column_9:
        srl  r8,8                       ; y-step as FP 8.8
 *      Draw textured column
 draw_odd_column_10:
-       andi r9,1
+       andi r12,1
        jne  draw_odd_column_12
 *      Left pixel of texture byte
        clr  r9                         ; Offset into texture column
