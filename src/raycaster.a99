@@ -777,11 +777,12 @@ draw_odd_column_7:
 
 *********************************************************************
 *
-* Calculate texture address, y-step
+* Calculate texture address and y-step
 *
 * r0: Texture hit x (FP 8.8)
 * r1: Texture number
-* r6: Screen height of wall
+* r2: Screen height of wall
+* r4: Column structure
 *
 * On return r0 contains the texture column (0-15),
 * r1 contains the texture source address,
@@ -797,17 +798,26 @@ prepare_texture:
        ai   r1,textures                ; Base texture source address
        a    r12,r1                     ; Base texture column source address
 *      Calculate y-step
-       ci   r6,texture_height          ; Check how to calulate texture height / wall height
+       mov  @column_height(r4),r12
+       ci   r12,texture_height         ; Check how to calulate texture height / wall height
        jgt  prepare_texture_1
        clr  r8                         ; Texture height FP 24.8
        li   r9,texture_height*256
-       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 8.8
-       rt
+       div  r12,r8                     ; Div by wall height FP 16.0 -> y-step as FP 8.8
+       jmp  prepare_texture_2
 prepare_texture_1:
        li   r8,texture_height          ; Texture height FP 16.16
        clr  r9
-       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 0.16
+       div  r12,r8                     ; Div by wall height FP 16.0 -> y-step as FP 0.16
        srl  r8,8                       ; y-step as FP 8.8
+prepare_texture_2:
+       s    r2,r12                     ; Wall height outside screen
+       jeq  prepare_texture_3
+       srl  r12,1                      ; Half height
+       mpy  r8,r12                     ; Multiply by y-step
+       srl  r13,8                      ; FP 8.8 -> FP 16.0
+       a    r13,r1                     ; Add to texture address
+prepare_texture_3:
        rt
 *// prepare_texture
 
