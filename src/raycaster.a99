@@ -126,11 +126,18 @@ r13lb  equ  wrksp+27
 r14lb  equ  wrksp+29
 r15lb  equ  wrksp+31
 stack  equ  wrksp+>20                  ; Stack (grows up)
-padvar equ  stack+>10                  ; Start of pad variables
-
+**
+* PAD constants
+*
+padcon:
+       equ  stack+>10                  ; Start of pad constants
+one:
+       equ  padcon
 **
 * PAD variables
 *
+padvar:
+       equ  one+2                      ; Start of pad variables
 interrupt_count:
        equ  padvar
 rand_no:
@@ -613,16 +620,13 @@ draw_even_column_0:
        li   r6,screen_height
 draw_even_column_1:
 *      Sky
-       li   r1,>7000                   ; Color of sky
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_even_column_3
-draw_even_column_2:
-       movb r1,*r3+
-       dec  r2
-       jne  draw_even_column_2
+       li   r1,>7070                   ; Color of sky
+       bl   @draw_even_pixels
 *      Wall
 draw_even_column_3:
        mov  r6,r2                      ; Wall height
@@ -663,25 +667,54 @@ draw_even_column_12:
        jmp  draw_even_column_5
 draw_even_column_8:
 *      Wall single color
-       sla  r1,12
-draw_even_column_4:
-       movb r1,*r3+
-       dec  r2
-       jne  draw_even_column_4
+       sla  r1,4
+       movb @r1lb,r1
+       bl   @draw_even_pixels
 *      Floor
 draw_even_column_5:
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_even_column_7
-       li   r1,>a000                   ; Color of floor
-draw_even_column_6:
-       movb r1,*r3+
-       dec  r2
-       jne  draw_even_column_6
+       li   r1,>a0a0                   ; Color of floor
+       bl   @draw_even_pixels
 draw_even_column_7:
        .endproc
 *// draw_even_column
+
+*********************************************************************
+*
+* Draw a column of identical pixels (even)
+*
+* r1: Color in upper nybble of MSB and LSB
+* r2: Number of pixels to draw (not zero)
+* r3: Screen buffer address
+*
+draw_even_pixels:
+       coc  @one,r3
+       jne  draw_even_pixels_0
+       movb r1,*r3+
+       dec  r2
+       jeq  draw_even_pixels_4
+draw_even_pixels_0:
+       mov  r2,r0
+       srl  r2,2
+       jeq  draw_even_pixels_2
+draw_even_pixels_1:
+       mov  r1,*r3+
+       mov  r1,*r3+
+       dec  r2
+       jne  draw_even_pixels_1
+draw_even_pixels_2:
+       andi r0,3
+       jeq  draw_even_pixels_4
+draw_even_pixels_3:
+       movb r1,*r3+
+       dec  r0
+       jne  draw_even_pixels_3
+draw_even_pixels_4:
+       rt
+*// draw_even_pixels
 
 *********************************************************************
 *
@@ -700,16 +733,13 @@ draw_odd_column_0:
        li   r6,screen_height
 draw_odd_column_1:
 *      Sky
-       li   r1,>0700                   ; Color of sky
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_odd_column_3
-draw_odd_column_2:
-       socb r1,*r3+
-       dec  r2
-       jne  draw_odd_column_2
+       li   r1,>0707                   ; Color of sky
+       bl   @draw_odd_pixels
 *      Wall
 draw_odd_column_3:
        mov  r6,r2                      ; Wall height
@@ -749,25 +779,53 @@ draw_odd_column_12:
        jmp  draw_odd_column_5
 draw_odd_column_8:
 *      Wall single color
-       sla  r1,8
-draw_odd_column_4:
-       socb r1,*r3+
-       dec  r2
-       jne  draw_odd_column_4
+       movb @r1lb,r1
+       bl   @draw_odd_pixels
 *      Floor
 draw_odd_column_5:
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_odd_column_7
-       li   r1,>0a00
-draw_odd_column_6:
-       socb r1,*r3+
-       dec  r2
-       jne  draw_odd_column_6
+       li   r1,>0a0a
+       bl   @draw_odd_pixels
 draw_odd_column_7:
        .endproc
 *// draw_odd_column
+
+*********************************************************************
+*
+* Draw a column of identical pixels (odd)
+*
+* r1: Color in lower nybble of MSB and LSB
+* r2: Number of pixels to draw (not zero)
+* r3: Screen buffer address
+*
+draw_odd_pixels:
+       coc  @one,r3
+       jne  draw_odd_pixels_0
+       socb r1,*r3+
+       dec  r2
+       jeq  draw_odd_pixels_4
+draw_odd_pixels_0:
+       mov  r2,r0
+       srl  r2,2
+       jeq  draw_odd_pixels_2
+draw_odd_pixels_1:
+       soc  r1,*r3+
+       soc  r1,*r3+
+       dec  r2
+       jne  draw_odd_pixels_1
+draw_odd_pixels_2:
+       andi r0,3
+       jeq  draw_odd_pixels_4
+draw_odd_pixels_3:
+       socb r1,*r3+
+       dec  r0
+       jne  draw_odd_pixels_3
+draw_odd_pixels_4:
+       rt
+*// draw_odd_pixels
 
 *********************************************************************
 *
@@ -1778,6 +1836,8 @@ one_time_init:
        .proc
        li   r15,vdpwd
        mov  @rndsd,@rand_no            ; Save random number seed
+       li   r0,1
+       mov  r0,@one
        bl   @graphics_mode
 *      Clear scratch pad
        li   r0,padvar
