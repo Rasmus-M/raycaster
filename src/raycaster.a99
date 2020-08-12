@@ -637,7 +637,6 @@ draw_even_column_10:
        andi r0,1                       ; Left or rigth pixel of texture byte?
        jne  draw_even_column_12
 *      Left pixel of texture byte
-       clr  r9                         ; Offset into texture column
 draw_even_column_11:
        clr  r0                         ; Calculate texture address
        movb r9,@r0lb                   ; Pixel offset
@@ -651,8 +650,6 @@ draw_even_column_11:
        jmp  draw_even_column_5
 *      Right pixel of texture byte
 draw_even_column_12:
-       clr  r9                         ; Offset into texture column
-draw_even_column_13:
        clr  r0                         ; Calculate texture address
        movb r9,@r0lb                   ; Pixel offset
        a    r1,r0                      ; Add column offset
@@ -662,7 +659,7 @@ draw_even_column_13:
        movb r12,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
-       jne  draw_even_column_13
+       jne  draw_even_column_12
        jmp  draw_even_column_5
 draw_even_column_8:
 *      Wall single color
@@ -727,7 +724,6 @@ draw_odd_column_10:
        andi r0,1                       ; Left or rigth pixel of texture byte?
        jne  draw_odd_column_12
 *      Left pixel of texture byte
-       clr  r9                         ; Offset into texture column
 draw_odd_column_11:
        clr  r0                         ; Calculate texture address
        movb r9,@r0lb                   ; Pixel offset
@@ -741,8 +737,6 @@ draw_odd_column_11:
        jmp  draw_odd_column_5
 *      Right pixel of texture byte
 draw_odd_column_12:
-       clr  r9                         ; Offset into texture column
-draw_odd_column_13:
        clr  r0                         ; Calculate texture address
        movb r9,@r0lb                   ; Pixel offset
        a    r1,r0                      ; Add column offset
@@ -751,7 +745,7 @@ draw_odd_column_13:
        socb r12,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
-       jne  draw_odd_column_13
+       jne  draw_odd_column_12
        jmp  draw_odd_column_5
 draw_odd_column_8:
 *      Wall single color
@@ -786,7 +780,8 @@ draw_odd_column_7:
 *
 * On return r0 contains the texture column (0-15),
 * r1 contains the texture source address,
-* and r8 contains the y-step as FP 8.8.
+* r8 contains the y-step as FP 8.8,
+* and r9 contains offset into texture column as FP 8.8.
 
 prepare_texture:
 *      Texture address
@@ -812,12 +807,14 @@ prepare_texture_1:
        srl  r8,8                       ; y-step as FP 8.8
 prepare_texture_2:
        s    r2,r12                     ; Wall height outside screen
-       jeq  prepare_texture_3
+       jne  prepare_texture_3
+       clr  r9                         ; Offset into texture column
+       jmp  prepare_texture_4
+prepare_texture_3:
        srl  r12,1                      ; Half height
        mpy  r8,r12                     ; Multiply by y-step
-       srl  r13,8                      ; FP 8.8 -> FP 16.0
-       a    r13,r1                     ; Add to texture address
-prepare_texture_3:
+       mov  r13,r9                     ; Offset into texture column
+prepare_texture_4:
        rt
 *// prepare_texture
 
