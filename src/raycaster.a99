@@ -984,11 +984,17 @@ upload_screen:
 upload_screen_1:
        li   r7,32
 upload_screen_2:
-       li   r8,64
+       li   r8,64/8
 upload_screen_3:
        movb *r5+,*r15
        movb *r5+,*r15
-       dect r8
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       dec  r8
        jne  upload_screen_3
        ai   r5,192-64
        dec  r7
