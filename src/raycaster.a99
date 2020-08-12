@@ -631,28 +631,10 @@ draw_even_column_3:
        mov  @column_hit_x(r4),r0       ; Check for texture
        jlt  draw_even_column_8         ; No texture if -1
 *      Wall textured
-       srl  r0,4                       ; Column of texture
-       mov  r0,r12                     ; save it
-       srl  r0,1                       ; Byte column of texture
-       sla  r0,6                       ; * 64
-       sla  r1,9                       ; texture number * 512
-       ai   r1,textures                ; Base texture source address
-       a    r0,r1                      ; Base texture column source address
-*      Calculate y-step
-       ci   r6,texture_height          ; Check how to calulate texture height / wall height
-       jgt  draw_even_column_9
-       clr  r8                         ; Texture height FP 24.8
-       li   r9,texture_height*256
-       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 8.8
-       jmp  draw_even_column_10
-draw_even_column_9:
-       li   r8,texture_height          ; Texture height FP 16.16
-       clr  r9
-       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 0.16
-       srl  r8,8                       ; y-step as FP 8.8
+       bl   @prepare_texture           ; Calculate texture address ans y-step
 *      Draw textured column
 draw_even_column_10:
-       andi r12,1                      ; Left or rigth pixel of texture byte?
+       andi r0,1                       ; Left or rigth pixel of texture byte?
        jne  draw_even_column_12
 *      Left pixel of texture byte
        clr  r9                         ; Offset into texture column
@@ -739,28 +721,10 @@ draw_odd_column_3:
        mov  @column_hit_x(r4),r0       ; Check for texture
        jlt  draw_odd_column_8          ; No texture if -1
 *      Wall textured
-       srl  r0,4                       ; Column of texture
-       mov  r0,r12                     ; save it
-       srl  r0,1                       ; Byte column of texture
-       sla  r0,6                       ; * 64
-       sla  r1,9                       ; texture number * 512
-       ai   r1,textures                ; Base texture source address
-       a    r0,r1                      ; Base texture column source address
-*      Calculate y-step
-       ci   r6,texture_height          ; Check how to calulate texture height / wall height
-       jgt  draw_odd_column_9
-       clr  r8                         ; Texture height FP 24.8
-       li   r9,texture_height*256
-       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 8.8
-       jmp  draw_odd_column_10
-draw_odd_column_9:
-       li   r8,texture_height          ; Texture height FP 16.16
-       clr  r9
-       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 0.16
-       srl  r8,8                       ; y-step as FP 8.8
+       bl   @prepare_texture           ; Calculate texture address ans y-step
 *      Draw textured column
 draw_odd_column_10:
-       andi r12,1
+       andi r0,1                       ; Left or rigth pixel of texture byte?
        jne  draw_odd_column_12
 *      Left pixel of texture byte
        clr  r9                         ; Offset into texture column
@@ -768,9 +732,9 @@ draw_odd_column_11:
        clr  r0                         ; Calculate texture address
        movb r9,@r0lb                   ; Pixel offset
        a    r1,r0                      ; Add column offset
-       movb *r0,r12                    ; Get texture byt
+       movb *r0,r12                    ; Get texture byte
        srl  r12,4                      ; Shift to second nybble
-       socb r12,*r3+                   ; write to screen buffer
+       socb r12,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
        jne  draw_odd_column_11
@@ -810,6 +774,42 @@ draw_odd_column_6:
 draw_odd_column_7:
        .endproc
 *// draw_odd_column
+
+*********************************************************************
+*
+* Calculate texture address, y-step
+*
+* r0: Texture hit x (FP 8.8)
+* r1: Texture number
+* r6: Screen height of wall
+*
+* On return r0 contains the texture column (0-15),
+* r1 contains the texture source address,
+* and r8 contains the y-step as FP 8.8.
+
+prepare_texture:
+*      Texture address
+       srl  r0,4                       ; Column of texture
+       mov  r0,r12                     ; Copy for calculations
+       srl  r12,1                      ; Byte column of texture (0-7)
+       sla  r12,6                      ; * 64
+       sla  r1,9                       ; texture number * 512
+       ai   r1,textures                ; Base texture source address
+       a    r12,r1                     ; Base texture column source address
+*      Calculate y-step
+       ci   r6,texture_height          ; Check how to calulate texture height / wall height
+       jgt  prepare_texture_1
+       clr  r8                         ; Texture height FP 24.8
+       li   r9,texture_height*256
+       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 8.8
+       rt
+prepare_texture_1:
+       li   r8,texture_height          ; Texture height FP 16.16
+       clr  r9
+       div  r6,r8                      ; Div by wall height FP 16.0 -> y-step as FP 0.16
+       srl  r8,8                       ; y-step as FP 8.8
+       rt
+*// prepare_texture
 
 *********************************************************************
 *
