@@ -3,21 +3,21 @@ xas99.py -R -S -L raycaster.lst -w src/raycaster.a99 -o raycaster.obj
 
 xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
 
-java -jar tools/ea5tocart.jar bin/RAYCASTER "RAYCASTER" > make.log
+java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 
-copy bin\RAYCASTER8.bin .\raycaster8.bin
+copy bin\RAYCASTER8.bin .\texcaster8.bin
 
-IF EXIST raycaster.dsk GOTO :dskok
-xdm99.py raycaster.dsk --initialize DSSD -n RAYCASTER
+IF EXIST texcaster.dsk GOTO :dskok
+xdm99.py texcaster.dsk --initialize DSSD -n RAYCASTER
 :dskok
 
-xdm99.py raycaster.dsk -a bin/RAYCASTER
-xdm99.py raycaster.dsk -a bin/RAYCASTES
-xdm99.py raycaster.dsk -a bin/RAYCASTET
-xdm99.py raycaster.dsk -a bin/RAYCASTEU
+xdm99.py texcaster.dsk -a bin/RAYCASTER
+xdm99.py texcaster.dsk -a bin/RAYCASTES
+xdm99.py texcaster.dsk -a bin/RAYCASTET
+xdm99.py texcaster.dsk -a bin/RAYCASTEU
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end
-jar -cvf raycaster.rpk raycaster8.bin layout.xml > make.log
+jar -cvf texcaster.rpk texcaster8.bin layout.xml > make.log
 
 :end
