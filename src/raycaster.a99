@@ -642,9 +642,8 @@ draw_even_column_10:
        jne  draw_even_column_12
 *      Left pixel of texture byte
 draw_even_column_11:
-       clr  r0                         ; Calculate texture address
-       movb r9,@r0lb                   ; Pixel offset
-       a    r1,r0                      ; Add column offset
+       mov  r1,r0                      ; Base column address
+       ab   r9,@r0lb                   ; Add pixel offset
        movb *r0,r12                    ; Get texture byte
        andi r12,>f000                  ; We need the left pixel
        movb r12,*r3+                   ; Write to screen buffer
@@ -654,16 +653,16 @@ draw_even_column_11:
        jmp  draw_even_column_5
 *      Right pixel of texture byte
 draw_even_column_12:
-       clr  r0                         ; Calculate texture address
-       movb r9,@r0lb                   ; Pixel offset
-       a    r1,r0                      ; Add column offset
        clr  r12
+draw_even_column_13:
+       mov  r1,r0                      ; Base column address
+       ab   r9,@r0lb                   ; Add pixel offset
        movb *r0,r12                    ; Get texture byte
        sla  r12,4                      ; Shift to upper nybble
        movb r12,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
-       jne  draw_even_column_12
+       jne  draw_even_column_13
        jmp  draw_even_column_5
 draw_even_column_8:
 *      Wall single color
@@ -755,9 +754,8 @@ draw_odd_column_10:
        jne  draw_odd_column_12
 *      Left pixel of texture byte
 draw_odd_column_11:
-       clr  r0                         ; Calculate texture address
-       movb r9,@r0lb                   ; Pixel offset
-       a    r1,r0                      ; Add column offset
+       mov  r1,r0                      ; Base column address
+       ab   r9,@r0lb                   ; Add pixel offset
        movb *r0,r12                    ; Get texture byte
        srl  r12,4                      ; Shift to second nybble
        socb r12,*r3+                   ; Write to screen buffer
@@ -767,9 +765,8 @@ draw_odd_column_11:
        jmp  draw_odd_column_5
 *      Right pixel of texture byte
 draw_odd_column_12:
-       clr  r0                         ; Calculate texture address
-       movb r9,@r0lb                   ; Pixel offset
-       a    r1,r0                      ; Add column offset
+       mov  r1,r0                      ; Base column address
+       ab   r9,@r0lb                   ; Add pixel offset
        movb *r0,r12                    ; Get texture byte
        andi r12,>0f00                  ; Isolate nybble
        socb r12,*r3+                   ; Write to screen buffer
@@ -2389,9 +2386,9 @@ lower_ram_max:
 *
        aorg >a000
 
+       copy "textures.a99"
        copy "math_tables.a99"
        copy "graphics.a99"
-       copy "textures.a99"
 map:
        equ  MD0
 
