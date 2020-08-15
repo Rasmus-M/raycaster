@@ -202,8 +202,10 @@ speech_on:
        equ  speech_ptr+2
 cast_ray_loop_pad:
        equ  speech_on+2
-pad_max:
+upload_screen_loop_pad:
        equ  cast_ray_loop_pad+40
+pad_max:
+       equ  upload_screen_loop_pad+22
 
 ***************************************************************
 *
@@ -1014,17 +1016,7 @@ upload_screen_1:
        li   r7,32
 upload_screen_2:
        li   r8,64/8
-upload_screen_3:
-       movb *r5+,*r15
-       movb *r5+,*r15
-       movb *r5+,*r15
-       movb *r5+,*r15
-       movb *r5+,*r15
-       movb *r5+,*r15
-       movb *r5+,*r15
-       movb *r5+,*r15
-       dec  r8
-       jne  upload_screen_3
+       bl   @upload_screen_loop_pad
        ai   r5,192-64
        dec  r7
        jne  upload_screen_2
@@ -1034,6 +1026,28 @@ upload_screen_3:
        jne  upload_screen_1
        .endproc
 *// upload_screen
+
+
+*********************************************************************
+*
+* Upload screen loop
+*
+
+upload_screen_loop:
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       movb *r5+,*r15
+       dec  r8
+       jne  upload_screen_loop
+       rt
+upload_screen_loop_end:
+       equ  $
+*// upload_screen_loop
 
 *********************************************************************
 *
@@ -1802,6 +1816,10 @@ one_time_init:
        li   r0,cast_ray_loop
        li   r1,cast_ray_loop_pad
        li   r2,cast_ray_loop_end-cast_ray_loop
+       bl   @copy
+       li   r0,upload_screen_loop
+       li   r1,upload_screen_loop_pad
+       li   r2,upload_screen_loop_end-upload_screen_loop
        bl   @copy
 *      Init speech
        bl   @init_speech
