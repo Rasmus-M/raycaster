@@ -5,16 +5,17 @@ xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
 
 java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 
-copy bin\RAYCASTER8.bin .\texcaster8.bin
+xas99.py -b textures/texture-bank-0.a99
+xas99.py -b textures/texture-bank-1.a99
 
-IF EXIST texcaster.dsk GOTO :dskok
-xdm99.py texcaster.dsk --initialize DSSD -n RAYCASTER
-:dskok
+copy /b bin\RAYCASTER8.bin + ^
+    texture-bank-0.bin + ^
+    texture-bank-1.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin ^
+    .\texcaster8.bin
 
-xdm99.py texcaster.dsk -a bin/RAYCASTER
-xdm99.py texcaster.dsk -a bin/RAYCASTES
-xdm99.py texcaster.dsk -a bin/RAYCASTET
-xdm99.py texcaster.dsk -a bin/RAYCASTEU
+java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end

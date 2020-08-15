@@ -96,6 +96,10 @@ initial_objects:
        equ  5
 initial_health:
        equ  63
+textures:
+       equ  >6000
+texture_bank_select:
+       equ  >6008
 texture_width:                         ; Width in fat pixels
        equ  16
 texture_height:
@@ -636,33 +640,13 @@ draw_even_column_3:
        jlt  draw_even_column_8         ; No texture if -1
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address ans y-step
-*      Draw textured column
-draw_even_column_10:
-       andi r0,1                       ; Left or rigth pixel of texture byte?
-       jne  draw_even_column_12
-*      Left pixel of texture byte
 draw_even_column_11:
        mov  r1,r0                      ; Base column address
        ab   r9,@r0lb                   ; Add pixel offset
-       movb *r0,r12                    ; Get texture byte
-       andi r12,>f000                  ; We need the left pixel
-       movb r12,*r3+                   ; Write to screen buffer
+       movb *r0,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
        jne  draw_even_column_11        ; Next row
-       jmp  draw_even_column_5
-*      Right pixel of texture byte
-draw_even_column_12:
-       clr  r12
-draw_even_column_13:
-       mov  r1,r0                      ; Base column address
-       ab   r9,@r0lb                   ; Add pixel offset
-       movb *r0,r12                    ; Get texture byte
-       sla  r12,4                      ; Shift to upper nybble
-       movb r12,*r3+                   ; Write to screen buffer
-       a    r8,r9                      ; Add y-step to offset
-       dec  r2
-       jne  draw_even_column_13
        jmp  draw_even_column_5
 draw_even_column_8:
 *      Wall single color
@@ -748,31 +732,14 @@ draw_odd_column_3:
        jlt  draw_odd_column_8          ; No texture if -1
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address ans y-step
-*      Draw textured column
-draw_odd_column_10:
-       andi r0,1                       ; Left or rigth pixel of texture byte?
-       jne  draw_odd_column_12
-*      Left pixel of texture byte
+       ai   r1,1024                    ; Add offset to odd column texture
 draw_odd_column_11:
        mov  r1,r0                      ; Base column address
        ab   r9,@r0lb                   ; Add pixel offset
-       movb *r0,r12                    ; Get texture byte
-       srl  r12,4                      ; Shift to second nybble
-       socb r12,*r3+                   ; Write to screen buffer
+       socb *r0,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
        jne  draw_odd_column_11
-       jmp  draw_odd_column_5
-*      Right pixel of texture byte
-draw_odd_column_12:
-       mov  r1,r0                      ; Base column address
-       ab   r9,@r0lb                   ; Add pixel offset
-       movb *r0,r12                    ; Get texture byte
-       andi r12,>0f00                  ; Isolate nybble
-       socb r12,*r3+                   ; Write to screen buffer
-       a    r8,r9                      ; Add y-step to offset
-       dec  r2
-       jne  draw_odd_column_12
        jmp  draw_odd_column_5
 draw_odd_column_8:
 *      Wall single color
@@ -841,12 +808,17 @@ draw_odd_pixels_4:
 prepare_texture:
 *      Texture address
        srl  r0,4                       ; Column of texture
-       mov  r0,r12                     ; Copy for calculations
-       srl  r12,1                      ; Byte column of texture (0-7)
-       sla  r12,6                      ; * 64
-       sla  r1,9                       ; texture number * 512
+       sla  r0,6                       ; * 64
+       mov  r1,r12                     ; Copy texture number for cart bank calculations
+       andi r1,3                       ; 4 textures per bank
+       sla  r1,11                      ; texture number * 2048
        ai   r1,textures                ; Base texture source address
-       a    r12,r1                     ; Base texture column source address
+       a    r0,r1                      ; Base texture column source address
+*      Cartridge bank
+       srl  r12,2                      ; Texture number / 4
+       sla  r12,1                      ; * 2
+       ai   r12,texture_bank_select    ; Add bank select base
+       seto *r12                       ; Select bank
 *      Calculate y-step
        mov  @column_height(r4),r12
        ci   r12,texture_height         ; Check how to calulate texture height / wall height
@@ -2370,7 +2342,6 @@ lower_ram_max:
 *
        aorg >a000
 
-       copy "textures.a99"
        copy "math_tables.a99"
        copy "graphics.a99"
 map:
