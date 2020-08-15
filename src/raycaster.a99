@@ -640,9 +640,10 @@ draw_even_column_3:
        jlt  draw_even_column_8         ; No texture if -1
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address and y-step
+       li   r12,r0lb
 draw_even_column_11:
        mov  r1,r0                      ; Base column address
-       ab   r9,@r0lb                   ; Add pixel offset
+       ab   r9,*r12                    ; Add pixel offset
        movb *r0,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
@@ -733,9 +734,10 @@ draw_odd_column_3:
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address and y-step
        ai   r1,1024                    ; Add offset to odd column texture
+       li   r12,r0lb
 draw_odd_column_11:
        mov  r1,r0                      ; Base column address
-       ab   r9,@r0lb                   ; Add pixel offset
+       ab   r9,*r12                    ; Add pixel offset
        socb *r0,*r3+                   ; Write to screen buffer
        a    r8,r9                      ; Add y-step to offset
        dec  r2
