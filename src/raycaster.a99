@@ -1564,6 +1564,10 @@ display_map_2:
        bl   @check_key
        jeq  display_map_2
 *      Restore patterns
+       li   r0,colrt2+(12*8*8)
+       li   r1,>1100
+       li   r2,64*8
+       bl   @vsmw
        li   r0,ptrnt2+(12*8*8)
        li   r1,>f000
        li   r2,64*8
