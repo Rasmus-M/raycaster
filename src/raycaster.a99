@@ -1514,15 +1514,17 @@ display_score_1:
 *
 display_map:
        .proc
-*      Clear name table
-       li   r0,nametb+>100
-       clr  r1                         ; Fill a 3rd of the screen with blanks
-       li   r2,>100
-       bl   @vsmw
 *      Set patterns and colors
-;      TODO
+       li   r0,ptrnt2+(12*8*8)
+       clr  r1
+       li   r2,64*8
+       bl   @vsmw
+       li   r0,colrt2+(12*8*8)
+       li   r1,>f100
+       li   r2,64*8
+       bl   @vsmw
 *      Display map
-       li   r0,ptrnt2+>400
+       li   r0,ptrnt2+(12*8*8)
        bl   @vwad
        li   r6,>0080                   ; A bit to set
        li   r0,map                     ; Source address
@@ -1550,22 +1552,6 @@ display_map_5:
        ai   r0,(-map_height*map_width)+8
        dec  r3
        jne  display_map_7              ; Next column
-*      Set name table
-       li   r0,nametb+12               ; Center
-       li   r1,>8000                   ; First map character
-       li   r3,8                       ; Rows
-display_map_3:
-       bl   @vwad
-       li   r2,8                       ; Columns
-display_map_4:
-       movb r1,*r15
-       ai   r1,>0800
-       dec  r2
-       jne  display_map_4              ; Next column
-       ai   r0,screen_width
-       ai   r1,->3f00
-       dec  r3
-       jne  display_map_3              ; Next row
 *      Display player position
        mov  @sal_no,r0                 ; Which table to update?
        sla  r0,7
@@ -1589,13 +1575,11 @@ display_map_2:
        li   r0,KEY_UP
        bl   @check_key
        jeq  display_map_2
-*      Clear name table
-       li   r0,nametb
-       clr  r1                         ; Fill a 3rd of the screen with blanks
-       li   r2,>100
+*      Restore patterns
+       li   r0,ptrnt2+(12*8*8)
+       li   r1,>f000
+       li   r2,64*8
        bl   @vsmw
-*      Restore patterns and colors
-;      TODO
        .endproc
 map_x:
        byte 96-8
