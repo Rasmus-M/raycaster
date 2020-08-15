@@ -166,8 +166,10 @@ y:                                     ; Player y FP 8.8
        equ  x+2
 angle:                                 ; Player direction 0 - 2 * n_directions (even only)
        equ  y+2
-ray_count:
+update_screen:
        equ  angle+2
+ray_count:
+       equ  update_screen+2
 ray_angle:
        equ  ray_count+2
 distance:
@@ -223,10 +225,18 @@ main_loop:
        clr  @interrupt_count
        bl   @vsync
        bl   @set_vdp_regs
+       abs  @update_screen
+       jeq  no_screen_update
        bl   @cast_rays
        bl   @draw_screen
 ;       bl   @draw_objects
        bl   @upload_screen
+       clr  @update_screen
+       jmp   after_screen_update
+no_screen_update:
+       bl   @vsync
+       bl   @vsync
+after_screen_update:
        bl   @user_input
 ;       bl   @move_enemies
        bl   @move_bullets
@@ -1078,6 +1088,7 @@ user_input_1:
        ai   r0,-32                     ; Turn left
        andi r0,angle_mask
        mov  r0,@angle
+       seto @update_screen
        jmp  user_input_3
 user_input_2:
 *      Right
@@ -1087,6 +1098,7 @@ user_input_2:
        ai   r0,32                      ; Turn right
        andi r0,angle_mask
        mov  r0,@angle
+       seto @update_screen
 user_input_3:
 *      Down
        tb   3
@@ -1094,16 +1106,12 @@ user_input_3:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-;       sra  r3,1
        s    r3,r0
        mov  @y,r1
        mov  @sin_table(r2),r4
-;       sra  r4,1
        s    r4,r1
        bl   @get_map_value
        jne  user_input_8
-;       neg  r3
-;       neg  r4
        jmp  user_input_5
 user_input_4:
 *      Up
@@ -1112,11 +1120,9 @@ user_input_4:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
-;       sra  r3,1
        a    r3,r0
        mov  @y,r1
        mov  @sin_table(r2),r4
-;       sra  r4,1
        a    r4,r1
        bl   @get_map_value
        jeq  user_input_5
@@ -1131,10 +1137,7 @@ user_input_9:
        jeq  user_input_8               ; If not set we cannot move
 *      Move
 user_input_5:
-;       sra  r3,1
-;       sra  r4,1
-;       s    r3,r0
-;       s    r4,r1
+       seto @update_screen
        mov  r0,@x
        mov  r1,@y
        mov  @sal_no,r0
@@ -1636,6 +1639,7 @@ open_door_2:
        dec  r9
        jne  open_door_1
 open_door_3:
+       seto @update_screen
        .endproc
 *// open_door
 
@@ -1768,6 +1772,7 @@ init_level:
        clr  @score
        seto @old_score
        clr  @status
+       seto @update_screen
 *      Init doors
        li   r4,doors
        mov  @n_doors,r5
