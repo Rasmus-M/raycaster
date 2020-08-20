@@ -12,10 +12,18 @@ copy /b bin\RAYCASTER8.bin + ^
     texture-bank-0.bin + ^
     texture-bank-1.bin + ^
     bin\empty.bin + ^
+    bin\empty.bin + ^
+    TexGen\col-bank8.bin + ^
+    TexGen\col-bank9.bin + ^
+    TexGen\col-bank10.bin + ^
+    TexGen\col-bank11.bin + ^
+    TexGen\col-bank12.bin + ^
+    TexGen\col-bank13.bin + ^
+    bin\empty.bin + ^
     bin\empty.bin ^
     .\texcaster8.bin
 
-java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5
+java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5 8 9 10 11 12 13
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end

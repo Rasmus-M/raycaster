@@ -96,8 +96,6 @@ initial_objects:
        equ  5
 initial_health:
        equ  63
-textures:
-       equ  >6000
 texture_bank_select:
        equ  >6008
 texture_width:                         ; Width in fat pixels
@@ -823,16 +821,16 @@ prepare_texture:
 *      Texture address
        srl  r0,4                       ; Column of texture
        sla  r0,6                       ; * 64
-       mov  r1,r12                     ; Copy texture number for cart bank calculations
+;       mov  r1,r12                     ; Copy texture number for cart bank calculations
        andi r1,3                       ; 4 textures per bank
        sla  r1,11                      ; texture number * 2048
        ai   r1,textures                ; Base texture source address
        a    r0,r1                      ; Base texture column source address
 *      Cartridge bank
-       srl  r12,2                      ; Texture number / 4
-       sla  r12,1                      ; * 2
-       ai   r12,texture_bank_select    ; Add bank select base
-       seto *r12                       ; Select bank
+;       srl  r12,2                      ; Texture number / 4
+;       sla  r12,1                      ; * 2
+;       ai   r12,texture_bank_select    ; Add bank select base
+;       seto *r12                       ; Select bank
 *      Calculate y-step
        mov  @column_height(r4),r12
        ci   r12,texture_height         ; Check how to calulate texture height / wall height
@@ -1830,6 +1828,12 @@ one_time_init:
        li   r1,upload_screen_loop_pad
        li   r2,upload_screen_loop_end-upload_screen_loop
        bl   @copy
+*      Copy textures to RAM
+       seto @texture_bank_select
+       li   r0,>6000
+       li   r1,textures
+       li   r2,>2000
+       bl   @copy
 *      Init speech
        bl   @init_speech
 *      Patterns
@@ -2371,18 +2375,25 @@ lower_ram_max:
 *
        aorg >a000
 
+textures:                              ; Must be at 256 byte boundary address
+       bss  >2000
+
        copy "math_tables.a99"
        copy "graphics.a99"
+
 map:
        equ  MD0
 
 doors:
        copy "doors.a99"
+col_index:
+       copy "col-index.a99"
 
 *      Organised as 32 columns of 192 bytes
 *      First 192 bytes for column 0, next 192 bytes for column 1 etc.
 *      Each column contains 2 fat (4x1, 16 color) pixels horizontally
 *      and 192 pixels vertically.
+
 screen_buffer:
        bss  >1800
 
