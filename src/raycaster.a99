@@ -350,6 +350,7 @@ cast_rays_2:
        li   r1,screen_height*256       ; 192 as FP 24.8
        div  r2,r0                      ; height = 192 / distance as FP 16.0
 cast_rays_3:
+       andi r0,>fffe                   ; Make height even
        mov  r0,@column_height(r5)
        mov  r3,@column_side(r5)
        bl   @wall_color
@@ -650,14 +651,13 @@ draw_even_column_3:
        jlt  draw_even_column_8         ; No texture if -1
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address and y-step
-       li   r12,r0lb
-draw_even_column_11:
-       mov  r1,r0                      ; Base column address
-       ab   r9,*r12                    ; Add pixel offset
-       movb *r0,*r3+                   ; Write to screen buffer
-       a    r8,r9                      ; Add y-step to offset
-       dec  r2
-       jne  draw_even_column_11        ; Next row
+       ai   r0,even_col_vector_0
+*      Cartridge bank
+       mov  *r0+,r2
+       seto *r2
+*      Draw routine address
+       mov  *r0,r2
+       bl   *r2
        jmp  draw_even_column_5
 draw_even_column_8:
 *      Wall single color
@@ -692,15 +692,17 @@ draw_even_pixels:
        jeq  draw_even_pixels_4
 draw_even_pixels_0:
        mov  r2,r0
-       srl  r2,2
+       srl  r2,3
        jeq  draw_even_pixels_2
 draw_even_pixels_1:
+       mov  r1,*r3+
+       mov  r1,*r3+
        mov  r1,*r3+
        mov  r1,*r3+
        dec  r2
        jne  draw_even_pixels_1
 draw_even_pixels_2:
-       andi r0,3
+       andi r0,7
        jeq  draw_even_pixels_4
 draw_even_pixels_3:
        movb r1,*r3+
@@ -744,14 +746,13 @@ draw_odd_column_3:
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address and y-step
        ai   r1,1024                    ; Add offset to odd column texture
-       li   r12,r0lb
-draw_odd_column_11:
-       mov  r1,r0                      ; Base column address
-       ab   r9,*r12                    ; Add pixel offset
-       socb *r0,*r3+                   ; Write to screen buffer
-       a    r8,r9                      ; Add y-step to offset
-       dec  r2
-       jne  draw_odd_column_11
+       ai   r0,odd_col_vector_0
+*      Cartridge bank
+       mov  *r0+,r2
+       seto *r2
+*      Draw routine address
+       mov  *r0,r2
+       bl   *r2
        jmp  draw_odd_column_5
 draw_odd_column_8:
 *      Wall single color
@@ -785,15 +786,17 @@ draw_odd_pixels:
        jeq  draw_odd_pixels_4
 draw_odd_pixels_0:
        mov  r2,r0
-       srl  r2,2
+       srl  r2,3
        jeq  draw_odd_pixels_2
 draw_odd_pixels_1:
+       soc  r1,*r3+
+       soc  r1,*r3+
        soc  r1,*r3+
        soc  r1,*r3+
        dec  r2
        jne  draw_odd_pixels_1
 draw_odd_pixels_2:
-       andi r0,3
+       andi r0,7
        jeq  draw_odd_pixels_4
 draw_odd_pixels_3:
        socb r1,*r3+
@@ -812,47 +815,35 @@ draw_odd_pixels_4:
 * r2: Screen height of wall
 * r4: Column structure
 *
-* On return r0 contains the texture column (0-15),
-* r1 contains the texture source address,
-* r8 contains the y-step as FP 8.8,
-* and r9 contains offset into texture column as FP 8.8.
+* On return r0 contains the address of the routine to draw the column,
+* and r1 contains the texture source address,
 
 prepare_texture:
 *      Texture address
        srl  r0,4                       ; Column of texture
        sla  r0,6                       ; * 64
-;       mov  r1,r12                     ; Copy texture number for cart bank calculations
        andi r1,3                       ; 4 textures per bank
        sla  r1,11                      ; texture number * 2048
        ai   r1,textures                ; Base texture source address
        a    r0,r1                      ; Base texture column source address
-*      Cartridge bank
-;       srl  r12,2                      ; Texture number / 4
-;       sla  r12,1                      ; * 2
-;       ai   r12,texture_bank_select    ; Add bank select base
-;       seto *r12                       ; Select bank
-*      Calculate y-step
-       mov  @column_height(r4),r12
-       ci   r12,texture_height         ; Check how to calulate texture height / wall height
-       jgt  prepare_texture_1
-       clr  r8                         ; Texture height FP 24.8
-       li   r9,texture_height*256
-       div  r12,r8                     ; Div by wall height FP 16.0 -> y-step as FP 8.8
-       jmp  prepare_texture_2
+*      Column drawing vector offset
+       mov  @column_height(r4),r0
+       ci   r0,screen_height
+       jh   prepare_texture_1
+       sla  r0,1                      ; * 2
+       jmp  prepare_texture_4
 prepare_texture_1:
-       li   r8,texture_height          ; Texture height FP 16.16
-       clr  r9
-       div  r12,r8                     ; Div by wall height FP 16.0 -> y-step as FP 0.16
-       srl  r8,8                       ; y-step as FP 8.8
+       ci   r0,screen_height*2
+       jhe  prepare_texture_2
+       li   r0,(screen_height+2)*2
+       jmp  prepare_texture_4
 prepare_texture_2:
-       s    r2,r12                     ; Wall height outside screen
-       jne  prepare_texture_3
-       clr  r9                         ; Offset into texture column
+       ci   r0,screen_height*3
+       jhe  prepare_texture_3
+       li   r0,(screen_height+4)*2
        jmp  prepare_texture_4
 prepare_texture_3:
-       srl  r12,1                      ; Half height
-       mpy  r8,r12                     ; Multiply by y-step
-       mov  r13,r9                     ; Offset into texture column
+       li   r0,(screen_height+6)*2
 prepare_texture_4:
        rt
 *// prepare_texture
@@ -2387,7 +2378,7 @@ map:
 doors:
        copy "doors.a99"
 col_index:
-       copy "col-index.a99"
+       copy "../TexGen/col-index.a99"
 
 *      Organised as 32 columns of 192 bytes
 *      First 192 bytes for column 0, next 192 bytes for column 1 etc.

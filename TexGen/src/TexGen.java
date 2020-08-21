@@ -7,7 +7,7 @@ public class TexGen {
     static final int textureHeight = 64;
 
     static int[] heights = {
-        8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60,
+        0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60,
         62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110,
         112, 114, 116, 118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 142, 144, 146, 148, 150,
         152, 154, 156, 158, 160, 162, 164, 166, 168, 170, 172, 174, 176, 178, 180, 182, 184, 186, 188, 190,
@@ -17,7 +17,8 @@ public class TexGen {
     static final String indent = "       ";
 
     public static void main(String... args) throws IOException {
-        new TexGen().generate();
+        TexGen texGen = new TexGen();
+        texGen.generate();
     }
 
     void generate() throws IOException {
@@ -38,9 +39,7 @@ public class TexGen {
                     bankAssembly = new StringBuilder();
                 }
                 bankAssembly.append(assembly);
-                indexAssembly.append(even ? "even" : "odd").append("_col_vector_").append(height).append(":\n");
-                indexAssembly.append(indent).append("data ").append(hexWord(0x6000 + bankNo * 2)).append("\n");
-                indexAssembly.append(indent).append("data ").append(hexWord(bankOffset)).append("\n");
+                addIndexEntry(bankNo, bankOffset, height, even, indexAssembly);
                 bankOffset += size;
             }
             even = !even;
@@ -59,28 +58,34 @@ public class TexGen {
         fileWriter.close();
     }
 
+    void addIndexEntry(int bankNo, int bankOffset, int height, boolean even, StringBuilder indexAssembly) {
+        indexAssembly.append(even ? "even" : "odd").append("_col_vector_").append(Integer.toHexString(height)).append(":\n");
+        indexAssembly.append(indent).append("data ").append(hexWord(0x6000 + bankNo * 2)).append("\n");
+        indexAssembly.append(indent).append("data ").append(hexWord(0x6000 + bankOffset)).append("\n");
+    }
+
     StringBuilder generateAssembly(int height, int[] sequence, boolean even) {
         StringBuilder s = new StringBuilder();
-        s.append(even ? "even" : "odd").append("_col_").append(height).append(":\n");
+        s.append(even ? "even" : "odd").append("_col_").append(Integer.toHexString(height)).append(":\n");
         if (height > screenHeight) {
             int offset = (int) (((double) textureHeight / height) * (height - screenHeight) / 2);
-            s.append(indent).append("ai   r0,").append(offset).append("\n");
+            s.append(indent).append("ai   r1,").append(offset).append("\n");
         }
         String instr = even ? "movb" : "socb";
         for (int dy : sequence) {
             if (dy == 0) {
-                s.append(indent).append(instr).append(" *r0,*r3+\n");
+                s.append(indent).append(instr).append(" *r1,*r3+\n");
             } else if (dy == 1) {
-                s.append(indent).append(instr).append(" *r0+,*r3+\n");
+                s.append(indent).append(instr).append(" *r1+,*r3+\n");
             } else if (dy == 2) {
-                s.append(indent).append(instr).append(" *r0,*r3+\n");
-                s.append(indent).append("inct r0\n");
+                s.append(indent).append(instr).append(" *r1,*r3+\n");
+                s.append(indent).append("inct r1\n");
             } else if (dy == 3) {
-                s.append(indent).append(instr).append(" *r0+,*r3+\n");
-                s.append(indent).append("inct r0\n");
+                s.append(indent).append(instr).append(" *r1+,*r3+\n");
+                s.append(indent).append("inct r1\n");
             } else {
-                s.append(indent).append(instr).append(" *r0,*r3+\n");
-                s.append(indent).append("ai   r0,").append(dy).append("\n");
+                s.append(indent).append(instr).append(" *r1,*r3+\n");
+                s.append(indent).append("ai   r1,").append(dy).append("\n");
             }
         }
         s.append(indent).append("rt\n");
@@ -138,6 +143,12 @@ public class TexGen {
             }
         }
         return result;
+    }
+
+    void printSequence(int[] sequence) {
+        for (int i : sequence) {
+            System.out.print(i + " ");
+        }
     }
 
     void findPeriods(int[] sequence) {
