@@ -26,14 +26,6 @@ cos_table:
        data >ff72,>ff77,>ff7c,>ff82,>ff87,>ff8d,>ff93,>ff98
        data >ff9e,>ffa4,>ffaa,>ffb0,>ffb6,>ffbc,>ffc2,>ffc8
        data >ffce,>ffd4,>ffda,>ffe1,>ffe7,>ffed,>fff3,>fffa
-       data >0000,>0006,>000d,>0013,>0019,>001f,>0026,>002c
-       data >0032,>0038,>003e,>0044,>004a,>0050,>0056,>005c
-       data >0062,>0068,>006d,>0073,>0079,>007e,>0084,>0089
-       data >008e,>0093,>0098,>009d,>00a2,>00a7,>00ac,>00b1
-       data >00b5,>00b9,>00be,>00c2,>00c6,>00ca,>00ce,>00d1
-       data >00d5,>00d8,>00dc,>00df,>00e2,>00e5,>00e7,>00ea
-       data >00ed,>00ef,>00f1,>00f3,>00f5,>00f7,>00f8,>00fa
-       data >00fb,>00fc,>00fd,>00fe,>00ff,>00ff,>0100,>0100
 
 **
 * 256 values of sin(a) as FP 8.8 for 0 <= a < 360 degrees.
