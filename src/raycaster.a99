@@ -326,7 +326,7 @@ cast_rays:
        mov  r2,@ray_count              ; Init count-down
        mov  @angle,r2                  ; Player direction (even only)
        ai  r2,-n_rays                  ; Direction of leftmost ray
-       andi r2,angle_mask          ; Wrap around
+       andi r2,angle_mask              ; Wrap around
        mov  r2,@ray_angle              ; Save
 cast_rays_1:
 *      Cast ray
@@ -830,21 +830,20 @@ prepare_texture:
        mov  @column_height(r4),r0
        ci   r0,screen_height
        jh   prepare_texture_1
-       sla  r0,1                      ; * 2
-       jmp  prepare_texture_4
+;      srl  r0,1                       ; / 2
+;      sla  r0,2                       ; * 4
+       sla  r0,1                       ; * 2
+       jmp  prepare_texture_3
 prepare_texture_1:
-       ci   r0,screen_height*2
-       jhe  prepare_texture_2
-       li   r0,(screen_height+2)*2
-       jmp  prepare_texture_4
+       ci   r0,512
+       jle   prepare_texture_2
+       li   r0,512
 prepare_texture_2:
-       ci   r0,screen_height*3
-       jhe  prepare_texture_3
-       li   r0,(screen_height+4)*2
-       jmp  prepare_texture_4
+       ai   r0,-192
+       srl  r0,3                       ; / 8
+       sla  r0,2                       ; * 4
+       ai   r0,192*2
 prepare_texture_3:
-       li   r0,(screen_height+6)*2
-prepare_texture_4:
        rt
 *// prepare_texture
 
