@@ -597,6 +597,7 @@ cast_ray_loop_end:
 *
 draw_screen:
        .proc
+       bl   @draw_background
        li   r3,screen_buffer
        li   r4,columns
        clr  r5
@@ -620,6 +621,34 @@ draw_screen_3:
 
 *********************************************************************
 *
+* Draw background
+*
+draw_background:
+       mov  @angle,r0
+       andi r0,>01c0
+       srl  r0,5
+       ai   r0,>6020
+       seto *r0
+;      seto @>601e
+       li   r0,>6800
+       li   r1,screen_buffer
+       li   r2,>1800/16
+draw_background_1:
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       dec  r2
+       jne  draw_background_1
+       rt
+*// draw_background
+
+*********************************************************************
+*
 * Draw even column
 *
 * r3: Screen buffer
@@ -640,8 +669,9 @@ draw_even_column_1:
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_even_column_3
-       li   r1,>7070                   ; Color of sky
-       bl   @draw_even_pixels
+;       li   r1,>7070                   ; Color of sky
+;       bl   @draw_even_pixels
+       a    r2,r3
 *      Wall
 draw_even_column_3:
        mov  r6,r2                      ; Wall height
@@ -670,8 +700,9 @@ draw_even_column_5:
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_even_column_7
-       li   r1,>a0a0                   ; Color of floor
-       bl   @draw_even_pixels
+;       li   r1,>a0a0                   ; Color of floor
+;       bl   @draw_even_pixels
+       a    r2,r3
 draw_even_column_7:
        .endproc
 *// draw_even_column
@@ -734,8 +765,9 @@ draw_odd_column_1:
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_odd_column_3
-       li   r1,>0707                   ; Color of sky
-       bl   @draw_odd_pixels
+;       li   r1,>0707                   ; Color of sky
+;       bl   @draw_odd_pixels
+       a    r2,r3
 *      Wall
 draw_odd_column_3:
        mov  r6,r2                      ; Wall height
@@ -764,8 +796,9 @@ draw_odd_column_5:
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_odd_column_7
-       li   r1,>0a0a
-       bl   @draw_odd_pixels
+;       li   r1,>0a0a
+;       bl   @draw_odd_pixels
+       a    r2,r3
 draw_odd_column_7:
        .endproc
 *// draw_odd_column
@@ -1073,7 +1106,7 @@ user_input_1:
        tb   1
        jeq  user_input_2
        mov  @angle,r0
-       ai   r0,-32                     ; Turn left
+       ai   r0,-64                    ; Turn left
        andi r0,angle_mask
        mov  r0,@angle
        seto @update_screen
@@ -1083,7 +1116,7 @@ user_input_2:
        tb   2
        jeq  user_input_3
        mov  @angle,r0
-       ai   r0,32                      ; Turn right
+       ai   r0,64                     ; Turn right
        andi r0,angle_mask
        mov  r0,@angle
        seto @update_screen
@@ -1108,10 +1141,12 @@ user_input_4:
        mov  @angle,r2
        mov  @x,r0
        mov  @cos_table(r2),r3
+;      sla  r3,1
        a    r3,r0
        mov  @y,r1
        mov  @sin_table(r2),r4
        a    r4,r1
+;      sla  r4,1
        bl   @get_map_value
        jeq  user_input_5
        cb   @goal,r2                   ; Check for goal
@@ -2236,11 +2271,11 @@ euclidian_distance:
 * Data
 *
 start_x:
-       data >0500
+       data >0580
 start_y:
-       data >2100
+       data >2180
 start_dir:
-       data >140
+       data 128
 space:
        byte 0
 door:

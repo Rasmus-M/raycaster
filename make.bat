@@ -20,6 +20,22 @@ copy /b bin\RAYCASTER8.bin + ^
     TexGen\col-bank12.bin + ^
     TexGen\col-bank13.bin + ^
     TexGen\col-bank14.bin + ^
+    bin\empty-2k.bin + background-packed.bin + ^
+    bin\empty-2k.bin + backgrounds\background0.bin + ^
+    bin\empty-2k.bin + backgrounds\background1.bin + ^
+    bin\empty-2k.bin + backgrounds\background2.bin + ^
+    bin\empty-2k.bin + backgrounds\background3.bin + ^
+    bin\empty-2k.bin + backgrounds\background4.bin + ^
+    bin\empty-2k.bin + backgrounds\background5.bin + ^
+    bin\empty-2k.bin + backgrounds\background6.bin + ^
+    bin\empty-2k.bin + backgrounds\background7.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
     bin\empty.bin ^
     .\texcaster8.bin
 
