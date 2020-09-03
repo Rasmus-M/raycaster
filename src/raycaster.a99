@@ -162,8 +162,12 @@ x:                                     ; Player x FP 8.8
        equ  status+2
 y:                                     ; Player y FP 8.8
        equ  x+2
-angle:                                 ; Player direction 0 - 2 * n_directions (even only)
+dx:
        equ  y+2
+dy:
+       equ  dx+2
+angle:                                 ; Player direction 0 - 2 * n_directions (even only)
+       equ  dy+2
 update_screen:
        equ  angle+2
 ray_count:
@@ -1109,6 +1113,10 @@ user_input_1:
        ai   r0,-64                    ; Turn left
        andi r0,angle_mask
        mov  r0,@angle
+       srl  r0,4
+       ai   r0,dirs
+       mov  *r0+,@dx
+       mov  *r0,@dy
        seto @update_screen
        jmp  user_input_3
 user_input_2:
@@ -1119,18 +1127,19 @@ user_input_2:
        ai   r0,64                     ; Turn right
        andi r0,angle_mask
        mov  r0,@angle
+       srl  r0,4
+       ai   r0,dirs
+       mov  *r0+,@dx
+       mov  *r0,@dy
        seto @update_screen
 user_input_3:
 *      Down
        tb   3
        jeq  user_input_4
-       mov  @angle,r2
        mov  @x,r0
-       mov  @cos_table(r2),r3
-       s    r3,r0
+       s    @dx,r0
        mov  @y,r1
-       mov  @sin_table(r2),r4
-       s    r4,r1
+       s    @dy,r1
        bl   @get_map_value
        jne  user_input_8
        jmp  user_input_5
@@ -1138,15 +1147,10 @@ user_input_4:
 *      Up
        tb   4
        jeq  user_input_8
-       mov  @angle,r2
        mov  @x,r0
-       mov  @cos_table(r2),r3
-;      sla  r3,1
-       a    r3,r0
+       a    @dx,r0
        mov  @y,r1
-       mov  @sin_table(r2),r4
-       a    r4,r1
-;      sla  r4,1
+       a    @dy,r1
        bl   @get_map_value
        jeq  user_input_5
        cb   @goal,r2                   ; Check for goal
@@ -1182,6 +1186,15 @@ user_input_7:
 user_input_8:
        bl   @check_int
        .endproc
+dirs:
+       data >0100,>0000
+       data >0100,>0100
+       data >0000,>0100
+       data ->0100,>0100
+       data ->0100,>0000
+       data ->0100,->0100
+       data >0000,->0100
+       data >0100,->0100
 *// user_input
 
 *********************************************************************
@@ -1789,6 +1802,8 @@ init_level:
        mov  @start_x,@x
        mov  @start_y,@y
        mov  @start_dir,@angle
+       mov  @start_dx,@dx
+       mov  @start_dy,@dy
        li   r0,initial_health
        mov  r0,@health
        mov  r0,@old_health
@@ -2271,11 +2286,15 @@ euclidian_distance:
 * Data
 *
 start_x:
-       data >0580
+       data >0780
 start_y:
-       data >2180
+       data >1c80
 start_dir:
-       data 128
+       data 256
+start_dx:
+       data ->0100
+start_dy:
+       data >0000
 space:
        byte 0
 door:
