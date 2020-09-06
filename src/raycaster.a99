@@ -104,6 +104,8 @@ texture_height:
        equ  64
 texture_size:
        equ  (texture_width/2)*texture_height;
+background_address:
+       equ  >6800
 
 **
 * Scratch pad
@@ -204,8 +206,14 @@ speech_ptr:
        equ  get_speech_status+6
 speech_on:
        equ  speech_ptr+2
-cast_ray_loop_pad:
+background_bank_select:
        equ  speech_on+2
+old_angle:
+       equ  background_bank_select+2
+angle_diff:
+       equ  old_angle+2
+cast_ray_loop_pad:
+       equ  angle_diff+2
 upload_screen_loop_pad:
        equ  cast_ray_loop_pad+40
 pad_max:
@@ -601,55 +609,47 @@ cast_ray_loop_end:
 *
 draw_screen:
        .proc
-       bl   @draw_background
+       bl   @calc_background_bank
+       mov  @angle,r0
+       s    @old_angle,r0
+       mov  r0,@angle_diff
        li   r3,screen_buffer
        li   r4,columns
        clr  r5
+       li   r8,background_address
 draw_screen_1:
        mov  r5,r0
        andi r0,1
        jne  draw_screen_2
        bl   @draw_even_column
        ai   r3,-screen_height
+       ai   r8,-screen_height
        jmp  draw_screen_3
 draw_screen_2:
        bl   @draw_odd_column
 draw_screen_3:
+*      Next column
        ai   r4,column_size
        inc  r5
        ci   r5,n_rays
        jlt  draw_screen_1
+       mov  @angle,@old_angle
        bl   @check_int
        .endproc
 *// draw_screen
 
 *********************************************************************
 *
-* Draw background
+* Calculate ROM bank for background
 *
-draw_background:
+calc_background_bank:
        mov  @angle,r0
        andi r0,>01c0
        srl  r0,5
        ai   r0,>6020
-       seto *r0
-;      seto @>601e
-       li   r0,>6800
-       li   r1,screen_buffer
-       li   r2,>1800/16
-draw_background_1:
-       mov  *r0+,*r1+
-       mov  *r0+,*r1+
-       mov  *r0+,*r1+
-       mov  *r0+,*r1+
-       mov  *r0+,*r1+
-       mov  *r0+,*r1+
-       mov  *r0+,*r1+
-       mov  *r0+,*r1+
-       dec  r2
-       jne  draw_background_1
+       mov  r0,@background_bank_select
        rt
-*// draw_background
+*// calc_background_bank
 
 *********************************************************************
 *
@@ -658,6 +658,7 @@ draw_background_1:
 * r3: Screen buffer
 * r4: Column structure
 * r5: Column number
+* r8: Background address
 *
 draw_even_column:
        .proc
@@ -667,22 +668,45 @@ draw_even_column:
 draw_even_column_0:
        li   r6,screen_height
 draw_even_column_1:
+*      Old height
+       mov  r5,r0                      ; Calculate address for storing old height
+       sla  r0,1
+       ai   r0,old_heights
+       mov  *r0,r9                     ; Get old wall height
+       mov  r6,*r0                     ; Save new wall height
+       s    r6,r9                      ; Old minus new
+       sra  r9,1                       ; / 2
 *      Sky
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_even_column_3
-;       li   r1,>7070                   ; Color of sky
-;       bl   @draw_even_pixels
-       a    r2,r3
+       abs  @angle_diff
+       jeq  draw_even_column_2
+*      Redraw whole column
+       bl   @draw_even_background_pixels
+       jmp  draw_even_column_3
+*      Redraw part or none
+draw_even_column_2:
+       a    r7,r3                      ; Advance screen buffer address
+       a    r7,r8                      ; Advance source address
+       mov  r9,r9                      ; Wall difference
+       jlt  draw_even_column_3         ; New wall taller
+       jeq  draw_even_column_3         ; New wall equal
+*      Redraw part
+       s    r9,r3                      ; Backtrack screen buffer address
+       s    r9,r8                      ; Backtrack source address
+       mov  r9,r2                      ; Number of pixels to draw
+       bl   @draw_even_background_pixels
 *      Wall
 draw_even_column_3:
        mov  r6,r2                      ; Wall height
        jeq  draw_even_column_5         ; Jump if zero
+       a    r2,r8                      ; Add height to background source address
        mov  @column_color(r4),r1       ; Color / texture number
        mov  @column_hit_x(r4),r0       ; Check for texture
-       jlt  draw_even_column_8         ; No texture if -1
+       jlt  draw_even_column_4         ; No texture if -1
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address and y-step
        ai   r0,even_col_vector_0
@@ -693,7 +717,7 @@ draw_even_column_3:
        mov  *r0,r2
        bl   *r2
        jmp  draw_even_column_5
-draw_even_column_8:
+draw_even_column_4:
 *      Wall single color
        sla  r1,4
        movb @r1lb,r1
@@ -703,13 +727,61 @@ draw_even_column_5:
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
-       jeq  draw_even_column_7
-;       li   r1,>a0a0                   ; Color of floor
-;       bl   @draw_even_pixels
-       a    r2,r3
+       jeq  draw_even_column_8
+       abs  @angle_diff
+       jeq  draw_even_column_6
+*      Redraw whole column
+       bl   @draw_even_background_pixels
+       jmp  draw_even_column_8
+*      Redraw part or none
+draw_even_column_6:
+       mov  r9,r9                      ; Old wall height minus new
+       jlt  draw_even_column_7         ; New wall taller
+       jeq  draw_even_column_7         ; New wall equal
+*      Redraw part
+       mov  r2,r12
+       mov  r9,r2                      ; Number of pixels to draw
+       bl   @draw_even_background_pixels
+       s    r9,r12
+       mov  r12,r2
 draw_even_column_7:
+       a    r2,r3                      ; Advance screen buffer address
+       a    r2,r8                      ; Advance source address
+draw_even_column_8:
        .endproc
 *// draw_even_column
+
+*********************************************************************
+*
+* Draw a column of background pixels (even)
+*
+* r8: Source address (must be updated)
+* r2: Number of pixels to draw (not zero)
+* r3: Screen buffer address
+*
+draw_even_background_pixels:
+       mov  @background_bank_select,r0
+       seto *r0
+       mov  r2,r0
+       srl  r2,2
+       jeq  draw_even_background_pixels_1
+draw_even_background_pixels_0:
+       movb *r8+,*r3+
+       movb *r8+,*r3+
+       movb *r8+,*r3+
+       movb *r8+,*r3+
+       dec  r2
+       jne  draw_even_background_pixels_0
+draw_even_background_pixels_1:
+       andi r0,3
+       jeq  draw_even_background_pixels_3
+draw_even_background_pixels_2:
+       movb *r8+,*r3+
+       dec  r0
+       jne  draw_even_background_pixels_2
+draw_even_background_pixels_3:
+       rt
+*// draw_even_background_pixels
 
 *********************************************************************
 *
@@ -754,6 +826,7 @@ draw_even_pixels_4:
 * r3: Screen buffer
 * r4: Column structure
 * r5: Column number
+* r8: Background address
 *
 draw_odd_column:
        .proc
@@ -763,22 +836,45 @@ draw_odd_column:
 draw_odd_column_0:
        li   r6,screen_height
 draw_odd_column_1:
+*      Old height
+       mov  r5,r0                      ; Calculate address for storing old height
+       sla  r0,1
+       ai   r0,old_heights
+       mov  *r0,r9                     ; Get old wall height
+       mov  r6,*r0                     ; Save new wall height
+       s    r6,r9                      ; Old minus new
+       sra  r9,1                       ; / 2
 *      Sky
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_odd_column_3
-;       li   r1,>0707                   ; Color of sky
-;       bl   @draw_odd_pixels
-       a    r2,r3
+       abs  @angle_diff
+       jeq  draw_odd_column_2
+*      Redraw whole column
+       bl   @draw_odd_background_pixels
+       jmp  draw_odd_column_3
+*      Redraw part or none
+draw_odd_column_2:
+       a    r7,r3                      ; Advance screen buffer address
+       a    r7,r8                      ; Advance source address
+       mov  r9,r9                      ; Wall difference
+       jlt  draw_odd_column_3          ; New wall taller
+       jeq  draw_odd_column_3          ; New wall equal
+*      Redraw part
+       s    r9,r3                      ; Backtrack screen buffer address
+       s    r9,r8                      ; Backtrack source address
+       mov  r9,r2                      ; Number of pixels to draw
+       bl   @draw_odd_background_pixels
 *      Wall
 draw_odd_column_3:
        mov  r6,r2                      ; Wall height
        jeq  draw_odd_column_5          ; Jump if zero
+       a    r2,r8                      ; Add height to background source address
        mov  @column_color(r4),r1       ; Color / texture number
        mov  @column_hit_x(r4),r0       ; Check for texture
-       jlt  draw_odd_column_8          ; No texture if -1
+       jlt  draw_odd_column_4          ; No texture if -1
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address and y-step
        ai   r1,1024                    ; Add offset to odd column texture
@@ -790,7 +886,7 @@ draw_odd_column_3:
        mov  *r0,r2
        bl   *r2
        jmp  draw_odd_column_5
-draw_odd_column_8:
+draw_odd_column_4:
 *      Wall single color
        movb @r1lb,r1
        bl   @draw_odd_pixels
@@ -799,13 +895,62 @@ draw_odd_column_5:
        li   r2,screen_height           ; Screen height
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
-       jeq  draw_odd_column_7
-;       li   r1,>0a0a
-;       bl   @draw_odd_pixels
-       a    r2,r3
+       jeq  draw_odd_column_8
+       abs  @angle_diff
+       jeq  draw_odd_column_6
+*      Redraw whole column
+       bl   @draw_odd_background_pixels
+       jmp  draw_odd_column_8
+*      Redraw part or none
+draw_odd_column_6:
+       mov  r9,r9                      ; Old wall height minus new
+       jlt  draw_odd_column_7         ; New wall taller
+       jeq  draw_odd_column_7         ; New wall equal
+*      Redraw part
+       mov  r2,r12
+       mov  r9,r2                      ; Number of pixels to draw
+       bl   @draw_odd_background_pixels
+       s    r9,r12
+       mov  r12,r2
 draw_odd_column_7:
+       a    r2,r3                      ; Advance screen buffer address
+       a    r2,r8                      ; Advance source address
+draw_odd_column_8:
        .endproc
 *// draw_odd_column
+
+*********************************************************************
+*
+* Draw a column of background pixels (odd)
+*
+* r8: Source address (must be updated)
+* r2: Number of pixels to draw (not zero)
+* r3: Screen buffer address
+*
+draw_odd_background_pixels:
+       mov  @background_bank_select,r0
+       ai   r0,>10
+       seto *r0
+       mov  r2,r0
+       srl  r2,2
+       jeq  draw_odd_background_pixels_1
+draw_odd_background_pixels_0:
+       socb *r8+,*r3+
+       socb *r8+,*r3+
+       socb *r8+,*r3+
+       socb *r8+,*r3+
+       dec  r2
+       jne  draw_odd_background_pixels_0
+draw_odd_background_pixels_1:
+       andi r0,3
+       jeq  draw_odd_background_pixels_3
+draw_odd_background_pixels_2:
+       socb *r8+,*r3+
+       dec  r0
+       jne  draw_odd_background_pixels_2
+draw_odd_background_pixels_3:
+       rt
+*// draw_odd_background_pixels
 
 *********************************************************************
 *
@@ -845,7 +990,7 @@ draw_odd_pixels_4:
 
 *********************************************************************
 *
-* Calculate texture address and y-step
+* Calculate texture address
 *
 * r0: Texture hit x (FP 8.8)
 * r1: Texture number
@@ -1802,6 +1947,7 @@ init_level:
        mov  @start_x,@x
        mov  @start_y,@y
        mov  @start_dir,@angle
+       mov  @start_dir,@old_angle
        mov  @start_dx,@dx
        mov  @start_dy,@dy
        li   r0,initial_health
@@ -1811,6 +1957,14 @@ init_level:
        seto @old_score
        clr  @status
        seto @update_screen
+*      Init old heights
+       li   r0,old_heights
+       li   r1,screen_height
+       li   r2,n_rays
+init_level_0:
+       mov  r1,*r0+
+       dec  r2
+       jne  init_level_0
 *      Init doors
        li   r4,doors
        mov  @n_doors,r5
@@ -2324,6 +2478,8 @@ column_size:
 
 columns:
        bss  n_rays*column_size
+old_heights:
+       bss  n_rays*2
 
 **
 * Objects
