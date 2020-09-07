@@ -87,7 +87,7 @@ gun_color:
 bullet_color:
        equ  >01
 backdrop_color:
-       equ  >0b
+       equ  >0e
 char_0:
        equ  >30
 first_texture_index:
@@ -212,8 +212,10 @@ old_angle:
        equ  background_bank_select+2
 angle_diff:
        equ  old_angle+2
-cast_ray_loop_pad:
+old_even_height:
        equ  angle_diff+2
+cast_ray_loop_pad:
+       equ  old_even_height+2
 upload_screen_loop_pad:
        equ  cast_ray_loop_pad+40
 pad_max:
@@ -673,7 +675,12 @@ draw_even_column_1:
        sla  r0,1
        ai   r0,old_heights
        mov  *r0,r9                     ; Get old wall height
-       mov  r6,*r0                     ; Save new wall height
+       mov  r9,@old_even_height
+       mov  r6,*r0+                    ; Save new wall height
+       c    r9,*r0
+       jhe  draw_even_column_9
+       mov  *r0,r9
+draw_even_column_9:
        s    r6,r9                      ; Old minus new
        sra  r9,1                       ; / 2
 *      Sky
@@ -842,6 +849,10 @@ draw_odd_column_1:
        ai   r0,old_heights
        mov  *r0,r9                     ; Get old wall height
        mov  r6,*r0                     ; Save new wall height
+       c    r9,@old_even_height        ; Check if even wall was taller
+       jhe  draw_odd_column_9
+       mov  @old_even_height,r9        ; Use tallest of the two walls
+draw_odd_column_9:
        s    r6,r9                      ; Old minus new
        sra  r9,1                       ; / 2
 *      Sky
