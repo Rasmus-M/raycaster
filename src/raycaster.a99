@@ -1212,6 +1212,9 @@ draw_object:
 *
 upload_screen:
        .proc
+       abs  @angle_diff
+       jeq  upload_screen_3
+*      Full update
        li   r0,colrtb
        bl   @vwad
        li   r5,screen_buffer
@@ -1228,6 +1231,42 @@ upload_screen_2:
        ai   r5,64-(32*192)
        dec  r6
        jne  upload_screen_1
+       jmp  upload_screen_8
+*      Column update
+upload_screen_3:
+       li   r0,colrtb+>4000
+       li   r1,columns
+       li   r2,32
+       li   r5,screen_buffer
+       li   r14,vdpwa
+upload_screen_4:
+       c    @column_height(r1),@column_height_old(r1)
+       jne  upload_screen_5
+       c    @column_color(r1),@column_color_old(r1)
+       jne  upload_screen_5
+       c    @column_height+column_size(r1),@column_height_old+column_size(r1)
+       jne  upload_screen_5
+       c    @column_color+column_size(r1),@column_color_old+column_size(r1)
+       jne  upload_screen_5
+       ai   r0,64
+       ai   r5,192
+       jmp  upload_screen_7
+upload_screen_5:
+       li   r4,3
+upload_screen_6:
+       movb @r0lb,*r14
+       movb r0,*r14
+       li   r8,64/8
+       bl   @upload_screen_loop_pad
+       ai   r0,>800
+       dec  r4
+       jne  upload_screen_6
+       ai   r0,->1800+64
+upload_screen_7:
+       ai   r1,column_size*2
+       dec  r2
+       jne  upload_screen_4
+upload_screen_8:
        .endproc
 *// upload_screen
 
