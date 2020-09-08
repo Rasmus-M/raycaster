@@ -762,31 +762,38 @@ draw_even_column_8:
 *
 * Draw a column of background pixels (even)
 *
-* r8: Source address (must be updated)
+* r8: Source address
 * r2: Number of pixels to draw (not zero)
 * r3: Screen buffer address
+* We can assume that if r8 is odd then r3 is also odd.
 *
 draw_even_background_pixels:
        mov  @background_bank_select,r0
        seto *r0
-       mov  r2,r0
-       srl  r2,2
-       jeq  draw_even_background_pixels_1
-draw_even_background_pixels_0:
-       movb *r8+,*r3+
-       movb *r8+,*r3+
-       movb *r8+,*r3+
+       coc  @one,r3
+       jne  draw_even_background_pixels_0
        movb *r8+,*r3+
        dec  r2
-       jne  draw_even_background_pixels_0
+       jeq  draw_even_background_pixels_4
+draw_even_background_pixels_0:
+       mov  r2,r0
+       srl  r2,3
+       jeq  draw_even_background_pixels_2
 draw_even_background_pixels_1:
-       andi r0,3
-       jeq  draw_even_background_pixels_3
+       mov  *r8+,*r3+
+       mov  *r8+,*r3+
+       mov  *r8+,*r3+
+       mov  *r8+,*r3+
+       dec  r2
+       jne  draw_even_background_pixels_1
 draw_even_background_pixels_2:
+       andi r0,7
+       jeq  draw_even_background_pixels_4
+draw_even_background_pixels_3:
        movb *r8+,*r3+
        dec  r0
-       jne  draw_even_background_pixels_2
-draw_even_background_pixels_3:
+       jne  draw_even_background_pixels_3
+draw_even_background_pixels_4:
        rt
 *// draw_even_background_pixels
 
@@ -934,32 +941,39 @@ draw_odd_column_8:
 *
 * Draw a column of background pixels (odd)
 *
-* r8: Source address (must be updated)
+* r8: Source address
 * r2: Number of pixels to draw (not zero)
 * r3: Screen buffer address
+* We can assume that if r8 is odd then r3 is also odd.
 *
 draw_odd_background_pixels:
        mov  @background_bank_select,r0
        ai   r0,>10
        seto *r0
-       mov  r2,r0
-       srl  r2,2
-       jeq  draw_odd_background_pixels_1
-draw_odd_background_pixels_0:
-       socb *r8+,*r3+
-       socb *r8+,*r3+
-       socb *r8+,*r3+
+       coc  @one,r3
+       jne  draw_odd_background_pixels_0
        socb *r8+,*r3+
        dec  r2
-       jne  draw_odd_background_pixels_0
+       jeq  draw_odd_background_pixels_4
+draw_odd_background_pixels_0:
+       mov  r2,r0
+       srl  r2,3
+       jeq  draw_odd_background_pixels_2
 draw_odd_background_pixels_1:
-       andi r0,3
-       jeq  draw_odd_background_pixels_3
+       soc  *r8+,*r3+
+       soc  *r8+,*r3+
+       soc  *r8+,*r3+
+       soc  *r8+,*r3+
+       dec  r2
+       jne  draw_odd_background_pixels_1
 draw_odd_background_pixels_2:
+       andi r0,7
+       jeq  draw_odd_background_pixels_4
+draw_odd_background_pixels_3:
        socb *r8+,*r3+
        dec  r0
-       jne  draw_odd_background_pixels_2
-draw_odd_background_pixels_3:
+       jne  draw_odd_background_pixels_3
+draw_odd_background_pixels_4:
        rt
 *// draw_odd_background_pixels
 
