@@ -364,6 +364,7 @@ cast_rays_2:
        li   r1,screen_height*256       ; 192 as FP 24.8
        div  r2,r0                      ; height = 192 / distance as FP 16.0
 cast_rays_3:
+       mov  @column_height(r5),@column_height_old(r5)
        andi r0,>fffe                   ; Make height even
        mov  r0,@column_height(r5)
        mov  r3,@column_side(r5)
@@ -466,6 +467,7 @@ wall_color_5:
        andi r12,>00ff
        mov  r12,@column_hit_x(r5)
 wall_color_6:
+       mov  @column_color(r5),@column_color_old(r5)
        mov  r4,@column_color(r5)
        rt
 wall_colors:
@@ -667,20 +669,18 @@ draw_even_column:
        mov  @column_height(r4),r6      ; Wall height
        ci   r6,screen_height
        jle  draw_even_column_1
-draw_even_column_0:
        li   r6,screen_height
 draw_even_column_1:
 *      Old height
-       mov  r5,r0                      ; Calculate address for storing old height
-       sla  r0,1
-       ai   r0,old_heights
-       mov  *r0,r9                     ; Get old wall height
-       mov  r9,@old_even_height
-       mov  r6,*r0+                    ; Save new wall height
-       c    r9,*r0
+       mov  @column_height_old(r4),r9                ; Get old wall height
+       c    r9,@column_height_old+column_size(r4)    ; Check if odd wall was taller
        jhe  draw_even_column_9
-       mov  *r0,r9
+       mov  @column_height_old+column_size(r4),r9    ; Use the tallest of the two walls
 draw_even_column_9:
+       ci   r9,screen_height
+       jle  draw_even_column_10
+       li   r9,screen_height
+draw_even_column_10:
        s    r6,r9                      ; Old minus new
        sra  r9,1                       ; / 2
 *      Sky
@@ -847,19 +847,18 @@ draw_odd_column:
        mov  @column_height(r4),r6      ; Wall height
        ci   r6,screen_height
        jle  draw_odd_column_1
-draw_odd_column_0:
        li   r6,screen_height
 draw_odd_column_1:
 *      Old height
-       mov  r5,r0                      ; Calculate address for storing old height
-       sla  r0,1
-       ai   r0,old_heights
-       mov  *r0,r9                     ; Get old wall height
-       mov  r6,*r0                     ; Save new wall height
-       c    r9,@old_even_height        ; Check if even wall was taller
+       mov  @column_height_old(r4),r9                ; Get old wall height
+       c    r9,@column_height_old-column_size(r4)    ; Check if even wall was taller
        jhe  draw_odd_column_9
-       mov  @old_even_height,r9        ; Use tallest of the two walls
+       mov  @column_height_old-column_size(r4),r9    ; Use tallest of the two walls
 draw_odd_column_9:
+       ci   r9,screen_height
+       jle  draw_odd_column_10
+       li   r9,screen_height
+draw_odd_column_10:
        s    r6,r9                      ; Old minus new
        sra  r9,1                       ; / 2
 *      Sky
@@ -1232,12 +1231,10 @@ upload_screen_2:
        .endproc
 *// upload_screen
 
-
 *********************************************************************
 *
 * Upload screen loop
 *
-
 upload_screen_loop:
        movb *r5+,*r15
        movb *r5+,*r15
@@ -1982,12 +1979,14 @@ init_level:
        seto @old_score
        clr  @status
        seto @update_screen
-*      Init old heights
-       li   r0,old_heights
-       li   r1,screen_height
+*      Init columns
+       li   r0,screen_height
+       li   r1,columns
        li   r2,n_rays
 init_level_0:
-       mov  r1,*r0+
+       mov  r0,@column_height(r1)
+       seto @column_color(r1)
+       ai   r1,column_size
        dec  r2
        jne  init_level_0
 *      Init doors
@@ -2498,13 +2497,15 @@ column_side:
        equ  4
 column_hit_x:
        equ  6
-column_size:
+column_height_old:
        equ  8
+column_color_old:
+       equ  10
+column_size:
+       equ  12
 
 columns:
        bss  n_rays*column_size
-old_heights:
-       bss  n_rays*2
 
 **
 * Objects
