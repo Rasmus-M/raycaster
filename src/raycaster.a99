@@ -622,21 +622,44 @@ draw_screen:
        clr  r5
        li   r8,background_address
 draw_screen_1:
+*      Check even or odd
        mov  r5,r0
        andi r0,1
+       jne  draw_screen_3
+*      Check if column and next can be skipped
+       abs  @angle_diff
        jne  draw_screen_2
+       c    @column_height(r4),@column_height_old(r4)
+       jne  draw_screen_2
+       c    @column_color(r4),@column_color_old(r4)
+       jne  draw_screen_2
+       c    @column_height+column_size(r4),@column_height_old+column_size(r4)
+       jne  draw_screen_2
+       c    @column_color+column_size(r4),@column_color_old+column_size(r4)
+       jne  draw_screen_2
+*      No need to redraw columns
+       ai   r3,screen_height
+       ai   r8,screen_height
+       ai   r4,column_size*2
+       inct r5
+       jmp  draw_screen_5
+draw_screen_2:
+*      Draw even column
        bl   @draw_even_column
        ai   r3,-screen_height
        ai   r8,-screen_height
-       jmp  draw_screen_3
-draw_screen_2:
-       bl   @draw_odd_column
+       jmp  draw_screen_4
 draw_screen_3:
+*      Draw odd column
+       bl   @draw_odd_column
+draw_screen_4:
 *      Next column
        ai   r4,column_size
        inc  r5
+draw_screen_5:
        ci   r5,n_rays
        jlt  draw_screen_1
+*      Done
        mov  @angle,@old_angle
        bl   @check_int
        .endproc
