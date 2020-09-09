@@ -1261,7 +1261,7 @@ upload_screen_3:
        li   r1,columns
        li   r2,32
        li   r5,screen_buffer
-       li   r9,32
+       li   r9,64
        li   r14,vdpwa
 upload_screen_4:
        c    @column_height(r1),@column_height_old(r1)
