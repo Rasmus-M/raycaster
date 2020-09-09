@@ -235,7 +235,7 @@ restart:
        bl   @init_level
 main_loop:
        clr  @interrupt_count
-       bl   @vsync
+;       bl   @vsync
        bl   @set_vdp_regs
        abs  @update_screen
        jeq  no_screen_update
