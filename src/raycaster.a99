@@ -638,6 +638,7 @@ draw_screen_1:
        c    @column_color+column_size(r4),@column_color_old+column_size(r4)
        jne  draw_screen_2
 *      No need to redraw columns
+       seto @column_skip(r4)
        ai   r3,screen_height
        ai   r8,screen_height
        ai   r4,column_size*2
@@ -645,12 +646,14 @@ draw_screen_1:
        jmp  draw_screen_5
 draw_screen_2:
 *      Draw even column
+       clr  @column_skip(r4)
        bl   @draw_even_column
        ai   r3,-screen_height
        ai   r8,-screen_height
        jmp  draw_screen_4
 draw_screen_3:
 *      Draw odd column
+       clr  @column_skip(r4)
        bl   @draw_odd_column
 draw_screen_4:
 *      Next column
@@ -1264,14 +1267,8 @@ upload_screen_3:
        li   r9,64
        li   r14,vdpwa
 upload_screen_4:
-       c    @column_height(r1),@column_height_old(r1)
-       jne  upload_screen_5
-       c    @column_color(r1),@column_color_old(r1)
-       jne  upload_screen_5
-       c    @column_height+column_size(r1),@column_height_old+column_size(r1)
-       jne  upload_screen_5
-       c    @column_color+column_size(r1),@column_color_old+column_size(r1)
-       jne  upload_screen_5
+       abs  @column_skip(r1)
+       jeq  upload_screen_5
        ai   r0,64
        ai   r5,192
        jmp  upload_screen_7
@@ -2584,8 +2581,10 @@ column_height_old:
        equ  8
 column_color_old:
        equ  10
-column_size:
+column_skip:
        equ  12
+column_size:
+       equ  14
 
 columns:
        bss  n_rays*column_size
