@@ -1,0 +1,59 @@
+sams_window:
+       equ  >2000
+sams_reg_2:
+       equ  >4004
+sams_reg_3:
+       equ  >4006
+
+*********************************************************************
+*
+* Initialize SAMS
+*
+init_sams:
+*      Enable register access
+       li   r12,>1e00
+       sbo  0
+*      Set standard mapping
+       li   r0,>4000
+       clr  r1
+       li   r2,16
+init_sams_1:
+       mov  r1,*r0+
+       ai   r1,>0100
+       dec  r2
+       jne  init_sams_1
+*      Enable mapper
+       sbo  1
+       rt
+*// init_sams
+
+*********************************************************************
+*
+* Copy ROM bank to SAMS
+*
+* r0: ROM bank select address
+* r1: SAMS page no (MSB)
+*
+* On return r0 is update to select next bank,
+* and r1 is update to the next page (+2)
+*
+copy_rom_to_sams:
+       .proc
+       mov  r0,r3
+       mov  r1,r4
+       seto *r0
+       li   r5,2
+       li   r0,>6000
+copy_rom_to_sams_1:
+       mov  r4,@sams_reg_2
+       li   r1,sams_window
+       li   r2,>1000
+       bl   @copy
+       ai   r4,>0100
+       dec  r5
+       jne  copy_rom_to_sams_1
+       mov  r3,r0
+       inct r0
+       mov  r4,r1
+       .endproc
+*// copy_rom_to_sams

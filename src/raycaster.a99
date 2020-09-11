@@ -98,6 +98,8 @@ initial_health:
        equ  63
 texture_bank_select:
        equ  >6008
+texture_sams_page:                     ; 16
+       equ  >1000
 texture_width:                         ; Width in fat pixels
        equ  16
 texture_height:
@@ -225,7 +227,7 @@ pad_max:
 *
 * Main program
 *
-       aorg >2000
+       aorg >a000
 main:
        limi 0                          ; Interrupts off
        lwpi wrksp                      ; Setup workspace
@@ -741,9 +743,9 @@ draw_even_column_3:
        mov  @column_hit_x(r4),r0       ; Check for texture
        jlt  draw_even_column_4         ; No texture if -1
 *      Wall textured
-       bl   @prepare_texture           ; Calculate texture address and y-step
+       bl   @prepare_texture           ; Calculate texture address
        ai   r0,even_col_vector_0
-*      Cartridge bank
+*      Cartridge bank for drawing code
        mov  *r0+,r2
        seto *r2
 *      Draw routine address
@@ -919,10 +921,10 @@ draw_odd_column_3:
        mov  @column_hit_x(r4),r0       ; Check for texture
        jlt  draw_odd_column_4          ; No texture if -1
 *      Wall textured
-       bl   @prepare_texture           ; Calculate texture address and y-step
+       bl   @prepare_texture           ; Calculate texture address
        ai   r1,1024                    ; Add offset to odd column texture
        ai   r0,odd_col_vector_0
-*      Cartridge bank
+*      Cartridge bank for drawing code
        mov  *r0+,r2
        seto *r2
 *      Draw routine address
@@ -1054,10 +1056,16 @@ prepare_texture:
 *      Texture address
        srl  r0,4                       ; Column of texture
        sla  r0,6                       ; * 64
-       andi r1,3                       ; 4 textures per bank
+       mov  r1,r12                     ; Save the texture number
+       andi r1,1                       ; 2 textures per SAMS page
        sla  r1,11                      ; texture number * 2048
        ai   r1,textures                ; Base texture source address
        a    r0,r1                      ; Base texture column source address
+*      Select SAMS bank
+       andi r12,>00fe
+       sla  r12,7
+       ai   r12,texture_sams_page
+       mov  r12,@sams_reg_2
 *      Column drawing vector offset
        mov  @column_height(r4),r0
        ci   r0,screen_height
@@ -2112,6 +2120,7 @@ one_time_init:
        mov  @rndsd,@rand_no            ; Save random number seed
        li   r0,1
        mov  r0,@one
+       bl   @init_sams
        bl   @graphics_mode
 *      Clear scratch pad
        li   r0,padvar
@@ -2127,11 +2136,10 @@ one_time_init:
        li   r2,upload_screen_loop_end-upload_screen_loop
        bl   @copy
 *      Copy textures to RAM
-       seto @texture_bank_select
-       li   r0,>6000
-       li   r1,textures
-       li   r2,>2000
-       bl   @copy
+       li   r0,texture_bank_select
+       li   r1,texture_sams_page
+       bl   @copy_rom_to_sams
+       bl   @copy_rom_to_sams
 *      Init speech
        bl   @init_speech
 *      Patterns
@@ -2352,9 +2360,9 @@ check_key:
 *
 * CPU space to CPU space copy
 *
-* r0: source
-* r1: destination
-* r2: number of bytes
+* r0: source (even)
+* r1: destination (even)
+* r2: number of bytes (even)
 *
 copy:
        mov  *r0+,*r1+
@@ -2403,7 +2411,7 @@ rand:
        src  r1,7                       ; Shift to break odd/even pattern
        mov  r1,@rand_no
        mov  r1,r0
-       b    *r11
+       rt
 *// rand
 
 *********************************************************************
@@ -2534,6 +2542,7 @@ euclidian_distance:
 * Program files
 *
        copy "vdp.a99"
+       copy "sams.a99"
        copy "speech.a99"
        copy "sound-fx-routines.a99"
 ;      copy "music-player.a99"
@@ -2673,25 +2682,10 @@ bullet_distance:
 *
 * Data files
 *
-       copy "sprites.a99"
-       copy "sound-fx.a99"
-
-lower_ram_max:
-       equ  $
-**
-*      Upper RAM
-*
-       aorg >a000
-
-textures:                              ; Must be at 256 byte boundary address
-       bss  >2000
-
        copy "math_tables.a99"
-       copy "graphics.a99"
-
-map:
-       equ  MD0
-
+       copy "sprites.a99"
+       copy "sprite-patterns.a99"
+       copy "sound-fx.a99"
 doors:
        copy "doors.a99"
 col_index:
@@ -2706,6 +2700,23 @@ screen_buffer:
        bss  >1800
 
 upper_ram_max:
+       equ  $
+
+***************************************************************
+*
+* Lower RAM
+*
+***************************************************************
+
+       aorg >2000
+
+textures:                              ; Must be at 256 byte boundary address
+       bss  >1000
+map:
+       equ  >3000
+       copy "map.a99"
+
+lower_ram_max:
        equ  $
 
        end  main
