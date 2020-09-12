@@ -23,7 +23,7 @@ public class TexGen {
     }
 
     void generate() throws IOException {
-        int bankNo = 6;
+        int bankNo = 7;
         int bankOffset = 0;
         StringBuilder bankAssembly = new StringBuilder();
         StringBuilder indexAssembly = new StringBuilder();

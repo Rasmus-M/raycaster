@@ -1,4 +1,3 @@
-xas99.py -b -R col-bank6.a99
 xas99.py -b -R col-bank7.a99
 xas99.py -b -R col-bank8.a99
 xas99.py -b -R col-bank9.a99
@@ -7,3 +6,4 @@ xas99.py -b -R col-bank11.a99
 xas99.py -b -R col-bank12.a99
 xas99.py -b -R col-bank13.a99
 xas99.py -b -R col-bank14.a99
+xas99.py -b -R col-bank15.a99

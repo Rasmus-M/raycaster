@@ -7,11 +7,12 @@ java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 
 xas99.py -b -w textures/texture-bank-0.a99
 xas99.py -b -w textures/texture-bank-1.a99
+xas99.py -b -w textures/texture-bank-2.a99
 
 copy /b bin\RAYCASTER8.bin + ^
     texture-bank-0.bin + ^
     texture-bank-1.bin + ^
-    TexGen\col-bank6.bin + ^
+    texture-bank-2.bin + ^
     TexGen\col-bank7.bin + ^
     TexGen\col-bank8.bin + ^
     TexGen\col-bank9.bin + ^
@@ -20,7 +21,7 @@ copy /b bin\RAYCASTER8.bin + ^
     TexGen\col-bank12.bin + ^
     TexGen\col-bank13.bin + ^
     TexGen\col-bank14.bin + ^
-    bin\empty.bin + ^
+    TexGen\col-bank15.bin + ^
     bin\empty-2k.bin + backgrounds\background0even.bin + ^
     bin\empty-2k.bin + backgrounds\background1even.bin + ^
     bin\empty-2k.bin + backgrounds\background2even.bin + ^
