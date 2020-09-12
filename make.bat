@@ -40,7 +40,7 @@ copy /b bin\RAYCASTER8.bin + ^
     bin\empty-2k.bin + backgrounds\background7odd.bin ^
     .\texcaster8.bin
 
-java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5 6 7 8 9 10 11 12 13 14
+java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5 6 7 8 9 10 11 12 13 14 15
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end
