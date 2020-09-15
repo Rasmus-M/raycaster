@@ -1,4 +1,4 @@
        copy "windows.a99"
-       copy "checkered.a99"
+       copy "red-tiles.a99"
        copy "stones.a99"
        copy "torch.a99"

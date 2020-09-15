@@ -664,6 +664,13 @@ draw_screen_4:
 draw_screen_5:
        ci   r5,n_rays
        jlt  draw_screen_1
+*      Test sprite drawing
+       li   r0,16                      ; Column
+       li   r1,64                      ; Row
+       li   r2,32                      ; Width
+       li   r3,64                      ; Height
+       li   r4,8                       ; Texture number
+       bl   @draw_sprite
 *      Done
        mov  @angle,@old_angle
        bl   @check_int
@@ -1132,6 +1139,89 @@ draw_objects_3:
        bl   @check_int
        .endproc
 *// draw_objects
+
+*********************************************************************
+*
+* Draw sprite
+*
+* r0: column
+* r1: row
+* r2: width
+* r3: height
+* r4: texture number
+*
+* Texture organised as:
+* Pixels in even nibble (16 column x 64 bytes = 1024 bytes)
+* Pixels in odd nibble (16 column x 64 bytes = 1024 bytes)
+*
+draw_sprite:
+       .proc
+*      Screen buffer address (r1)
+       mov  r0,r8                      ; Screen column
+       li   r7,screen_height/2         ; Divide by 2 since 2 pixels per byte
+       mpy  r7,r8                      ; Column * screen height / 2
+       a    r9,r1                      ; Add to row
+       ai   r1,screen_buffer           ; Add base address
+*      Texture address (r0)
+       mov  r4,r5                      ; Copy texture number
+       srl  r4,1                       ; Two textures per page
+       swpb r4                         ; To MSB
+       ai   r4,texture_sams_page       ; Add base SAMS page
+       mov  r4,@sams_reg_2             ; Page it in
+       li   r0,sams_window             ; Texture base address (FP 16.0)
+       andi r5,1                       ; Odd or even texture number?
+       sla  r5,11                      ; * 2048
+       a    r5,r0                      ; Add to texture base address
+*      Texture offset and increment
+       clr  r4                         ; Texture X offset FP 8.8
+       li   r5,>0080                   ; Texture X offset change per pixel FP 8.8
+       clr  r6                         ; Texture Y offset FP 8.8
+       li   r7,>0100                   ; Texture Y offset change per pixel FP 8.8
+*      Column loop
+draw_sprite_1:
+       andi r0,>f800                   ; Round texture address to whole 2K
+       mov  r4,r12                     ; Texture x offset
+       andi r12,>0f00                  ; Isolate texture column bits
+       srl  r12,2                      ; Texture column index * 64
+       soc  r12,r0                     ; Add to textture address
+       coc  @one,r8                    ; Test if screen column is even/odd
+       jeq  draw_sprite_2                 ; Jump if odd
+*      Even destination column
+       li   r9,>f000                   ; Mask for even pixel
+       andi r0,>fbff                   ; Modify texture address for even pixels
+       jmp  draw_sprite_3
+*      Odd destination column
+draw_sprite_2:
+       li   r9,>0f00                   ; Mask for odd pixel
+       ori  r0,>0400                   ; Modify texture address for odd pixels
+*      Row loop
+draw_sprite_3:
+       mov  r3,r14                     ; Set screen row counter to height
+draw_sprite_4:
+       mov  r0,r12                     ; Texture column start address
+       ab   r6,@r12lb                  ; Add offset to LSB
+       movb *r12,r13                   ; Get texture byte
+       jeq  draw_sprite_5                 ; Skip if zero
+       szcb r9,*r1                     ; Remove existing pixel from screen buffer
+       socb r13,*r1                    ; Set new pixel in screen buffer
+draw_sprite_5:
+       inc  r1                         ; Next screen buffer address
+       a    r7,r6                      ; Increment texture y offset
+       dec  r14                        ; Screen row counter
+       jne  draw_sprite_4
+       ai   r0,texture_height          ; Next texture column
+       s    r3,r1                      ; Move screen buffer address back to top of column
+       coc  @one,r8                    ; Test if screen column is even/odd
+       jne  draw_sprite_6                 ; Jump if even
+       ai   r1,screen_height           ; For odd column, move screen buffer address to next column
+draw_sprite_6:
+       a    r5,r4                      ; Increment texture x offset
+       clr  r6                         ; Clear texture y offset
+       inc  r8                         ; Next column
+       dec  r2                         ; Column counter (width)
+       jne  draw_sprite_1
+       .endproc
+*// draw_sprite
 
 *********************************************************************
 *
@@ -2138,6 +2228,7 @@ one_time_init:
 *      Copy textures to RAM
        li   r0,texture_bank_select
        li   r1,texture_sams_page
+       bl   @copy_rom_to_sams
        bl   @copy_rom_to_sams
        bl   @copy_rom_to_sams
 *      Init speech
