@@ -1205,10 +1205,14 @@ draw_sprite_4:
 *      Column loop
 draw_sprite_5:
        mov  r8,r13                     ; Screen column
+       jlt  draw_sprite_5a             ; Skip column if out of screen
+       ci   r13,screen_width-1         ; Check against right side of screen
+       jgt  draw_sprite_5a             ; Skip column if out of screen
        sla  r13,4                      ; * 16 (size of column structure)
        c    r12,@columns+column_distance(r13)  ; Compare sprite depth to wall distance
        jlt  draw_sprite_6             ; Draw if less than
 *      Skip column
+draw_sprite_5a:
        a    r3,r1
        jmp  draw_sprite_11
 *      Draw column
