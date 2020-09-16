@@ -180,10 +180,8 @@ ray_angle:
        equ  ray_count+2
 distance:
        equ  ray_angle+2
-depth_buffer_ptr:
-       equ  distance+2
 column_ptr:
-       equ  depth_buffer_ptr+2
+       equ  distance+2
 muzzle_flash:
        equ  column_ptr+2
 snd_channel_1:
@@ -336,8 +334,6 @@ cast_rays:
        .proc
        li   r0,columns
        mov  r0,@column_ptr
-       li   r0,depth_buffer
-       mov  r0,@depth_buffer_ptr
        li   r2,n_rays                  ; Number of rays to cast
        mov  r2,@ray_count              ; Init count-down
        mov  @angle,r2                  ; Player direction (even only)
@@ -351,15 +347,12 @@ cast_rays_1:
        mov  @ray_angle,r2              ; Direction
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
        mov  r2,@distance               ; Save euclidian distance
-       mov  @depth_buffer_ptr,r5
-       mov  r2,*r5+
-       mov  r5,@depth_buffer_ptr
        bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate height and color of column
        mov  @column_ptr,r5
        mov  r2,r0                      ; Distance as FP 8.8
        jne  cast_rays_2
-       li   r0,8*192                   ; Max height
+       li   r0,512                     ; Max height
        jmp  cast_rays_3
 cast_rays_2:
        clr  r0
@@ -369,6 +362,7 @@ cast_rays_3:
        mov  @column_height(r5),@column_height_old(r5)
        andi r0,>fffe                   ; Make height even
        mov  r0,@column_height(r5)
+       mov  @distance,@column_distance(r5)
        mov  r3,@column_side(r5)
        bl   @wall_color
        ai   r5,column_size
@@ -665,11 +659,12 @@ draw_screen_5:
        ci   r5,n_rays
        jlt  draw_screen_1
 *      Test sprite drawing
-       li   r0,16                      ; Column
+       li   r0,24                      ; Column
        li   r1,64                      ; Row
-       li   r2,32                      ; Width
+       li   r2,16                      ; Width
        li   r3,64                      ; Height
        li   r4,8                       ; Texture number
+       li   r5,>0100                   ; Depth
        bl   @draw_sprite
 *      Done
        mov  @angle,@old_angle
@@ -1149,18 +1144,23 @@ draw_objects_3:
 * r2: width
 * r3: height
 * r4: texture number
+* r5: depth/distance (FP 8.8)
+*
+* Modifies all registers except r3, r10, r15
 *
 * Texture organised as:
 * Pixels in even nibble (16 column x 64 bytes = 1024 bytes)
 * Pixels in odd nibble (16 column x 64 bytes = 1024 bytes)
 *
 draw_sprite:
-       .proc
+       mov  r5,r12                     ; Save depth/distance
 *      Screen buffer address (r1)
-       mov  r0,r8                      ; Screen column
-       li   r7,screen_height/2         ; Divide by 2 since 2 pixels per byte
-       mpy  r7,r8                      ; Column * screen height / 2
-       a    r9,r1                      ; Add to row
+       mov  r0,r8                      ; Save screen column
+       mov  r0,r13                     ; Screen column
+       andi r13,>003e                  ; Make even
+       li   r14,screen_height/2        ; Column size in bytes
+       mpy  r14,r13                    ; Even column * column size in bytes
+       a    r14,r1                     ; Add to row
        ai   r1,screen_buffer           ; Add base address
 *      Texture address (r0)
        mov  r4,r5                      ; Copy texture number
@@ -1172,55 +1172,90 @@ draw_sprite:
        andi r5,1                       ; Odd or even texture number?
        sla  r5,11                      ; * 2048
        a    r5,r0                      ; Add to texture base address
-*      Texture offset and increment
+*      Texture X offset (r4) and increment (r5)
        clr  r4                         ; Texture X offset FP 8.8
-       li   r5,>0080                   ; Texture X offset change per pixel FP 8.8
-       clr  r6                         ; Texture Y offset FP 8.8
-       li   r7,>0100                   ; Texture Y offset change per pixel FP 8.8
-*      Column loop
+       ci   r2,texture_width           ; Check how to calculate texture width / sprite width
+       jgt  draw_sprite_1
+       clr  r13                        ; Texture width FP 24.8
+       li   r14,texture_width*256
+       div  r2,r13                     ; Div by sprite width FP 16.0 -> increment as FP 8.8
+       jmp  draw_sprite_2
 draw_sprite_1:
+       li   r13,texture_width          ; Texture width FP 16.16
+       clr  r14
+       div  r2,r13                     ; Div sprite width FP 16.0 -> increment as FP 0.16
+       srl  r13,8                      ; Increment as FP 8.8
+draw_sprite_2:
+       mov  r13,r5                     ; Texture X offset increment per pixel FP 8.8
+*      Texture Y offset (r6) and increment (r7)
+       clr  r6                         ; Texture Y offset FP 8.8
+       ci   r3,texture_height          ; Check how to calulate texture height / sprite height
+       jgt  draw_sprite_3
+       clr  r13                        ; Texture height FP 24.8
+       li   r14,texture_height*256
+       div  r3,r13                     ; Div by sprite height FP 16.0 -> y-step as FP 8.8
+       jmp  draw_sprite_4
+draw_sprite_3:
+       li   r13,texture_height         ; Texture height FP 16.16
+       clr  r14
+       div  r3,r13                     ; Div sprite height FP 16.0 -> y-step as FP 0.16
+       srl  r13,8                      ; y-step as FP 8.8
+draw_sprite_4:
+       mov  r13,r7                     ; Texture X offset increment per pixel FP 8.8
+*      Column loop
+draw_sprite_5:
+       mov  r8,r13                     ; Screen column
+       sla  r13,4                      ; * 16 (size of column structure)
+       c    r12,@columns+column_distance(r13)  ; Compare sprite depth to wall distance
+       jlt  draw_sprite_6             ; Draw if less than
+*      Skip column
+       a    r3,r1
+       jmp  draw_sprite_11
+*      Draw column
+draw_sprite_6:
        andi r0,>f800                   ; Round texture address to whole 2K
-       mov  r4,r12                     ; Texture x offset
-       andi r12,>0f00                  ; Isolate texture column bits
-       srl  r12,2                      ; Texture column index * 64
-       soc  r12,r0                     ; Add to textture address
+       mov  r4,r13                     ; Texture x offset
+       andi r13,>0f00                  ; Isolate texture column bits
+       srl  r13,2                      ; Texture column index * 64
+       soc  r13,r0                     ; Add to texture address
        coc  @one,r8                    ; Test if screen column is even/odd
-       jeq  draw_sprite_2                 ; Jump if odd
+       jeq  draw_sprite_7              ; Jump if odd
 *      Even destination column
        li   r9,>f000                   ; Mask for even pixel
        andi r0,>fbff                   ; Modify texture address for even pixels
-       jmp  draw_sprite_3
+       jmp  draw_sprite_8
 *      Odd destination column
-draw_sprite_2:
+draw_sprite_7:
        li   r9,>0f00                   ; Mask for odd pixel
        ori  r0,>0400                   ; Modify texture address for odd pixels
 *      Row loop
-draw_sprite_3:
+draw_sprite_8:
        mov  r3,r14                     ; Set screen row counter to height
-draw_sprite_4:
-       mov  r0,r12                     ; Texture column start address
-       ab   r6,@r12lb                  ; Add offset to LSB
-       movb *r12,r13                   ; Get texture byte
-       jeq  draw_sprite_5                 ; Skip if zero
+draw_sprite_9:
+       mov  r0,r13                     ; Texture column start address
+       ab   r6,@r13lb                  ; Add offset to LSB
+       movb *r13,r13                   ; Get texture byte
+       jeq  draw_sprite_10              ; Skip if zero
        szcb r9,*r1                     ; Remove existing pixel from screen buffer
        socb r13,*r1                    ; Set new pixel in screen buffer
-draw_sprite_5:
+draw_sprite_10:
        inc  r1                         ; Next screen buffer address
        a    r7,r6                      ; Increment texture y offset
        dec  r14                        ; Screen row counter
-       jne  draw_sprite_4
-       ai   r0,texture_height          ; Next texture column
+       jne  draw_sprite_9              ; Next row
+draw_sprite_11:
        s    r3,r1                      ; Move screen buffer address back to top of column
        coc  @one,r8                    ; Test if screen column is even/odd
-       jne  draw_sprite_6                 ; Jump if even
+       jne  draw_sprite_12             ; Jump if even
        ai   r1,screen_height           ; For odd column, move screen buffer address to next column
-draw_sprite_6:
+draw_sprite_12:
        a    r5,r4                      ; Increment texture x offset
        clr  r6                         ; Clear texture y offset
        inc  r8                         ; Next column
        dec  r2                         ; Column counter (width)
-       jne  draw_sprite_1
-       .endproc
+       jne  draw_sprite_5              ; Next column
+*      Return
+       rt
 *// draw_sprite
 
 *********************************************************************
@@ -2666,25 +2701,24 @@ byte_00:
 byte_01:
        byte >01
 
-depth_buffer:
-       bss  n_rays*2
-
 column_height:
        equ  0
-column_color:
+column_distance:
        equ  2
-column_side:
+column_color:
        equ  4
-column_hit_x:
+column_side:
        equ  6
-column_height_old:
+column_hit_x:
        equ  8
-column_color_old:
+column_height_old:
        equ  10
-column_skip:
+column_color_old:
        equ  12
-column_size:
+column_skip:
        equ  14
+column_size:
+       equ  16
 
 columns:
        bss  n_rays*column_size
