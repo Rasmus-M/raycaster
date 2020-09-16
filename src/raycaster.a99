@@ -69,7 +69,7 @@ max_object_distance:
 max_bullet_distance:
        equ  16
 max_object_width:
-       equ  8
+       equ  32
 max_objects:
        equ  16
 n_sprite_patterns:
@@ -238,10 +238,10 @@ main_loop:
 ;       bl   @vsync
        bl   @set_vdp_regs
        abs  @update_screen
-       jeq  no_screen_update
+;       jeq  no_screen_update
        bl   @cast_rays
        bl   @draw_screen
-;       bl   @draw_objects
+       bl   @draw_objects
        bl   @upload_screen
        clr  @update_screen
        jmp   after_screen_update
@@ -250,7 +250,7 @@ no_screen_update:
        bl   @vsync
 after_screen_update:
        bl   @user_input
-;       bl   @move_enemies
+       bl   @move_enemies
        bl   @move_bullets
        bl   @draw_bullets
        bl   @bullet_collisions
@@ -658,14 +658,6 @@ draw_screen_4:
 draw_screen_5:
        ci   r5,n_rays
        jlt  draw_screen_1
-*      Test sprite drawing
-       li   r0,24                      ; Column
-       li   r1,64                      ; Row
-       li   r2,16                      ; Width
-       li   r3,64                      ; Height
-       li   r4,8                       ; Texture number
-       li   r5,>0100                   ; Depth
-       bl   @draw_sprite
 *      Done
        mov  @angle,@old_angle
        bl   @check_int
@@ -1114,8 +1106,10 @@ draw_objects_1:
        jhe  draw_objects_2
 *      Look up angle
        bl   @atan2
-       sb   @angle+1,r6                ; Subtract player angle
-       sra  r6,8                       ; Extend to 16-bit
+       srl  r6,7
+       s    @angle,r6
+;       sb   @angle+1,r6                ; Subtract player angle
+;       sra  r6,8                       ; Extend to 16-bit
        ci   r6,-n_rays-max_object_width
        jlt  draw_objects_2
        ci   r6,n_rays+max_object_width-1
@@ -1126,6 +1120,7 @@ draw_objects_1:
        jgt  draw_objects_2
 *      Object is within view and distance
        bl   @draw_object
+       jmp  draw_objects_3             ; Only draw one object
 draw_objects_2:
        ai   r4,object_size
        dec  r5
@@ -1134,6 +1129,57 @@ draw_objects_3:
        bl   @check_int
        .endproc
 *// draw_objects
+
+*********************************************************************
+*
+* Draw object
+*
+* r4: object to draw
+* r6: angle relative to player (2 units per column)
+* r7: distance FP 8.8 (last 6 bits are zero)
+*
+draw_object:
+       .proc
+*      Width, Height
+       clr  r2
+       li   r3,screen_height*256       ; 192 as FP 24.8
+       div  r7,r2                      ; Size (FP 16.0) = 192 / distance
+       mov  r2,r3                      ; Height = size
+       srl  r2,2                       ; Width = size / 4
+*      Column
+       li   r0,screen_width
+       a    r6,r0
+       s    r2,r0
+       sra  r0,1
+*      Row
+       li   r1,screen_height           ; Screen height
+       s    r3,r1                      ; Minus sprite height
+       srl  r1,1                       ; Divided by 2
+*      Texture
+       mov  @object_texture(r4),r4     ; Texture number
+*      Distance
+       mov  r7,r5                      ; Depth/distance
+*      Draw sprite
+       bl   @draw_sprite
+
+;*      Speak first time
+;       mov  @object_speech(r4),r1
+;       jeq  draw_object_11
+;       bl   @say_phrase
+;       clr  @object_speech(r4)
+;*      Muzzle flash
+;draw_object_11:
+;       abs  @object_fire(r4)
+;       jeq  draw_object_10
+;       mov  r6,r0
+;       dec  r0
+;       sla  r0,3
+;       ori  r0,>6000
+;       mov  r0,@muzzle_flash
+;       clr  @object_fire(r4)
+;draw_object_10:
+       .endproc
+*// draw_object
 
 *********************************************************************
 *
@@ -1157,9 +1203,16 @@ draw_sprite:
 *      Screen buffer address (r1)
        mov  r0,r8                      ; Save screen column
        mov  r0,r13                     ; Screen column
+       jgt  draw_sprite_0a
+       neg  r13
+draw_sprite_0a:
        andi r13,>003e                  ; Make even
        li   r14,screen_height/2        ; Column size in bytes
        mpy  r14,r13                    ; Even column * column size in bytes
+       mov  r0,r0
+       jgt  draw_sprite_0b
+       neg  r14
+draw_sprite_0b:
        a    r14,r1                     ; Add to row
        ai   r1,screen_buffer           ; Add base address
 *      Texture address (r0)
@@ -1210,13 +1263,14 @@ draw_sprite_5:
        jgt  draw_sprite_5a             ; Skip column if out of screen
        sla  r13,4                      ; * 16 (size of column structure)
        c    r12,@columns+column_distance(r13)  ; Compare sprite depth to wall distance
-       jlt  draw_sprite_6             ; Draw if less than
+       jlt  draw_sprite_6              ; Draw if less than
 *      Skip column
 draw_sprite_5a:
        a    r3,r1
        jmp  draw_sprite_11
 *      Draw column
 draw_sprite_6:
+       mov  @full_redraw_height,@columns+column_height(r13)
        andi r0,>f800                   ; Round texture address to whole 2K
        mov  r4,r13                     ; Texture x offset
        andi r13,>0f00                  ; Isolate texture column bits
@@ -1260,114 +1314,9 @@ draw_sprite_12:
        jne  draw_sprite_5              ; Next column
 *      Return
        rt
+full_redraw_height:
+       data screen_height
 *// draw_sprite
-
-*********************************************************************
-*
-* Draw object
-*
-* r4: object to draw
-* r6: angle relative to player (2 units per column)
-* r7: distance FP 8.8 (last 6 bits are zero)
-*
-draw_object:
-       .proc
-;*      Find map to use
-;       mov  r7,r8                      ; Distance FP 8.8
-;       srl  r8,5                       ; To FP 14.2 + word offset
-;       a    @object_depth_table(r4),r8 ; Add depth table base for object
-;       mov  *r8,r8                     ; Map address
-;       jeq  draw_object_10             ; Zero means don't draw
-;       mov  *r8+,r1                    ; Width
-;       mov  *r8+,r2                    ; Height
-;       inct r8                         ; Skip size word
-;*      Screen address
-;       mov  @dbl_buffer_flag,r0        ; Which buffer to update?
-;       andi r0,>0001
-;       sla  r0,10                      ; x 1024
-;       ai   r0,nametb+(screen_width*(screen_height/2)) ; Middle screen row
-;       clr  r3                         ; For distance
-;       movb r7,@r3lb                   ; Distance integer
-;       sla  r3,1                       ; To word offset
-;       mov  @floor_offset_from_center(r3),r3            ; Floor offset from center
-;       s    r2,r3                      ; Minus object height
-;       sla  r3,5                       ; * 32
-;       a    r3,r0                      ; Add row offset
-;*      Find start column to render
-;       ai   r6,screen_width            ; Center screen column * 2
-;       s    r1,r6                      ; Leftmost screen column * 2
-;       mov  r6,r12                     ; Index to depth buffer
-;       sra  r6,1                       ; Leftmost screen column
-;       mov  r1,r3                      ; Column counter
-;       mov  r1,r13                     ; Adjusted width
-;draw_object_5:
-;       mov  r6,r6                      ; Check if out of screen
-;       jlt  draw_object_6              ; Jump if out of screen
-;       c    r7,@depth_buffer(r12)      ; Check if behind wall
-;       jhe  draw_object_6              ; Jump if at or behind wall
-;       jmp  draw_object_7              ; Column OK
-;draw_object_6:
-;       inc  r6                         ; Next column
-;       inct r12                        ; Next depth buffer index
-;       dec  r13                        ; Decrease width
-;       inc  r8                         ; Increase map address
-;       dec  r3                         ; Decrease columns left
-;       jne  draw_object_5              ; Loop until no more columns
-;       jmp  draw_object_10             ; No columns to render
-;draw_object_7:
-;       a    r6,r0                      ; Add start column to screen address
-;*      Find end column to render
-;draw_object_8:
-;       ci   r6,screen_width-1          ; Check if out of screen
-;       jgt  draw_object_9              ; Jump if out of screen
-;       c    r7,@depth_buffer(r12)      ; Check if behind wall
-;       jhe  draw_object_9              ; Jump if at or behind wall
-;       inc  r6                         ; Next column
-;       inct r12                        ; Next depth buffer index
-;       dec  r3                         ; Decrease columns left
-;       jne  draw_object_8              ; Loop until no more columns
-;draw_object_9:
-;       s    r3,r13                     ; Substract remaining columns from width
-;       jeq  draw_object_10             ; No columns to render
-;*      Draw to VDP
-;draw_object_1:
-;       bl   @vwad                      ; Set VDP address
-;       mov  r13,r3                     ; Column counter
-;draw_object_2:
-;       movb *r8+,r9                    ; Get map byte
-;       jeq  draw_object_3              ; Zero is transparent
-;       movb r9,*r15                    ; Write to VDP
-;       dec  r3                         ; Decrease colum counter
-;       jne  draw_object_2              ; Loop until done
-;       jmp  draw_object_4              ; To next row
-;draw_object_3:
-;       movb @vdprd,r9                  ; Increment VDP address
-;       dec  r3                         ; Decrease colum counter
-;       jne  draw_object_2              ; Loop until done
-;draw_object_4:
-;       a    r1,r8                      ; Add width to map address
-;       s    r13,r8                     ; Substract adjusted width
-;       ai   r0,screen_width            ; One VDP row down
-;       dec  r2                         ; Decrease row counter
-;       jne  draw_object_1              ; Loop until done
-;*      Speak first time
-;       mov  @object_speech(r4),r1
-;       jeq  draw_object_11
-;       bl   @say_phrase
-;       clr  @object_speech(r4)
-;*      Muzzle flash
-;draw_object_11:
-;       abs  @object_fire(r4)
-;       jeq  draw_object_10
-;       mov  r6,r0
-;       dec  r0
-;       sla  r0,3
-;       ori  r0,>6000
-;       mov  r0,@muzzle_flash
-;       clr  @object_fire(r4)
-;draw_object_10:
-       .endproc
-*// draw_object
 
 *********************************************************************
 *
@@ -2138,7 +2087,7 @@ create_object_1:
        movb @byte_00,@object_y+1(r6)
        mov  r2,r3
        sla  r3,1
-       mov  @object_depth_tables(r3),@object_depth_table(r6)
+       mov  @object_texture_table(r3),@object_texture(r6)
        mov  @object_speech_table(r3),@object_speech(r6)
        mov  @object_health_table(r3),@object_health(r6)
        clr  @object_fire(r6)
@@ -2738,7 +2687,7 @@ object_x:
        equ  4
 object_y:
        equ  6
-object_depth_table:
+object_texture:
        equ  8
 object_speech:
        equ  10
@@ -2770,11 +2719,11 @@ n_objects:
 objects:
        bss  object_size*16
 
-object_depth_tables:
+object_texture_table:
        data 0
-       data 0                          ; Guard
-       data 0                          ; Boss
-       data 0                          ; Chest
+       data 8                          ; Guard
+       data 9                          ; Boss
+       data 10                          ; Chest
 object_speech_table:
        data 0
        data hand_up                    ; Guard
