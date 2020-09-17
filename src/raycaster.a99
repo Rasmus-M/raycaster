@@ -1909,7 +1909,10 @@ atan2:
 *      Q1
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_1
-       mov  r1,r2                      ;             int a = lookup(y / x);
+       jlt  !
+       li   r6,>2000
+       rt
+!      mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2                      ; Result in r2
        srl  r2,8
        sla  r2,1
@@ -1929,7 +1932,10 @@ atan2_2:                               ;     } else {
        neg  r0                         ;         x = -x;
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_3
-       mov  r1,r2                      ;             int a = lookup(y / x);
+       jlt  !
+       li   r6,>6000
+       rt
+!      mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
        sla  r2,1
@@ -1945,7 +1951,7 @@ atan2_3:                               ;         } else {
        mov  @atan_table(r2),r6
        ai   r6,>4000                   ;                 result = 0x40 + a;
        rt                              ;         }
-                                       ;     }
+       ;     }
 atan2_4:                               ; } else {
        neg  r1                         ;     y = -y;
        mov  r0,r0                      ;     if (x >= 0) {
@@ -1953,7 +1959,10 @@ atan2_4:                               ; } else {
 *      Q4
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_5
-       mov  r1,r2                      ;             int a = lookup(y / x);
+       jlt  !
+       li   r6,>e000
+       rt
+!       mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
        sla  r2,1
@@ -1973,6 +1982,10 @@ atan2_6:                               ;     } else {
        neg  r0                         ;         x = -x;
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_7
+       jlt  !
+       li   r6,>a000
+       rt
+!
        mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
@@ -1989,8 +2002,8 @@ atan2_7:                               ;         } else {
        neg  r6                         ;             result = 0xc0 - a;
        ai   r6,>c000
        rt                              ;         }
-                                       ;     }
-                                       ; }
+       ;     }
+       ; }
 *// atan2
 
 *********************************************************************
