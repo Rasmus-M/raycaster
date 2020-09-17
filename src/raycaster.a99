@@ -233,25 +233,20 @@ restart:
        bl   @init_level
 main_loop:
        clr  @interrupt_count
-;       bl   @vsync
+       bl   @vsync
        bl   @set_vdp_regs
        bl   @cast_rays
        bl   @draw_screen
        bl   @draw_objects
        bl   @upload_screen
-       jmp   after_screen_update
-no_screen_update:
-       bl   @vsync
-       bl   @vsync
-after_screen_update:
        bl   @user_input
        bl   @move_enemies
        bl   @move_bullets
        bl   @draw_bullets
        bl   @bullet_collisions
-;       bl   @object_collisions
-;       bl   @update_health_bar
-;       bl   @display_score
+       bl   @object_collisions
+       bl   @update_health_bar
+;      bl   @display_score
        bl   @speak
        mov  @status,r0
        jeq  main_loop
@@ -1160,23 +1155,22 @@ draw_object_2:
        mov  r7,r5                      ; Depth/distance
 *      Draw sprite
        bl   @draw_sprite
-
 ;*      Speak first time
 ;       mov  @object_speech(r4),r1
-;       jeq  draw_object_11
+;       jeq  draw_object_10
 ;       bl   @say_phrase
 ;       clr  @object_speech(r4)
 ;*      Muzzle flash
-;draw_object_11:
+;draw_object_10:
 ;       abs  @object_fire(r4)
-;       jeq  draw_object_10
+;       jeq  draw_object_11
 ;       mov  r6,r0
 ;       dec  r0
 ;       sla  r0,3
 ;       ori  r0,>6000
 ;       mov  r0,@muzzle_flash
 ;       clr  @object_fire(r4)
-;draw_object_10:
+draw_object_11:
        .endproc
 *// draw_object
 
@@ -1269,8 +1263,9 @@ draw_sprite_5a:
        jmp  draw_sprite_11
 *      Draw column
 draw_sprite_6:
-       mov  @full_redraw_height,@columns+column_height(r13)
-       clr  @columns+column_skip(r13)
+;       mov  r12,@columns+column_distance(r13)    ; Record new distance for column
+       mov  @full_redraw_height,@columns+column_height(r13)    ; Redraw floor/ceiling next frame
+       clr  @columns+column_skip(r13)  ; Upload column this frame
        andi r0,>f800                   ; Round texture address to whole 2K
        mov  r4,r13                     ; Texture x offset
        andi r13,>0f00                  ; Isolate texture column bits
@@ -2606,18 +2601,45 @@ atan2_7:                               ;         } else {
 *
 * Euclidian distance
 *
-* Calculates the length of the vector with coordinates (x,y) = (r0,r1)
+* Calculates the length of the vector with coordinates
+* (x,y) = (r0,r1) in FP 8.8 format.
 * Result in r7 as FP 8.8
 *
+* 0fdd
+* 0fdd
+
 euclidian_distance:
        abs  r0
-       ai   r0,>0080                   ; x += 0.5
-       srl  r0,8                       ; round(x)
        abs  r1
-       ai   r1,>0080                   ; y += 0.5
-       srl  r1,8                       ; round(y)
+       ci   r0,>01ff
+       jgt  euclidian_distance_1
+       ci   r1,>01ff
+       jgt  euclidian_distance_1
+       srl  r0,4                       ; To FP 12.4
+       andi r1,>01f0                   ; y * 16
+       a    r0,r1                      ; + x
+       clr  r7
+       movb @distance_table(r1),r7     ; Get distance as FP 6.2
+       srl  r7,6                       ; To FP 8.8
+       rt
+euclidian_distance_1:
+       ci   r0,>03ff
+       jgt  euclidian_distance_2
+       ci   r1,>03ff
+       jgt  euclidian_distance_2
+       srl  r0,6                       ; To FP 14.2
+       srl  r1,6                       ; To FP 14.2
+       sla  r1,2                       ; y * 16
+       a    r0,r1                      ; + x
+       clr  r7
+       movb @distance_table(r1),r7     ; Get distance as FP 6.2
+       srl  r7,4                       ; To FP 8.8
+       rt
+euclidian_distance_2:
+       srl  r0,8                       ; To FP 16.0
+       srl  r1,8                       ; To FP 16.0
        sla  r1,4                       ; y * 16
-       a    r0,r1                      ; +x
+       a    r0,r1                      ; + x
        clr  r7
        movb @distance_table(r1),r7     ; Get distance as FP 6.2
        srl  r7,2                       ; To FP 8.8
@@ -2640,9 +2662,9 @@ euclidian_distance:
 * Data
 *
 start_x:
-       data >0780
+       data >2000
 start_y:
-       data >1c80
+       data >2000
 start_dir:
        data 256
 start_dx:
