@@ -245,7 +245,7 @@ main_loop:
        bl   @draw_bullets
        bl   @bullet_collisions
        bl   @object_collisions
-       bl   @update_health_bar
+;      bl   @update_health_bar
 ;      bl   @display_score
        bl   @speak
        mov  @status,r0
@@ -1597,13 +1597,13 @@ move_enemies_8:
        mov  r0,@object_x(r4)
        mov  r1,@object_y(r4)
 *      Fire
-move_enemies_9:
-       bl   @rand
-       ci   r0,>f800
-       jl   move_enemies_2
-       seto @object_fire(r4)
-       dec  @health
-       bl   @play_shot_2
+;move_enemies_9:
+;       bl   @rand
+;       ci   r0,>f800
+;       jl   move_enemies_2
+;       seto @object_fire(r4)
+;       dec  @health
+;       bl   @play_shot_2
 *      Next object
 move_enemies_2:
        ai   r4,object_size
@@ -2073,9 +2073,9 @@ create_object_1:
        mov  @object_init_type(r4),r2
        mov  r2,@object_type(r6)
        movb @object_init_x(r4),@object_x(r6)
-       movb @byte_00,@object_x+1(r6)
+       movb @byte_80,@object_x+1(r6)
        movb @object_init_y(r4),@object_y(r6)
-       movb @byte_00,@object_y+1(r6)
+       movb @byte_80,@object_y+1(r6)
        mov  r2,r3
        sla  r3,1
        mov  @object_texture_table(r3),@object_texture(r6)
@@ -2605,18 +2605,16 @@ atan2_7:                               ;         } else {
 * (x,y) = (r0,r1) in FP 8.8 format.
 * Result in r7 as FP 8.8
 *
-* 0fdd
-* 0fdd
-
 euclidian_distance:
        abs  r0
        abs  r1
-       ci   r0,>01ff
+       ci   r0,>00ff
        jgt  euclidian_distance_1
-       ci   r1,>01ff
+       ci   r1,>00ff
        jgt  euclidian_distance_1
        srl  r0,4                       ; To FP 12.4
-       andi r1,>01f0                   ; y * 16
+       srl  r1,4                       ; To FP 12.4
+       sla  r1,4                       ; y * 16
        a    r0,r1                      ; + x
        clr  r7
        movb @distance_table(r1),r7     ; Get distance as FP 6.2
@@ -2629,7 +2627,7 @@ euclidian_distance_1:
        jgt  euclidian_distance_2
        srl  r0,6                       ; To FP 14.2
        srl  r1,6                       ; To FP 14.2
-       sla  r1,2                       ; y * 16
+       sla  r1,4                       ; y * 16
        a    r0,r1                      ; + x
        clr  r7
        movb @distance_table(r1),r7     ; Get distance as FP 6.2
@@ -2662,9 +2660,9 @@ euclidian_distance_2:
 * Data
 *
 start_x:
-       data >2000
+       data >0780
 start_y:
-       data >2000
+       data >1c80
 start_dir:
        data 256
 start_dx:
@@ -2683,6 +2681,10 @@ byte_00:
        byte >00
 byte_01:
        byte >01
+byte_80:
+       byte >80
+byte_xx:
+       byte >00
 
 column_height:
        equ  0
@@ -2753,7 +2755,7 @@ object_texture_table:
        data 0
        data 8                          ; Guard
        data 9                          ; Boss
-       data 10                          ; Chest
+       data 10                         ; Chest
 object_speech_table:
        data 0
        data hand_up                    ; Guard
