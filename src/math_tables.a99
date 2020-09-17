@@ -119,7 +119,7 @@ distance_table:
        byte >3c,>3c,>3d,>3d,>3e,>3f,>41,>42,>44,>46,>48,>4a,>4d,>4f,>52,>55
 
 **
-* 257 FP 8.8 values of atan(x) for 0 >= x <= 1 in units of 1/256 circle.
+* 257 FP 8.8 values of atan(x) for 0 >= x < 1 in units of 1/256 circle.
 * Values from >0000->2000 corresponding to 0-45 degrees.
 *
 atan_table:
@@ -155,4 +155,3 @@ atan_table:
        data >1dff, >1e15, >1e2c, >1e42, >1e58, >1e6e, >1e84, >1e99
        data >1eaf, >1ec5, >1eda, >1ef0, >1f05, >1f1b, >1f30, >1f45
        data >1f5a, >1f6f, >1f84, >1f99, >1fad, >1fc2, >1fd7, >1feb
-       data >2000
