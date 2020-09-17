@@ -172,10 +172,8 @@ dy:
        equ  dx+2
 angle:                                 ; Player direction 0 - 2 * n_directions (even only)
        equ  dy+2
-update_screen:
-       equ  angle+2
 ray_count:
-       equ  update_screen+2
+       equ  angle+2
 ray_angle:
        equ  ray_count+2
 distance:
@@ -237,13 +235,10 @@ main_loop:
        clr  @interrupt_count
 ;       bl   @vsync
        bl   @set_vdp_regs
-       abs  @update_screen
-;       jeq  no_screen_update
        bl   @cast_rays
        bl   @draw_screen
        bl   @draw_objects
        bl   @upload_screen
-       clr  @update_screen
        jmp   after_screen_update
 no_screen_update:
        bl   @vsync
@@ -1108,8 +1103,6 @@ draw_objects_1:
        bl   @atan2
        srl  r6,7
        s    @angle,r6
-;       sb   @angle+1,r6                ; Subtract player angle
-;       sra  r6,8                       ; Extend to 16-bit
        ci   r6,-n_rays-max_object_width
        jlt  draw_objects_2
        ci   r6,n_rays+max_object_width-1
@@ -1141,9 +1134,15 @@ draw_objects_3:
 draw_object:
        .proc
 *      Width, Height
+       ci   r7,>0100
+       jgt  draw_object_1
+       li   r2,screen_height
+       jmp  draw_object_2
+draw_object_1:
        clr  r2
        li   r3,screen_height*256       ; 192 as FP 24.8
        div  r7,r2                      ; Size (FP 16.0) = 192 / distance
+draw_object_2:
        mov  r2,r3                      ; Height = size
        srl  r2,2                       ; Width = size / 4
 *      Column
@@ -1271,6 +1270,7 @@ draw_sprite_5a:
 *      Draw column
 draw_sprite_6:
        mov  @full_redraw_height,@columns+column_height(r13)
+       clr  @columns+column_skip(r13)
        andi r0,>f800                   ; Round texture address to whole 2K
        mov  r4,r13                     ; Texture x offset
        andi r13,>0f00                  ; Isolate texture column bits
@@ -1450,7 +1450,6 @@ user_input_1:
        ai   r0,dirs
        mov  *r0+,@dx
        mov  *r0,@dy
-       seto @update_screen
        jmp  user_input_3
 user_input_2:
 *      Right
@@ -1464,7 +1463,6 @@ user_input_2:
        ai   r0,dirs
        mov  *r0+,@dx
        mov  *r0,@dy
-       seto @update_screen
 user_input_3:
 *      Down
        tb   3
@@ -1497,7 +1495,6 @@ user_input_9:
        jeq  user_input_8               ; If not set we cannot move
 *      Move
 user_input_5:
-       seto @update_screen
        mov  r0,@x
        mov  r1,@y
        mov  @sal_no,r0
@@ -2008,7 +2005,6 @@ open_door_2:
        dec  r9
        jne  open_door_1
 open_door_3:
-       seto @update_screen
        .endproc
 *// open_door
 
@@ -2144,7 +2140,6 @@ init_level:
        clr  @score
        seto @old_score
        clr  @status
-       seto @update_screen
 *      Init columns
        li   r0,screen_height
        li   r1,columns
@@ -2510,7 +2505,10 @@ atan2:
 *      Q1
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_1
-       mov  r1,r2                      ;             int a = lookup(y / x);
+       jlt  !
+       li   r6,>2000
+       rt
+!      mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2                      ; Result in r2
        srl  r2,8
        sla  r2,1
@@ -2530,7 +2528,10 @@ atan2_2:                               ;     } else {
        neg  r0                         ;         x = -x;
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_3
-       mov  r1,r2                      ;             int a = lookup(y / x);
+       jlt  !
+       li   r6,>6000
+       rt
+!      mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
        sla  r2,1
@@ -2554,7 +2555,10 @@ atan2_4:                               ; } else {
 *      Q4
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_5
-       mov  r1,r2                      ;             int a = lookup(y / x);
+       jlt  !
+       li   r6,>e000
+       rt
+!       mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
        sla  r2,1
@@ -2574,6 +2578,10 @@ atan2_6:                               ;     } else {
        neg  r0                         ;         x = -x;
        c    r1,r0                      ;         if (y <= x) {
        jgt  atan2_7
+       jlt  !
+       li   r6,>a000
+       rt
+!
        mov  r1,r2                      ;             int a = lookup(y / x);
        div  r0,r2
        srl  r2,8
