@@ -850,6 +850,8 @@ your_time_is_up:
        data sp_your,sp_time,sp_is,sp_up,0
 green_things_near:
        data sp_uhoh,sp_green,sp_things,sp_near,0
+eye_can_see_you:
+       data sp_eye,sp_can,sp_see,sp_you,0
 start_of_level:
        data sp_uhoh,sp_how,sp_did,sp_i,sp_get,sp_here,0
 
