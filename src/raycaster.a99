@@ -2660,9 +2660,9 @@ euclidian_distance_2:
 * Data
 *
 start_x:
-       data >0780
+       data >2080
 start_y:
-       data >1c80
+       data >2080
 start_dir:
        data 256
 start_dx:
