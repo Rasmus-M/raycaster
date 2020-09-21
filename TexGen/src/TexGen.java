@@ -75,7 +75,9 @@ public class TexGen {
         StringBuilder s = new StringBuilder();
         s.append(even ? "even" : "odd").append("_col_").append(Integer.toHexString(height)).append(":\n");
         if (height > screenHeight) {
-            int offset = (int) Math.floor(((double) textureHeight / height) * (height - screenHeight) / 2);
+            double dy = (double) textureHeight / height;
+            // Adding 0.06 prevents some kind of rounding error
+            int offset = (int) Math.floor(0.06 + dy * (height - screenHeight) / 2);
             s.append(indent).append("ai   r1,").append(offset).append("\n");
         }
         String instr = even ? "movb" : "socb";

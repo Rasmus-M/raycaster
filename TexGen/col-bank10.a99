@@ -2924,7 +2924,7 @@ even_col_190:
        movb *r1,*r3+
        rt
 even_col_198:
-       ai   r1,16
+       ai   r1,17
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
