@@ -85,8 +85,8 @@ even_col_ae:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -196,14 +196,6 @@ even_col_b0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -264,6 +256,14 @@ even_col_b0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -622,20 +622,6 @@ even_col_b4:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -669,6 +655,20 @@ even_col_b4:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -805,8 +805,8 @@ even_col_b6:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -921,6 +921,12 @@ even_col_b8:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -940,12 +946,6 @@ even_col_b8:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -1177,8 +1177,8 @@ even_col_ba:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -1366,8 +1366,8 @@ even_col_bc:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -1660,6 +1660,61 @@ even_col_c0:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1715,61 +1770,6 @@ even_col_c0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -1855,35 +1855,6 @@ even_col_c8:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -2041,6 +2012,35 @@ even_col_c8:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        rt
 even_col_d0:
@@ -2050,17 +2050,6 @@ even_col_d0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -2072,6 +2061,9 @@ even_col_d0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
@@ -2111,9 +2103,6 @@ even_col_d0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
@@ -2236,6 +2225,17 @@ even_col_d0:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        rt
 even_col_d8:
@@ -2244,28 +2244,6 @@ even_col_d8:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -2295,6 +2273,16 @@ even_col_d8:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
@@ -2431,6 +2419,18 @@ even_col_d8:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        rt
 even_col_e0:
@@ -2440,6 +2440,18 @@ even_col_e0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -2478,23 +2490,6 @@ even_col_e0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
@@ -2626,6 +2621,11 @@ even_col_e0:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        rt
 even_col_e8:
@@ -2635,15 +2635,6 @@ even_col_e8:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -2676,8 +2667,8 @@ even_col_e8:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
@@ -2821,6 +2812,15 @@ even_col_e8:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        rt
 even_col_f0:
@@ -2830,15 +2830,6 @@ even_col_f0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -2882,6 +2873,10 @@ even_col_f0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
@@ -3015,6 +3010,11 @@ even_col_f0:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        rt
@@ -3026,30 +3026,6 @@ even_col_f8:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -3203,6 +3179,30 @@ even_col_f8:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
@@ -3415,46 +3415,6 @@ even_col_108:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -3601,6 +3561,46 @@ even_col_108:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        rt
 even_col_110:
@@ -3611,16 +3611,6 @@ even_col_110:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -3795,6 +3785,16 @@ even_col_110:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        rt
@@ -3812,28 +3812,6 @@ even_col_118:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -3989,6 +3967,28 @@ even_col_118:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+

@@ -10,81 +10,6 @@ even_col_1c8:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -189,6 +114,81 @@ even_col_1c8:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -204,33 +204,6 @@ even_col_1d0:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -346,6 +319,42 @@ even_col_1d0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -377,64 +386,11 @@ even_col_1d0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1,*r3+
        rt
 even_col_1d8:
-       ai   r1,18
+       ai   r1,19
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -568,6 +524,50 @@ even_col_1d8:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -598,7 +598,6 @@ even_col_1e0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -773,6 +772,7 @@ even_col_1e0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -792,9 +792,6 @@ even_col_1e8:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -971,6 +968,9 @@ even_col_1e8:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        rt
 even_col_1f0:
@@ -985,26 +985,6 @@ even_col_1f0:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1121,14 +1101,6 @@ even_col_1f0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1164,6 +1136,34 @@ even_col_1f0:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1179,28 +1179,6 @@ even_col_1f8:
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1361,6 +1339,28 @@ even_col_1f8:
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
        movb *r1,*r3+
        rt
 even_col_200:
@@ -1574,48 +1574,6 @@ even_col_208:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1747,6 +1705,48 @@ even_col_208:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1768,50 +1768,6 @@ even_col_210:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1+,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
-       movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
@@ -1927,6 +1883,14 @@ even_col_210:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
        movb *r1,*r3+
@@ -1945,6 +1909,42 @@ even_col_210:
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1+,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
+       movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+
        rt
@@ -1966,13 +1966,13 @@ odd_col_4:
        rt
 odd_col_6:
        socb *r1,*r3+
+       ai   r1,10
+       socb *r1,*r3+
        ai   r1,11
        socb *r1,*r3+
        ai   r1,11
        socb *r1,*r3+
        ai   r1,10
-       socb *r1,*r3+
-       ai   r1,11
        socb *r1,*r3+
        ai   r1,11
        socb *r1,*r3+
@@ -1996,6 +1996,10 @@ odd_col_8:
        rt
 odd_col_a:
        socb *r1,*r3+
+       ai   r1,6
+       socb *r1,*r3+
+       ai   r1,6
+       socb *r1,*r3+
        ai   r1,7
        socb *r1,*r3+
        ai   r1,6
@@ -2003,10 +2007,6 @@ odd_col_a:
        ai   r1,7
        socb *r1,*r3+
        ai   r1,6
-       socb *r1,*r3+
-       ai   r1,6
-       socb *r1,*r3+
-       ai   r1,7
        socb *r1,*r3+
        ai   r1,6
        socb *r1,*r3+
@@ -2017,8 +2017,6 @@ odd_col_a:
        rt
 odd_col_c:
        socb *r1,*r3+
-       ai   r1,6
-       socb *r1,*r3+
        ai   r1,5
        socb *r1,*r3+
        ai   r1,5
@@ -2029,20 +2027,22 @@ odd_col_c:
        socb *r1,*r3+
        ai   r1,5
        socb *r1,*r3+
+       ai   r1,5
+       socb *r1,*r3+
        ai   r1,6
        socb *r1,*r3+
        ai   r1,5
        socb *r1,*r3+
-       ai   r1,5
-       socb *r1,*r3+
        ai   r1,6
+       socb *r1,*r3+
+       ai   r1,5
        socb *r1,*r3+
        ai   r1,5
        socb *r1,*r3+
        rt
 odd_col_e:
        socb *r1,*r3+
-       ai   r1,5
+       ai   r1,4
        socb *r1,*r3+
        ai   r1,5
        socb *r1,*r3+
@@ -2103,10 +2103,6 @@ odd_col_10:
        socb *r1,*r3+
        rt
 odd_col_12:
-       socb *r1,*r3+
-       ai   r1,4
-       socb *r1,*r3+
-       ai   r1,4
        socb *r1+,*r3+
        inct r1
        socb *r1,*r3+
@@ -2123,6 +2119,10 @@ odd_col_12:
        inct r1
        socb *r1,*r3+
        ai   r1,4
+       socb *r1,*r3+
+       ai   r1,4
+       socb *r1+,*r3+
+       inct r1
        socb *r1,*r3+
        ai   r1,4
        socb *r1+,*r3+
@@ -2140,8 +2140,6 @@ odd_col_12:
        socb *r1,*r3+
        rt
 odd_col_14:
-       socb *r1,*r3+
-       ai   r1,4
        socb *r1+,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2160,18 +2158,20 @@ odd_col_14:
        inct r1
        socb *r1+,*r3+
        inct r1
-       socb *r1,*r3+
-       ai   r1,4
-       socb *r1+,*r3+
-       inct r1
-       socb *r1+,*r3+
-       inct r1
-       socb *r1+,*r3+
-       inct r1
        socb *r1+,*r3+
        inct r1
        socb *r1,*r3+
        ai   r1,4
+       socb *r1+,*r3+
+       inct r1
+       socb *r1+,*r3+
+       inct r1
+       socb *r1+,*r3+
+       inct r1
+       socb *r1,*r3+
+       ai   r1,4
+       socb *r1+,*r3+
+       inct r1
        socb *r1+,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2181,6 +2181,8 @@ odd_col_14:
        socb *r1,*r3+
        rt
 odd_col_16:
+       socb *r1,*r3+
+       inct r1
        socb *r1+,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2202,8 +2204,6 @@ odd_col_16:
        socb *r1+,*r3+
        inct r1
        socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
        inct r1
        socb *r1+,*r3+
        inct r1
@@ -2226,6 +2226,20 @@ odd_col_16:
        socb *r1,*r3+
        rt
 odd_col_18:
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       inct r1
+       socb *r1+,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       inct r1
        socb *r1+,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2237,20 +2251,6 @@ odd_col_18:
        socb *r1+,*r3+
        inct r1
        socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       inct r1
-       socb *r1+,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       inct r1
-       socb *r1+,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
        inct r1
        socb *r1+,*r3+
        inct r1
@@ -2275,7 +2275,7 @@ odd_col_18:
        socb *r1,*r3+
        rt
 odd_col_1a:
-       socb *r1+,*r3+
+       socb *r1,*r3+
        inct r1
        socb *r1,*r3+
        inct r1
@@ -2328,7 +2328,7 @@ odd_col_1a:
        socb *r1,*r3+
        rt
 odd_col_1c:
-       socb *r1+,*r3+
+       socb *r1,*r3+
        inct r1
        socb *r1,*r3+
        inct r1
@@ -2385,7 +2385,7 @@ odd_col_1c:
        socb *r1,*r3+
        rt
 odd_col_1e:
-       socb *r1+,*r3+
+       socb *r1,*r3+
        inct r1
        socb *r1,*r3+
        inct r1
@@ -2511,22 +2511,6 @@ odd_col_20:
        socb *r1,*r3+
        rt
 odd_col_22:
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
@@ -2545,6 +2529,21 @@ odd_col_22:
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1,*r3+
@@ -2577,14 +2576,6 @@ odd_col_22:
        socb *r1,*r3+
        rt
 odd_col_24:
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
@@ -2627,6 +2618,13 @@ odd_col_24:
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1,*r3+
@@ -2643,8 +2641,7 @@ odd_col_24:
        socb *r1,*r3+
        rt
 odd_col_26:
-       socb *r1,*r3+
-       inct r1
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1,*r3+
@@ -2709,6 +2706,26 @@ odd_col_26:
        socb *r1,*r3+
        rt
 odd_col_28:
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1,*r3+
@@ -2746,27 +2763,6 @@ odd_col_28:
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2775,10 +2771,6 @@ odd_col_28:
        socb *r1,*r3+
        rt
 odd_col_2a:
-       socb *r1,*r3+
-       inct r1
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
@@ -2809,6 +2801,9 @@ odd_col_2a:
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2841,6 +2836,8 @@ odd_col_2a:
        socb *r1,*r3+
        rt
 odd_col_2c:
+       socb *r1+,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2856,9 +2853,6 @@ odd_col_2c:
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
@@ -2907,8 +2901,7 @@ odd_col_2c:
        socb *r1,*r3+
        rt
 odd_col_2e:
-       socb *r1,*r3+
-       inct r1
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
@@ -2973,6 +2966,44 @@ odd_col_2e:
        socb *r1,*r3+
        rt
 odd_col_30:
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
@@ -2996,60 +3027,11 @@ odd_col_30:
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1,*r3+
        rt
 odd_col_32:
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3070,9 +3052,18 @@ odd_col_32:
        inct r1
        socb *r1+,*r3+
        socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3105,6 +3096,21 @@ odd_col_32:
        socb *r1,*r3+
        rt
 odd_col_34:
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
@@ -3136,25 +3142,9 @@ odd_col_34:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3171,8 +3161,7 @@ odd_col_34:
        socb *r1,*r3+
        rt
 odd_col_36:
-       socb *r1,*r3+
-       inct r1
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3237,16 +3226,7 @@ odd_col_36:
        socb *r1,*r3+
        rt
 odd_col_38:
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3284,7 +3264,6 @@ odd_col_38:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
        socb *r1+,*r3+
@@ -3295,6 +3274,15 @@ odd_col_38:
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3303,8 +3291,7 @@ odd_col_38:
        socb *r1,*r3+
        rt
 odd_col_3a:
-       socb *r1,*r3+
-       inct r1
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3369,24 +3356,7 @@ odd_col_3a:
        socb *r1,*r3+
        rt
 odd_col_3c:
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       inct r1
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3419,6 +3389,22 @@ odd_col_3c:
        socb *r1+,*r3+
        socb *r1,*r3+
        inct r1
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       inct r1
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3435,8 +3421,7 @@ odd_col_3c:
        socb *r1,*r3+
        rt
 odd_col_3e:
-       socb *r1,*r3+
-       inct r1
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3599,8 +3584,8 @@ odd_col_42:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3685,8 +3670,8 @@ odd_col_44:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3821,7 +3806,6 @@ odd_col_48:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3841,6 +3825,7 @@ odd_col_48:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3887,8 +3872,8 @@ odd_col_4a:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -3945,6 +3930,18 @@ odd_col_4c:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -3954,18 +3951,6 @@ odd_col_4c:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -4005,6 +3990,6 @@ odd_col_4c:
        socb *r1,*r3+
        rt
 
-       bss  100
+       bss  134
 
        data -1

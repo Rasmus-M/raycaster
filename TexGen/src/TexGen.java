@@ -1,6 +1,11 @@
 import java.io.FileWriter;
 import java.io.IOException;
 
+// Change:
+// even_col_1d8: 18->19
+// odd_col_198: 16->17
+
+
 public class TexGen {
 
     static final int screenHeight = 192;
@@ -31,7 +36,7 @@ public class TexGen {
         boolean even = true;
         for (int run = 0; run < 2; run++) {
             for (int height : heights) {
-                int[] sequence = generateSequence(height);
+                int[] sequence = generateSequenceFloat(height);
                 StringBuilder assembly = generateAssembly(height, sequence, even);
                 int size = getAssemblySize(height, sequence);
                 if (bankOffset + size > 0x2000) {
@@ -70,7 +75,7 @@ public class TexGen {
         StringBuilder s = new StringBuilder();
         s.append(even ? "even" : "odd").append("_col_").append(Integer.toHexString(height)).append(":\n");
         if (height > screenHeight) {
-            int offset = (int) (((double) textureHeight / height) * (height - screenHeight) / 2);
+            int offset = (int) Math.floor(((double) textureHeight / height) * (height - screenHeight) / 2);
             s.append(indent).append("ai   r1,").append(offset).append("\n");
         }
         String instr = even ? "movb" : "socb";
@@ -116,12 +121,34 @@ public class TexGen {
         return size;
     }
 
+    int[] generateSequenceFloat(int height) {
+        int adjustedHeight = Math.min(height, screenHeight);
+        int[] result = new int[adjustedHeight];
+        double dy = (double) textureHeight / height;
+        double y = height <= screenHeight ? 0 : dy * (height - screenHeight) / 2;
+        double oldY = y;
+        for (int i = 0; i < adjustedHeight - 1; i++) {
+            y += dy;
+            if (y - oldY >= 1.0) {
+                result[i] = (int) Math.floor(y - oldY);
+                oldY = Math.floor(y);
+            } else {
+                result[i] = 0;
+            }
+        }
+        return result;
+    }
+
     int[] generateSequence(int height) {
-        int[] result = new int[Math.min(height, screenHeight)];
+        int adjustedHeight = Math.min(height, screenHeight);
+        int[] result = new int[adjustedHeight];
+        int n = 0;
+        int dy;
         if (height >= textureHeight) {
-            int n = 0;
-            int dy;
-            for (int i = 0; i < Math.min(height, screenHeight) - 1; i++) {
+            if (height > screenHeight)  {
+                n = height - ((height - screenHeight) / 2) % height;
+            }
+            for (int i = 0; i < adjustedHeight - 1; i++) {
                 n += textureHeight;
                 if (n >= height) {
                     dy = 1;
@@ -132,9 +159,7 @@ public class TexGen {
                 result[i] = dy;
             }
         } else {
-            int n = 0;
-            int dy;
-            for (int i = 0; i < height - 1; i++) {
+            for (int i = 0; i < adjustedHeight - 1; i++) {
                 dy = 0;
                 while (n < textureHeight) {
                     n += height;

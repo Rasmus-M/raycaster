@@ -88,6 +88,11 @@ odd_col_50:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -123,7 +128,6 @@ odd_col_50:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -151,10 +155,6 @@ odd_col_50:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -307,8 +307,8 @@ odd_col_54:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -440,10 +440,6 @@ odd_col_58:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -497,6 +493,10 @@ odd_col_58:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -623,16 +623,6 @@ odd_col_5c:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -648,6 +638,16 @@ odd_col_5c:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -796,6 +796,59 @@ odd_col_60:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -832,59 +885,6 @@ odd_col_60:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        rt
@@ -1207,6 +1207,32 @@ odd_col_68:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -1246,14 +1272,6 @@ odd_col_68:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -1269,24 +1287,6 @@ odd_col_68:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -1353,8 +1353,8 @@ odd_col_6a:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -1435,11 +1435,6 @@ odd_col_6c:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -1464,6 +1459,11 @@ odd_col_6c:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -1637,6 +1637,34 @@ odd_col_70:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -1679,11 +1707,6 @@ odd_col_70:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -1714,29 +1737,6 @@ odd_col_70:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -1889,15 +1889,6 @@ odd_col_74:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -1927,6 +1918,15 @@ odd_col_74:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -1947,8 +1947,8 @@ odd_col_74:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -2037,8 +2037,8 @@ odd_col_76:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -2113,6 +2113,36 @@ odd_col_78:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -2158,19 +2188,6 @@ odd_col_78:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -2188,23 +2205,6 @@ odd_col_78:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -2375,35 +2375,6 @@ odd_col_7c:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1+,*r3+
@@ -2439,6 +2410,35 @@ odd_col_7c:
        socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -2533,8 +2533,8 @@ odd_col_7e:
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -2793,8 +2793,8 @@ odd_col_82:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -2893,8 +2893,6 @@ odd_col_84:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -2961,6 +2959,8 @@ odd_col_84:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3181,8 +3181,6 @@ odd_col_88:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3251,6 +3249,8 @@ odd_col_88:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3337,8 +3337,8 @@ odd_col_8a:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3478,19 +3478,8 @@ odd_col_8c:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3513,8 +3502,19 @@ odd_col_8c:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
+       socb *r1,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3621,8 +3621,8 @@ odd_col_8e:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
-       socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3739,8 +3739,6 @@ odd_col_90:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
-       socb *r1+,*r3+
-       socb *r1,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
@@ -3831,6 +3829,8 @@ odd_col_90:
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+
+       socb *r1,*r3+
+       socb *r1+,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
        socb *r1,*r3+

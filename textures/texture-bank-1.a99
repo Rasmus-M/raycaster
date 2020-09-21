@@ -1,4 +1,5 @@
        copy "windows.a99"
        copy "red-tiles.a99"
        copy "stones.a99"
-       copy "torch.a99"
+;      copy "torch.a99"
+       copy "stripes.a99"
