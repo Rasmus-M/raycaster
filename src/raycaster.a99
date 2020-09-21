@@ -79,7 +79,7 @@ n_sprite_patterns:
 n_fixed_sprites:
        equ  16
 guard_speed:
-       equ  >0008
+       equ  >0010
 bullet_speed_z:
        equ  ->0c00
 bullet_accl_z:
@@ -1061,9 +1061,9 @@ prepare_texture:
        sla  r0,1                       ; * 2
        jmp  prepare_texture_3
 prepare_texture_1:
-       ci   r0,512
+       ci   r0,528
        jle   prepare_texture_2
-       li   r0,512
+       li   r0,528
 prepare_texture_2:
        ai   r0,-192
        srl  r0,3                       ; / 8
@@ -1198,6 +1198,8 @@ draw_object_11:
 * Pixels in odd nibble (16 column x 64 bytes = 1024 bytes)
 *
 draw_sprite:
+       .push r15
+       li   r15,r13lb
        mov  r5,r12                     ; Save depth/distance
 *      Screen buffer address (r1)
        mov  r0,r8                      ; Save screen column
@@ -1292,11 +1294,15 @@ draw_sprite_8:
        mov  r3,r14                     ; Set screen row counter to height
 draw_sprite_9:
        mov  r0,r13                     ; Texture column start address
-       ab   r6,@r13lb                  ; Add offset to LSB
+       ab   r6,*r15                    ; Add offset to LSB
        movb *r13,r13                   ; Get texture byte
-       jeq  draw_sprite_10              ; Skip if zero
+       jeq  draw_sprite_10             ; Skip if zero
        szcb r9,*r1                     ; Remove existing pixel from screen buffer
-       socb r13,*r1                    ; Set new pixel in screen buffer
+       socb r13,*r1+                   ; Set new pixel in screen buffer
+       a    r7,r6                      ; Increment texture y offset
+       dec  r14                        ; Screen row counter
+       jne  draw_sprite_9              ; Next row
+       jmp  draw_sprite_11
 draw_sprite_10:
        inc  r1                         ; Next screen buffer address
        a    r7,r6                      ; Increment texture y offset
@@ -1314,6 +1320,7 @@ draw_sprite_12:
        dec  r2                         ; Column counter (width)
        jne  draw_sprite_5              ; Next column
 *      Return
+       .pop r15
        rt
 full_redraw_height:
        data screen_height
