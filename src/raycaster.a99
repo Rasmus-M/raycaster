@@ -248,6 +248,7 @@ main_loop:
        jmp  main_loop_2
 main_loop_1:
        bl   @skip_cast_rays
+       bl   @vsync
 main_loop_2:
        bl   @draw_screen
        bl   @draw_objects
@@ -366,7 +367,7 @@ cast_rays_3:
        andi r0,>fffe                   ; Make height even
        mov  r0,@column_height(r5)
        mov  @distance,@column_distance(r5)
-       mov  r3,@column_side(r5)
+       mov  @distance,@column_distance_copy(r5)
        bl   @wall_color
        ai   r5,column_size
        mov  r5,@column_ptr
@@ -392,12 +393,7 @@ skip_cast_rays_1:
        mov  @column_height(r4),@column_height_old(r4)
        szc  @full_redraw_bit,@column_height(r4)
        mov  @column_color(r4),@column_color_old(r4)
-*      Hack - restore the column distance
-       mov  @column_height(r4),r2      ; height as FP 16.0
-       clr  r0
-       li   r1,screen_height*256       ; 192 as FP 24.8
-       div  r2,r0                      ; distance = 192 / height, as FP 8.8
-       mov  r0,@column_distance(r4)
+       mov  @column_distance_copy(r4),@column_distance(r4)
 *      Next column
        ai   r4,column_size
        dec  r5                         ; Count down
@@ -1307,11 +1303,7 @@ draw_sprite_5a:
 *      Draw column
 draw_sprite_6:
        mov  r12,@columns+column_distance(r13)    ; Record new distance for column
-*       mov  @full_redraw_height,@columns+column_height(r13)    ; Redraw floor/ceiling next frame
-                                                               ; Next frame this is copied to old, and replaced by real value
-                                                               ; Because real value will be smaller, all floor/ceiling will be redrawn.
-                                                               ; TODO: Doesn't work unless replaced by real value next frame
-       soc  @full_redraw_bit,@columns+column_height(r13)        ; Redraw floor/ceiling next frame
+       soc  @full_redraw_bit,@columns+column_height(r13)    ; Redraw floor/ceiling next frame
        clr  @columns+column_skip(r13)  ; Upload column this frame
        andi r0,>f800                   ; Round texture address to whole 2K
        mov  r4,r13                     ; Texture x offset
@@ -2750,7 +2742,7 @@ column_distance:
        equ  2
 column_color:
        equ  4
-column_side:
+column_distance_copy:
        equ  6
 column_hit_x:
        equ  8
