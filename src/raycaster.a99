@@ -2710,13 +2710,13 @@ euclidian_distance_2:
 * Data
 *
 start_x:
-       data >2080
+       data >0180
 start_y:
-       data >1980
+       data >0280
 start_dir:
-       data 256
+       data 0
 start_dx:
-       data ->0100
+       data >0100
 start_dy:
        data >0000
 space:
