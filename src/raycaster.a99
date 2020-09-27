@@ -101,7 +101,7 @@ initial_objects:
 initial_health:
        equ  63
 texture_bank_select:
-       equ  >6008
+       equ  >6040
 texture_sams_page:                     ; 16
        equ  >1000
 texture_width:                         ; Width in fat pixels
@@ -434,6 +434,7 @@ wall_color:
        mov  r4,r4                      ; Color
        jne  wall_color_0               ; Jump if wall
        li   r4,15                      ; No wall color
+       seto @column_hit_x(r5)          ; No texture
        jmp  wall_color_6               ; Return
 wall_color_0:
        ci   r4,first_texture_index     ; Check for texture
@@ -443,8 +444,8 @@ wall_color_0:
        dect r4                         ; Shift to zero base
        a    r3,r4                      ; Different color on x/y facing walls
        sla  r4,1
-       mov  @wall_colors(r4),r4
-       seto @column_hit_x(r5)
+       mov  @wall_colors(r4),r4        ; Color
+       seto @column_hit_x(r5)          ; No texture
        jmp  wall_color_6               ; Return
 *      Texture
 wall_color_1:
@@ -941,7 +942,7 @@ draw_odd_column_3:
        jlt  draw_odd_column_4          ; No texture if -1
 *      Wall textured
        bl   @prepare_texture           ; Calculate texture address
-       ai   r1,1024                    ; Add offset to odd column texture
+       ai   r1,2048                    ; Add offset to odd column texture
        ai   r0,odd_col_vector_0
 *      Cartridge bank for drawing code
        mov  *r0+,r2
@@ -1065,26 +1066,21 @@ draw_odd_pixels_4:
 *
 * r0: Texture hit x (FP 8.8)
 * r1: Texture number
-* r2: Screen height of wall
 * r4: Column structure
 *
 * On return r0 contains the address of the routine to draw the column,
 * and r1 contains the texture source address,
 
 prepare_texture:
-*      Texture address
-       srl  r0,4                       ; Column of texture
-       sla  r0,6                       ; * 64
-       mov  r1,r12                     ; Save the texture number
-       andi r1,1                       ; 2 textures per SAMS page
-       sla  r1,11                      ; texture number * 2048
-       ai   r1,textures                ; Base texture source address
-       a    r0,r1                      ; Base texture column source address
 *      Select SAMS bank
-       andi r12,>00fe
-       sla  r12,7
-       ai   r12,texture_sams_page
-       mov  r12,@sams_reg_2
+       swpb r1
+       ai   r1,texture_sams_page
+       mov  r1,@sams_reg_2
+*      Texture address
+       mov  r0,r1
+       srl  r1,3                       ; Column of texture
+       sla  r1,6                       ; * 64
+       ai   r1,textures                ; Base texture column source address
 *      Column drawing vector offset
        mov  @column_height(r4),r0
        ci   r0,screen_height
@@ -2253,9 +2249,11 @@ one_time_init:
 *      Copy textures to RAM
        li   r0,texture_bank_select
        li   r1,texture_sams_page
+       li   r6,8
+one_time_init_0:
        bl   @copy_rom_to_sams
-       bl   @copy_rom_to_sams
-       bl   @copy_rom_to_sams
+       dec  r6
+       jne  one_time_init_0
 *      Init speech
        bl   @init_speech
 *      Patterns
@@ -2800,9 +2798,9 @@ objects:
 
 object_texture_table:
        data 0
-       data 4                          ; Guard
-       data 9                          ; Boss
-       data 10                         ; Chest
+       data 12                         ; Guard
+       data 13                         ; Boss
+       data 14                         ; Chest
 object_speech_table:
        data 0
        data eye_can_see_you            ; Guard
