@@ -97,7 +97,7 @@ char_0:
 first_texture_index:
        equ  10
 initial_objects:
-       equ  5
+       equ  1
 initial_health:
        equ  63
 texture_bank_select:
@@ -1575,8 +1575,8 @@ move_enemies_1:
        mov  *r4,r0
        jeq  move_enemies_2
        mov  @object_type(r4),r0
-       ci   r0,object_type_chest
-       jeq  move_enemies_2
+       ci   r0,object_type_guard
+       jne  move_enemies_2
 *      x
        mov  @object_x(r4),r0
        mov  @x,r2
@@ -1747,7 +1747,7 @@ bullet_collisions:
        bl   @open_door
        seto @cast_required
        jmp  bullet_collisions_1
-*      Check for enemy collison
+*      Check for object collison
 bullet_collisions_2:
        li   r4,objects
        mov  @n_objects,r5
@@ -1756,8 +1756,8 @@ bullet_collisions_3:
        mov  *r4,r2
        jeq  bullet_collisions_4
        mov  @object_type(r4),r2
-       ci   r2,object_type_chest
-       jeq  bullet_collisions_4
+       ci   r2,object_type_guard
+       jne  bullet_collisions_4
        mov  @object_x(r4),r2
        s    r0,r2
        abs  r2
@@ -2023,6 +2023,7 @@ open_door:
        movb @space,*r2
        li   r8,doors
        mov  @n_doors,r9
+       jeq  open_door_3
 open_door_1:
        cb   r0,@door_x(r8)
        jne  open_door_2
@@ -2191,6 +2192,7 @@ init_level_0:
 *      Init doors
        li   r4,doors
        mov  @n_doors,r5
+       jeq  init_level_1a
 init_level_1:
        clr  r0
        movb @door_x(r4),r0
@@ -2201,15 +2203,18 @@ init_level_1:
        ai   r4,door_size
        dec  r5
        jne  init_level_1
+init_level_1a:
 *      Init objects
        bl   @reset_objects
        li   r4,object_init_data
        li   r5,initial_objects
+       jeq  init_level_2a
 init_level_2:
        bl   @create_object
        ai   r4,object_init_size
        dec  r5
        jne  init_level_2
+init_level_2a:
 *      Speak
        li   r1,start_of_level
        bl   @say_phrase
@@ -2719,7 +2724,7 @@ space:
 door:
        byte 13
 goal:
-       byte 14
+       byte 1
 checkered:
        byte 15
 byte_00:
@@ -2781,6 +2786,8 @@ object_type_boss:
        equ  2
 object_type_chest:
        equ  3
+object_type_barrel:
+       equ  4
 
 object_init_type:
        equ  0
@@ -2799,18 +2806,21 @@ objects:
 object_texture_table:
        data 0
        data 12                         ; Guard
-       data 13                         ; Boss
-       data 14                         ; Chest
+       data 12                         ; Boss
+       data 13                         ; Chest
+       data 14                         ; Barrel
 object_speech_table:
        data 0
        data eye_can_see_you            ; Guard
        data your_time_is_up            ; Boss
        data come_and_get_me            ; Chest
+       data 0                          ; Barrel
 object_health_table:
        data 0
        data 1                          ; Guard
        data 5                          ; Boss
        data 0                          ; Chest
+       data 0                          ; Barrel
 
 bullet_active:
        data 0

@@ -119,12 +119,12 @@ door_21:
        data 0
 
 n_doors:
-       data (n_doors - door_1) / door_size
+       data 0                          ; (n_doors - door_1) / door_size
 
 object_init_data:
-       data object_type_guard
-       byte >0c                      ; x
-       byte >19                      ; y
+       data object_type_barrel
+       byte >11                      ; x
+       byte >02                      ; y
        data object_type_guard
        byte >10                      ; x
        byte >0c                      ; y
