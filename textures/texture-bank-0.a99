@@ -1,4 +1,2 @@
-       copy "brick.a99"
-       copy "green.a99"
-       copy "shield.a99"
-       copy "door-2.a99"
+       copy "tile.a99"
+       copy "pipe.a99"
