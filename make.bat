@@ -5,14 +5,14 @@ xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
 
 java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 
-xas99.py -b -w textures/texture-bank-0.a99
-xas99.py -b -w textures/texture-bank-1.a99
-xas99.py -b -w textures/texture-bank-2.a99
-xas99.py -b -w textures/texture-bank-3.a99
-xas99.py -b -w textures/texture-bank-4.a99
-xas99.py -b -w textures/texture-bank-5.a99
-xas99.py -b -w textures/texture-bank-6.a99
-xas99.py -b -w textures/texture-bank-7.a99
+xas99.py -b -w textures/texture-bank-0.a99 -o bin/texture-bank-0.bin
+xas99.py -b -w textures/texture-bank-1.a99 -o bin/texture-bank-1.bin
+xas99.py -b -w textures/texture-bank-2.a99 -o bin/texture-bank-2.bin
+xas99.py -b -w textures/texture-bank-3.a99 -o bin/texture-bank-3.bin
+xas99.py -b -w textures/texture-bank-4.a99 -o bin/texture-bank-4.bin
+xas99.py -b -w textures/texture-bank-5.a99 -o bin/texture-bank-5.bin
+xas99.py -b -w textures/texture-bank-6.a99 -o bin/texture-bank-6.bin
+xas99.py -b -w textures/texture-bank-7.a99 -o bin/texture-bank-7.bin
 
 copy /b bin\RAYCASTER8.bin + ^
     bin\empty.bin + ^
@@ -43,14 +43,14 @@ copy /b bin\RAYCASTER8.bin + ^
     bin\empty-2k.bin + backgrounds\background5odd.bin + ^
     bin\empty-2k.bin + backgrounds\background6odd.bin + ^
     bin\empty-2k.bin + backgrounds\background7odd.bin + ^
-    texture-bank-0.bin + ^
-    texture-bank-1.bin + ^
-    texture-bank-2.bin + ^
-    texture-bank-3.bin + ^
-    texture-bank-4.bin + ^
-    texture-bank-5.bin + ^
-    texture-bank-6.bin + ^
-    texture-bank-7.bin + ^
+    bin\texture-bank-0.bin + ^
+    bin\texture-bank-1.bin + ^
+    bin\texture-bank-2.bin + ^
+    bin\texture-bank-3.bin + ^
+    bin\texture-bank-4.bin + ^
+    bin\texture-bank-5.bin + ^
+    bin\texture-bank-6.bin + ^
+    bin\texture-bank-7.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
