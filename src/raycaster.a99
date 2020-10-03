@@ -569,6 +569,9 @@ cast_ray_6:
 *      Cast the ray
        li   r2,max_steps               ; Step counter
        bl   @cast_ray_loop_pad
+*      Update visible map
+       socb @byte_80,*r12
+       szcb @byte_80,r13
 *      Coordinates from map address (maybe not required)
 ;       ai   r12,-map
 ;       movb @r12lb,r0
@@ -1741,6 +1744,7 @@ bullet_collisions:
        mov  @bullet_y,r1
        bl   @get_map_address
        movb *r2,r3
+       szcb @byte_80,r3
        jeq  bullet_collisions_2
        cb   r3,@door
        jne  bullet_collisions_1
@@ -1933,6 +1937,7 @@ display_map_6:
 *      Bit loop
 display_map_8:
        movb *r0+,r1                    ; Get map byte
+       andi r1,>8000
        jeq  display_map_5              ; Don't set map bit if zero
        soc  r6,r2                      ; Set bit
 display_map_5:
@@ -1978,6 +1983,9 @@ display_map_2:
        li   r1,>f000
        li   r2,64*8
        bl   @vsmw
+*      Upload screen
+       seto @angle_diff
+       bl   @upload_screen
        .endproc
 map_x:
        byte 96-8
@@ -2061,6 +2069,7 @@ get_map_value:
        srl  r2,2                       ; 2-log2(map_width)
        socb r0,@r2lb
        movb @map(r2),r2
+       szcb @byte_80,r2
        rt
 *// get_map_value
 
@@ -2309,7 +2318,8 @@ one_time_init_3:
        movb r5,*r15
        movb *r1+,*r15
        movb *r1+,*r15
-       movb *r1+,*r15
+;       movb *r1+,*r15
+       clr  *r15
        dec  r2
        jne  one_time_init_2
        ai   r0,>80
