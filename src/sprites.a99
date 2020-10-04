@@ -1,22 +1,62 @@
-sal:
-       byte >04,>08,>50,>08            ; health bar
+sal_health:
+       byte >04,>08,>50,>08            ; Health bar
        byte >04,>18,>54,>0a
        byte >04,>28,>58,>0b
        byte >04,>38,>5c,>03
-       byte >90,>60,>00,gun_color
-       byte >90,>70,>04,gun_color
-       byte >90,>80,>08,gun_color
-       byte >90,>90,>0c,gun_color
-       byte >A0,>60,>10,gun_color
-       byte >A0,>70,>14,gun_color
-       byte >A0,>80,>18,gun_color
-       byte >A0,>90,>1c,gun_color
-       byte >B0,>60,>20,gun_color
-       byte >B0,>70,>24,gun_color
-       byte >B0,>80,>28,gun_color
-       byte >B0,>90,>2c,gun_color
-       byte >C0,>60,>30,gun_color
-       byte >C0,>70,>34,gun_color
-       byte >C0,>80,>38,gun_color
-       byte >C0,>90,>3c,gun_color
-       byte >d0,>00
+sal_compass:
+*      East
+       byte 158,104,16,13              ; Compass
+       byte 155,120,4,15
+       byte 158,136,20,13
+       byte 175,102,0,15
+       byte 175,120,24,13
+       byte 175,138,8,15
+*      South-east
+       byte 159,104,4,15               ; Compass
+       byte 159,120,28,13
+       byte 159,136,8,15
+       byte 175,104,32,13
+       byte 175,120,40,13
+       byte 175,136,36,13
+*      South
+       byte 158,104,16,13              ; Compass
+       byte 155,120,8,15
+       byte 158,136,20,13
+       byte 175,102,4,15
+       byte 175,120,24,13
+       byte 175,138,12,15
+*      South-west
+       byte 159,104,8,15               ; Compass
+       byte 159,120,28,13
+       byte 159,136,12,15
+       byte 175,104,32,13
+       byte 175,120,40,13
+       byte 175,136,36,13
+*      West
+       byte 158,104,16,13              ; Compass
+       byte 155,120,12,15
+       byte 158,136,20,13
+       byte 175,102,8,15
+       byte 175,120,24,13
+       byte 175,138,0,15
+*      North-west
+       byte 159,104,12,15              ; Compass
+       byte 159,120,28,13
+       byte 159,136,0,15
+       byte 175,104,32,13
+       byte 175,120,40,13
+       byte 175,136,36,13
+*      North
+       byte 158,104,16,13              ; Compass
+       byte 155,120,0,15
+       byte 158,136,20,13
+       byte 175,100,12,15
+       byte 175,120,24,13
+       byte 175,140,4,15
+*      North-east
+       byte 159,104,0,15               ; Compass
+       byte 159,120,28,13
+       byte 159,136,4,15
+       byte 175,102,32,13
+       byte 175,120,40,13
+       byte 175,138,36,13

@@ -79,7 +79,7 @@ max_objects:
 n_sprite_patterns:
        equ  25
 n_fixed_sprites:
-       equ  16
+       equ  10
 guard_speed:
        equ  >0010
 bullet_speed_z:
@@ -156,10 +156,8 @@ rand_no:
        equ  interrupt_count+2
 sal_no:
        equ  rand_no+2
-sal_no_inc:
-       equ  sal_no+2
 score:
-       equ  sal_no_inc+2
+       equ  sal_no+2
 old_score:
        equ  score+2
 health:
@@ -1482,9 +1480,12 @@ user_input_1:
        andi r0,angle_mask
        mov  r0,@angle
        srl  r0,4
+       mov  r0,r1
        ai   r0,dirs
        mov  *r0+,@dx
        mov  *r0,@dy
+       srl  r1,2
+       mov  r1,@sal_no
        seto @cast_required
        jmp  user_input_3
 user_input_2:
@@ -1496,9 +1497,12 @@ user_input_2:
        andi r0,angle_mask
        mov  r0,@angle
        srl  r0,4
+       mov  r0,r1
        ai   r0,dirs
        mov  *r0+,@dx
        mov  *r0,@dy
+       srl  r1,2
+       mov  r1,@sal_no
        seto @cast_required
 user_input_3:
 *      Down
@@ -1535,22 +1539,6 @@ user_input_5:
        mov  r0,@x
        mov  r1,@y
        seto @cast_required
-       mov  @sal_no,r0
-       mov  @sal_no_inc,r1
-       jlt  user_input_6
-       ci   r0,7
-       jlt  user_input_7
-       neg  r1
-       mov  r1,@sal_no_inc
-       jmp  user_input_7
-user_input_6:
-       ci   r0,0
-       jgt  user_input_7
-       neg  r1
-       mov  r1,@sal_no_inc
-user_input_7:
-       a    r1,r0
-       mov  r0,@sal_no
 user_input_8:
        bl   @check_int
        .endproc
@@ -2304,29 +2292,23 @@ one_time_init_5:
 *      Sprite attribute tables
        li   r0,spratb
        li   r3,8
-       li   r4,>ff00
+       li   r4,sal_compass
 one_time_init_1:
        bl   @vwad
-       li   r2,n_fixed_sprites
-       li   r1,sal
+       li   r2,4*4
+       li   r1,sal_health
 one_time_init_2:
-       movb *r1+,r5
-       ci   r2,n_fixed_sprites-4
-       jgt  one_time_init_3
-       ab   r4,r5
-one_time_init_3:
-       movb r5,*r15
        movb *r1+,*r15
-       movb *r1+,*r15
-;       movb *r1+,*r15
-       clr  *r15
        dec  r2
        jne  one_time_init_2
+       li   r2,(n_fixed_sprites-4)*4
+one_time_init_3:
+       movb *r4+,*r15
+       dec  r2
+       jne  one_time_init_3
        ai   r0,>80
-       ai   r4,>0100
        dec  r3
        jne  one_time_init_1
-       inc  @sal_no_inc
        .endproc
 *// one_time_init
 
