@@ -96,8 +96,6 @@ char_0:
        equ  >30
 first_texture_index:
        equ  10
-initial_objects:
-       equ  1
 initial_health:
        equ  63
 texture_bank_select:
@@ -2026,7 +2024,7 @@ open_door_1:
        cb   r1,@door_y(r8)
        jne  open_door_2
        mov  @door_object_inits(r8),r4
-       mov  @door_n_objects(r8),r5
+       mov  *r4+,r5
        jeq  open_door_3
 open_door_4:
        bl   @create_object
@@ -2204,7 +2202,7 @@ init_level_1a:
 *      Init objects
        bl   @reset_objects
        li   r4,object_init_data
-       li   r5,initial_objects
+       mov  *r4+,r5
        jeq  init_level_2a
 init_level_2:
        bl   @create_object

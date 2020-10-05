@@ -1,9 +1,9 @@
-xas99.py -b -R col-bank7.a99
-xas99.py -b -R col-bank8.a99
-xas99.py -b -R col-bank9.a99
-xas99.py -b -R col-bank10.a99
-xas99.py -b -R col-bank11.a99
-xas99.py -b -R col-bank12.a99
-xas99.py -b -R col-bank13.a99
-xas99.py -b -R col-bank14.a99
-xas99.py -b -R col-bank15.a99
+xas99.py -b -R col-bank7.a99 -o ../bin/col-bank-7.bin
+xas99.py -b -R col-bank8.a99 -o ../bin/col-bank-8.bin
+xas99.py -b -R col-bank9.a99 -o ../bin/col-bank-9.bin
+xas99.py -b -R col-bank10.a99 -o ../bin/col-bank-10.bin
+xas99.py -b -R col-bank11.a99 -o ../bin/col-bank-11.bin
+xas99.py -b -R col-bank12.a99 -o ../bin/col-bank-12.bin
+xas99.py -b -R col-bank13.a99 -o ../bin/col-bank-13.bin
+xas99.py -b -R col-bank14.a99 -o ../bin/col-bank-14.bin
+xas99.py -b -R col-bank15.a99 -o ../bin/col-bank-15.bin

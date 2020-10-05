@@ -5,28 +5,27 @@ xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
 
 java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 
-xas99.py -b -w textures/texture-bank-0.a99 -o bin/texture-bank-0.bin
-xas99.py -b -w textures/texture-bank-1.a99 -o bin/texture-bank-1.bin
-xas99.py -b -w textures/texture-bank-2.a99 -o bin/texture-bank-2.bin
-xas99.py -b -w textures/texture-bank-3.a99 -o bin/texture-bank-3.bin
-xas99.py -b -w textures/texture-bank-4.a99 -o bin/texture-bank-4.bin
-xas99.py -b -w textures/texture-bank-5.a99 -o bin/texture-bank-5.bin
-xas99.py -b -w textures/texture-bank-6.a99 -o bin/texture-bank-6.bin
-xas99.py -b -w textures/texture-bank-7.a99 -o bin/texture-bank-7.bin
+cd TexGen
+rem call make.bat
+cd ..
 
-copy /b bin\RAYCASTER8.bin + ^
+cd textures
+rem call make.bat
+cd ..
+
+@copy /b bin\RAYCASTER8.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
-    TexGen\col-bank7.bin + ^
-    TexGen\col-bank8.bin + ^
-    TexGen\col-bank9.bin + ^
-    TexGen\col-bank10.bin + ^
-    TexGen\col-bank11.bin + ^
-    TexGen\col-bank12.bin + ^
-    TexGen\col-bank13.bin + ^
-    TexGen\col-bank14.bin + ^
-    TexGen\col-bank15.bin + ^
+    bin\col-bank7.bin + ^
+    bin\col-bank8.bin + ^
+    bin\col-bank9.bin + ^
+    bin\col-bank10.bin + ^
+    bin\col-bank11.bin + ^
+    bin\col-bank12.bin + ^
+    bin\col-bank13.bin + ^
+    bin\col-bank14.bin + ^
+    bin\col-bank15.bin + ^
     bin\empty-2k.bin + backgrounds\background0even.bin + ^
     bin\empty-2k.bin + backgrounds\background1even.bin + ^
     bin\empty-2k.bin + backgrounds\background2even.bin + ^
