@@ -89,7 +89,7 @@ bullet_accl_z:
 gun_color:
        equ  >01
 bullet_color:
-       equ  >01
+       equ  >0f
 backdrop_color:
        equ  >0e
 char_0:
