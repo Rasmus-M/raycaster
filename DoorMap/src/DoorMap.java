@@ -28,6 +28,9 @@ public class DoorMap {
             }
         }
         sb.append("\n");
+        sb.append("n_doors:\n");
+        sb.append("       data (n_doors - door_1) / door_size\n");
+        sb.append("\n");
         for (int i = 1; i < n; i++) {
             sb.append("door_").append(i).append("_init:\n");
             sb.append("       data 0\n");

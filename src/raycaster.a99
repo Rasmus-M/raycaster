@@ -2709,109 +2709,6 @@ start_dx:
        data >0100
 start_dy:
        data >0000
-space:
-       byte 0
-door:
-       byte 13
-goal:
-       byte 1
-checkered:
-       byte 15
-byte_00:
-       byte >00
-byte_01:
-       byte >01
-byte_80:
-       byte >80
-byte_xx:
-       byte >00
-
-column_height:
-       equ  0
-column_distance:
-       equ  2
-column_color:
-       equ  4
-column_distance_copy:
-       equ  6
-column_hit_x:
-       equ  8
-column_height_old:
-       equ  10
-column_color_old:
-       equ  12
-column_skip:
-       equ  14
-column_size:
-       equ  16
-
-columns:
-       bss  n_rays*column_size
-
-**
-* Objects
-*
-object_active:                         ; 0 = inactive, <> 0 = active,
-       equ  0
-object_type:
-       equ  2
-object_x:
-       equ  4
-object_y:
-       equ  6
-object_texture:
-       equ  8
-object_speech:
-       equ  10
-object_fire:
-       equ  12
-object_health:
-       equ  14
-object_size:
-       equ  16
-
-object_type_guard:
-       equ  1
-object_type_boss:
-       equ  2
-object_type_chest:
-       equ  3
-object_type_barrel:
-       equ  4
-
-object_init_type:
-       equ  0
-object_init_x:
-       equ  2
-object_init_y:
-       equ  3
-object_init_size:
-       equ  4
-
-n_objects:
-       data 0
-objects:
-       bss  object_size*16
-
-object_texture_table:
-       data 0
-       data 12                         ; Guard
-       data 12                         ; Boss
-       data 13                         ; Chest
-       data 14                         ; Barrel
-object_speech_table:
-       data 0
-       data eye_can_see_you            ; Guard
-       data your_time_is_up            ; Boss
-       data come_and_get_me            ; Chest
-       data 0                          ; Barrel
-object_health_table:
-       data 0
-       data 1                          ; Guard
-       data 5                          ; Boss
-       data 0                          ; Chest
-       data 0                          ; Barrel
-
 bullet_active:
        data 0
 bullet_x:
@@ -2833,6 +2730,142 @@ bullet_speed:
 bullet_distance:
        data 0
 
+**
+* Constants
+*
+space:
+       byte 0
+door:
+       byte 13
+goal:
+       byte 1
+checkered:
+       byte 15
+byte_00:
+       byte >00
+byte_01:
+       byte >01
+byte_80:
+       byte >80
+byte_xx:
+       byte >00
+
+**
+* Column data structure
+*
+column_height:
+       equ  0
+column_distance:
+       equ  2
+column_color:
+       equ  4
+column_distance_copy:
+       equ  6
+column_hit_x:
+       equ  8
+column_height_old:
+       equ  10
+column_color_old:
+       equ  12
+column_skip:
+       equ  14
+column_size:
+       equ  16
+
+**
+* Column list
+*
+columns:
+       bss  n_rays*column_size
+
+**
+* Object data structure
+*
+object_active:                         ; 0 = inactive, <> 0 = active,
+       equ  0
+object_type:
+       equ  2
+object_x:
+       equ  4
+object_y:
+       equ  6
+object_texture:
+       equ  8
+object_speech:
+       equ  10
+object_fire:
+       equ  12
+object_health:
+       equ  14
+object_size:
+       equ  16
+
+**
+* Object list
+*
+n_objects:
+       data 0
+objects:
+       bss  object_size*16
+
+**
+* Object init data structure
+*
+object_init_type:
+       equ  0
+object_init_x:
+       equ  2
+object_init_y:
+       equ  3
+object_init_size:
+       equ  4
+
+**
+* Object init data
+*
+object_init_data:
+       data 2
+       data object_type_barrel
+       byte >11                      ; x
+       byte >02                      ; y
+       data object_type_guard
+       byte >02                      ; x
+       byte >06                      ; y
+
+**
+* Object types
+*
+object_type_guard:
+       equ  1
+object_type_boss:
+       equ  2
+object_type_chest:
+       equ  3
+object_type_barrel:
+       equ  4
+
+**
+* Object type init tables
+*
+object_texture_table:
+       data 0
+       data 12                         ; Guard
+       data 12                         ; Boss
+       data 13                         ; Chest
+       data 14                         ; Barrel
+object_speech_table:
+       data 0
+       data eye_can_see_you            ; Guard
+       data your_time_is_up            ; Boss
+       data come_and_get_me            ; Chest
+       data 0                          ; Barrel
+object_health_table:
+       data 0
+       data 1                          ; Guard
+       data 5                          ; Boss
+       data 0                          ; Chest
+       data 0                          ; Barrel
+
 ***************************************************************
 *
 * Data files
@@ -2846,6 +2879,9 @@ doors:
 col_index:
        copy "../TexGen/col-index.a99"
 
+**
+*      Screen buffer (6K)
+*
 *      Organised as 32 columns of 192 bytes
 *      First 192 bytes for column 0, next 192 bytes for column 1 etc.
 *      Each column contains 2 fat (4x1, 16 color) pixels horizontally
