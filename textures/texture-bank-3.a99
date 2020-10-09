@@ -1,2 +1,2 @@
-       copy "pipe-right-down.a99"
-       copy "panel.a99"
+       copy "walls/pipe-right-down.a99"
+       copy "walls/panel.a99"

@@ -1,2 +1,2 @@
-       copy "bricks.a99"
-       copy "green.a99"
+       copy "walls/bricks.a99"
+       copy "walls/green.a99"

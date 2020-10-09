@@ -102,6 +102,8 @@ texture_bank_select:
        equ  >6040
 texture_sams_page:                     ; 16
        equ  >1000
+n_texture_banks:
+       equ  24
 texture_width:                         ; Width in fat pixels
        equ  16
 sprite_texture_width:                  ; Width in not so fat pixels
@@ -1564,8 +1566,8 @@ move_enemies_1:
        mov  *r4,r0
        jeq  move_enemies_2
        mov  @object_type(r4),r0
-       ci   r0,object_type_guard
-       jne  move_enemies_2
+       ci   r0,object_type_monster
+       jlt  move_enemies_2
 *      x
        mov  @object_x(r4),r0
        mov  @x,r2
@@ -1746,8 +1748,8 @@ bullet_collisions_3:
        mov  *r4,r2
        jeq  bullet_collisions_4
        mov  @object_type(r4),r2
-       ci   r2,object_type_guard
-       jne  bullet_collisions_4
+       ci   r2,object_type_monster
+       jlt  bullet_collisions_4
        mov  @object_x(r4),r2
        s    r0,r2
        abs  r2
@@ -1794,8 +1796,8 @@ object_collisions_1:
        mov  *r4,r2
        jeq  object_collisions_2
        mov  @object_type(r4),r2
-       ci   r2,object_type_chest
-       jne  object_collisions_2
+       ci   r2,object_type_monster
+       jhe  object_collisions_2
        mov  @object_x(r4),r2
        s    r0,r2
        abs  r2
@@ -2249,7 +2251,7 @@ one_time_init:
 *      Copy textures to RAM
        li   r0,texture_bank_select
        li   r1,texture_sams_page
-       li   r6,8
+       li   r6,n_texture_banks
 one_time_init_0:
        bl   @copy_rom_to_sams
        dec  r6
@@ -2828,52 +2830,32 @@ object_init_data:
        data object_type_barrel
        byte >11                      ; x
        byte >02                      ; y
-       data object_type_guard
+       data object_type_eye
        byte >02                      ; x
        byte >06                      ; y
 
 **
-* Object types
+* Door structure
 *
-object_type_guard:
+door_x:
+       equ  0
+door_y:
        equ  1
-object_type_boss:
+door_object_inits:
        equ  2
-object_type_chest:
-       equ  3
-object_type_barrel:
+door_size:
        equ  4
-
-**
-* Object type init tables
-*
-object_texture_table:
-       data 0
-       data 12                         ; Guard
-       data 12                         ; Boss
-       data 13                         ; Chest
-       data 14                         ; Barrel
-object_speech_table:
-       data 0
-       data eye_can_see_you            ; Guard
-       data your_time_is_up            ; Boss
-       data come_and_get_me            ; Chest
-       data 0                          ; Barrel
-object_health_table:
-       data 0
-       data 1                          ; Guard
-       data 5                          ; Boss
-       data 0                          ; Chest
-       data 0                          ; Barrel
 
 ***************************************************************
 *
 * Data files
 *
+
        copy "math_tables.a99"
        copy "sprites.a99"
        copy "sprite-patterns.a99"
        copy "sound-fx.a99"
+       copy "objects.a99"
 doors:
        copy "doors.a99"
 col_index:

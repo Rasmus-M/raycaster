@@ -1,2 +1,2 @@
-       copy "tile.a99"
-       copy "door.a99"
+       copy "walls/tile.a99"
+       copy "walls/door.a99"

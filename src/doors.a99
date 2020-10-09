@@ -1,15 +1,4 @@
 **
-* Door structure
-*
-door_x:
-       equ  0
-door_y:
-       equ  1
-door_object_inits:
-       equ  2
-door_size:
-       equ  4
-**
 * Door list
 *
 door_1:
@@ -218,251 +207,251 @@ n_doors:
 
 door_1_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_2_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_3_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_4_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_5_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_6_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_7_init:
        data 1
-       data object_type_guard
+       data object_type_eye
        byte >07
        byte >0a
 door_8_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_9_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_10_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_11_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_12_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_13_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_14_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_15_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_16_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_17_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_18_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_19_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_20_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_21_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_22_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_23_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_24_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_25_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_26_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_27_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_28_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_29_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_30_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_31_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_32_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_33_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_34_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_35_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_36_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_37_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_38_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_39_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_40_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_41_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_42_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_43_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_44_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_45_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_46_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_47_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_48_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_49_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00
 door_50_init:
        data 0
-       data object_type_guard
+       data object_type_eye
        byte >00
        byte >00

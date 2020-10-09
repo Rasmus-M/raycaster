@@ -1,0 +1,181 @@
+**
+* Object types
+*
+object_type_box:
+       equ  1
+object_type_barrel:
+       equ  2
+object_type_obj1:
+       equ  3
+object_type_obj2:
+       equ  4
+object_type_eye:
+       equ  5
+object_type_blob:
+       equ  6
+object_type_mon1:
+       equ  7
+object_type_mon2:
+       equ  8
+object_type_mon3:
+       equ  9
+object_type_mon4:
+       equ  10
+object_type_mon5:
+       equ  11
+object_type_mon6:
+       equ  12
+object_type_mon7:
+       equ  13
+object_type_mon8:
+       equ  14
+object_type_mon9:
+       equ  15
+object_type_mon10:
+       equ  16
+object_type_mon11:
+       equ  17
+object_type_mon12:
+       equ  18
+object_type_mon13:
+       equ  19
+object_type_mon14:
+       equ  20
+object_type_mon15:
+       equ  21
+object_type_mon16:
+       equ  22
+object_type_mon17:
+       equ  23
+object_type_mon18:
+       equ  24
+object_type_mon19:
+       equ  25
+object_type_mon20:
+       equ  26
+object_type_mon21:
+       equ  27
+object_type_mon22:
+       equ  28
+object_type_mon23:
+       equ  29
+object_type_mon24:
+       equ  30
+object_type_mon25:
+       equ  31
+object_type_mon26:
+       equ  32
+
+object_type_object:
+       equ  object_type_box
+object_type_monster:
+       equ  object_type_eye
+
+**
+* Object type init tables
+*
+object_texture_table:
+       data 0
+       data 16                         ; Box
+       data 17                         ; Barrel
+       data 18                         ; obj1
+       data 19                         ; obj2
+       data 20                         ; Eye
+       data 21                         ; Blob
+       data 22                         ; mon1
+       data 23                         ; mon2
+       data 24                         ; mon3
+       data 25                         ; mon4
+       data 26                         ; mon5
+       data 27                         ; mon6
+       data 28                         ; mon7
+       data 29                         ; mon8
+       data 30                         ; mon9
+       data 31                         ; mon10
+       data 32                         ; mon11
+       data 33                         ; mon12
+       data 34                         ; mon13
+       data 35                         ; mon14
+       data 36                         ; mon15
+       data 37                         ; mon16
+       data 38                         ; mon17
+       data 39                         ; mon18
+       data 40                         ; mon19
+       data 41                         ; mon20
+       data 42                         ; mon21
+       data 43                         ; mon22
+       data 44                         ; mon23
+       data 45                         ; mon24
+       data 46                         ; mon25
+       data 47                         ; mon26
+
+object_speech_table:
+       data 0
+       data come_and_get_me            ; Box
+       data 0                          ; Barrel
+       data 0                          ; obj1
+       data 0                          ; obj2
+       data eye_can_see_you            ; Eye
+       data your_time_is_up            ; Blob
+       data 0                          ; mon1
+       data 0                          ; mon2
+       data 0                          ; mon3
+       data 0                          ; mon4
+       data 0                          ; mon5
+       data 0                          ; mon6
+       data 0                          ; mon7
+       data 0                          ; mon8
+       data 0                          ; mon9
+       data 0                          ; mon10
+       data 0                          ; mon11
+       data 0                          ; mon12
+       data 0                          ; mon13
+       data 0                          ; mon14
+       data 0                          ; mon15
+       data 0                          ; mon16
+       data 0                          ; mon17
+       data 0                          ; mon18
+       data 0                          ; mon19
+       data 0                          ; mon20
+       data 0                          ; mon21
+       data 0                          ; mon22
+       data 0                          ; mon23
+       data 0                          ; mon24
+       data 0                          ; mon25
+       data 0                          ; mon26
+
+object_health_table:
+       data 0
+       data 0                          ; Box
+       data 0                          ; Barrel
+       data 0                          ; obj1
+       data 0                          ; obj2
+       data 1                          ; Eye
+       data 2                          ; Blob
+       data 3                          ; mon1
+       data 4                          ; mon2
+       data 1                          ; mon3
+       data 2                          ; mon4
+       data 3                          ; mon5
+       data 4                          ; mon6
+       data 1                          ; mon7
+       data 2                          ; mon8
+       data 3                          ; mon9
+       data 4                          ; mon10
+       data 1                          ; mon11
+       data 2                          ; mon12
+       data 3                          ; mon13
+       data 4                          ; mon14
+       data 1                          ; mon15
+       data 2                          ; mon16
+       data 3                          ; mon17
+       data 4                          ; mon18
+       data 1                          ; mon19
+       data 2                          ; mon20
+       data 3                          ; mon21
+       data 4                          ; mon22
+       data 1                          ; mon23
+       data 2                          ; mon24
+       data 3                          ; mon25
+       data 4                          ; mon26
+
