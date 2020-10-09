@@ -33,10 +33,11 @@ public class DoorMap {
         sb.append("\n");
         for (int i = 1; i < n; i++) {
             sb.append("door_").append(i).append("_init:\n");
-            sb.append("       data 0\n");
-            sb.append("       data object_type_guard\n");
-            sb.append("       byte >00\n");
-            sb.append("       byte >00\n");
+            sb.append("       data 0\n");               // Completed?
+            sb.append("       data 1\n");               // Number of objects
+            sb.append("       data object_type_eye\n"); // Object type
+            sb.append("       byte >07\n");             // x
+            sb.append("       byte >0a\n");             // y
         }
 
         File outputFile = new File("doors.a99");

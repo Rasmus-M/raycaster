@@ -2026,6 +2026,9 @@ open_door_1:
        cb   r1,@door_y(r8)
        jne  open_door_2
        mov  @door_object_inits(r8),r4
+       mov  *r4,r5                     ; Already created?
+       jne  open_door_3
+       seto *r4+                       ; Mark as created
        mov  *r4+,r5
        jeq  open_door_3
 open_door_4:
@@ -2197,6 +2200,8 @@ init_level_1:
        movb @door_y(r4),r1
        bl   @get_map_address
        movb @door,*r2
+       mov  @door_object_inits,r6
+       clr  *r6                        ; Mark as not completed
        ai   r4,door_size
        dec  r5
        jne  init_level_1
