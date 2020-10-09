@@ -1,7 +1,10 @@
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class DoorMap {
 
@@ -14,6 +17,7 @@ public class DoorMap {
 
     public void generateDoorsFile(int[][] map) throws IOException {
         StringBuilder sb = new StringBuilder();
+        ArrayList<Point2D> doorPositions = new ArrayList<>();
         int n = 1;
         for (int y = 0; y < 64; y++) {
             for (int x = 0; x < 64; x++) {
@@ -23,6 +27,7 @@ public class DoorMap {
                     sb.append("       byte ").append(hexByte(x)).append("\n");
                     sb.append("       byte ").append(hexByte(y)).append("\n");
                     sb.append("       data door_").append(n).append("_init\n");
+                    doorPositions.add(new Point(x, y));
                     n++;
                 }
             }
@@ -32,12 +37,13 @@ public class DoorMap {
         sb.append("       data (n_doors - door_1) / door_size\n");
         sb.append("\n");
         for (int i = 1; i < n; i++) {
+            Point2D doorPosition = doorPositions.get(i -1);
             sb.append("door_").append(i).append("_init:\n");
             sb.append("       data 0\n");               // Completed?
             sb.append("       data 1\n");               // Number of objects
-            sb.append("       data object_type_eye\n"); // Object type
-            sb.append("       byte >07\n");             // x
-            sb.append("       byte >0a\n");             // y
+            sb.append("       data object_type_mon").append((i % 26) + 1).append("\n"); // Object type
+            sb.append("       byte ").append(hexByte((int) doorPosition.getX())).append("\n"); // x
+            sb.append("       byte ").append(hexByte((int) doorPosition.getY())).append("\n"); // y
         }
 
         File outputFile = new File("doors.a99");

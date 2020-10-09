@@ -1762,11 +1762,14 @@ bullet_collisions_3:
        jgt  bullet_collisions_4
 *      hit
        dec  @object_health(r4)
-       jgt  bullet_collisions_4
+       jgt  bullet_collisions_3a
        bl   @remove_object
        li   r0,25
        a    r0,@score
        seto @cast_required
+       jmp  bullet_collisions_1
+bullet_collisions_3a:
+       bl   @play_shot_2
        jmp  bullet_collisions_1
 bullet_collisions_4:
        ai   r4,object_size
@@ -2029,7 +2032,7 @@ open_door_1:
        mov  *r4,r5                     ; Already created?
        jne  open_door_3
        seto *r4+                       ; Mark as created
-       mov  *r4+,r5
+       mov  *r4+,r5                    ; Number of objects to create
        jeq  open_door_3
 open_door_4:
        bl   @create_object
