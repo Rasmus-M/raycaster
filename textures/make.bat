@@ -6,20 +6,4 @@ xas99.py -b -w texture-bank-4.a99 -o ../bin/texture-bank-4.bin
 xas99.py -b -w texture-bank-5.a99 -o ../bin/texture-bank-5.bin
 xas99.py -b -w texture-bank-6.a99 -o ../bin/texture-bank-6.bin
 xas99.py -b -w texture-bank-7.a99 -o ../bin/texture-bank-7.bin
-xas99.py -b -w texture-bank-8.a99 -o ../bin/texture-bank-8.bin
-xas99.py -b -w texture-bank-9.a99 -o ../bin/texture-bank-9.bin
-xas99.py -b -w texture-bank-10.a99 -o ../bin/texture-bank-10.bin
-xas99.py -b -w texture-bank-11.a99 -o ../bin/texture-bank-11.bin
-xas99.py -b -w texture-bank-12.a99 -o ../bin/texture-bank-12.bin
-xas99.py -b -w texture-bank-13.a99 -o ../bin/texture-bank-13.bin
-xas99.py -b -w texture-bank-14.a99 -o ../bin/texture-bank-14.bin
-xas99.py -b -w texture-bank-15.a99 -o ../bin/texture-bank-15.bin
-xas99.py -b -w texture-bank-16.a99 -o ../bin/texture-bank-16.bin
-xas99.py -b -w texture-bank-17.a99 -o ../bin/texture-bank-17.bin
-xas99.py -b -w texture-bank-18.a99 -o ../bin/texture-bank-18.bin
-xas99.py -b -w texture-bank-19.a99 -o ../bin/texture-bank-19.bin
-xas99.py -b -w texture-bank-20.a99 -o ../bin/texture-bank-20.bin
-xas99.py -b -w texture-bank-21.a99 -o ../bin/texture-bank-21.bin
-xas99.py -b -w texture-bank-22.a99 -o ../bin/texture-bank-22.bin
-xas99.py -b -w texture-bank-23.a99 -o ../bin/texture-bank-23.bin
 

@@ -57,3 +57,71 @@ copy_rom_to_sams_1:
        mov  r4,r1
        .endproc
 *// copy_rom_to_sams
+
+*********************************************************************
+*
+* Copy ROM bank of textures to SAMS
+*
+* r0: ROM bank select address
+* r1: SAMS page no (MSB)
+*
+* On return r0 is update to select next bank,
+* and r1 is update to the next page (+8)
+*
+copy_textures_to_sams:
+       .proc
+       mov  r0,r3                      ; Copy ROM bank
+       mov  r1,r4                      ; Copy SAMS page
+       seto *r0                        ; Select ROM bank
+       li   r5,8                       ; Number of SAMS pages
+       li   r0,>6000                   ; Source address
+copy_textures_to_sams_1:
+       mov  r4,@sams_reg_2             ; Select SAMS page
+       li   r1,sams_window             ; Destination address
+       li   r2,>1000
+       bl   @unpack_texture
+       ai   r4,>0100                   ; Next SAMS page
+       dec  r5                         ; Page counter
+       jne  copy_textures_to_sams_1
+       mov  r3,r0                      ; Restore ROM bank
+       inct r0                         ; Increment ROM bank
+       mov  r4,r1                      ; Restore SAMS page
+       .endproc
+*// copy_textures_to_sams
+
+*********************************************************************
+*
+* Unpack texture
+*
+* r0: Source address
+* r1: Destination address
+*
+unpack_texture:
+       li   r6,texture_width/2
+unpack_texture_1:
+       li   r7,texture_height
+unpack_texture_2:
+       movb *r0+,r8
+       mov  r8,r9
+*      Even pixel left nybble
+       andi r8,>f000
+       movb r8,*r1
+*      Even pixel right nybble
+       srl  r8,4
+       movb r8,@texture_size*2(r1)
+*      Odd pixel right nybble
+       andi r9,>0f00
+       movb r9,@texture_size*2+texture_height(r1)
+*      Odd pixel left nybble
+       sla  r9,4
+       movb r9,@texture_height(r1)
+*      Next row
+       inc  r1
+       dec  r7
+       jne   unpack_texture_2
+*      Next column
+       ai   r1,texture_height
+       dec  r6
+       jne   unpack_texture_1
+       rt
+*// unpack texture

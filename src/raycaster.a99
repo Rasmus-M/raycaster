@@ -103,10 +103,8 @@ texture_bank_select:
 texture_sams_page:                     ; 16
        equ  >1000
 n_texture_banks:
-       equ  24
+       equ  8
 texture_width:                         ; Width in fat pixels
-       equ  16
-sprite_texture_width:                  ; Width in not so fat pixels
        equ  32
 texture_height:
        equ  64
@@ -1224,8 +1222,8 @@ draw_object_11:
 * Modifies all registers except r3, r10, r15
 *
 * Texture organised as:
-* Pixels in even nibble (16 column x 64 bytes = 1024 bytes)
-* Pixels in odd nibble (16 column x 64 bytes = 1024 bytes)
+* Pixels in left nybble (32 columns x 64 rows = 2048 bytes)
+* Pixels in right nybble (32 columns x 64 rows = 2048 bytes)
 *
 draw_sprite:
        .push r15
@@ -1253,14 +1251,14 @@ draw_sprite_0b:
        li   r0,sams_window             ; Texture base address (FP 16.0)
 *      Texture X offset (r4) and increment (r5)
        clr  r4                         ; Texture X offset FP 8.8
-       ci   r2,sprite_texture_width    ; Check how to calculate texture width / sprite width
+       ci   r2,texture_width           ; Check how to calculate texture width / sprite width
        jgt  draw_sprite_1
        clr  r13                        ; Texture width FP 24.8
-       li   r14,sprite_texture_width*256
+       li   r14,texture_width*256
        div  r2,r13                     ; Div by sprite width FP 16.0 -> increment as FP 8.8
        jmp  draw_sprite_2
 draw_sprite_1:
-       li   r13,sprite_texture_width   ; Texture width FP 16.16
+       li   r13,texture_width          ; Texture width FP 16.16
        clr  r14
        div  r2,r13                     ; Div sprite width FP 16.0 -> increment as FP 0.16
        srl  r13,8                      ; Increment as FP 8.8
@@ -2256,13 +2254,13 @@ one_time_init:
        li   r1,upload_screen_loop_pad
        li   r2,upload_screen_loop_end-upload_screen_loop
        bl   @copy
-*      Copy textures to RAM
+*      Copy textures to SAMS
        li   r0,texture_bank_select
        li   r1,texture_sams_page
-       li   r6,n_texture_banks
+       li   r12,n_texture_banks
 one_time_init_0:
-       bl   @copy_rom_to_sams
-       dec  r6
+       bl   @copy_textures_to_sams
+       dec  r12
        jne  one_time_init_0
 *      Init speech
        bl   @init_speech

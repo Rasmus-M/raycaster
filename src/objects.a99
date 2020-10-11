@@ -80,34 +80,34 @@ object_texture_table:
        data 17                         ; Barrel
        data 18                         ; obj1
        data 19                         ; obj2
-       data 20                         ; Eye
-       data 21                         ; Blob
-       data 22                         ; mon1
-       data 23                         ; mon2
-       data 24                         ; mon3
-       data 25                         ; mon4
-       data 26                         ; mon5
-       data 27                         ; mon6
-       data 28                         ; mon7
-       data 29                         ; mon8
-       data 30                         ; mon9
-       data 31                         ; mon10
-       data 32                         ; mon11
-       data 33                         ; mon12
-       data 34                         ; mon13
-       data 35                         ; mon14
-       data 36                         ; mon15
-       data 37                         ; mon16
-       data 38                         ; mon17
-       data 39                         ; mon18
-       data 40                         ; mon19
-       data 41                         ; mon20
-       data 42                         ; mon21
-       data 43                         ; mon22
-       data 44                         ; mon23
-       data 45                         ; mon24
-       data 46                         ; mon25
-       data 47                         ; mon26
+       data 24                         ; Eye
+       data 25                         ; Blob
+       data 26                         ; mon1
+       data 27                         ; mon2
+       data 28                         ; mon3
+       data 29                         ; mon4
+       data 30                         ; mon5
+       data 31                         ; mon6
+       data 32                         ; mon7
+       data 33                         ; mon8
+       data 34                         ; mon9
+       data 35                         ; mon10
+       data 36                         ; mon11
+       data 37                         ; mon12
+       data 38                         ; mon13
+       data 39                         ; mon14
+       data 40                         ; mon15
+       data 41                         ; mon16
+       data 42                         ; mon17
+       data 43                         ; mon18
+       data 44                         ; mon19
+       data 45                         ; mon20
+       data 46                         ; mon21
+       data 47                         ; mon22
+       data 48                         ; mon23
+       data 49                         ; mon24
+       data 50                         ; mon25
+       data 51                         ; mon26
 
 object_speech_table:
        data 0
