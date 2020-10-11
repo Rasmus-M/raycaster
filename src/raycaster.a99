@@ -67,7 +67,7 @@ max_steps:
 max_wall_height:
        equ  528
 object_height:
-       equ  160
+       equ  192
 max_object_distance:
        equ  16
 max_bullet_distance:
@@ -1226,7 +1226,9 @@ draw_object_11:
 * Pixels in right nybble (32 columns x 64 rows = 2048 bytes)
 *
 draw_sprite:
+       .proc
        .push r15
+       andi r3,>00fe
        li   r15,r13lb
        mov  r5,r12                     ; Save depth/distance
 *      Screen buffer address (r1)
@@ -1265,6 +1267,16 @@ draw_sprite_1:
 draw_sprite_2:
        mov  r13,r5                     ; Texture X offset increment per pixel FP 8.8
 *      Texture Y offset (r6) and increment (r7)
+       ci   r3,64
+       jlt  draw_sprite_2a
+       mov  r3,r6
+       ai   r6,-64
+       sla  r6,1
+       ai   r6,sprite_index
+       mov  *r6+,r7
+       mov  *r6,r14
+       jmp  draw_sprite_5
+draw_sprite_2a:
        clr  r6                         ; Texture Y offset FP 8.8
        ci   r3,texture_height          ; Check how to calulate texture height / sprite height
        jgt  draw_sprite_3
@@ -1314,6 +1326,12 @@ draw_sprite_7:
        ori  r0,>0800                   ; Modify texture address for odd pixels
 *      Row loop
 draw_sprite_8:
+       ci   r3,64
+       jlt  draw_sprite_8a
+       seto *r7                        ; Select ROM bank for draiing routine
+       bl   *r14                       ; Call drawing routine. On return r0 += texture_height, r1 += height
+       jmp  draw_sprite_11
+draw_sprite_8a:
        mov  r3,r14                     ; Set screen row counter to height
 draw_sprite_9:
        mov  r0,r13                     ; Texture column start address
@@ -1344,7 +1362,7 @@ draw_sprite_12:
        jne  draw_sprite_5              ; Next column
 *      Return
        .pop r15
-       rt
+       .endproc
 full_redraw_bit:
        data 1024
 *// draw_sprite
@@ -2866,6 +2884,8 @@ doors:
        copy "doors.a99"
 col_index:
        copy "../TexGen/col-index.a99"
+sprite_index:
+       copy "../TexGen/sprite-index.a99"
 
 **
 *      Screen buffer (6K)

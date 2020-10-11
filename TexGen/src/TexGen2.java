@@ -62,6 +62,8 @@ public class TexGen2 {
         StringBuilder s = new StringBuilder();
         s.append("sprite_").append(Integer.toHexString(height)).append(":\n");
         s.append(indent).append("equ  $\n");
+        int r0inc = 0;
+        int r1inc = 0;
         for (int i = 0; i < sequence.length; i++) {
             int dy = sequence[i];
             if (dy == 0) {
@@ -76,22 +78,30 @@ public class TexGen2 {
                 for (int n = 0; n < zeroCount; n++) {
                     s.append("       szcb r9,*r1\n");
                     s.append("       socb r13,*r1+\n");
+                    r1inc++;
                 }
                 s.append("       jmp  !!\n");
                 if (zeroCount == 1) {
                     s.append("!      inc  r1\n");
+                    r1inc++;
                 } else if (zeroCount == 2) {
                     s.append("!      inct r1\n");
+                    r1inc += 2;
                 } else {
                     s.append("!      ai   r1,").append(zeroCount).append("\n");
+                    r1inc += zeroCount;
                 }
+                r0inc++;
             } else if (dy == 1) {
                 s.append("!      movb *r0+,r13\n");
                 s.append("       jeq  !\n");
                 s.append("       szcb r9,*r1\n");
                 s.append("       socb r13,*r1+\n");
+                r1inc++;
                 s.append("       jmp  !!\n");
                 s.append("!      inc  r1\n");
+                r0inc++;
+                r1inc++;
             } else if (dy == 2) {
                 s.append("!      movb *r0,r13\n");
                 s.append("       jeq  !\n");
@@ -100,6 +110,8 @@ public class TexGen2 {
                 s.append("       jmp  !!\n");
                 s.append("!      inc  r1\n");
                 s.append("!      inct r0\n");
+                r0inc += 2;
+                r1inc++;
             } else if (dy == 3) {
                 s.append("!      movb *r0+,r13\n");
                 s.append("       jeq  !\n");
@@ -108,6 +120,8 @@ public class TexGen2 {
                 s.append("       jmp  !!\n");
                 s.append("!      inc  r1\n");
                 s.append("!      inct r0\n");
+                r0inc += 3;
+                r1inc++;
             } else {
                 s.append("!      movb *r0,r13\n");
                 s.append("       jeq  !\n");
@@ -116,7 +130,15 @@ public class TexGen2 {
                 s.append("       jmp  !!\n");
                 s.append("!      inc  r1\n");
                 s.append("!      ai   r0,").append(dy).append("\n");
+                r0inc += dy;
+                r1inc++;
             }
+        }
+        if (r0inc != textureHeight) {
+            System.out.println("r0inc is " + r0inc + ", should be " + textureHeight);
+        }
+        if (r1inc != height * 2) {
+            System.out.println("r1inc is " + r1inc + ", should be " + height);
         }
         s.append("!      rt\n");
         return s;

@@ -1,0 +1,195 @@
+sprite_vector_40:
+       data >6050
+       data >6000
+sprite_vector_42:
+       data >6050
+       data >6302
+sprite_vector_44:
+       data >6050
+       data >660c
+sprite_vector_46:
+       data >6050
+       data >691e
+sprite_vector_48:
+       data >6050
+       data >6c38
+sprite_vector_4a:
+       data >6050
+       data >6f5a
+sprite_vector_4c:
+       data >6050
+       data >7284
+sprite_vector_4e:
+       data >6050
+       data >75b6
+sprite_vector_50:
+       data >6050
+       data >78f0
+sprite_vector_52:
+       data >6050
+       data >7c32
+sprite_vector_54:
+       data >6052
+       data >6000
+sprite_vector_56:
+       data >6052
+       data >6352
+sprite_vector_58:
+       data >6052
+       data >66ac
+sprite_vector_5a:
+       data >6052
+       data >6a0e
+sprite_vector_5c:
+       data >6052
+       data >6d78
+sprite_vector_5e:
+       data >6052
+       data >70ea
+sprite_vector_60:
+       data >6052
+       data >7464
+sprite_vector_62:
+       data >6052
+       data >77e6
+sprite_vector_64:
+       data >6052
+       data >7b70
+sprite_vector_66:
+       data >6054
+       data >6000
+sprite_vector_68:
+       data >6054
+       data >639a
+sprite_vector_6a:
+       data >6054
+       data >673c
+sprite_vector_6c:
+       data >6054
+       data >6ae6
+sprite_vector_6e:
+       data >6054
+       data >6e98
+sprite_vector_70:
+       data >6054
+       data >7252
+sprite_vector_72:
+       data >6054
+       data >7614
+sprite_vector_74:
+       data >6054
+       data >79de
+sprite_vector_76:
+       data >6056
+       data >6000
+sprite_vector_78:
+       data >6056
+       data >63da
+sprite_vector_7a:
+       data >6056
+       data >67bc
+sprite_vector_7c:
+       data >6056
+       data >6ba6
+sprite_vector_7e:
+       data >6056
+       data >6f98
+sprite_vector_80:
+       data >6056
+       data >7392
+sprite_vector_82:
+       data >6056
+       data >7794
+sprite_vector_84:
+       data >6056
+       data >7ba2
+sprite_vector_86:
+       data >6058
+       data >6000
+sprite_vector_88:
+       data >6058
+       data >6426
+sprite_vector_8a:
+       data >6058
+       data >6858
+sprite_vector_8c:
+       data >6058
+       data >6c96
+sprite_vector_8e:
+       data >6058
+       data >70e0
+sprite_vector_90:
+       data >6058
+       data >7536
+sprite_vector_92:
+       data >6058
+       data >7998
+sprite_vector_94:
+       data >605a
+       data >6000
+sprite_vector_96:
+       data >605a
+       data >647a
+sprite_vector_98:
+       data >605a
+       data >6900
+sprite_vector_9a:
+       data >605a
+       data >6d92
+sprite_vector_9c:
+       data >605a
+       data >7230
+sprite_vector_9e:
+       data >605a
+       data >76da
+sprite_vector_a0:
+       data >605c
+       data >6000
+sprite_vector_a2:
+       data >605c
+       data >64c2
+sprite_vector_a4:
+       data >605c
+       data >6990
+sprite_vector_a6:
+       data >605c
+       data >6e6a
+sprite_vector_a8:
+       data >605c
+       data >7350
+sprite_vector_aa:
+       data >605c
+       data >7842
+sprite_vector_ac:
+       data >605e
+       data >6000
+sprite_vector_ae:
+       data >605e
+       data >650a
+sprite_vector_b0:
+       data >605e
+       data >6a20
+sprite_vector_b2:
+       data >605e
+       data >6f42
+sprite_vector_b4:
+       data >605e
+       data >7470
+sprite_vector_b6:
+       data >605e
+       data >79aa
+sprite_vector_b8:
+       data >6060
+       data >6000
+sprite_vector_ba:
+       data >6060
+       data >6552
+sprite_vector_bc:
+       data >6060
+       data >6ab0
+sprite_vector_be:
+       data >6060
+       data >701a
+sprite_vector_c0:
+       data >6060
+       data >7590
