@@ -2257,8 +2257,13 @@ one_time_init:
        mov  @rndsd,@rand_no            ; Save random number seed
        li   r0,1
        mov  r0,@one
+*      Display message
+       li   r0,11*32+9
+       li   r1,txt_please_wait
+       li   r2,14
+       bl   @vmbw
+*      Init SAMS
        bl   @init_sams
-       bl   @graphics_mode
 *      Clear scratch pad
        li   r0,padvar
        li   r2,>8400-padvar
@@ -2282,6 +2287,8 @@ one_time_init_0:
        jne  one_time_init_0
 *      Init speech
        bl   @init_speech
+*      Graphics smode
+       bl   @graphics_mode
 *      Patterns
        li   r0,ptrntb
        li   r1,>f000
@@ -2334,6 +2341,8 @@ one_time_init_3:
        dec  r3
        jne  one_time_init_1
        .endproc
+txt_please_wait:
+       text "PLEASE WAIT..."
 *// one_time_init
 
 *********************************************************************
