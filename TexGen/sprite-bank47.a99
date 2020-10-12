@@ -1,4 +1,4 @@
-sprite_ac:
+sprite_96:
        equ  $
 !      movb *r0+,r13
        jeq  !
@@ -16,10 +16,242 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -54,10 +286,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -82,10 +312,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -110,10 +338,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -138,10 +364,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -166,20 +390,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -204,10 +416,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -232,10 +442,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -260,10 +468,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -288,10 +494,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -316,20 +520,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -354,244 +546,8 @@ sprite_ac:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -601,7 +557,7 @@ sprite_ac:
        jmp  !!
 !      inct r1
 !      rt
-sprite_ae:
+sprite_98:
        equ  $
 !      movb *r0+,r13
        jeq  !
@@ -619,10 +575,34 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -657,10 +637,42 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -695,10 +707,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -723,20 +733,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -761,16 +759,6 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
 !      movb *r0+,r13
@@ -779,20 +767,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -827,10 +803,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -855,26 +829,6 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
 !      movb *r0+,r13
@@ -883,20 +837,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -931,16 +873,6 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
 !      movb *r0+,r13
@@ -949,20 +881,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -997,10 +917,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1025,26 +943,6 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
 !      movb *r0+,r13
@@ -1053,10 +951,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1091,10 +987,42 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1129,10 +1057,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1157,20 +1083,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1195,10 +1109,8 @@ sprite_ae:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1208,7 +1120,7 @@ sprite_ae:
        jmp  !!
 !      inct r1
 !      rt
-sprite_b0:
+sprite_9a:
        equ  $
 !      movb *r0+,r13
        jeq  !
@@ -1226,10 +1138,8 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1264,20 +1174,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1312,10 +1218,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1350,10 +1262,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1388,10 +1306,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1426,10 +1350,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1464,10 +1394,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1502,10 +1438,34 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1540,16 +1500,6 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
 !      movb *r0+,r13
@@ -1558,20 +1508,8 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1606,10 +1544,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1644,10 +1588,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1682,10 +1632,16 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1720,96 +1676,8 @@ sprite_b0:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1819,7 +1687,7 @@ sprite_b0:
        jmp  !!
 !      inct r1
 !      rt
-sprite_b2:
+sprite_9c:
        equ  $
 !      movb *r0+,r13
        jeq  !
@@ -1837,20 +1705,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1885,10 +1741,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1899,6 +1753,22 @@ sprite_b2:
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1933,10 +1803,34 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -1971,20 +1865,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2019,10 +1901,16 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2057,20 +1945,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2105,10 +1981,16 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2143,10 +2025,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2157,6 +2037,22 @@ sprite_b2:
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2191,20 +2087,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2239,10 +2123,16 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2277,10 +2167,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2291,6 +2179,22 @@ sprite_b2:
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2325,26 +2229,6 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
 !      movb *r0+,r13
@@ -2363,68 +2247,8 @@ sprite_b2:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
 !      inct r1
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2434,7 +2258,7 @@ sprite_b2:
        jmp  !!
 !      inct r1
 !      rt
-sprite_b4:
+sprite_9e:
        equ  $
 !      movb *r0+,r13
        jeq  !
@@ -2452,30 +2276,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2510,20 +2312,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2558,20 +2348,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2606,10 +2384,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2626,10 +2402,16 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2664,20 +2446,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2712,30 +2482,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2770,20 +2518,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2818,20 +2554,16 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2866,30 +2598,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2924,20 +2634,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2972,10 +2670,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -2986,6 +2682,22 @@ sprite_b4:
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3020,10 +2732,8 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3040,10 +2750,80 @@ sprite_b4:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3053,7 +2833,7 @@ sprite_b4:
        jmp  !!
 !      inct r1
 !      rt
-sprite_b6:
+sprite_a0:
        equ  $
 !      movb *r0+,r13
        jeq  !
@@ -3071,10 +2851,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3101,10 +2879,106 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3149,20 +3023,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3197,40 +3059,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3265,30 +3095,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3323,40 +3131,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3391,30 +3167,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3449,30 +3203,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3507,40 +3239,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3575,30 +3275,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
-!      movb *r0+,r13
-       jeq  !
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
-       jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3633,10 +3311,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3653,10 +3329,8 @@ sprite_b6:
        socb r13,*r1+
        szcb r9,*r1
        socb r13,*r1+
-       szcb r9,*r1
-       socb r13,*r1+
        jmp  !!
-!      ai   r1,3
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3667,6 +3341,68 @@ sprite_b6:
        socb r13,*r1+
        jmp  !!
 !      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      ai   r1,3
+!      movb *r0+,r13
+       jeq  !
+       szcb r9,*r1
+       socb r13,*r1+
+       szcb r9,*r1
+       socb r13,*r1+
+       jmp  !!
+!      inct r1
 !      movb *r0+,r13
        jeq  !
        szcb r9,*r1
@@ -3677,6 +3413,6 @@ sprite_b6:
 !      inct r1
 !      rt
 
-       bss  270
+       bss  1062
 
        data -1

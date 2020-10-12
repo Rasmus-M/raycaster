@@ -112,6 +112,8 @@ texture_size:
        equ  (texture_width/2)*texture_height;
 background_address:
        equ  >6800
+first_unrolled_sprite:
+       equ  0
 
 **
 * Scratch pad
@@ -1267,10 +1269,9 @@ draw_sprite_1:
 draw_sprite_2:
        mov  r13,r5                     ; Texture X offset increment per pixel FP 8.8
 *      Texture Y offset (r6) and increment (r7)
-       ci   r3,64
+       ci   r3,first_unrolled_sprite
        jlt  draw_sprite_2a
        mov  r3,r6
-       ai   r6,-64
        sla  r6,1
        ai   r6,sprite_index
        mov  *r6+,r7
@@ -1326,7 +1327,7 @@ draw_sprite_7:
        ori  r0,>0800                   ; Modify texture address for odd pixels
 *      Row loop
 draw_sprite_8:
-       ci   r3,64
+       ci   r3,first_unrolled_sprite
        jlt  draw_sprite_8a
        seto *r7                        ; Select ROM bank for draiing routine
        bl   *r14                       ; Call drawing routine. On return r0 += texture_height, r1 += height

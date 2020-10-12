@@ -59,8 +59,8 @@ cd ..
     bin\sprite-bank-46.bin + ^
     bin\sprite-bank-47.bin + ^
     bin\sprite-bank-48.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
+    bin\sprite-bank-49.bin + ^
+    bin\sprite-bank-50.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
@@ -76,7 +76,7 @@ cd ..
     bin\empty.bin ^
     .\texcaster8.bin
 
-java -jar tools/CopyHeader.jar texcaster8.bin 60 7 8 9 10 11 12 13 14 15 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48
+java -jar tools/CopyHeader.jar texcaster8.bin 60 7 8 9 10 11 12 13 14 15 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end

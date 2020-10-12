@@ -1,195 +1,291 @@
+sprite_vector_0:
+       data >6050
+       data >6000
+sprite_vector_2:
+       data >6050
+       data >6002
+sprite_vector_4:
+       data >6050
+       data >6024
+sprite_vector_6:
+       data >6050
+       data >6066
+sprite_vector_8:
+       data >6050
+       data >60c8
+sprite_vector_a:
+       data >6050
+       data >614a
+sprite_vector_c:
+       data >6050
+       data >61ec
+sprite_vector_e:
+       data >6050
+       data >62ae
+sprite_vector_10:
+       data >6050
+       data >6390
+sprite_vector_12:
+       data >6050
+       data >6492
+sprite_vector_14:
+       data >6050
+       data >65a4
+sprite_vector_16:
+       data >6050
+       data >66c6
+sprite_vector_18:
+       data >6050
+       data >67fc
+sprite_vector_1a:
+       data >6050
+       data >694e
+sprite_vector_1c:
+       data >6050
+       data >6abc
+sprite_vector_1e:
+       data >6050
+       data >6c46
+sprite_vector_20:
+       data >6050
+       data >6dec
+sprite_vector_22:
+       data >6050
+       data >6fae
+sprite_vector_24:
+       data >6050
+       data >7184
+sprite_vector_26:
+       data >6050
+       data >736e
+sprite_vector_28:
+       data >6050
+       data >756a
+sprite_vector_2a:
+       data >6050
+       data >777c
+sprite_vector_2c:
+       data >6050
+       data >79a2
+sprite_vector_2e:
+       data >6050
+       data >7bda
+sprite_vector_30:
+       data >6052
+       data >6000
+sprite_vector_32:
+       data >6052
+       data >6262
+sprite_vector_34:
+       data >6052
+       data >64d8
+sprite_vector_36:
+       data >6052
+       data >6762
+sprite_vector_38:
+       data >6052
+       data >69fe
+sprite_vector_3a:
+       data >6052
+       data >6cb0
+sprite_vector_3c:
+       data >6052
+       data >6f76
+sprite_vector_3e:
+       data >6052
+       data >7250
 sprite_vector_40:
-       data >6050
-       data >6000
+       data >6052
+       data >753c
 sprite_vector_42:
-       data >6050
-       data >6302
+       data >6052
+       data >783e
 sprite_vector_44:
-       data >6050
-       data >660c
+       data >6052
+       data >7b48
 sprite_vector_46:
-       data >6050
-       data >691e
+       data >6054
+       data >6000
 sprite_vector_48:
-       data >6050
-       data >6c38
+       data >6054
+       data >631a
 sprite_vector_4a:
-       data >6050
-       data >6f5a
+       data >6054
+       data >663c
 sprite_vector_4c:
-       data >6050
-       data >7284
+       data >6054
+       data >6966
 sprite_vector_4e:
-       data >6050
-       data >75b6
+       data >6054
+       data >6c98
 sprite_vector_50:
-       data >6050
-       data >78f0
+       data >6054
+       data >6fd2
 sprite_vector_52:
-       data >6050
-       data >7c32
+       data >6054
+       data >7314
 sprite_vector_54:
-       data >6052
-       data >6000
+       data >6054
+       data >765e
 sprite_vector_56:
-       data >6052
-       data >6352
+       data >6054
+       data >79b0
 sprite_vector_58:
-       data >6052
-       data >66ac
+       data >6056
+       data >6000
 sprite_vector_5a:
-       data >6052
-       data >6a0e
+       data >6056
+       data >6362
 sprite_vector_5c:
-       data >6052
-       data >6d78
+       data >6056
+       data >66cc
 sprite_vector_5e:
-       data >6052
-       data >70ea
+       data >6056
+       data >6a3e
 sprite_vector_60:
-       data >6052
-       data >7464
+       data >6056
+       data >6db8
 sprite_vector_62:
-       data >6052
-       data >77e6
+       data >6056
+       data >713a
 sprite_vector_64:
-       data >6052
-       data >7b70
+       data >6056
+       data >74c4
 sprite_vector_66:
-       data >6054
-       data >6000
+       data >6056
+       data >7856
 sprite_vector_68:
-       data >6054
-       data >639a
+       data >6056
+       data >7bf0
 sprite_vector_6a:
-       data >6054
-       data >673c
+       data >6058
+       data >6000
 sprite_vector_6c:
-       data >6054
-       data >6ae6
+       data >6058
+       data >63aa
 sprite_vector_6e:
-       data >6054
-       data >6e98
+       data >6058
+       data >675c
 sprite_vector_70:
-       data >6054
-       data >7252
+       data >6058
+       data >6b16
 sprite_vector_72:
-       data >6054
-       data >7614
+       data >6058
+       data >6ed8
 sprite_vector_74:
-       data >6054
-       data >79de
+       data >6058
+       data >72a2
 sprite_vector_76:
-       data >6056
-       data >6000
+       data >6058
+       data >7674
 sprite_vector_78:
-       data >6056
-       data >63da
+       data >6058
+       data >7a4e
 sprite_vector_7a:
-       data >6056
-       data >67bc
+       data >605a
+       data >6000
 sprite_vector_7c:
-       data >6056
-       data >6ba6
+       data >605a
+       data >63ea
 sprite_vector_7e:
-       data >6056
-       data >6f98
+       data >605a
+       data >67dc
 sprite_vector_80:
-       data >6056
-       data >7392
+       data >605a
+       data >6bd6
 sprite_vector_82:
-       data >6056
-       data >7794
+       data >605a
+       data >6fd8
 sprite_vector_84:
-       data >6056
-       data >7ba2
+       data >605a
+       data >73e6
 sprite_vector_86:
-       data >6058
-       data >6000
+       data >605a
+       data >7800
 sprite_vector_88:
-       data >6058
-       data >6426
+       data >605c
+       data >6000
 sprite_vector_8a:
-       data >6058
-       data >6858
+       data >605c
+       data >6432
 sprite_vector_8c:
-       data >6058
-       data >6c96
+       data >605c
+       data >6870
 sprite_vector_8e:
-       data >6058
-       data >70e0
+       data >605c
+       data >6cba
 sprite_vector_90:
-       data >6058
-       data >7536
+       data >605c
+       data >7110
 sprite_vector_92:
-       data >6058
-       data >7998
+       data >605c
+       data >7572
 sprite_vector_94:
-       data >605a
-       data >6000
+       data >605c
+       data >79e0
 sprite_vector_96:
-       data >605a
-       data >647a
+       data >605e
+       data >6000
 sprite_vector_98:
-       data >605a
-       data >6900
+       data >605e
+       data >6486
 sprite_vector_9a:
-       data >605a
-       data >6d92
+       data >605e
+       data >6918
 sprite_vector_9c:
-       data >605a
-       data >7230
+       data >605e
+       data >6db6
 sprite_vector_9e:
-       data >605a
-       data >76da
+       data >605e
+       data >7260
 sprite_vector_a0:
-       data >605c
-       data >6000
+       data >605e
+       data >7716
 sprite_vector_a2:
-       data >605c
-       data >64c2
+       data >6060
+       data >6000
 sprite_vector_a4:
-       data >605c
-       data >6990
+       data >6060
+       data >64ce
 sprite_vector_a6:
-       data >605c
-       data >6e6a
+       data >6060
+       data >69a8
 sprite_vector_a8:
-       data >605c
-       data >7350
+       data >6060
+       data >6e8e
 sprite_vector_aa:
-       data >605c
-       data >7842
+       data >6060
+       data >7380
 sprite_vector_ac:
-       data >605e
-       data >6000
+       data >6060
+       data >787e
 sprite_vector_ae:
-       data >605e
-       data >650a
-sprite_vector_b0:
-       data >605e
-       data >6a20
-sprite_vector_b2:
-       data >605e
-       data >6f42
-sprite_vector_b4:
-       data >605e
-       data >7470
-sprite_vector_b6:
-       data >605e
-       data >79aa
-sprite_vector_b8:
-       data >6060
+       data >6062
        data >6000
+sprite_vector_b0:
+       data >6062
+       data >6516
+sprite_vector_b2:
+       data >6062
+       data >6a38
+sprite_vector_b4:
+       data >6062
+       data >6f66
+sprite_vector_b6:
+       data >6062
+       data >74a0
+sprite_vector_b8:
+       data >6062
+       data >79e6
 sprite_vector_ba:
-       data >6060
-       data >6552
+       data >6064
+       data >6000
 sprite_vector_bc:
-       data >6060
-       data >6ab0
+       data >6064
+       data >655e
 sprite_vector_be:
-       data >6060
-       data >701a
+       data >6064
+       data >6ac8
 sprite_vector_c0:
-       data >6060
-       data >7590
+       data >6064
+       data >703e

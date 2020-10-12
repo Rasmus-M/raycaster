@@ -7,6 +7,7 @@ public class TexGen2 {
     static final int textureHeight = 64;
 
     static int[] heights = {
+        0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 60, 62,
         64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 84, 86, 88, 90, 92, 94, 96, 98, 100, 102, 104, 106, 108, 110,
         112, 114, 116, 118, 120, 122, 124, 126, 128, 130, 132, 134, 136, 138, 140, 142, 144, 146, 148, 150,
         152, 154, 156, 158, 160, 162, 164, 166, 168, 170, 172, 174, 176, 178, 180, 182, 184, 186, 188, 190, 192
@@ -111,7 +112,7 @@ public class TexGen2 {
                 s.append("!      inc  r1\n");
                 s.append("!      inct r0\n");
                 r0inc += 2;
-                r1inc++;
+                r1inc += 2;
             } else if (dy == 3) {
                 s.append("!      movb *r0+,r13\n");
                 s.append("       jeq  !\n");
@@ -121,7 +122,7 @@ public class TexGen2 {
                 s.append("!      inc  r1\n");
                 s.append("!      inct r0\n");
                 r0inc += 3;
-                r1inc++;
+                r1inc += 2;
             } else {
                 s.append("!      movb *r0,r13\n");
                 s.append("       jeq  !\n");
@@ -131,14 +132,16 @@ public class TexGen2 {
                 s.append("!      inc  r1\n");
                 s.append("!      ai   r0,").append(dy).append("\n");
                 r0inc += dy;
-                r1inc++;
+                r1inc += 2;
             }
         }
+        System.out.println("Height = " + height);
+        System.out.println("Sequence = " + toString(sequence));
         if (r0inc != textureHeight) {
             System.out.println("r0inc is " + r0inc + ", should be " + textureHeight);
         }
         if (r1inc != height * 2) {
-            System.out.println("r1inc is " + r1inc + ", should be " + height);
+            System.out.println("r1inc is " + r1inc + ", should be " + height * 2);
         }
         s.append("!      rt\n");
         return s;
@@ -176,7 +179,7 @@ public class TexGen2 {
         double dy = (double) textureHeight / height;
         double y = height <= screenHeight ? 0 : dy * (height - screenHeight) / 2;
         double oldY = y;
-        for (int i = 0; i < adjustedHeight - 1; i++) {
+        for (int i = 0; i < adjustedHeight; i++) {
             y += dy;
             if (y - oldY >= 1.0) {
                 result[i] = (int) Math.floor(y - oldY);
@@ -194,5 +197,13 @@ public class TexGen2 {
             hex = "0" + hex;
         }
         return ">" + hex;
+    }
+
+    String toString(int[] sequence) {
+        StringBuilder sb = new StringBuilder();
+        for (int dy : sequence) {
+            sb.append(dy).append(",");
+        }
+        return sb.toString();
     }
 }

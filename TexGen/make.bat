@@ -17,3 +17,5 @@ xas99.py -b -R sprite-bank45.a99 -o ../bin/sprite-bank-45.bin
 xas99.py -b -R sprite-bank46.a99 -o ../bin/sprite-bank-46.bin
 xas99.py -b -R sprite-bank47.a99 -o ../bin/sprite-bank-47.bin
 xas99.py -b -R sprite-bank48.a99 -o ../bin/sprite-bank-48.bin
+xas99.py -b -R sprite-bank49.a99 -o ../bin/sprite-bank-49.bin
+xas99.py -b -R sprite-bank50.a99 -o ../bin/sprite-bank-50.bin
