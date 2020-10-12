@@ -204,301 +204,322 @@ n_doors:
 
 door_1_init:
        data 0
-       data 1
+       data 2
        data object_type_eye
        byte >1a
-       byte >02
+       byte >06
+       data object_type_box
+       byte >1a
+       byte >07
 door_2_init:
        data 0
        data 1
        data object_type_blob
        byte >1e
-       byte >02
+       byte >04
 door_3_init:
        data 0
        data 1
        data object_type_mon4
-       byte >3a
-       byte >02
+       byte >3d
+       byte >03
 door_4_init:
        data 0
        data 1
        data object_type_mon5
        byte >0b
-       byte >03
+       byte >01
 door_5_init:
        data 0
        data 1
        data object_type_mon6
-       byte >2f
-       byte >03
+       byte >32
+       byte >07
 door_6_init:
        data 0
        data 1
        data object_type_mon7
        byte >3c
-       byte >06
+       byte >08
 door_7_init:
        data 0
        data 1
        data object_type_mon8
        byte >07
-       byte >07
+       byte >0c
 door_8_init:
        data 0
        data 1
        data object_type_mon9
        byte >16
-       byte >07
+       byte >09
 door_9_init:
        data 0
        data 1
        data object_type_mon10
-       byte >26
-       byte >07
+       byte >28
+       byte >06
 door_10_init:
        data 0
        data 1
        data object_type_mon11
        byte >11
-       byte >08
+       byte >06
 door_11_init:
        data 0
        data 1
        data object_type_mon12
-       byte >39
-       byte >08
+       byte >3c
+       byte >0d
 door_12_init:
        data 0
        data 1
        data object_type_mon13
-       byte >04
-       byte >0a
+       byte >02
+       byte >0f
 door_13_init:
        data 0
        data 1
        data object_type_mon14
-       byte >0a
-       byte >0a
+       byte >0c
+       byte >09
 door_14_init:
        data 0
        data 1
        data object_type_mon15
        byte >1f
-       byte >0b
+       byte >08
 door_15_init:
        data 0
        data 1
        data object_type_mon16
        byte >2d
-       byte >0d
+       byte >10
 door_16_init:
        data 0
-       data 1
+       data 2
        data object_type_mon17
        byte >10
+       byte >13
+       data object_type_obj2
        byte >0e
+       byte >11
 door_17_init:
        data 0
        data 1
        data object_type_mon18
        byte >1a
-       byte >0f
+       byte >12
 door_18_init:
        data 0
        data 1
        data object_type_mon19
-       byte >09
-       byte >11
+       byte >08
+       byte >14
 door_19_init:
        data 0
        data 1
        data object_type_mon20
        byte >02
-       byte >12
+       byte >15
 door_20_init:
        data 0
        data 1
        data object_type_mon21
-       byte >38
+       byte >3d
        byte >12
 door_21_init:
        data 0
        data 1
        data object_type_mon22
-       byte >2b
+       byte >29
        byte >14
 door_22_init:
        data 0
        data 1
        data object_type_mon23
-       byte >2f
+       byte >31
        byte >14
 door_23_init:
        data 0
        data 1
        data object_type_mon24
        byte >2d
-       byte >16
+       byte >18
 door_24_init:
        data 0
        data 1
        data object_type_mon25
-       byte >0b
-       byte >18
+       byte >0c
+       byte >1b
 door_25_init:
        data 0
-       data 1
+       data 2
        data object_type_mon26
+       byte >1a
        byte >18
-       byte >19
+       data object_type_mon26
+       byte >1e
+       byte >1b
 door_26_init:
        data 0
        data 1
        data object_type_mon1
-       byte >06
-       byte >1a
+       byte >04
+       byte >18
 door_27_init:
        data 0
        data 1
        data object_type_mon2
-       byte >38
+       byte >3d
        byte >1a
 door_28_init:
        data 0
        data 1
        data object_type_mon3
        byte >21
-       byte >1c
+       byte >1a
 door_29_init:
        data 0
        data 1
        data object_type_mon4
-       byte >12
-       byte >1d
+       byte >17
+       byte >1f
 door_30_init:
        data 0
        data 1
        data object_type_mon5
        byte >3c
-       byte >1d
+       byte >20
 door_31_init:
        data 0
        data 1
        data object_type_mon6
        byte >0c
-       byte >1e
+       byte >21
 door_32_init:
        data 0
        data 1
        data object_type_mon7
        byte >04
-       byte >1f
+       byte >2b
 door_33_init:
        data 0
        data 1
        data object_type_mon8
-       byte >1b
-       byte >1f
+       byte >1a
+       byte >23
 door_34_init:
        data 0
        data 1
        data object_type_mon9
-       byte >03
-       byte >21
+       byte >01
+       byte >22
 door_35_init:
        data 0
        data 1
        data object_type_mon10
-       byte >03
-       byte >25
+       byte >02
+       byte >27
 door_36_init:
        data 0
        data 1
        data object_type_mon11
-       byte >10
-       byte >25
+       byte >13
+       byte >23
 door_37_init:
        data 0
        data 1
        data object_type_mon12
-       byte >0b
+       byte >08
        byte >26
 door_38_init:
        data 0
        data 1
        data object_type_mon13
-       byte >38
-       byte >26
+       byte >3a
+       byte >27
 door_39_init:
        data 0
        data 1
        data object_type_mon14
        byte >28
-       byte >29
+       byte >2b
 door_40_init:
        data 0
-       data 1
+       data 3
        data object_type_mon15
-       byte >09
+       byte >0e
+       byte >29
+       data object_type_mon16
+       byte >0f
+       byte >30
+       data object_type_mon17
+       byte >12
        byte >2c
 door_41_init:
        data 0
        data 1
        data object_type_mon16
-       byte >17
-       byte >2e
+       byte >19
+       byte >2f
 door_42_init:
        data 0
        data 1
        data object_type_mon17
        byte >22
-       byte >2f
+       byte >29
 door_43_init:
        data 0
-       data 1
+       data 3
+       data object_type_box
+       byte >05
+       byte >2e
        data object_type_mon18
-       byte >03
+       byte >07
+       byte >2e
+       data object_type_mon19
+       byte >09
        byte >31
 door_44_init:
        data 0
        data 1
        data object_type_mon19
        byte >28
-       byte >31
+       byte >2f
 door_45_init:
        data 0
        data 1
        data object_type_mon20
        byte >0f
-       byte >32
+       byte >37
 door_46_init:
        data 0
        data 1
        data object_type_mon21
-       byte >15
+       byte >12
        byte >33
 door_47_init:
        data 0
        data 1
        data object_type_mon22
-       byte >38
-       byte >35
+       byte >39
+       byte >37
 door_48_init:
        data 0
        data 1
        data object_type_mon23
        byte >32
-       byte >39
+       byte >32
 door_49_init:
        data 0
        data 1
        data object_type_mon24
-       byte >39
+       byte >3b
        byte >3b
 door_50_init:
        data 0
        data 1
        data object_type_mon25
-       byte >32
+       byte >39
        byte >3e
