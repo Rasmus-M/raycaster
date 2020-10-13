@@ -246,7 +246,7 @@ main_loop:
        bl   @draw_bullets
        bl   @bullet_collisions
        bl   @object_collisions
-;      bl   @update_health_bar
+       bl   @update_health_bar
 ;      bl   @display_score
        bl   @speak
        mov  @status,r0
@@ -1641,13 +1641,13 @@ move_enemies_8:
        mov  r0,@object_x(r4)
        mov  r1,@object_y(r4)
 *      Fire
-;move_enemies_9:
-;       bl   @rand
-;       ci   r0,>f800
-;       jl   move_enemies_2
-;       seto @object_attacking(r4)
-;       dec  @health
-;       bl   @play_shot_2
+move_enemies_9:
+       bl   @rand
+       ci   r0,>f800
+       jl   move_enemies_2
+       seto @object_attacking(r4)
+       dec  @health
+       bl   @play_shot_2
 *      Next object
 move_enemies_2:
        ai   r4,object_size
