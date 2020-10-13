@@ -235,15 +235,15 @@ main_loop:
        clr  @redraw_required
        bl   @user_input
        bl   @set_vdp_regs
+       bl   @draw_bullets
        bl   @cast_if_required
        bl   @draw_screen
        bl   @draw_objects
        bl   @upload_screen
-       bl   @move_enemies
-       bl   @move_bullets
-       bl   @draw_bullets
        bl   @bullet_collisions
        bl   @object_collisions
+       bl   @move_enemies
+       bl   @move_bullets
        bl   @update_health_bar
 ;      bl   @display_score
        bl   @speak
