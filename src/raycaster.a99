@@ -302,6 +302,111 @@ check_int_1:
        rt
 *// check_int
 
+*********************************************************************
+*
+* Read user input
+*
+user_input:
+       .proc
+*      Map
+       li   r0,KEY_M
+       bl   @check_key
+       jeq  user_input_0
+       bl   @display_map
+       jmp  user_input_8
+*      Joystick
+user_input_0:
+       li   r0,JOY_FI
+       bl   @check_key
+*      Fire
+       jeq  user_input_1
+       abs  @bullet_active
+       jne  user_input_1
+       bl   @fire_bullet
+*      Left
+user_input_1:
+       tb   1
+       jeq  user_input_2
+       mov  @angle,r0
+       ai   r0,-64                    ; Turn left
+       andi r0,angle_mask
+       mov  r0,@angle
+       srl  r0,4
+       mov  r0,r1
+       ai   r0,dirs
+       mov  *r0+,@dx
+       mov  *r0,@dy
+       srl  r1,2
+       mov  r1,@sal_no
+       seto @cast_required
+       seto @redraw_required
+       jmp  user_input_3
+user_input_2:
+*      Right
+       tb   2
+       jeq  user_input_3
+       mov  @angle,r0
+       ai   r0,64                     ; Turn right
+       andi r0,angle_mask
+       mov  r0,@angle
+       srl  r0,4
+       mov  r0,r1
+       ai   r0,dirs
+       mov  *r0+,@dx
+       mov  *r0,@dy
+       srl  r1,2
+       mov  r1,@sal_no
+       seto @cast_required
+       seto @redraw_required
+user_input_3:
+*      Down
+       tb   3
+       jeq  user_input_4
+       mov  @x,r0
+       s    @dx,r0
+       mov  @y,r1
+       s    @dy,r1
+       bl   @get_map_value
+       jne  user_input_8
+       jmp  user_input_5
+user_input_4:
+*      Up
+       tb   4
+       jeq  user_input_8
+       mov  @x,r0
+       a    @dx,r0
+       mov  @y,r1
+       a    @dy,r1
+       bl   @get_map_value
+       jeq  user_input_5
+       cb   @goal,r2                   ; Check for goal
+       jne  user_input_9
+       inc  @status                    ; Finish
+       jmp  user_input_8
+user_input_9:
+       ci   r2,first_texture_index*256 ; Check for texture
+       jhe  user_input_8               ; Cannot move through texture
+       andi r2,>0100                   ; Test secret door bit
+       jeq  user_input_8               ; If not set we cannot move
+*      Move
+user_input_5:
+       mov  r0,@x
+       mov  r1,@y
+       seto @cast_required
+user_input_8:
+       bl   @check_int
+       .endproc
+dirs:
+       data >0100,>0000
+       data >0100,>0100
+       data >0000,>0100
+       data ->0100,>0100
+       data ->0100,>0000
+       data ->0100,->0100
+       data >0000,->0100
+       data >0100,->0100
+*// user_input
+
 ***************************************************************
 *
 * Set VDP registers
@@ -1418,111 +1523,6 @@ upload_screen_loop:
 upload_screen_loop_end:
        equ  $
 *// upload_screen_loop
-
-*********************************************************************
-*
-* Read user input
-*
-user_input:
-       .proc
-*      Map
-       li   r0,KEY_M
-       bl   @check_key
-       jeq  user_input_0
-       bl   @display_map
-       jmp  user_input_8
-*      Joystick
-user_input_0:
-       li   r0,JOY_FI
-       bl   @check_key
-*      Fire
-       jeq  user_input_1
-       abs  @bullet_active
-       jne  user_input_1
-       bl   @fire_bullet
-*      Left
-user_input_1:
-       tb   1
-       jeq  user_input_2
-       mov  @angle,r0
-       ai   r0,-64                    ; Turn left
-       andi r0,angle_mask
-       mov  r0,@angle
-       srl  r0,4
-       mov  r0,r1
-       ai   r0,dirs
-       mov  *r0+,@dx
-       mov  *r0,@dy
-       srl  r1,2
-       mov  r1,@sal_no
-       seto @cast_required
-       seto @redraw_required
-       jmp  user_input_3
-user_input_2:
-*      Right
-       tb   2
-       jeq  user_input_3
-       mov  @angle,r0
-       ai   r0,64                     ; Turn right
-       andi r0,angle_mask
-       mov  r0,@angle
-       srl  r0,4
-       mov  r0,r1
-       ai   r0,dirs
-       mov  *r0+,@dx
-       mov  *r0,@dy
-       srl  r1,2
-       mov  r1,@sal_no
-       seto @cast_required
-       seto @redraw_required
-user_input_3:
-*      Down
-       tb   3
-       jeq  user_input_4
-       mov  @x,r0
-       s    @dx,r0
-       mov  @y,r1
-       s    @dy,r1
-       bl   @get_map_value
-       jne  user_input_8
-       jmp  user_input_5
-user_input_4:
-*      Up
-       tb   4
-       jeq  user_input_8
-       mov  @x,r0
-       a    @dx,r0
-       mov  @y,r1
-       a    @dy,r1
-       bl   @get_map_value
-       jeq  user_input_5
-       cb   @goal,r2                   ; Check for goal
-       jne  user_input_9
-       inc  @status                    ; Finish
-       jmp  user_input_8
-user_input_9:
-       ci   r2,first_texture_index*256 ; Check for texture
-       jhe  user_input_8               ; Cannot move through texture
-       andi r2,>0100                   ; Test secret door bit
-       jeq  user_input_8               ; If not set we cannot move
-*      Move
-user_input_5:
-       mov  r0,@x
-       mov  r1,@y
-       seto @cast_required
-user_input_8:
-       bl   @check_int
-       .endproc
-dirs:
-       data >0100,>0000
-       data >0100,>0100
-       data >0000,>0100
-       data ->0100,>0100
-       data ->0100,>0000
-       data ->0100,->0100
-       data >0000,->0100
-       data >0100,->0100
-*// user_input
 
 *********************************************************************
 *
