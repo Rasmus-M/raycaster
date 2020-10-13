@@ -80,7 +80,7 @@ n_sprite_patterns:
        equ  25
 n_fixed_sprites:
        equ  10
-guard_speed:
+enemy_speed:
        equ  >0010
 bullet_speed_z:
        equ  ->0c00
@@ -112,8 +112,6 @@ texture_size:
        equ  (texture_width/2)*texture_height;
 background_address:
        equ  >6800
-first_unrolled_sprite:
-       equ  0
 
 **
 * Scratch pad
@@ -186,12 +184,12 @@ column_ptr:
        equ  distance+2
 cast_required:
        equ  column_ptr+2
-background_bank_select:
-       equ  cast_required+2
 redraw_required:
-       equ  background_bank_select+2
-snd_channel_1:
+       equ  cast_required+2
+background_bank_select:
        equ  redraw_required+2
+snd_channel_1:
+       equ  background_bank_select+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -1262,30 +1260,12 @@ draw_sprite_1:
        srl  r13,8                      ; Increment as FP 8.8
 draw_sprite_2:
        mov  r13,r5                     ; Texture X offset increment per pixel FP 8.8
-*      Texture Y offset (r6) and increment (r7)
-       ci   r3,first_unrolled_sprite
-       jlt  draw_sprite_2a
+*      Address of unrolled drawing code
        mov  r3,r6
        sla  r6,1
        ai   r6,sprite_index
        mov  *r6+,r7
-       mov  *r6,r14
-       jmp  draw_sprite_5
-draw_sprite_2a:
-       clr  r6                         ; Texture Y offset FP 8.8
-       ci   r3,texture_height          ; Check how to calulate texture height / sprite height
-       jgt  draw_sprite_3
-       clr  r13                        ; Texture height FP 24.8
-       li   r14,texture_height*256
-       div  r3,r13                     ; Div by sprite height FP 16.0 -> y-step as FP 8.8
-       jmp  draw_sprite_4
-draw_sprite_3:
-       li   r13,texture_height         ; Texture height FP 16.16
-       clr  r14
-       div  r3,r13                     ; Div sprite height FP 16.0 -> y-step as FP 0.16
-       srl  r13,8                      ; y-step as FP 8.8
-draw_sprite_4:
-       mov  r13,r7                     ; Texture X offset increment per pixel FP 8.8
+       mov  *r6,r6
 *      Column loop
 draw_sprite_5:
        mov  r8,r13                     ; Screen column
@@ -1321,29 +1301,8 @@ draw_sprite_7:
        ori  r0,>0800                   ; Modify texture address for odd pixels
 *      Row loop
 draw_sprite_8:
-       ci   r3,first_unrolled_sprite
-       jlt  draw_sprite_8a
-       seto *r7                        ; Select ROM bank for draiing routine
-       bl   *r14                       ; Call drawing routine. On return r0 += texture_height, r1 += height
-       jmp  draw_sprite_11
-draw_sprite_8a:
-       mov  r3,r14                     ; Set screen row counter to height
-draw_sprite_9:
-       mov  r0,r13                     ; Texture column start address
-       ab   r6,*r15                    ; Add offset to LSB (r15 is r6 low byte)
-       movb *r13,r13                   ; Get texture byte
-       jeq  draw_sprite_10             ; Skip if zero
-       szcb r9,*r1                     ; Remove existing pixel from screen buffer
-       socb r13,*r1+                   ; Set new pixel in screen buffer
-       a    r7,r6                      ; Increment texture y offset
-       dec  r14                        ; Screen row counter
-       jne  draw_sprite_9              ; Next row
-       jmp  draw_sprite_11             ; Jump out
-draw_sprite_10:
-       inc  r1                         ; Next screen buffer address
-       a    r7,r6                      ; Increment texture y offset
-       dec  r14                        ; Screen row counter
-       jne  draw_sprite_9              ; Next row
+       seto *r7                        ; Select ROM bank for drawing routine
+       bl   *r6                        ; Call drawing routine. On return r0 += texture_height, r1 += height
 draw_sprite_11:
        s    r3,r1                      ; Move screen buffer address back to top of column
        coc  @one,r8                    ; Test if screen column is even/odd
@@ -1351,7 +1310,6 @@ draw_sprite_11:
        ai   r1,screen_height           ; For odd column, move screen buffer address to next column
 draw_sprite_12:
        a    r5,r4                      ; Increment texture x offset
-       clr  r6                         ; Clear texture y offset
        inc  r8                         ; Next column
        dec  r2                         ; Column counter (width)
        jne  draw_sprite_5              ; Next column
@@ -1359,7 +1317,7 @@ draw_sprite_12:
        .pop r15
        .endproc
 full_redraw_bit:
-       data 1024
+       data >0400
 *// draw_sprite
 
 *********************************************************************
@@ -1601,27 +1559,27 @@ move_enemies_1:
        mov  r2,r2
        jeq  move_enemies_5
        jlt  move_enemies_4
-       ci   r2,guard_speed
+       ci   r2,enemy_speed
        jlt  move_enemies_5
-       li   r2,guard_speed
+       li   r2,enemy_speed
        jmp  move_enemies_5
 move_enemies_4:
-       ci   r2,-guard_speed
+       ci   r2,-enemy_speed
        jgt  move_enemies_5
-       li   r2,-guard_speed
+       li   r2,-enemy_speed
 move_enemies_5:
 *      y
        mov  r3,r3
        jeq  move_enemies_7
        jlt  move_enemies_6
-       ci   r3,guard_speed
+       ci   r3,enemy_speed
        jlt  move_enemies_7
-       li   r3,guard_speed
+       li   r3,enemy_speed
        jmp  move_enemies_7
 move_enemies_6:
-       ci   r3,-guard_speed
+       ci   r3,-enemy_speed
        jgt  move_enemies_7
-       li   r3,-guard_speed
+       li   r3,-enemy_speed
 move_enemies_7:
 *      Check map
        mov  r2,r6
