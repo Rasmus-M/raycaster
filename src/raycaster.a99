@@ -66,14 +66,14 @@ max_steps:
        equ  24
 max_wall_height:
        equ  528
-object_height:
-       equ  192
+max_object_width:
+       equ  32
+max_object_height:
+       equ  172
 max_object_distance:
        equ  16
 max_bullet_distance:
        equ  16
-max_object_width:
-       equ  32
 max_objects:
        equ  16
 n_sprite_patterns:
@@ -1235,6 +1235,7 @@ draw_objects_1:
        jhe  draw_objects_2
 *      Look up angle
        bl   @atan2
+       mov  r6,@object_angle(r4)
        srl  r6,7
        s    @angle,r6
        ci   r6,-n_rays-max_object_width
@@ -1271,11 +1272,11 @@ draw_object:
 *      Width, Height
        ci   r7,>0100
        jgt  draw_object_1
-       li   r2,object_height
+       li   r2,max_object_height
        jmp  draw_object_2
 draw_object_1:
        clr  r2
-       li   r3,object_height*256       ; 192 as FP 24.8
+       li   r3,max_object_height*256       ; 192 as FP 24.8
        div  r7,r2                      ; Size (FP 16.0) = 192 / distance
 draw_object_2:
        mov  r2,r3                      ; Height = size
@@ -1598,12 +1599,17 @@ move_enemies_8:
        mov  r0,@object_x(r4)
        mov  r1,@object_y(r4)
 *      Attack
+       ci   r7,>0500
+       jgt  move_enemies_2
        bl   @rand
        ci   r0,>f800
        jl   move_enemies_2
+       bl   @path_clear
+       jne  move_enemies_2
        seto @object_attacking(r4)
        dec  @health
        bl   @play_shot_2
+       jmp  move_enemies_3
 *      Next object
 move_enemies_2:
        ai   r4,object_size
@@ -2006,6 +2012,45 @@ open_door_2:
 open_door_3:
        .endproc
 *// open_door
+
+*********************************************************************
+*
+* Path clear
+* Is path from object to player clear?
+*
+* r4: Object pointer
+*
+* On return eq is set if path is clear.
+*
+path_clear:
+       .proc
+       mov  @object_x(r4),r0
+       mov  @object_y(r4),r1
+       mov  @object_angle(r4),r6
+       ai   r6,>8000
+       srl  r6,8
+       sla  r6,1
+       mov  @cos_table(r6),r7
+       mov  @sin_table(r6),r8
+       li   r6,max_steps
+path_clear_1:
+       bl   @get_map_value
+       jne  path_clear_3
+       cb   r0,@x
+       jne  path_clear_2
+       cb   r1,@y
+       jne  path_clear_2
+       .pop r11
+       c    r1,r1
+       rt
+path_clear_2:
+       a    r7,r0
+       a    r8,r1
+       dec  r6
+       jne  path_clear_1
+path_clear_3:
+       .endproc
+*// path_clear
 
 *********************************************************************
 *
@@ -2774,8 +2819,10 @@ object_attacking:
        equ  12
 object_health:
        equ  14
-object_size:
+object_angle:
        equ  16
+object_size:
+       equ  18
 
 **
 * Object list
