@@ -1247,7 +1247,6 @@ draw_objects_1:
        jgt  draw_objects_2
 *      Object is within view and distance
        bl   @draw_object
-;      jmp  draw_objects_3             ; Only draw one object
 draw_objects_2:
        ai   r4,object_size
        dec  r5
@@ -1598,8 +1597,7 @@ move_enemies_8:
 *      Move
        mov  r0,@object_x(r4)
        mov  r1,@object_y(r4)
-*      Fire
-move_enemies_9:
+*      Attack
        bl   @rand
        ci   r0,>f800
        jl   move_enemies_2
