@@ -186,10 +186,12 @@ column_ptr:
        equ  distance+2
 cast_required:
        equ  column_ptr+2
-muzzle_flash:
+background_bank_select:
        equ  cast_required+2
+redraw_required:
+       equ  background_bank_select+2
 snd_channel_1:
-       equ  muzzle_flash+2
+       equ  redraw_required+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -210,16 +212,8 @@ speech_ptr:
        equ  get_speech_status+6
 speech_on:
        equ  speech_ptr+2
-background_bank_select:
-       equ  speech_on+2
-old_angle:
-       equ  background_bank_select+2
-angle_diff:
-       equ  old_angle+2
-old_even_height:
-       equ  angle_diff+2
 cast_ray_loop_pad:
-       equ  old_even_height+2
+       equ  speech_on+2
 upload_screen_loop_pad:
        equ  cast_ray_loop_pad+40
 pad_max:
@@ -239,21 +233,14 @@ restart:
        bl   @init_level
 main_loop:
        clr  @interrupt_count
-       bl   @vsync
+       bl   @check_int
+       clr  @redraw_required
+       bl   @user_input
        bl   @set_vdp_regs
-       abs  @cast_required
-       jeq  main_loop_1
-       bl   @cast_rays
-       clr  @cast_required
-       jmp  main_loop_2
-main_loop_1:
-       bl   @skip_cast_rays
-       bl   @vsync
-main_loop_2:
+       bl   @cast_if_required
        bl   @draw_screen
        bl   @draw_objects
        bl   @upload_screen
-       bl   @user_input
        bl   @move_enemies
        bl   @move_bullets
        bl   @draw_bullets
@@ -332,6 +319,24 @@ set_vdp_regs:
 
 *********************************************************************
 *
+* Cast if required
+*
+cast_if_required:
+       .proc
+       abs  @cast_required
+       jeq  cast_if_required_1
+       bl   @cast_rays
+       clr  @cast_required
+       jmp  cast_if_required_2
+cast_if_required_1:
+       bl   @skip_cast_rays
+       ;      bl   @vsync
+cast_if_required_2:
+       .endproc
+*// cast_if_required
+
+*********************************************************************
+*
 * Cast rays
 *
 cast_rays:
@@ -386,14 +391,17 @@ cast_rays_3:
 *
 * Skip cast rays
 *
+* Restore all column values to those from the last cast,
+* because these may have been changed by sprite drawing.
+*
 skip_cast_rays:
        li   r4,columns
        li   r5,n_rays                  ; Number of columns
 skip_cast_rays_1:
-       mov  @column_height(r4),@column_height_old(r4)
-       szc  @full_redraw_bit,@column_height(r4)
-       mov  @column_color(r4),@column_color_old(r4)
-       mov  @column_distance_copy(r4),@column_distance(r4)
+       mov  @column_height(r4),@column_height_old(r4)        ; Restore height
+       szc  @full_redraw_bit,@column_height(r4)              ; Clear redraw bit
+       mov  @column_color(r4),@column_color_old(r4)          ; Restore color
+       mov  @column_distance_copy(r4),@column_distance(r4)   ; Restore distance
 *      Next column
        ai   r4,column_size
        dec  r5                         ; Count down
@@ -637,9 +645,6 @@ cast_ray_loop_end:
 draw_screen:
        .proc
        bl   @calc_background_bank
-       mov  @angle,r0
-       s    @old_angle,r0
-       mov  r0,@angle_diff
        li   r3,screen_buffer
        li   r4,columns
        clr  r5
@@ -650,7 +655,7 @@ draw_screen_1:
        andi r0,1
        jne  draw_screen_3
 *      Check if column and next can be skipped
-       abs  @angle_diff
+       abs  @redraw_required
        jne  draw_screen_2
        c    @column_height(r4),@column_height_old(r4)
        jne  draw_screen_2
@@ -686,7 +691,6 @@ draw_screen_5:
        ci   r5,n_rays
        jlt  draw_screen_1
 *      Done
-       mov  @angle,@old_angle
        bl   @check_int
        .endproc
 *// draw_screen
@@ -738,7 +742,7 @@ draw_even_column_10:
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_even_column_3
-       abs  @angle_diff
+       abs  @redraw_required
        jeq  draw_even_column_2
 *      Redraw whole column
        bl   @draw_even_background_pixels
@@ -784,7 +788,7 @@ draw_even_column_5:
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_even_column_8
-       abs  @angle_diff
+       abs  @redraw_required
        jeq  draw_even_column_6
 *      Redraw whole column
        bl   @draw_even_background_pixels
@@ -916,7 +920,7 @@ draw_odd_column_10:
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_odd_column_3
-       abs  @angle_diff
+       abs  @redraw_required
        jeq  draw_odd_column_2
 *      Redraw whole column
        bl   @draw_odd_background_pixels
@@ -962,7 +966,7 @@ draw_odd_column_5:
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_odd_column_8
-       abs  @angle_diff
+       abs  @redraw_required
        jeq  draw_odd_column_6
 *      Redraw whole column
        bl   @draw_odd_background_pixels
@@ -1196,16 +1200,6 @@ draw_object_2:
        jeq  draw_object_11
        bl   @say_phrase
        clr  @object_speech(r4)
-;*      Muzzle flash
-;draw_object_10:
-;       abs  @object_fire(r4)
-;       jeq  draw_object_11
-;       mov  r6,r0
-;       dec  r0
-;       sla  r0,3
-;       ori  r0,>6000
-;       mov  r0,@muzzle_flash
-;       clr  @object_fire(r4)
 draw_object_11:
        .endproc
 *// draw_object
@@ -1374,7 +1368,7 @@ full_redraw_bit:
 *
 upload_screen:
        .proc
-       abs  @angle_diff
+       abs  @redraw_required
        jeq  upload_screen_3
 *      Full update
        li   r0,colrtb
@@ -1504,6 +1498,7 @@ user_input_1:
        srl  r1,2
        mov  r1,@sal_no
        seto @cast_required
+       seto @redraw_required
        jmp  user_input_3
 user_input_2:
 *      Right
@@ -1521,6 +1516,7 @@ user_input_2:
        srl  r1,2
        mov  r1,@sal_no
        seto @cast_required
+       seto @redraw_required
 user_input_3:
 *      Down
        tb   3
@@ -1649,7 +1645,7 @@ move_enemies_8:
 ;       bl   @rand
 ;       ci   r0,>f800
 ;       jl   move_enemies_2
-;       seto @object_fire(r4)
+;       seto @object_attacking(r4)
 ;       dec  @health
 ;       bl   @play_shot_2
 *      Next object
@@ -1690,14 +1686,14 @@ draw_bullets:
        ai   r0,spratb+(n_fixed_sprites*4)
        bl   @vwad                      ; Set VDP address
        abs  @bullet_active
-       jeq  draw_bullets_0
+       jeq  draw_bullets_1
 *      Check angle
        mov  @bullet_angle,r0
        s    @angle,r0                  ; Subtract player angle
        ci   r0,-n_rays
-       jlt  draw_bullets_0
+       jlt  draw_bullets_1
        ci   r0,n_rays
-       jgt  draw_bullets_0
+       jgt  draw_bullets_1
        ai   r0,>78                     ; Center
        mov  @bullet_distance,r1
        srl  r1,8
@@ -1707,16 +1703,6 @@ draw_bullets:
        movb @r0lb,*r15                 ; x
        movb r1,*r15                    ; pattern
        movb @bullet_color_byte,*r15    ; color
-*      Muzzle flash
-draw_bullets_0:
-       mov  @muzzle_flash,r0
-       jeq  draw_bullets_1
-       movb r0,*r15
-       movb @r0lb,*r15
-       li   r0,>600b
-       movb r0,*r15
-       movb @r0lb,*r15
-       clr  @muzzle_flash
 *      End marker
 draw_bullets_1:
        movb @end_marker_byte,*r15
@@ -1992,7 +1978,7 @@ display_map_2:
        li   r2,64*8
        bl   @vsmw
 *      Upload screen
-       seto @angle_diff
+       seto @redraw_required
        bl   @upload_screen
        .endproc
 map_x:
@@ -2144,7 +2130,7 @@ create_object_1:
        mov  @object_texture_table(r3),@object_texture(r6)
        mov  @object_speech_table(r3),@object_speech(r6)
        mov  @object_health_table(r3),@object_health(r6)
-       clr  @object_fire(r6)
+       clr  @object_attacking(r6)
 *      Next object
        c    r7,@n_objects
        jlt  create_object_3
@@ -2189,7 +2175,6 @@ init_level:
        mov  @start_x,@x
        mov  @start_y,@y
        mov  @start_dir,@angle
-       mov  @start_dir,@old_angle
        mov  @start_dx,@dx
        mov  @start_dy,@dy
        li   r0,initial_health
@@ -2829,7 +2814,7 @@ object_texture:
        equ  8
 object_speech:
        equ  10
-object_fire:
+object_attacking:
        equ  12
 object_health:
        equ  14
