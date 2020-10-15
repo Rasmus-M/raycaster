@@ -758,6 +758,7 @@ draw_screen_1:
        andi r0,1
        jne  draw_screen_3
 *      Check if column and next can be skipped
+*      (if height and texture before and now are the same)
        abs  @redraw_required
        jne  draw_screen_2
        c    @column_height(r4),@column_height_old(r4)
@@ -1460,12 +1461,16 @@ upload_screen_3:
        li   r9,64
        li   r14,vdpwa
 upload_screen_4:
+*      Check if the whole column can be skipped
        abs  @column_skip(r1)
        jeq  upload_screen_5
        ai   r0,64
        ai   r5,192
        jmp  upload_screen_7
 upload_screen_5:
+*      The whole column cannot be skipped, but if the wall height
+*      now and before is 64 or less we only update the middle 3rd.
+*      (optimization possible because ceiling/floor are not changing)
        c    @column_height(r1),r9
        jgt  upload_screen_9
        c    @column_height_old(r1),r9
