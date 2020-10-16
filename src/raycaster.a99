@@ -188,10 +188,8 @@ column_ptr:
        equ  distance+2
 cast_required:
        equ  column_ptr+2
-redraw_required:
-       equ  cast_required+2
 current_background_bank_select:
-       equ  redraw_required+2
+       equ  cast_required+2
 snd_channel_1:
        equ  current_background_bank_select+2
 snd_channel_2:
@@ -236,7 +234,6 @@ restart:
 main_loop:
        clr  @interrupt_count
        bl   @check_int
-       clr  @redraw_required
        bl   @user_input
        bl   @set_vdp_regs
        bl   @draw_bullets
@@ -343,7 +340,6 @@ user_input_1:
        srl  r1,2
        mov  r1,@sal_no
        seto @cast_required
-       seto @redraw_required
        jmp  user_input_3
 user_input_2:
 *      Right
@@ -361,7 +357,6 @@ user_input_2:
        srl  r1,2
        mov  r1,@sal_no
        seto @cast_required
-       seto @redraw_required
 user_input_3:
 *      Down
        tb   3
@@ -506,7 +501,6 @@ skip_cast_rays:
        li   r5,n_rays                  ; Number of columns
 skip_cast_rays_1:
        mov  @column_height(r4),@column_height_old(r4)        ; Restore height
-       szc  @full_redraw_bit,@column_height(r4)              ; Clear redraw bit
        mov  @column_color(r4),@column_color_old(r4)          ; Restore color
        mov  @column_distance_copy(r4),@column_distance(r4)   ; Restore distance
 *      Next column
@@ -752,7 +746,6 @@ cast_ray_loop_end:
 draw_screen:
        .proc
        bl   @calc_background_bank
-       seto @redraw_required
        li   r3,screen_buffer
        li   r4,columns
        clr  r5
@@ -762,25 +755,6 @@ draw_screen_1:
        mov  r5,r0
        andi r0,1
        jne  draw_screen_3
-*      Check if column and next can be skipped
-*      (if height and texture before and now are the same)
-       abs  @redraw_required
-       jne  draw_screen_2
-       c    @column_height(r4),@column_height_old(r4)
-       jne  draw_screen_2
-       c    @column_color(r4),@column_color_old(r4)
-       jne  draw_screen_2
-       c    @column_height+column_size(r4),@column_height_old+column_size(r4)
-       jne  draw_screen_2
-       c    @column_color+column_size(r4),@column_color_old+column_size(r4)
-       jne  draw_screen_2
-*      No need to redraw columns
-       seto @column_skip(r4)
-       ai   r3,screen_height
-       ai   r8,screen_height
-       ai   r4,column_size*2
-       inct r5
-       jmp  draw_screen_5
 draw_screen_2:
 *      Draw even column
        clr  @column_skip(r4)
@@ -859,22 +833,6 @@ draw_even_column_10:
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_even_column_3
-       abs  @redraw_required
-       jeq  draw_even_column_2
-*      Redraw whole column
-       bl   @draw_even_background_pixels
-       jmp  draw_even_column_3
-*      Redraw part or none
-draw_even_column_2:
-       a    r7,r3                      ; Advance screen buffer address
-       a    r7,r8                      ; Advance source address
-       mov  r9,r9                      ; Wall difference
-       jlt  draw_even_column_3         ; New wall taller
-       jeq  draw_even_column_3         ; New wall equal
-*      Redraw part
-       s    r9,r3                      ; Backtrack screen buffer address
-       s    r9,r8                      ; Backtrack source address
-       mov  r9,r2                      ; Number of pixels to draw
        bl   @draw_even_background_pixels
 *      Wall
 draw_even_column_3:
@@ -905,23 +863,7 @@ draw_even_column_5:
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_even_column_8
-       abs  @redraw_required
-       jeq  draw_even_column_6
-*      Redraw whole column
        bl   @draw_even_background_pixels
-       jmp  draw_even_column_8
-*      Redraw part or none
-draw_even_column_6:
-       mov  r9,r9                      ; Old wall height minus new
-       jlt  draw_even_column_7         ; New wall taller
-       jeq  draw_even_column_7         ; New wall equal
-*      Redraw part
-       mov  r2,r12
-       mov  r9,r2                      ; Number of pixels to draw
-       bl   @draw_even_background_pixels
-       s    r9,r12
-       mov  r12,r2
-draw_even_column_7:
        a    r2,r3                      ; Advance screen buffer address
        a    r2,r8                      ; Advance source address
 draw_even_column_8:
@@ -1037,22 +979,6 @@ draw_odd_column_10:
        srl  r2,1                       ; Div 2
        mov  r2,r7                      ; Save height of sky
        jeq  draw_odd_column_3
-       abs  @redraw_required
-       jeq  draw_odd_column_2
-*      Redraw whole column
-       bl   @draw_odd_background_pixels
-       jmp  draw_odd_column_3
-*      Redraw part or none
-draw_odd_column_2:
-       a    r7,r3                      ; Advance screen buffer address
-       a    r7,r8                      ; Advance source address
-       mov  r9,r9                      ; Wall difference
-       jlt  draw_odd_column_3          ; New wall taller
-       jeq  draw_odd_column_3          ; New wall equal
-*      Redraw part
-       s    r9,r3                      ; Backtrack screen buffer address
-       s    r9,r8                      ; Backtrack source address
-       mov  r9,r2                      ; Number of pixels to draw
        bl   @draw_odd_background_pixels
 *      Wall
 draw_odd_column_3:
@@ -1083,25 +1009,7 @@ draw_odd_column_5:
        s    r6,r2                      ; Minus wall height
        s    r7,r2                      ; Minus sky height
        jeq  draw_odd_column_8
-       abs  @redraw_required
-       jeq  draw_odd_column_6
-*      Redraw whole column
        bl   @draw_odd_background_pixels
-       jmp  draw_odd_column_8
-*      Redraw part or none
-draw_odd_column_6:
-       mov  r9,r9                      ; Old wall height minus new
-       jlt  draw_odd_column_7         ; New wall taller
-       jeq  draw_odd_column_7         ; New wall equal
-*      Redraw part
-       mov  r2,r12
-       mov  r9,r2                      ; Number of pixels to draw
-       bl   @draw_odd_background_pixels
-       s    r9,r12
-       mov  r12,r2
-draw_odd_column_7:
-       a    r2,r3                      ; Advance screen buffer address
-       a    r2,r8                      ; Advance source address
 draw_odd_column_8:
        .endproc
 *// draw_odd_column
@@ -1401,7 +1309,6 @@ draw_sprite_5a:
 *      Draw column
 draw_sprite_6:
        mov  r12,@columns+column_distance(r13)    ; Record new distance for column
-       soc  @full_redraw_bit,@columns+column_height(r13)    ; Redraw floor/ceiling next frame
        clr  @columns+column_skip(r13)  ; Upload column this frame
        andi r0,>f000                   ; Round texture address to whole 4K
        mov  r4,r13                     ; Texture x offset
@@ -1435,8 +1342,6 @@ draw_sprite_12:
 *      Return
        .pop r15
        .endproc
-full_redraw_bit:
-       data >0400
 *// draw_sprite
 
 *********************************************************************
@@ -1445,9 +1350,6 @@ full_redraw_bit:
 *
 upload_screen:
        .proc
-       abs  @redraw_required
-       jeq  upload_screen_3
-*      Full update
        li   r0,colrtb
        bl   @vwad
        li   r5,screen_buffer
@@ -1958,7 +1860,6 @@ display_map_2:
        li   r2,64*8
        bl   @vsmw
 *      Upload screen
-       seto @redraw_required
        bl   @upload_screen
        .endproc
 map_x:
