@@ -17,15 +17,15 @@ cd ..
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
-    bin\col-bank7.bin + ^
-    bin\col-bank8.bin + ^
-    bin\col-bank9.bin + ^
-    bin\col-bank10.bin + ^
-    bin\col-bank11.bin + ^
-    bin\col-bank12.bin + ^
-    bin\col-bank13.bin + ^
-    bin\col-bank14.bin + ^
-    bin\col-bank15.bin + ^
+    bin\col-bank-7.bin + ^
+    bin\col-bank-8.bin + ^
+    bin\col-bank-9.bin + ^
+    bin\col-bank-10.bin + ^
+    bin\col-bank-11.bin + ^
+    bin\col-bank-12.bin + ^
+    bin\col-bank-13.bin + ^
+    bin\col-bank-14.bin + ^
+    bin\col-bank-15.bin + ^
     bin\empty-2k.bin + backgrounds\background0even.bin + ^
     bin\empty-2k.bin + backgrounds\background1even.bin + ^
     bin\empty-2k.bin + backgrounds\background2even.bin + ^
