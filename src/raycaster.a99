@@ -99,7 +99,7 @@ first_texture_index:
 initial_health:
        equ  63
 texture_bank_select:
-       equ  >6040
+       equ  >6030
 texture_sams_page:                     ; 16
        equ  >1000
 n_texture_banks:
@@ -110,6 +110,8 @@ texture_height:
        equ  64
 texture_size:
        equ  (texture_width/2)*texture_height;
+background_bank_select:
+       equ  >6040
 background_address:
        equ  >6800
 turn_speed:
@@ -188,10 +190,10 @@ cast_required:
        equ  column_ptr+2
 redraw_required:
        equ  cast_required+2
-background_bank_select:
+current_background_bank_select:
        equ  redraw_required+2
 snd_channel_1:
-       equ  background_bank_select+2
+       equ  current_background_bank_select+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -750,6 +752,7 @@ cast_ray_loop_end:
 draw_screen:
        .proc
        bl   @calc_background_bank
+       seto @redraw_required
        li   r3,screen_buffer
        li   r4,columns
        clr  r5
@@ -809,8 +812,16 @@ calc_background_bank:
        mov  @angle,r0
        andi r0,>01c0
        srl  r0,5
-       ai   r0,>6020
-       mov  r0,@background_bank_select
+       ai   r0,background_bank_select
+
+       mov  @x,r1
+       xor  @y,r1
+       andi r1,>0100
+       srl  r1,3
+       a    r1,r0
+
+
+       mov  r0,@current_background_bank_select
        rt
 *// calc_background_bank
 
@@ -927,7 +938,7 @@ draw_even_column_8:
 * We can assume that if r8 is odd then r3 is also odd.
 *
 draw_even_background_pixels:
-       mov  @background_bank_select,r0
+       mov  @current_background_bank_select,r0
        seto *r0
        coc  @one,r3
        jne  draw_even_background_pixels_0
@@ -1105,7 +1116,7 @@ draw_odd_column_8:
 * We can assume that if r8 is odd then r3 is also odd.
 *
 draw_odd_background_pixels:
-       mov  @background_bank_select,r0
+       mov  @current_background_bank_select,r0
        ai   r0,>10
        seto *r0
        coc  @one,r3

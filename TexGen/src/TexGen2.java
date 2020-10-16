@@ -21,7 +21,7 @@ public class TexGen2 {
     }
 
     void generate() throws IOException {
-        int bankNo = 40;
+        int bankNo = 13;
         int bankOffset = 0;
         StringBuilder bankAssembly = new StringBuilder();
         StringBuilder indexAssembly = new StringBuilder();
@@ -134,14 +134,6 @@ public class TexGen2 {
                 r0inc += dy;
                 r1inc += 2;
             }
-        }
-        System.out.println("Height = " + height);
-        System.out.println("Sequence = " + toString(sequence));
-        if (r0inc != textureHeight) {
-            System.out.println("r0inc is " + r0inc + ", should be " + textureHeight);
-        }
-        if (r1inc != height * 2) {
-            System.out.println("r1inc is " + r1inc + ", should be " + height * 2);
         }
         s.append("!      rt\n");
         return s;

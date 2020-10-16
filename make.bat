@@ -14,34 +14,26 @@ rem call make.bat
 cd ..
 
 @copy /b bin\RAYCASTER8.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
+    bin\col-bank-4.bin + ^
+    bin\col-bank-5.bin + ^
+    bin\col-bank-6.bin + ^
     bin\col-bank-7.bin + ^
     bin\col-bank-8.bin + ^
     bin\col-bank-9.bin + ^
     bin\col-bank-10.bin + ^
     bin\col-bank-11.bin + ^
     bin\col-bank-12.bin + ^
-    bin\col-bank-13.bin + ^
-    bin\col-bank-14.bin + ^
-    bin\col-bank-15.bin + ^
-    bin\empty-2k.bin + backgrounds\background0even.bin + ^
-    bin\empty-2k.bin + backgrounds\background1even.bin + ^
-    bin\empty-2k.bin + backgrounds\background2even.bin + ^
-    bin\empty-2k.bin + backgrounds\background3even.bin + ^
-    bin\empty-2k.bin + backgrounds\background4even.bin + ^
-    bin\empty-2k.bin + backgrounds\background5even.bin + ^
-    bin\empty-2k.bin + backgrounds\background6even.bin + ^
-    bin\empty-2k.bin + backgrounds\background7even.bin + ^
-    bin\empty-2k.bin + backgrounds\background0odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background1odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background2odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background3odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background4odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background5odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background6odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background7odd.bin + ^
+    bin\sprite-bank-13.bin + ^
+    bin\sprite-bank-14.bin + ^
+    bin\sprite-bank-15.bin + ^
+    bin\sprite-bank-16.bin + ^
+    bin\sprite-bank-17.bin + ^
+    bin\sprite-bank-18.bin + ^
+    bin\sprite-bank-19.bin + ^
+    bin\sprite-bank-20.bin + ^
+    bin\sprite-bank-21.bin + ^
+    bin\sprite-bank-22.bin + ^
+    bin\sprite-bank-23.bin + ^
     bin\texture-bank-0.bin + ^
     bin\texture-bank-1.bin + ^
     bin\texture-bank-2.bin + ^
@@ -50,33 +42,41 @@ cd ..
     bin\texture-bank-5.bin + ^
     bin\texture-bank-6.bin + ^
     bin\texture-bank-7.bin + ^
-    bin\sprite-bank-40.bin + ^
-    bin\sprite-bank-41.bin + ^
-    bin\sprite-bank-42.bin + ^
-    bin\sprite-bank-43.bin + ^
-    bin\sprite-bank-44.bin + ^
-    bin\sprite-bank-45.bin + ^
-    bin\sprite-bank-46.bin + ^
-    bin\sprite-bank-47.bin + ^
-    bin\sprite-bank-48.bin + ^
-    bin\sprite-bank-49.bin + ^
-    bin\sprite-bank-50.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin ^
+    bin\empty-2k.bin + backgrounds\background-00-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-01-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-02-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-03-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-04-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-05-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-06-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-07-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-00-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-01-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-02-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-03-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-04-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-05-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-06-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-07-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-10-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-11-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-12-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-13-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-14-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-15-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-16-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-17-even.bin + ^
+    bin\empty-2k.bin + backgrounds\background-10-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-11-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-12-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-13-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-14-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-15-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-16-odd.bin + ^
+    bin\empty-2k.bin + backgrounds\background-17-odd.bin ^
     .\texcaster8.bin
 
-java -jar tools/CopyHeader.jar texcaster8.bin 60 7 8 9 10 11 12 13 14 15 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end
