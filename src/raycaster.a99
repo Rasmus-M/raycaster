@@ -112,6 +112,8 @@ texture_size:
        equ  (texture_width/2)*texture_height;
 background_address:
        equ  >6800
+turn_speed:
+       equ  64
 
 **
 * Scratch pad
@@ -328,7 +330,7 @@ user_input_1:
        tb   1
        jeq  user_input_2
        mov  @angle,r0
-       ai   r0,-64                    ; Turn left
+       ai   r0,-turn_speed             ; Turn left
        andi r0,angle_mask
        mov  r0,@angle
        srl  r0,4
@@ -346,7 +348,7 @@ user_input_2:
        tb   2
        jeq  user_input_3
        mov  @angle,r0
-       ai   r0,64                     ; Turn right
+       ai   r0,turn_speed              ; Turn right
        andi r0,angle_mask
        mov  r0,@angle
        srl  r0,4
@@ -2912,7 +2914,7 @@ upper_ram_max:
 
        aorg >2000
 
-textures:                              ; Must be at 256 byte boundary address
+textures:
        bss  >1000
 map:
        equ  >3000
