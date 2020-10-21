@@ -1,5 +1,5 @@
        copy "walls/pipe-sludge.a99"
-       copy "walls/tile.a99"
+       copy "walls/grate.a99"
        copy "walls/tile.a99"
        copy "walls/tile.a99"
        copy "walls/tile.a99"
