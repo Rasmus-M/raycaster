@@ -118,6 +118,8 @@ background_height:
        equ  192
 turn_speed:
        equ  64
+allow_missing_ray:
+       equ  0
 
 **
 * Scratch pad
@@ -471,9 +473,11 @@ cast_rays_1:
 *      Calculate height and color of column
        mov  @column_ptr,r5
        mov  r2,r0                      ; Distance as FP 8.8
+       .ifeq allow_missing_ray,1
        jne  cast_rays_2
        li   r0,max_wall_height         ; Max height
        jmp  cast_rays_3
+       .endif
 cast_rays_2:
        clr  r0
        li   r1,screen_height*256       ; screen height as FP 24.8
@@ -726,23 +730,30 @@ cast_ray_loop:
        a    r4,r7                      ; sideDistX += deltaDistX
        a    r6,r12                     ; mapX += stepX
        movb *r12,r13                   ; Check map
-       jne  cast_ray_loop_2            ; Exit if not empty
+       .ifeq allow_missing_ray,1
+       jne  cast_ray_loop_3            ; Exit if not empty
        dec  r2                         ; Distance count down
        jne  cast_ray_loop              ; Loop until we give up
-       rt
+       .else
+       jeq  cast_ray_loop
+       .endif
+       jmp  cast_ray_loop_3
 cast_ray_loop_1:
        a    r5,r9                      ; sideDistY += deltaDistY
        a    r8,r12                     ; mapY += stepY
        movb *r12,r13                   ; Check map
-       jne  cast_ray_loop_3            ; Exit if not empty
+       .ifeq allow_missing_ray,1
+       jne  cast_ray_loop_2            ; Exit if not empty
        dec  r2                         ; Distance count down
        jne  cast_ray_loop              ; Loop until we give up
-       rt
+       .else
+       jeq  cast_ray_loop
+       .endif
 cast_ray_loop_2:
-       clr  r3                         ; xSide = 1
+       seto r3                         ; xSide = -1
        rt
 cast_ray_loop_3:
-       seto r3                         ; xSide = -1
+       clr  r3                         ; xSide = 1
        rt
 cast_ray_loop_end:
        equ  $
