@@ -91,7 +91,7 @@ gun_color:
 bullet_color:
        equ  >0f
 backdrop_color:
-       equ  >0e
+       equ  >01
 char_0:
        equ  >30
 first_texture_index:
@@ -443,7 +443,6 @@ cast_if_required:
 cast_if_required_1:
        bl   @skip_cast_rays
        seto @column_redraw_cleared
-*      bl   @vsync
 cast_if_required_2:
        .endproc
 *// cast_if_required
@@ -803,10 +802,10 @@ draw_screen_4:
        ai   r4,column_size
        inc  r5
 draw_screen_5:
+       blwp @check_int
        ci   r5,n_rays
        jlt  draw_screen_1
 *      Done
-       blwp @check_int
        .endproc
 *// draw_screen
 
@@ -1177,12 +1176,12 @@ draw_objects_1:
        jgt  draw_objects_2
 *      Object is within view and distance
        bl   @draw_object
+       blwp @check_int
 draw_objects_2:
        ai   r4,object_size
        dec  r5
        jne  draw_objects_1
 draw_objects_3:
-       blwp @check_int
        .endproc
 *// draw_objects
 

@@ -1,3 +1,6 @@
+compass_y:
+       equ  175
+
 sal_health:
        byte >04,>08,>50,>08            ; Health bar
        byte >04,>18,>54,>0a
@@ -5,59 +8,59 @@ sal_health:
        byte >04,>38,>5c,>03
 sal_compass:
 *      East
-       byte 158,104,16,4               ; Compass
-       byte 155,120,4,15
-       byte 158,136,20,4
-       byte 175,102,0,15
-       byte 175,120,24,4
-       byte 175,138,8,15
+       byte compass_y-17,104,16,4               ; Compass
+       byte compass_y-19,120,4,15
+       byte compass_y-17,136,20,4
+       byte compass_y,102,0,15
+       byte compass_y,120,24,4
+       byte compass_y,138,8,15
 *      South-east
-       byte 159,104,4,15               ; Compass
-       byte 159,120,28,4
-       byte 159,136,8,15
-       byte 175,104,32,4
-       byte 175,120,40,4
-       byte 175,136,36,4
+       byte compass_y-16,104,4,15               ; Compass
+       byte compass_y-16,120,28,4
+       byte compass_y-16,136,8,15
+       byte compass_y,104,32,4
+       byte compass_y,120,40,4
+       byte compass_y,136,36,4
 *      South
-       byte 158,104,16,4               ; Compass
-       byte 155,120,8,15
-       byte 158,136,20,4
-       byte 175,102,4,15
-       byte 175,120,24,4
-       byte 175,138,12,15
+       byte compass_y-17,104,16,4               ; Compass
+       byte compass_y-19,120,8,15
+       byte compass_y-17,136,20,4
+       byte compass_y,102,4,15
+       byte compass_y,120,24,4
+       byte compass_y,138,12,15
 *      South-west
-       byte 159,104,8,15               ; Compass
-       byte 159,120,28,4
-       byte 159,136,12,15
-       byte 175,104,32,4
-       byte 175,120,40,4
-       byte 175,136,36,4
+       byte compass_y-16,104,8,15               ; Compass
+       byte compass_y-16,120,28,4
+       byte compass_y-16,136,12,15
+       byte compass_y,104,32,4
+       byte compass_y,120,40,4
+       byte compass_y,136,36,4
 *      West
-       byte 158,104,16,4               ; Compass
-       byte 155,120,12,15
-       byte 158,136,20,4
-       byte 175,102,8,15
-       byte 175,120,24,4
-       byte 175,138,0,15
+       byte compass_y-17,104,16,4               ; Compass
+       byte compass_y-19,120,12,15
+       byte compass_y-17,136,20,4
+       byte compass_y,102,8,15
+       byte compass_y,120,24,4
+       byte compass_y,138,0,15
 *      North-west
-       byte 159,104,12,15              ; Compass
-       byte 159,120,28,4
-       byte 159,136,0,15
-       byte 175,104,32,4
-       byte 175,120,40,4
-       byte 175,136,36,4
+       byte compass_y-16,104,12,15              ; Compass
+       byte compass_y-16,120,28,4
+       byte compass_y-16,136,0,15
+       byte compass_y,104,32,4
+       byte compass_y,120,40,4
+       byte compass_y,136,36,4
 *      North
-       byte 158,104,16,4               ; Compass
-       byte 155,120,0,15
-       byte 158,136,20,4
-       byte 175,100,12,15
-       byte 175,120,24,4
-       byte 175,140,4,15
+       byte compass_y-17,104,16,4               ; Compass
+       byte compass_y-19,120,0,15
+       byte compass_y-17,136,20,4
+       byte compass_y,100,12,15
+       byte compass_y,120,24,4
+       byte compass_y,140,4,15
 *      North-east
-       byte 159,104,0,15               ; Compass
-       byte 159,120,28,4
-       byte 159,136,4,15
-       byte 175,102,32,4
-       byte 175,120,40,4
-       byte 175,138,36,4
+       byte compass_y-16,104,0,15               ; Compass
+       byte compass_y-16,120,28,4
+       byte compass_y-16,136,4,15
+       byte compass_y,102,32,4
+       byte compass_y,120,40,4
+       byte compass_y,138,36,4
 
