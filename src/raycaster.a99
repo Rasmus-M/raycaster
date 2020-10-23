@@ -55,7 +55,7 @@ map_height:
 screen_width:
        equ  64
 screen_height:
-       equ  192
+       equ  160
 n_directions:
        equ  256
 angle_mask:
@@ -69,7 +69,7 @@ max_wall_height:
 max_object_width:
        equ  32
 max_object_height:
-       equ  172
+       equ  160
 max_object_distance:
        equ  16
 max_bullet_distance:
@@ -114,6 +114,8 @@ background_bank_select:
        equ  >6040
 background_address:
        equ  >6800
+background_height:
+       equ  192
 turn_speed:
        equ  64
 
@@ -139,7 +141,8 @@ r12lb  equ  wrksp+25
 r13lb  equ  wrksp+27
 r14lb  equ  wrksp+29
 r15lb  equ  wrksp+31
-stack  equ  wrksp+>20                  ; Stack (grows up)
+intws  equ  wrksp+>20                  ; Interrupt work space
+stack  equ  intws+>20                  ; Stack (grows up)
 **
 * PAD constants
 *
@@ -235,7 +238,7 @@ restart:
        bl   @init_level
 main_loop:
        clr  @interrupt_count
-       bl   @check_int
+       blwp @check_int
        bl   @set_vdp_regs
        bl   @draw_bullets
        bl   @cast_if_required
@@ -292,17 +295,20 @@ vsync_1:
 *
 * Check for interrupt
 *
+* Called with blwp
+*
 check_int:
+       data intws
+       data check_int_0
+check_int_0:
        clr  r12
        tb   2                          ; Test CRU bit for VDP interrupt
        jeq  check_int_1
        inc  @interrupt_count
        movb @vdpsta,r12
-       .push r11
        bl   @snd_player
-       .pop r11
 check_int_1:
-       rt
+       rtwp
 *// check_int
 
 *********************************************************************
@@ -395,7 +401,7 @@ user_input_5:
        mov  r1,@y
        seto @full_redraw_required
 user_input_8:
-       bl   @check_int
+       blwp @check_int
        .endproc
 dirs:
        data >0100,>0000
@@ -470,8 +476,8 @@ cast_rays_1:
        jmp  cast_rays_3
 cast_rays_2:
        clr  r0
-       li   r1,screen_height*256       ; 192 as FP 24.8
-       div  r2,r0                      ; height = 192 / distance, as FP 16.0
+       li   r1,screen_height*256       ; screen height as FP 24.8
+       div  r2,r0                      ; height = screen height / distance, as FP 16.0
 cast_rays_3:
        andi r0,>fffe                   ; Make height even
        mov  r0,@column_height(r5)
@@ -485,7 +491,7 @@ cast_rays_3:
        inct r2                         ; Increment it
        andi r2,angle_mask              ; Wrap around
        mov  r2,@ray_angle              ; Save it
-       bl   @check_int
+       blwp @check_int
        dec  @ray_count                 ; Count down
        jne  cast_rays_1                ; Loop if more rays to cast
        .endproc
@@ -765,7 +771,7 @@ draw_screen_1:
        jne  draw_screen_2
 *      No need to redraw 2 columns
        ai   r3,screen_height
-       ai   r8,screen_height
+       ai   r8,background_height
        ai   r4,column_size*2
        inct r5
        jmp  draw_screen_5
@@ -778,6 +784,9 @@ draw_screen_2:
 draw_screen_3:
 *      Draw odd column
        bl   @draw_odd_column
+       .ifgt background_height, screen_height
+       ai   r8,background_height-screen_height
+       .endif
 draw_screen_4:
 *      Next column
        ai   r4,column_size
@@ -786,7 +795,7 @@ draw_screen_5:
        ci   r5,n_rays
        jlt  draw_screen_1
 *      Done
-       bl   @check_int
+       blwp @check_int
        .endproc
 *// draw_screen
 
@@ -1075,14 +1084,18 @@ draw_odd_pixels_4:
 
 *********************************************************************
 *
-* Calculate texture address
+* Calculate texture routine address
 *
-* r0: Texture hit x (FP 8.8)
 * r1: Texture number
 * r4: Column structure
 *
 * On return r0 contains the address of the routine to draw the column,
 * and r1 contains the texture source address,
+
+max_texture_height_2:                  ; Up to this value
+       equ  192                        ; all even heights are indexed
+max_texture_height_8:                  ; Up to this value
+       equ  528                        ; every 8th height is indexed
 
 prepare_texture:
 *      Select SAMS bank
@@ -1096,21 +1109,21 @@ prepare_texture:
        ai   r1,textures                ; Base texture column source address
 *      Column drawing vector offset
        mov  @column_height(r4),r0
-       ci   r0,screen_height
+       ci   r0,max_texture_height_2    ; Is every second height indexed?
        jh   prepare_texture_1
 ;      srl  r0,1                       ; / 2
 ;      sla  r0,2                       ; * 4
        sla  r0,1                       ; * 2
        jmp  prepare_texture_3
 prepare_texture_1:
-       ci   r0,528
+       ci   r0,max_texture_height_8    ; Is every 8th height indexed?
        jle   prepare_texture_2
-       li   r0,528
+       li   r0,max_texture_height_8    ; Above max, set to max value
 prepare_texture_2:
-       ai   r0,-192
+       ai   r0,-max_texture_height_2
        srl  r0,3                       ; / 8
        sla  r0,2                       ; * 4
-       ai   r0,192*2
+       ai   r0,max_texture_height_2*2
 prepare_texture_3:
        rt
 *// prepare_texture
@@ -1158,7 +1171,7 @@ draw_objects_2:
        dec  r5
        jne  draw_objects_1
 draw_objects_3:
-       bl   @check_int
+       blwp @check_int
        .endproc
 *// draw_objects
 
@@ -1181,8 +1194,8 @@ draw_object:
        jmp  draw_object_2
 draw_object_1:
        clr  r2
-       li   r3,max_object_height*256       ; 192 as FP 24.8
-       div  r7,r2                      ; Size (FP 16.0) = 192 / distance
+       li   r3,max_object_height*256   ; max_object_height as FP 24.8
+       div  r7,r2                      ; Size (FP 16.0) = max_object_height / distance
 draw_object_2:
        mov  r2,r3                      ; Height = size
        srl  r2,2                       ; Width = size / 4
@@ -1334,24 +1347,39 @@ draw_sprite_12:
 upload_screen:
        .proc
        abs  @full_redraw_required
-       jeq  upload_screen_3
+;       jeq  upload_screen_3
 *      Full update
        li   r0,colrtb
        bl   @vwad
        li   r5,screen_buffer
-       li   r6,3
+*      Full section of 64 lines
+       li   r6,(screen_height/64)
 upload_screen_1:
-       li   r7,32
+       li   r7,screen_width/2
 upload_screen_2:
        li   r8,64/8
        bl   @upload_screen_loop_pad
-       ai   r5,192-64
+       ai   r5,screen_height-64
        dec  r7
        jne  upload_screen_2
-       bl   @check_int
-       ai   r5,64-(32*192)
+       blwp @check_int
+       ai   r5,64-(screen_height*screen_width/2)
+       ai   r0,>800
        dec  r6
        jne  upload_screen_1
+*      Remaining lines
+       .ifne screen_height%64, 0
+       li   r7,screen_width/2
+upload_screen_2a:
+       bl   @vwad
+       li   r8,(screen_height%64)/8
+       bl   @upload_screen_loop_pad
+       ai   r5,screen_height-(screen_height%64)
+       ai   r0,64
+       dec  r7
+       jne  upload_screen_2a
+       blwp @check_int
+       .endif
        clr  @full_redraw_required
        jmp  upload_screen_8
 *      Column update
@@ -1368,7 +1396,7 @@ upload_screen_4:
        jne  upload_screen_5
 *      Skip column
        ai   r0,64
-       ai   r5,192
+       ai   r5,screen_height
        jmp  upload_screen_7
 *      Update column
 upload_screen_5:
@@ -1502,7 +1530,7 @@ move_enemies_2:
        dec  r5
        jne  move_enemies_1
 move_enemies_3:
-       bl   @check_int
+       blwp @check_int
        .endproc
 *// move_enemies
 
@@ -1554,7 +1582,7 @@ draw_bullets:
 *      End marker
 draw_bullets_1:
        movb @end_marker_byte,*r15
-       bl   @check_int
+       blwp @check_int
        .endproc
 bullet_distance_pattern_table:
        byte >30,>34,>38,>3c,>40,>40,>44,>44
@@ -1631,7 +1659,7 @@ bullet_collisions_4:
 bullet_collisions_1:
        clr  @bullet_active
 bullet_collisions_0:
-       bl   @check_int
+       blwp @check_int
        .endproc
 *// bullet_collisions
 
@@ -1672,7 +1700,7 @@ object_collisions_2:
        dec  r5
        jne  object_collisions_1
 object_collisions_3:
-       bl   @check_int
+       blwp @check_int
        .endproc
 *// object_collisions
 
@@ -2770,15 +2798,15 @@ sprite_index:
        copy "../TexGen/sprite-index.a99"
 
 **
-*      Screen buffer (6K)
+*      Screen buffer (6K for full screen)
 *
-*      Organised as 32 columns of 192 bytes
-*      First 192 bytes for column 0, next 192 bytes for column 1 etc.
+*      Organised as n columns of m bytes
+*      First m bytes for column 0, next m bytes for column 1 etc.
 *      Each column contains 2 fat (4x1, 16 color) pixels horizontally
-*      and 192 pixels vertically.
+*      and m pixels vertically.
 
 screen_buffer:
-       bss  >1800
+       bss  screen_height*screen_width/2
 
 upper_ram_max:
        equ  $
@@ -2801,4 +2829,3 @@ lower_ram_max:
        equ  $
 
        end  main
-

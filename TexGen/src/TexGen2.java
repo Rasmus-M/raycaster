@@ -3,7 +3,6 @@ import java.io.IOException;
 
 public class TexGen2 {
 
-    static final int screenHeight = 192;
     static final int textureHeight = 64;
 
     static int[] heights = {
@@ -166,12 +165,11 @@ public class TexGen2 {
     }
 
     int[] generateSequenceFloat(int height) {
-        int adjustedHeight = Math.min(height, screenHeight);
-        int[] result = new int[adjustedHeight];
+        int[] result = new int[height];
         double dy = (double) textureHeight / height;
-        double y = height <= screenHeight ? 0 : dy * (height - screenHeight) / 2;
+        double y = 0;
         double oldY = y;
-        for (int i = 0; i < adjustedHeight; i++) {
+        for (int i = 0; i < height; i++) {
             y += dy;
             if (y - oldY >= 1.0) {
                 result[i] = (int) Math.floor(y - oldY);
