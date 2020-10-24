@@ -255,6 +255,15 @@ main_loop:
        bl   @update_health_bar
 ;      bl   @display_score
        bl   @speak
+*      Delay if needed
+main_loop_1:
+       mov  @interrupt_count,r0
+       ci   r0,3
+       jhe  main_loop_2
+       blwp @wait_int
+       jmp  main_loop_1
+main_loop_2:
+*      Check status
        mov  @status,r0
        jeq  main_loop
        jgt  finish
@@ -265,11 +274,11 @@ finish:
 pause:
        li   r14,120
 pause_loop:
-       bl   @vsync
+       blwp @wait_int
        dec  r14
        jne  pause_loop
 pause_loop_1:
-       bl   @vsync
+       blwp @wait_int
        li   r0,KEY_FI
        bl   @check_key
        jeq  pause_loop_1
@@ -277,21 +286,19 @@ pause_loop_1:
 
 *********************************************************************
 *
-* Wait for vertical retrace (CRU)
+* Wait for interrupt
 *
-vsync:
+wait_int:
+       data intws
+       data wait_int_0
+wait_int_0:
        movb @vdpsta,r12                ; Clear any pending interrupt
        clr  r12
-vsync_1:
+wait_int_1:
        tb   2                          ; Test CRU bit for VDP interrupt
-       jeq  vsync_1
-       inc  @interrupt_count
-       movb @vdpsta,r12
-       .push r11
-       bl   @snd_player
-       .pop r11
-       rt
-*// vsync
+       jeq  wait_int_1
+       jmp  interrupt
+*// wait_int
 
 *********************************************************************
 *
@@ -306,6 +313,7 @@ check_int_0:
        clr  r12
        tb   2                          ; Test CRU bit for VDP interrupt
        jeq  check_int_1
+interrupt:
        inc  @interrupt_count
        movb @vdpsta,r12
        bl   @snd_player
