@@ -255,15 +255,7 @@ main_loop:
        bl   @update_health_bar
 ;      bl   @display_score
        bl   @speak
-*      Delay if needed
-main_loop_1:
-       mov  @interrupt_count,r0
-       ci   r0,3
-       jhe  main_loop_2
-       blwp @wait_int
-       jmp  main_loop_1
-main_loop_2:
-*      Check status
+       bl   @delay
        mov  @status,r0
        jeq  main_loop
        jgt  finish
@@ -283,6 +275,22 @@ pause_loop_1:
        bl   @check_key
        jeq  pause_loop_1
        jmp  restart
+
+*********************************************************************
+*
+* Delay if needed
+*
+delay:
+       .proc
+delay_1:
+       mov  @interrupt_count,r0
+       ci   r0,3
+       jhe  delay_2
+       blwp @wait_int
+       jmp  delay_1
+delay_2:
+       .endproc
+*// delay
 
 *********************************************************************
 *
