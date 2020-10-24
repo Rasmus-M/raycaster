@@ -2254,17 +2254,29 @@ one_time_init_5:
        jne  one_time_init_4
 *      Bottom rows
        li   r0,ptrntb+>1020
-       clr  r1
-       li   r2,8
-       bl   @vsmw
+       li   r1,PAT4
+       li   r3,8
+one_time_init_6:
+       li   r2,32
+       bl   @vmbw
+       ai   r0,64
+       ai   r1,32
+       dec  r3
+       jne  one_time_init_6
        li   r0,colrtb+>1020
-       li   r1,>f100
-       li   r2,8
-       bl   @vsmw
+       li   r1,COL4
+       li   r3,8
+one_time_init_7:
+       li   r2,32
+       bl   @vmbw
+       ai   r0,64
+       ai   r1,32
+       dec  r3
+       jne  one_time_init_7
        li   r0,nametb+>0280
-       li   r1,>0400
+       li   r1,PANEL
        li   r2,>80
-       bl   @vsmw
+       bl   @vmbw
 *      Sprite patterns
        li   r0,sprptb
        li   r1,SPR0
@@ -2847,6 +2859,7 @@ col_index:
        copy "../TexGen/col-index.a99"
 sprite_index:
        copy "../TexGen/sprite-index.a99"
+       copy "bottom-panel.a99"
 
 **
 *      Screen buffer (6K for full screen)
