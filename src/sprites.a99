@@ -1,5 +1,5 @@
 compass_y:
-       equ  175
+       equ  175-32
 
 sal_health:
        byte >04,>08,>50,>08            ; Health bar

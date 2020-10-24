@@ -1466,7 +1466,7 @@ even_col_180:
        movb *r1,*r3+
        rt
 even_col_188:
-       ai   r1,18
+       ai   r1,19
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+

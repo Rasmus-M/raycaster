@@ -1,5 +1,5 @@
 odd_col_aa:
-       ai   r1,1
+       ai   r1,2
        socb *r1,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+
@@ -2607,7 +2607,7 @@ odd_col_e0:
        socb *r1,*r3+
        rt
 odd_col_e8:
-       ai   r1,9
+       ai   r1,10
        socb *r1,*r3+
        socb *r1,*r3+
        socb *r1,*r3+

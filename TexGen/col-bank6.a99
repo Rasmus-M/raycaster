@@ -2281,7 +2281,7 @@ even_col_e0:
        movb *r1,*r3+
        rt
 even_col_e8:
-       ai   r1,9
+       ai   r1,10
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1,*r3+

@@ -91,7 +91,7 @@ gun_color:
 bullet_color:
        equ  >0f
 backdrop_color:
-       equ  >01
+       equ  >0e
 char_0:
        equ  >30
 first_texture_index:
@@ -696,11 +696,13 @@ cast_ray_6:
 ;       movb @r12lb,r0
 ;       movb r12,r1
 *      Calculate distance
+       .ifeq allow_missing_ray,1
        mov  r2,r2                      ; Steps left
        jne  cast_ray_7
        li   r2,max_steps*256           ; Max distance
        clr  r4                         ; Reset color
        jmp  cast_ray_10
+       .endif
 cast_ray_7:
        mov  r3,r3                      ; xSide ?
        jne  cast_ray_8
@@ -2212,7 +2214,7 @@ one_time_init_0:
        li   r0,nametb
        bl   @vwad
        clr  r1
-       li   r3,24
+       li   r3,20
 one_time_init_4:
        li   r2,32
 one_time_init_5:
@@ -2224,6 +2226,19 @@ one_time_init_5:
        andi r1,>0700
        dec  r3
        jne  one_time_init_4
+*      Bottom rows
+       li   r0,ptrntb+>1020
+       clr  r1
+       li   r2,8
+       bl   @vsmw
+       li   r0,colrtb+>1020
+       li   r1,>f100
+       li   r2,8
+       bl   @vsmw
+       li   r0,nametb+>0280
+       li   r1,>0400
+       li   r2,>80
+       bl   @vsmw
 *      Sprite patterns
        li   r0,sprptb
        li   r1,SPR0

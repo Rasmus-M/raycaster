@@ -1,9 +1,13 @@
 import java.io.FileWriter;
 import java.io.IOException;
 
-// Change:
+// Height 192 (0.06) change:
 // even_col_1d8: 18->19
 // odd_col_198: 16->17
+
+// Height 160 (0.07) change:
+// even_col_aa: 1->2
+// odd_col_aa: 1->2
 
 
 public class TexGen {
@@ -76,8 +80,8 @@ public class TexGen {
         s.append(even ? "even" : "odd").append("_col_").append(Integer.toHexString(height)).append(":\n");
         if (height > screenHeight) {
             double dy = (double) textureHeight / height;
-            // Adding 0.06 prevents some kind of rounding error
-            int offset = (int) Math.floor(0.06 + dy * (height - screenHeight) / 2);
+            // Adding 0.07 prevents some kind of rounding error
+            int offset = (int) Math.floor(0.07 + dy * (height - screenHeight) / 2);
             s.append(indent).append("ai   r1,").append(offset).append("\n");
         }
         String instr = even ? "movb" : "socb";
