@@ -1358,13 +1358,15 @@ draw_sprite_12:
 *
 upload_screen:
        .proc
+       li   r14,vdpwa
        abs  @full_redraw_required
-;       jeq  upload_screen_3
+       jeq  upload_screen_3
 *      Full update
-       li   r0,colrtb
-       bl   @vwad
+       li   r0,colrtb+>4000
+       movb @r0lb,*r14
+       movb r0,*r14
        li   r5,screen_buffer
-*      Full section of 64 lines
+*      Full sections of 64 lines
        li   r6,(screen_height/64)
 upload_screen_1:
        li   r7,screen_width/2
@@ -1383,7 +1385,8 @@ upload_screen_2:
        .ifne screen_height%64, 0
        li   r7,screen_width/2
 upload_screen_2a:
-       bl   @vwad
+       movb @r0lb,*r14
+       movb r0,*r14
        li   r8,(screen_height%64)/8
        bl   @upload_screen_loop_pad
        ai   r5,screen_height-(screen_height%64)
@@ -1398,10 +1401,8 @@ upload_screen_2a:
 upload_screen_3:
        li   r0,colrtb+>4000
        li   r1,columns
-       li   r2,32
+       li   r2,screen_width/2
        li   r5,screen_buffer
-       li   r9,64
-       li   r14,vdpwa
 upload_screen_4:
 *      Check if the column can be skipped
        abs  @column_redraw(r1)
@@ -1412,16 +1413,25 @@ upload_screen_4:
        jmp  upload_screen_7
 *      Update column
 upload_screen_5:
-       li   r4,3
+*      Full sections of 64 lines
+       li   r6,(screen_height/64)
 upload_screen_6:
        movb @r0lb,*r14
        movb r0,*r14
        li   r8,64/8
        bl   @upload_screen_loop_pad
        ai   r0,>800
-       dec  r4
+       dec  r6
        jne  upload_screen_6
-       ai   r0,->1800+64
+*      Remaining lines
+       .ifne screen_height%64, 0
+       movb @r0lb,*r14
+       movb r0,*r14
+       li   r8,(screen_height%64)/8
+       bl   @upload_screen_loop_pad
+       .endif
+       ai   r0,64-(screen_height/64*>800)
+       blwp @check_int
 upload_screen_7:
        ai   r1,column_size*2
        dec  r2
