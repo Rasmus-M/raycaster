@@ -247,7 +247,8 @@ main_loop:
        bl   @draw_screen
        bl   @draw_objects
        bl   @upload_screen
-       bl   @user_input
+       bl   @keyboard_input
+       bl   @joystick_input
        bl   @bullet_collisions
        bl   @object_collisions
        bl   @move_enemies
@@ -328,109 +329,6 @@ interrupt:
 check_int_1:
        rtwp
 *// check_int
-
-*********************************************************************
-*
-* Read user input
-*
-user_input:
-       .proc
-*      Map
-       li   r0,KEY_M
-       bl   @check_key
-       jeq  user_input_0
-       bl   @display_map
-       jmp  user_input_8
-*      Joystick
-user_input_0:
-       li   r0,JOY_FI
-       bl   @check_key
-*      Fire
-       jeq  user_input_1
-       abs  @bullet_active
-       jne  user_input_1
-       bl   @fire_bullet
-*      Left
-user_input_1:
-       tb   1
-       jeq  user_input_2
-       mov  @angle,r0
-       ai   r0,-turn_speed             ; Turn left
-       andi r0,angle_mask
-       mov  r0,@angle
-       srl  r0,4
-       mov  r0,r1
-       ai   r0,dirs
-       mov  *r0+,@dx
-       mov  *r0,@dy
-       srl  r1,2
-       mov  r1,@sal_no
-       seto @full_redraw_required
-       jmp  user_input_3
-user_input_2:
-*      Right
-       tb   2
-       jeq  user_input_3
-       mov  @angle,r0
-       ai   r0,turn_speed              ; Turn right
-       andi r0,angle_mask
-       mov  r0,@angle
-       srl  r0,4
-       mov  r0,r1
-       ai   r0,dirs
-       mov  *r0+,@dx
-       mov  *r0,@dy
-       srl  r1,2
-       mov  r1,@sal_no
-       seto @full_redraw_required
-user_input_3:
-*      Down
-       tb   3
-       jeq  user_input_4
-       mov  @x,r0
-       s    @dx,r0
-       mov  @y,r1
-       s    @dy,r1
-       bl   @get_map_value
-       jne  user_input_8
-       jmp  user_input_5
-user_input_4:
-*      Up
-       tb   4
-       jeq  user_input_8
-       mov  @x,r0
-       a    @dx,r0
-       mov  @y,r1
-       a    @dy,r1
-       bl   @get_map_value
-       jeq  user_input_5
-       cb   @goal,r2                   ; Check for goal
-       jne  user_input_9
-       inc  @status                    ; Finish
-       jmp  user_input_8
-user_input_9:
-       ci   r2,first_texture_index*256 ; Check for texture
-       jhe  user_input_8               ; Cannot move through texture
-       andi r2,>0100                   ; Test secret door bit
-       jeq  user_input_8               ; If not set we cannot move
-*      Move
-user_input_5:
-       mov  r0,@x
-       mov  r1,@y
-       seto @full_redraw_required
-user_input_8:
-       blwp @check_int
-       .endproc
-dirs:
-       data >0100,>0000
-       data >0100,>0100
-       data >0000,>0100
-       data ->0100,>0100
-       data ->0100,>0000
-       data ->0100,->0100
-       data >0000,->0100
-       data >0100,->0100
-*// user_input
 
 ***************************************************************
 *
@@ -1458,6 +1356,145 @@ upload_screen_8:
 
 *********************************************************************
 *
+* Keyboard input
+*
+keyboard_input:
+       .proc
+*      Map
+       li   r0,KEY_M
+       bl   @check_key
+       jeq  keyboard_input_0
+       bl   @display_map
+       jmp  keyboard_input_7
+*      Fire
+keyboard_input_0:
+       li   r0,KEY_SP
+       bl   @check_key
+       jeq  keyboard_input_1
+       bl   @fire_bullet
+*      Left
+keyboard_input_1:
+       li   r0,KEY_A
+       bl   @check_key
+       jeq  keyboard_input_2
+       mov  @angle,r0
+       ai   r0,-turn_speed             ; Turn left
+       andi r0,angle_mask
+       mov  r0,@angle
+       srl  r0,4
+       mov  r0,r1
+       ai   r0,dirs
+       mov  *r0+,@dx
+       mov  *r0,@dy
+       srl  r1,2
+       mov  r1,@sal_no
+       seto @full_redraw_required
+       jmp  keyboard_input_3
+keyboard_input_2:
+*      Right
+       li   r0,KEY_D
+       bl   @check_key
+       jeq  keyboard_input_3
+       mov  @angle,r0
+       ai   r0,turn_speed              ; Turn right
+       andi r0,angle_mask
+       mov  r0,@angle
+       srl  r0,4
+       mov  r0,r1
+       ai   r0,dirs
+       mov  *r0+,@dx
+       mov  *r0,@dy
+       srl  r1,2
+       mov  r1,@sal_no
+       seto @full_redraw_required
+keyboard_input_3:
+*      Down
+       li   r0,KEY_S
+       bl   @check_key
+       jeq  keyboard_input_4
+       mov  @x,r0
+       s    @dx,r0
+       mov  @y,r1
+       s    @dy,r1
+       bl   @get_map_value
+       jne  keyboard_input_7
+       jmp  keyboard_input_6
+keyboard_input_4:
+*      Up
+       li   r0,KEY_W
+       bl   @check_key
+       jeq  keyboard_input_7
+       mov  @x,r0
+       a    @dx,r0
+       mov  @y,r1
+       a    @dy,r1
+       bl   @get_map_value
+       jeq  keyboard_input_6
+       cb   @goal,r2                   ; Check for goal
+       jne  keyboard_input_5
+       inc  @status                    ; Finish
+       jmp  keyboard_input_7
+keyboard_input_5:
+       ci   r2,first_texture_index*256 ; Check for texture
+       jhe  keyboard_input_7               ; Cannot move through texture
+       andi r2,>0100                   ; Test secret door bit
+       jeq  keyboard_input_7               ; If not set we cannot move
+*      Move
+keyboard_input_6:
+       mov  r0,@x
+       mov  r1,@y
+       seto @full_redraw_required
+keyboard_input_7:
+       blwp @check_int
+       .endproc
+dirs:
+       data >0100,>0000
+       data >0100,>0100
+       data >0000,>0100
+       data ->0100,>0100
+       data ->0100,>0000
+       data ->0100,->0100
+       data >0000,->0100
+       data >0100,->0100
+*// keyboard_input
+
+*********************************************************************
+*
+* Joystick input
+*
+joystick_input:
+       .proc
+       li   r0,JOY_FI
+       bl   @check_key
+*      Fire
+       jeq  joystick_input_1
+       bl   @fire_bullet
+*      Left
+joystick_input_1:
+       tb   1
+       jeq  joystick_input_2
+       jmp  joystick_input_3
+*      Right
+joystick_input_2:
+       tb   2
+       jeq  joystick_input_3
+*      Down
+joystick_input_3:
+       tb   3
+       jeq  joystick_input_4
+       jmp  joystick_input_5
+*      Up
+joystick_input_4:
+       tb   4
+       jeq  joystick_input_5
+       jmp  joystick_input_5
+joystick_input_5:
+       blwp @check_int
+       .endproc
+*// joystick_input
+
+*********************************************************************
+*
 * Upload screen loop
 *
 upload_screen_loop:
@@ -1908,6 +1945,8 @@ map_y:
 *
 fire_bullet:
        .proc
+       abs  @bullet_active
+       jne  fire_bullet_1
        mov  @x,@bullet_x
        mov  @y,@bullet_y
        li   r3,>9000
@@ -1923,6 +1962,7 @@ fire_bullet:
        clr  @bullet_distance
        seto @bullet_active
        bl   @play_shot_1
+fire_bullet_1:
        .endproc
 *// fire_bullet
 

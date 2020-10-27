@@ -12,55 +12,55 @@ sal_compass:
        byte compass_y-19,120,4,15
        byte compass_y-17,136,20,4
        byte compass_y,102,0,15
-       byte compass_y,120,24,4
+       byte compass_y-1,120,24,4
        byte compass_y,138,8,15
 *      South-east
        byte compass_y-16,104,4,15               ; Compass
        byte compass_y-16,120,28,4
        byte compass_y-16,136,8,15
        byte compass_y,104,32,4
-       byte compass_y,120,40,4
+       byte compass_y-1,120,40,4
        byte compass_y,136,36,4
 *      South
        byte compass_y-17,104,16,4               ; Compass
        byte compass_y-19,120,8,15
        byte compass_y-17,136,20,4
        byte compass_y,102,4,15
-       byte compass_y,120,24,4
+       byte compass_y-1,120,24,4
        byte compass_y,138,12,15
 *      South-west
        byte compass_y-16,104,8,15               ; Compass
        byte compass_y-16,120,28,4
        byte compass_y-16,136,12,15
        byte compass_y,104,32,4
-       byte compass_y,120,40,4
+       byte compass_y-1,120,40,4
        byte compass_y,136,36,4
 *      West
        byte compass_y-17,104,16,4               ; Compass
        byte compass_y-19,120,12,15
        byte compass_y-17,136,20,4
        byte compass_y,102,8,15
-       byte compass_y,120,24,4
+       byte compass_y-1,120,24,4
        byte compass_y,138,0,15
 *      North-west
        byte compass_y-16,104,12,15              ; Compass
        byte compass_y-16,120,28,4
        byte compass_y-16,136,0,15
        byte compass_y,104,32,4
-       byte compass_y,120,40,4
+       byte compass_y-1,120,40,4
        byte compass_y,136,36,4
 *      North
        byte compass_y-17,104,16,4               ; Compass
        byte compass_y-19,120,0,15
        byte compass_y-17,136,20,4
        byte compass_y,100,12,15
-       byte compass_y,120,24,4
+       byte compass_y-1,120,24,4
        byte compass_y,140,4,15
 *      North-east
        byte compass_y-16,104,0,15               ; Compass
        byte compass_y-16,120,28,4
        byte compass_y-16,136,4,15
        byte compass_y,102,32,4
-       byte compass_y,120,40,4
+       byte compass_y-1,120,40,4
        byte compass_y,138,36,4
 
