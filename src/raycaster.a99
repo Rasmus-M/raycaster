@@ -77,7 +77,7 @@ max_bullet_distance:
 max_objects:
        equ  16
 n_sprite_patterns:
-       equ  25
+       equ  24
 n_fixed_sprites:
        equ  10
 enemy_speed:
@@ -197,8 +197,16 @@ column_redraw_cleared:
        equ  full_redraw_required+2
 current_background_bank_select:
        equ  column_redraw_cleared+2
-snd_channel_1:
+pointer_x:
        equ  current_background_bank_select+2
+pointer_y:
+       equ  pointer_x+2
+pointer_vx:
+       equ  pointer_y+2
+pointer_vy:
+       equ  pointer_vx+2
+snd_channel_1:
+       equ  pointer_vy+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -242,7 +250,7 @@ main_loop:
        clr  @interrupt_count
        blwp @check_int
        bl   @set_vdp_regs
-       bl   @draw_bullets
+       bl   @upload_sprites
        bl   @cast_if_required
        bl   @draw_screen
        bl   @draw_objects
@@ -297,6 +305,8 @@ delay_2:
 *
 * Wait for interrupt
 *
+* Called with blwp
+*
 wait_int:
        data intws
        data wait_int_0
@@ -342,6 +352,33 @@ set_vdp_regs:
        bl   @vwtr
        .endproc
 *// set_vdp_regs
+
+*********************************************************************
+*
+* Upload sprites
+*
+upload_sprites:
+       .proc
+       mov  @sal_no,r0                 ; Which buffer to update?
+       sla  r0,7
+       ai   r0,spratb+(n_fixed_sprites*4)
+       bl   @vwad                      ; Set VDP address
+*      Bullets
+       bl   @draw_bullets
+*      Pointer
+       movb @pointer_y,*r15
+       movb @pointer_x,*r15
+       li   r0,>2c0f
+       movb r0,*r15
+       swpb r0
+       movb r0,*r15
+*      End marker
+       movb @end_marker_byte,*r15
+       blwp @check_int
+       .endproc
+end_marker_byte:
+       byte >d0
+*// upload_sprites
 
 *********************************************************************
 *
@@ -1464,31 +1501,41 @@ dirs:
 *
 joystick_input:
        .proc
+       clr  r1
+       clr  r2
        li   r0,JOY_FI
        bl   @check_key
 *      Fire
        jeq  joystick_input_1
        bl   @fire_bullet
+       jmp  joystick_input_6
 *      Left
 joystick_input_1:
        tb   1
        jeq  joystick_input_2
+       li   r1,->0100
        jmp  joystick_input_3
 *      Right
 joystick_input_2:
        tb   2
        jeq  joystick_input_3
+       li   r1,>0100
 *      Down
 joystick_input_3:
        tb   3
        jeq  joystick_input_4
+       li   r2,>0100
        jmp  joystick_input_5
 *      Up
 joystick_input_4:
        tb   4
        jeq  joystick_input_5
+       li   r2,->0100
        jmp  joystick_input_5
 joystick_input_5:
+       a    r1,@pointer_x
+       a    r2,@pointer_y
+joystick_input_6:
        blwp @check_int
        .endproc
 *// joystick_input
@@ -1631,11 +1678,6 @@ move_bullets_0:
 * Draw bullets
 *
 draw_bullets:
-       .proc
-       mov  @sal_no,r0                 ; Which buffer to update?
-       sla  r0,7
-       ai   r0,spratb+(n_fixed_sprites*4)
-       bl   @vwad                      ; Set VDP address
        abs  @bullet_active
        jeq  draw_bullets_1
 *      Check angle
@@ -1651,22 +1693,19 @@ draw_bullets:
        movb @bullet_distance_pattern_table(r1),r1    ; Pattern
 *      Draw sprite
        movb @bullet_z,*r15             ; y
-       movb @r0lb,*r15                 ; x
+       swpb r0
+       movb r0,*r15                    ; x
        movb r1,*r15                    ; pattern
        movb @bullet_color_byte,*r15    ; color
-*      End marker
+*      Return
 draw_bullets_1:
-       movb @end_marker_byte,*r15
-       blwp @check_int
-       .endproc
+       rt
 bullet_distance_pattern_table:
        byte >30,>34,>38,>3c,>40,>40,>44,>44
        byte >48,>48,>48,>4c,>4c,>4c,>4c,>4c
        byte >4c,>4c
 bullet_color_byte:
        byte bullet_color
-end_marker_byte:
-       byte >d0
 *// draw_bullets
 
 *********************************************************************
@@ -2177,6 +2216,10 @@ init_level:
        seto @old_score
        clr  @status
        seto @full_redraw_required
+       li   r0,>7800
+       mov  r0,@pointer_x
+       li   r0,>6000
+       mov  r0,@pointer_y
 *      Init columns
        li   r1,columns
        li   r2,n_rays
