@@ -248,7 +248,6 @@ restart:
        bl   @init_level
 main_loop:
        clr  @interrupt_count
-       blwp @check_int
        bl   @set_vdp_regs
        bl   @upload_sprites
        bl   @cast_if_required
@@ -256,7 +255,6 @@ main_loop:
        bl   @draw_objects
        bl   @upload_screen
        bl   @keyboard_input
-       bl   @joystick_input
        bl   @bullet_collisions
        bl   @object_collisions
        bl   @move_enemies
@@ -335,6 +333,8 @@ check_int_0:
 interrupt:
        inc  @interrupt_count
        movb @vdpsta,r12
+       mov  @wrksp+20,r10
+       bl   @joystick_input
        bl   @snd_player
 check_int_1:
        rtwp
@@ -374,7 +374,6 @@ upload_sprites:
        movb r0,*r15
 *      End marker
        movb @end_marker_byte,*r15
-       blwp @check_int
        .endproc
 end_marker_byte:
        byte >d0
@@ -1536,7 +1535,6 @@ joystick_input_5:
        a    r1,@pointer_x
        a    r2,@pointer_y
 joystick_input_6:
-       blwp @check_int
        .endproc
 *// joystick_input
 
