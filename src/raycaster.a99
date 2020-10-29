@@ -425,10 +425,12 @@ cast_rays_1:
        mov  @y,r1                      ; y
        mov  @ray_angle,r2              ; Direction
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
+       mov  @column_ptr,r5
+       mov  r0,@column_map_x(r5)
+       mov  r1,@column_map_y(r5)
        mov  r2,@distance               ; Save euclidian distance
        bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate height and color of column
-       mov  @column_ptr,r5
        mov  r2,r0                      ; Distance as FP 8.8
        .ifeq allow_missing_ray,1
        jne  cast_rays_2
@@ -649,10 +651,12 @@ cast_ray_6:
 *      Update visible map
        socb @byte_80,*r12
        szcb @byte_80,r13
-*      Coordinates from map address (maybe not required)
-;       ai   r12,-map
-;       movb @r12lb,r0
-;       movb r12,r1
+*      Coordinates from map address
+       ai   r12,-map
+       mov  r12,r0
+       andi r0,>3f
+       mov  r12,r1
+       srl  r1,6
 *      Calculate distance
        .ifeq allow_missing_ray,1
        mov  r2,r2                      ; Steps left
@@ -2430,7 +2434,7 @@ one_time_init_0:
        li   r0,nametb
        bl   @vwad
        clr  r1
-       li   r3,20
+       li   r3,24
 one_time_init_4:
        li   r2,32
 one_time_init_5:
@@ -2444,29 +2448,23 @@ one_time_init_5:
        jne  one_time_init_4
 *      Bottom rows
        li   r0,ptrntb+>1020
-       li   r1,PAT4
-       li   r3,8
+       li   r1,PAT0
+       li   r3,32
 one_time_init_6:
        li   r2,32
        bl   @vmbw
        ai   r0,64
-       ai   r1,32
        dec  r3
        jne  one_time_init_6
        li   r0,colrtb+>1020
-       li   r1,COL4
-       li   r3,8
+       li   r1,COL0
+       li   r3,32
 one_time_init_7:
        li   r2,32
        bl   @vmbw
        ai   r0,64
-       ai   r1,32
        dec  r3
        jne  one_time_init_7
-       li   r0,nametb+>0280
-       li   r1,PANEL
-       li   r2,>80
-       bl   @vmbw
 *      Sprite patterns
        li   r0,sprptb
        li   r1,SPR0
@@ -2952,9 +2950,9 @@ column_distance_copy:
        equ  8
 column_redraw:
        equ  10
-column_unused_1:
+column_map_x:
        equ  12
-column_unused_2:
+column_map_y:
        equ  14
 column_size:
        equ  16                         ; Must be 2^n
@@ -3038,9 +3036,7 @@ door_size:
 * Data files
 *
 
-       copy "math_tables.a99"
-       copy "sprites.a99"
-       copy "sprite-patterns.a99"
+       copy "math_tables.a99"          ; 2K
        copy "sound-fx.a99"
        copy "objects.a99"
 doors:
@@ -3049,7 +3045,6 @@ col_index:
        copy "../TexGen/col-index.a99"
 sprite_index:
        copy "../TexGen/sprite-index.a99"
-       copy "bottom-panel.a99"
 
 **
 *      Screen buffer (6K for full screen)
@@ -3061,9 +3056,17 @@ sprite_index:
 
 screen_buffer:
        bss  screen_height*screen_width/2
-
 upper_ram_max:
        equ  $
+
+**
+*      One time init data
+*      Loaded on top of screen buffer
+*
+       aorg screen_buffer
+       copy "sprites.a99"
+       copy "sprite-patterns.a99"
+       copy "bottom-panel.a99"
 
 ***************************************************************
 *
