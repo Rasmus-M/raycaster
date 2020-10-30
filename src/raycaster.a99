@@ -2003,15 +2003,30 @@ pointer_actions:
        ci   r1,screen_height
        jhe  pointer_actions_1
 *      Raycasting area
-*      TODO
+       mov  r0,r4
+       srl  r4,2                       ; Column index
+       sla  r4,4                       ; Column structure offset
+       ai   r4,columns                 ; Column structure address
+       mov  @column_map_x(r4),r0
+       swpb r0
+       mov  @column_map_y(r4),r1
+       swpb r1
+       bl   @get_map_address
+       movb *r2,r3
+       szcb @byte_80,r3
+       jeq  pointer_actions_2
+       cb   r3,@door
+       jne  pointer_actions_2
+       bl   @open_door
+       seto @full_redraw_required
        jmp  pointer_actions_2
 pointer_actions_1:
 *      Bottom panel
        ai   r1,-screen_height
        ci   r0,104
-       jl   pointer_actions_2
+       jl   pointer_actions_1a
        ci   r0,152
-       jhe  pointer_actions_2
+       jhe  pointer_actions_1b
        ai   r0,-104
        srl  r0,4
        andi r1,>0010
@@ -2019,6 +2034,23 @@ pointer_actions_1:
        soc  r0,r1
        sla  r1,1
        mov  @move_jumptable(r1),r0
+       jeq  pointer_actions_2
+       bl   *r0
+       jmp  pointer_actions_2
+pointer_actions_1a:
+       mov  r0,r1
+       srl  r1,5
+       jmp  pointer_actions_1c
+pointer_actions_1b:
+       ci   r0,160
+       jl   pointer_actions_2
+       mov  r0,r1
+       ai   r1,-160
+       srl  r1,5
+       ai   r1,3
+pointer_actions_1c:
+       sla  r1,1
+       mov  @action_jumptable(r1),r0
        jeq  pointer_actions_2
        bl   *r0
 pointer_actions_2:
@@ -2033,6 +2065,13 @@ move_jumptable:
        data move_left
        data move_back
        data move_right
+       data 0
+action_jumptable:
+       data 0
+       data 0
+       data display_map
+       data fire_bullet
+       data 0
        data 0
 *// pointer_actions
 
@@ -2117,12 +2156,21 @@ display_map_1:
        li   r0,KEY_M
        bl   @check_key
        jne  display_map_1
+       li   r0,KEY_FI
+       bl   @check_key
+       jne  display_map_1
 display_map_2:
        li   r0,KEY_M
+       bl   @check_key
+       jne  display_map_3
+       li   r0,KEY_FI
        bl   @check_key
        jeq  display_map_2
 display_map_3:
        li   r0,KEY_M
+       bl   @check_key
+       jne  display_map_3
+       li   r0,KEY_FI
        bl   @check_key
        jne  display_map_3
 *      Restore patterns
