@@ -205,8 +205,10 @@ pointer_vx:
        equ  pointer_y+2
 pointer_vy:
        equ  pointer_vx+2
-snd_channel_1:
+pointer_click:
        equ  pointer_vy+2
+snd_channel_1:
+       equ  pointer_click+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -255,6 +257,7 @@ main_loop:
        bl   @draw_objects
        bl   @upload_screen
        bl   @keyboard_input
+       bl   @pointer_actions
        bl   @bullet_collisions
        bl   @object_collisions
        bl   @move_enemies
@@ -1590,7 +1593,7 @@ move_left_1:
 move_right:
        .proc
        mov  @x,r0
-       a    @dy,r0
+       s    @dy,r0
        mov  @y,r1
        a    @dx,r1
        bl   @get_map_value
@@ -1613,9 +1616,13 @@ joystick_input:
        li   r0,JOY_FI
        bl   @check_key
 *      Fire
-       jeq  joystick_input_1
-*      TODO
-       jmp  joystick_input_6
+       jeq  joystick_input_0
+       mov  @pointer_click,r0
+       jne  joystick_input_1
+       seto @pointer_click
+       jmp  joystick_input_1
+joystick_input_0:
+       clr  @pointer_click
 *      Left
 joystick_input_1:
        tb   1
@@ -1982,6 +1989,55 @@ update_health_bar_4:
 
 *********************************************************************
 *
+* Actions when clicking with pointer on screen
+*
+pointer_actions:
+       .proc
+       mov  @pointer_click,r0
+       jeq  pointer_actions_3
+       jgt  pointer_actions_3
+       mov  @pointer_x,r0
+       srl  r0,8
+       mov  @pointer_y,r1
+       srl  r1,8
+       ci   r1,screen_height
+       jhe  pointer_actions_1
+*      Raycasting area
+*      TODO
+       jmp  pointer_actions_2
+pointer_actions_1:
+*      Bottom panel
+       ai   r1,-screen_height
+       ci   r0,104
+       jl   pointer_actions_2
+       ci   r0,152
+       jhe  pointer_actions_2
+       ai   r0,-104
+       srl  r0,4
+       andi r1,>0010
+       srl  r1,2
+       soc  r0,r1
+       sla  r1,1
+       mov  @move_jumptable(r1),r0
+       jeq  pointer_actions_2
+       bl   *r0
+pointer_actions_2:
+       abs  @pointer_click
+pointer_actions_3:
+       .endproc
+move_jumptable:
+       data turn_left
+       data move_forward
+       data turn_right
+       data 0
+       data move_left
+       data move_back
+       data move_right
+       data 0
+*// pointer_actions
+
+****************************************************
+*
 * Display score
 *
 display_score:
@@ -2308,6 +2364,7 @@ remove_object:
        dec  @n_objects
        .endproc
 *// remove_object
+
 
 *********************************************************************
 *
