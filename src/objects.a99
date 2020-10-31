@@ -74,40 +74,43 @@ object_type_monster:
 **
 * Object type init tables
 *
+obj:   equ first_object_texture
+mon:   equ first_monster_texture
+
 object_texture_table:
        data 0
-       data 16                         ; Box
-       data 17                         ; Barrel
-       data 18                         ; obj1
-       data 19                         ; obj2
-       data 24                         ; Eye
-       data 25                         ; Blob
-       data 26                         ; mon1
-       data 27                         ; mon2
-       data 28                         ; mon3
-       data 29                         ; mon4
-       data 30                         ; mon5
-       data 31                         ; mon6
-       data 32                         ; mon7
-       data 33                         ; mon8
-       data 34                         ; mon9
-       data 35                         ; mon10
-       data 36                         ; mon11
-       data 37                         ; mon12
-       data 38                         ; mon13
-       data 39                         ; mon14
-       data 40                         ; mon15
-       data 41                         ; mon16
-       data 42                         ; mon17
-       data 43                         ; mon18
-       data 44                         ; mon19
-       data 45                         ; mon20
-       data 46                         ; mon21
-       data 47                         ; mon22
-       data 48                         ; mon23
-       data 49                         ; mon24
-       data 50                         ; mon25
-       data 51                         ; mon26
+       data obj                        ; Box
+       data obj+1                      ; Barrel
+       data obj+2                      ; obj1
+       data obj+3                      ; obj2
+       data mon                        ; Eye
+       data mon+1                      ; Blob
+       data mon+2                      ; mon1
+       data mon+3                      ; mon2
+       data mon+4                      ; mon3
+       data mon+5                      ; mon4
+       data mon+6                      ; mon5
+       data mon+7                      ; mon6
+       data mon+8                      ; mon7
+       data mon+9                      ; mon8
+       data mon+10                     ; mon9
+       data mon+11                     ; mon10
+       data mon+12                     ; mon11
+       data mon+13                     ; mon12
+       data mon+14                     ; mon13
+       data mon+15                     ; mon14
+       data mon+16                     ; mon15
+       data mon+17                     ; mon16
+       data mon+18                     ; mon17
+       data mon+19                     ; mon18
+       data mon+20                     ; mon19
+       data mon+21                     ; mon20
+       data mon+22                     ; mon21
+       data mon+23                     ; mon22
+       data mon+24                     ; mon23
+       data mon+25                     ; mon24
+       data mon+26                     ; mon25
+       data mon+27                     ; mon26
 
 object_speech_table:
        data 0

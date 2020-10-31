@@ -94,8 +94,6 @@ backdrop_color:
        equ  >0e
 char_0:
        equ  >30
-first_texture_index:
-       equ  10
 initial_health:
        equ  63
 texture_bank_select:
@@ -109,7 +107,11 @@ texture_width:                         ; Width in fat pixels
 texture_height:
        equ  64
 texture_size:
-       equ  (texture_width/2)*texture_height;
+       equ  (texture_width/2)*texture_height
+first_object_texture:
+       equ  24
+first_monster_texture:
+       equ  32
 background_bank_select:
        equ  >6040
 background_address:
@@ -405,6 +407,7 @@ cast_if_required_1:
        bl   @skip_cast_rays
        seto @column_redraw_cleared
 cast_if_required_2:
+       blwp @check_int
        .endproc
 *// cast_if_required
 
@@ -510,27 +513,11 @@ fish_eye_correction:
 * r4: map color
 * r5: column to update
 *
-* Updates column.column_color and column.column_hit_x.
-* If no texture column.column_hit_x is set to -1.
+* Updates column.column_texture and column.column_hit_x.
 *
 wall_color:
        mov  r4,r4                      ; Color
-       jne  wall_color_0               ; Jump if wall
-       li   r4,15                      ; No wall color
-       seto @column_hit_x(r5)          ; No texture
-       jmp  wall_color_6               ; Return
-wall_color_0:
-       ci   r4,first_texture_index     ; Check for texture
-       jhe  wall_color_1               ; Jump if texture
-*      Single color
-       andi r4,>fffe                   ; Clear secret door bit
-       dect r4                         ; Shift to zero base
-       a    r3,r4                      ; Different color on x/y facing walls
-       sla  r4,1
-       mov  @wall_colors(r4),r4        ; Color
-       seto @column_hit_x(r5)          ; No texture
-       jmp  wall_color_6               ; Return
-*      Texture
+       jeq  wall_color_6               ; Return
 wall_color_1:
        mov  @ray_angle,r12             ; Ray direction
        mov  r3,r3                      ; Check side
@@ -568,17 +555,12 @@ wall_color_4:
        neg  r12
        a    @x,r12                     ; playerY + sin(a)
 wall_color_5:
-       ai   r4,-first_texture_index    ; Texture index
        andi r12,>00ff
        mov  r12,@column_hit_x(r5)
 wall_color_6:
-       mov  r4,@column_color(r5)
+       srl  r4,1
+       mov  r4,@column_texture(r5)
        rt
-wall_colors:
-       data 14,15
-       data 6,9
-       data 12,3
-       data 4,5
 *// wall_color
 
 ***************************************************************
@@ -822,10 +804,8 @@ draw_even_column_3:
        mov  r6,r2                      ; Wall height
        jeq  draw_even_column_5         ; Jump if zero
        a    r2,r8                      ; Add height to background source address
-       mov  @column_color(r4),r1       ; Color / texture number
-       mov  @column_hit_x(r4),r0       ; Check for texture
-       jlt  draw_even_column_4         ; No texture if -1
-*      Wall textured
+       mov  @column_hit_x(r4),r0
+       mov  @column_texture(r4),r1     ; Color / texture number
        bl   @prepare_texture           ; Calculate texture address
        ai   r0,even_col_vector_0
 *      Cartridge bank for drawing code
@@ -834,12 +814,6 @@ draw_even_column_3:
 *      Draw routine address
        mov  *r0,r2
        bl   *r2
-       jmp  draw_even_column_5
-draw_even_column_4:
-*      Wall single color
-       sla  r1,4
-       movb @r1lb,r1
-       bl   @draw_even_pixels
 *      Floor
 draw_even_column_5:
        li   r2,screen_height           ; Screen height
@@ -892,42 +866,6 @@ draw_even_background_pixels_4:
 
 *********************************************************************
 *
-* Draw a column of identical pixels (even)
-*
-* r1: Color in upper nybble of MSB and LSB
-* r2: Number of pixels to draw (not zero)
-* r3: Screen buffer address
-*
-draw_even_pixels:
-       coc  @one,r3
-       jne  draw_even_pixels_0
-       movb r1,*r3+
-       dec  r2
-       jeq  draw_even_pixels_4
-draw_even_pixels_0:
-       mov  r2,r0
-       srl  r2,3
-       jeq  draw_even_pixels_2
-draw_even_pixels_1:
-       mov  r1,*r3+
-       mov  r1,*r3+
-       mov  r1,*r3+
-       mov  r1,*r3+
-       dec  r2
-       jne  draw_even_pixels_1
-draw_even_pixels_2:
-       andi r0,7
-       jeq  draw_even_pixels_4
-draw_even_pixels_3:
-       movb r1,*r3+
-       dec  r0
-       jne  draw_even_pixels_3
-draw_even_pixels_4:
-       rt
-*// draw_even_pixels
-
-*********************************************************************
-*
 * Draw odd column
 *
 * r3: Screen buffer
@@ -954,10 +892,8 @@ draw_odd_column_3:
        mov  r6,r2                      ; Wall height
        jeq  draw_odd_column_5          ; Jump if zero
        a    r2,r8                      ; Add height to background source address
-       mov  @column_color(r4),r1       ; Color / texture number
-       mov  @column_hit_x(r4),r0       ; Check for texture
-       jlt  draw_odd_column_4          ; No texture if -1
-*      Wall textured
+       mov  @column_hit_x(r4),r0
+       mov  @column_texture(r4),r1     ; Color / texture number
        bl   @prepare_texture           ; Calculate texture address
        ai   r1,2048                    ; Add offset to odd column texture
        ai   r0,odd_col_vector_0
@@ -967,11 +903,6 @@ draw_odd_column_3:
 *      Draw routine address
        mov  *r0,r2
        bl   *r2
-       jmp  draw_odd_column_5
-draw_odd_column_4:
-*      Wall single color
-       movb @r1lb,r1
-       bl   @draw_odd_pixels
 *      Floor
 draw_odd_column_5:
        li   r2,screen_height           ; Screen height
@@ -1022,42 +953,6 @@ draw_odd_background_pixels_3:
 draw_odd_background_pixels_4:
        rt
 *// draw_odd_background_pixels
-
-*********************************************************************
-*
-* Draw a column of identical pixels (odd)
-*
-* r1: Color in lower nybble of MSB and LSB
-* r2: Number of pixels to draw (not zero)
-* r3: Screen buffer address
-*
-draw_odd_pixels:
-       coc  @one,r3
-       jne  draw_odd_pixels_0
-       socb r1,*r3+
-       dec  r2
-       jeq  draw_odd_pixels_4
-draw_odd_pixels_0:
-       mov  r2,r0
-       srl  r2,3
-       jeq  draw_odd_pixels_2
-draw_odd_pixels_1:
-       soc  r1,*r3+
-       soc  r1,*r3+
-       soc  r1,*r3+
-       soc  r1,*r3+
-       dec  r2
-       jne  draw_odd_pixels_1
-draw_odd_pixels_2:
-       andi r0,7
-       jeq  draw_odd_pixels_4
-draw_odd_pixels_3:
-       socb r1,*r3+
-       dec  r0
-       jne  draw_odd_pixels_3
-draw_odd_pixels_4:
-       rt
-*// draw_odd_pixels
 
 *********************************************************************
 *
@@ -1536,8 +1431,6 @@ move_forward:
        inc  @status                    ; Finish
        jmp  move_forward_3
 move_forward_1:
-       ci   r2,first_texture_index*256 ; Check for texture
-       jhe  move_forward_3             ; Cannot move through texture
        andi r2,>0100                   ; Test secret door bit
        jeq  move_forward_3             ; If not set we cannot move
 *      Move:
@@ -3026,19 +2919,15 @@ bullet_distance:
 space:
        byte 0
 door:
-       byte 13
+       byte 16
 goal:
-       byte 1
-checkered:
-       byte 15
+       byte 28
 byte_00:
        byte >00
 byte_01:
        byte >01
 byte_80:
        byte >80
-byte_xx:
-       byte >00
 
 **
 * Column data structure
@@ -3047,7 +2936,7 @@ column_height:
        equ  0
 column_distance:
        equ  2
-column_color:
+column_texture:
        equ  4
 column_hit_x:
        equ  6
