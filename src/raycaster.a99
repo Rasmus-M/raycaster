@@ -1889,14 +1889,14 @@ pointer_actions:
        mov  @pointer_click,r0
        jeq  pointer_actions_3
        jgt  pointer_actions_3
-       mov  @pointer_x,r0
-       srl  r0,8
-       mov  @pointer_y,r1
-       srl  r1,8
-       ci   r1,screen_height
+       mov  @pointer_x,r6
+       srl  r6,8
+       mov  @pointer_y,r7
+       srl  r7,8
+       ci   r7,screen_height
        jhe  pointer_actions_1
 *      Raycasting area
-       mov  r0,r4
+       mov  r6,r4
        srl  r4,2                       ; Column index
        sla  r4,4                       ; Column structure offset
        ai   r4,columns                 ; Column structure address
@@ -1919,11 +1919,31 @@ pointer_actions_4:
        srl  r0,5
        ci   r0,3
        jne  pointer_actions_2
+*      Vertical click position
+       mov  @column_height(r4),r5      ; Column height
+       li   r8,screen_height           ; Screen height
+       s    r5,r8                      ; Column height - screen height
+       srl  r8,1                       ; / 2
+       mov  r7,r1                      ; Screen x
+       s    r8,r1                      ; Screen x - (Column height - screen height) / 2
+       jlt  pointer_actions_2          ; Offset from top of column < 0?
+       c    r1,r5                      ; Offset from top of column >= column height
+       jhe  pointer_actions_2
+*      Relative
+       mov  r1,r8                      ; Offset FP 16.16
+       clr  r9
+       div  r5,r8                      ; Offset / height (FP 0.16)
+       andi r8,>e000
+       ci   r8,>6000
+       jne  pointer_actions_2
+*      Remove block
        movb @space,*r2
        seto @full_redraw_required
        jmp  pointer_actions_2
 pointer_actions_1:
 *      Bottom panel
+       mov  r6,r0
+       mov  r7,r1
        ai   r1,-screen_height
        ci   r0,104
        jl   pointer_actions_1a
