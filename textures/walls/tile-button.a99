@@ -3,15 +3,15 @@
        byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
        byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
        byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
-       byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
-       byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
+       byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ee
+       byte >11,>ff,>ff,>ff,>ff,>ff,>ff,>ff
        byte >ff,>ff,>ff,>ff,>ff,>ff,>f1,>f1
        byte >ff,>ff,>ff,>ff,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ef,>ef,>fe,>fe
        byte >ee,>ee,>ee,>ee,>ef,>ef,>ff,>ff
        byte >ff,>ff,>fe,>fe,>ef,>ef,>fe,>fe
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >ee,>ee,>ee,>ee,>ee,>ef,>e1,>1e
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>11,>11,>11,>11
        byte >ff,>ff,>ff,>ff,>ee,>ee,>ee,>ee
@@ -19,23 +19,23 @@
        byte >ef,>ef,>ff,>ff,>ff,>ff,>fe,>fe
        byte >ef,>ef,>fe,>fe,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >ee,>ee,>ee,>e1,>f1,>1e,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>11,>11,>11,>11
        byte >ff,>ff,>ff,>ff,>ef,>ef,>fe,>fe
        byte >ee,>ee,>ee,>ee,>ef,>ef,>ff,>ff
        byte >ff,>ff,>fe,>fe,>ef,>ef,>fe,>fe
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >ee,>ee,>e1,>e1,>e1,>e1,>e1,>f1
+       byte >1e,>1e,>1e,>ee,>fe,>1e,>e1,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>11,>11,>11,>11
        byte >ff,>ff,>ff,>ff,>ee,>ee,>ee,>ee
        byte >ef,>ef,>ff,>ff,>ff,>ff,>fe,>fe
        byte >ef,>ef,>fe,>fe,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >1e,>1e,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >ee,>ee,>ee,>ee,>ef,>f1,>1e,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ef,>ef,>ff,>ff,>11,>11,>11,>11
        byte >ff,>ff,>ff,>ff,>ef,>ef,>ff,>ff
@@ -43,21 +43,21 @@
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >ee,>ee,>ef,>f1,>1e,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ef,>ef,>ff,>ff
        byte >ff,>ff,>ff,>ff,>11,>11,>11,>11
        byte >ff,>ff,>ff,>ff,>ff,>ff,>fe,>fe
        byte >ef,>ef,>fe,>fe,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >ef,>f1,>1e,>1e,>1e,>1e,>11,>e1
+       byte >ee,>ee,>ee,>ee,>ee,>ee,>e1,>e1
+       byte >f1,>1e,>1e,>ee,>ee,>ee,>ee,>ee
        byte >ef,>ef,>ff,>ff,>ff,>ff,>ff,>ff
        byte >ff,>ff,>fe,>fe,>11,>11,>11,>11
        byte >ff,>ff,>ff,>ff,>ef,>ef,>fe,>fe
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
-       byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
+       byte >fe,>1f,>e1,>e1,>e1,>e1,>11,>1e
        byte >ee,>ee,>ee,>ee,>ee,>ee,>ee,>ee
        byte >ee,>ee,>ee,>ee,>ef,>ef,>ff,>ff
        byte >ff,>ff,>ff,>ff,>ff,>ff,>fe,>fe

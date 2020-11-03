@@ -1909,8 +1909,17 @@ pointer_actions:
        szcb @byte_80,r3
        jeq  pointer_actions_2
        cb   r3,@door
-       jne  pointer_actions_2
+       jne  pointer_actions_4
        bl   @open_door
+       seto @full_redraw_required
+pointer_actions_4:
+       cb   r3,@tile_button
+       jne  pointer_actions_2
+       mov  @column_hit_x(r4),r0
+       srl  r0,5
+       ci   r0,3
+       jne  pointer_actions_2
+       movb @space,*r2
        seto @full_redraw_required
        jmp  pointer_actions_2
 pointer_actions_1:
@@ -2920,8 +2929,12 @@ space:
        byte 0
 door:
        byte 16
+tile_button:
+       byte 12
 goal:
        byte 28
+tile_x:
+       byte 0
 byte_00:
        byte >00
 byte_01:
