@@ -1919,22 +1919,11 @@ pointer_actions_4:
        srl  r0,5
        ci   r0,3
        jne  pointer_actions_2
-*      Vertical click position
-       mov  @column_height(r4),r5      ; Column height
-       li   r8,screen_height           ; Screen height
-       s    r5,r8                      ; Column height - screen height
-       srl  r8,1                       ; / 2
-       mov  r7,r1                      ; Screen x
-       s    r8,r1                      ; Screen x - (Column height - screen height) / 2
-       jlt  pointer_actions_2          ; Offset from top of column < 0?
-       c    r1,r5                      ; Offset from top of column >= column height
-       jhe  pointer_actions_2
-*      Relative
-       mov  r1,r8                      ; Offset FP 16.16
-       clr  r9
-       div  r5,r8                      ; Offset / height (FP 0.16)
-       andi r8,>e000
-       ci   r8,>6000
+       bl   @get_vertical_texture_pointer_position
+       mov  r1,r1
+       jlt  pointer_actions_2
+       andi r1,>00e0
+       ci   r1,>0060
        jne  pointer_actions_2
 *      Remove block
        movb @space,*r2
@@ -1996,6 +1985,42 @@ action_jumptable:
        data 0
        data 0
 *// pointer_actions
+
+****************************************************
+*
+* Get vertical texture pointer position
+*
+* r4: address of column structure
+* r7: screen x
+* On return r1 contains the relative position as FP 8.8,
+* or -1 if no hit.
+*
+get_vertical_texture_pointer_position:
+       mov  @column_height(r4),r5      ; Column height
+       ci   r5,screen_height
+       jle  get_vertical_texture_pointer_position_0
+       li   r5,screen_height
+get_vertical_texture_pointer_position_0:
+       li   r8,screen_height           ; Screen height
+       s    r5,r8                      ; Column height - screen height
+       srl  r8,1                       ; / 2
+       mov  r7,r1                      ; Screen x
+       s    r8,r1                      ; Screen x - (Column height - screen height) / 2
+       jlt  get_vertical_texture_pointer_position_1 ; Offset from top of column < 0?
+       c    r1,r5                      ; Offset from top of column >= column height
+       jhe  get_vertical_texture_pointer_position_1
+*      Relative
+       mov  r1,r8                      ; Offset FP 16.16
+       clr  r9
+       div  r5,r8                      ; Offset / height (FP 0.16)
+       mov  r8,r1
+       srl  r1,8
+       jmp get_vertical_texture_pointer_position_2
+get_vertical_texture_pointer_position_1:
+       seto r1
+get_vertical_texture_pointer_position_2:
+       rt
+* // get_vertical_texture_pointer_position
 
 ****************************************************
 *
