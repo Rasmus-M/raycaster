@@ -1,0 +1,34 @@
+potion-green_patterns:
+       byte >ff,>c0,>bf,>bf,>bf,>bf,>bf,>bf
+       byte >bf,>bf,>bf,>bf,>bf,>bf,>bf,>bf
+       byte >bf,>be,>be,>be,>be,>be,>be,>bf
+       byte >bf,>bf,>bf,>bf,>bf,>bf,>c0,>ff
+       byte >ff,>ff,>ff,>fc,>f8,>f0,>fb,>fb
+       byte >fb,>fb,>fb,>fb,>e7,>df,>bb,>88
+       byte >90,>ef,>df,>df,>84,>ff,>ff,>ff
+       byte >ff,>80,>c0,>e0,>f8,>ff,>ff,>ff
+       byte >ff,>ff,>ff,>c0,>e0,>f0,>df,>df
+       byte >df,>df,>df,>df,>e7,>fb,>fd,>fe
+       byte >fe,>ff,>f7,>ff,>df,>82,>fb,>bf
+       byte >ff,>fe,>fc,>f8,>e0,>ff,>ff,>ff
+       byte >ff,>fc,>fd,>fd,>fd,>fd,>fd,>fd
+       byte >fd,>fd,>fd,>fd,>fd,>fd,>fd,>fd
+       byte >fd,>82,>82,>82,>82,>82,>82,>fd
+       byte >fd,>fd,>fd,>fd,>fd,>fd,>fc,>ff
+potion-green_colors:
+       byte >10,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>10
+       byte >10,>f0,>10,>16,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>f1
+       byte >f1,>1f,>1f,>1f,>31,>10,>30,>30
+       byte >20,>12,>1c,>1c,>1f,>10,>f0,>10
+       byte >10,>f0,>10,>61,>e1,>e1,>1e,>1e
+       byte >1e,>1e,>1e,>1e,>1e,>1e,>1e,>1e
+       byte >1e,>10,>13,>10,>12,>31,>3c,>3c
+       byte >20,>21,>c1,>c1,>e1,>10,>f0,>10
+       byte >10,>f1,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>f1,>f1,>f1,>f1,>f1,>f1,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>f1,>10

@@ -1,0 +1,34 @@
+map_patterns:
+       byte >ff,>c0,>bf,>bf,>bf,>bf,>bf,>bf
+       byte >bf,>bf,>bf,>bf,>bf,>bf,>bf,>bf
+       byte >bf,>bf,>bf,>bf,>bf,>bf,>bf,>bf
+       byte >bf,>bf,>bf,>bf,>bf,>bf,>c0,>ff
+       byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
+       byte >e0,>c0,>80,>80,>c0,>e0,>e0,>e4
+       byte >ca,>c0,>c0,>80,>ff,>ff,>80,>c0
+       byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
+       byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
+       byte >fe,>fa,>f1,>f1,>fa,>fe,>fe,>91
+       byte >b4,>fc,>fc,>f4,>e2,>e2,>f4,>f8
+       byte >ff,>ff,>ff,>ff,>ff,>ff,>ff,>ff
+       byte >ff,>fc,>fd,>fd,>fd,>fd,>fd,>fd
+       byte >fd,>fd,>fd,>fd,>fd,>fd,>fd,>fd
+       byte >fd,>fd,>fd,>fd,>fd,>fd,>fd,>fd
+       byte >fd,>fd,>fd,>fd,>fd,>fd,>fc,>ff
+map_colors:
+       byte >10,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>10
+       byte >10,>f0,>10,>10,>10,>10,>10,>10
+       byte >1e,>1f,>1f,>1e,>1b,>1a,>1f,>1f
+       byte >1f,>1f,>1e,>1f,>f0,>e0,>1b,>1a
+       byte >10,>10,>10,>10,>10,>10,>f0,>10
+       byte >10,>f0,>10,>10,>10,>10,>10,>10
+       byte >e1,>f1,>f1,>e1,>b1,>a1,>f1,>1f
+       byte >f1,>f1,>e1,>f1,>f1,>e1,>b1,>a1
+       byte >10,>10,>10,>10,>10,>10,>f0,>10
+       byte >10,>f1,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
+       byte >1f,>1f,>1f,>1f,>1f,>1f,>f1,>10

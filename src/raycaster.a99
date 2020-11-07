@@ -2498,25 +2498,6 @@ one_time_init_5:
        andi r1,>0700
        dec  r3
        jne  one_time_init_4
-*      Bottom rows
-       li   r0,ptrntb+>1020
-       li   r1,PAT0
-       li   r3,32
-one_time_init_6:
-       li   r2,32
-       bl   @vmbw
-       ai   r0,64
-       dec  r3
-       jne  one_time_init_6
-       li   r0,colrtb+>1020
-       li   r1,COL0
-       li   r3,32
-one_time_init_7:
-       li   r2,32
-       bl   @vmbw
-       ai   r0,64
-       dec  r3
-       jne  one_time_init_7
 *      Sprite patterns
        li   r0,sprptb
        li   r1,SPR0
@@ -2542,10 +2523,78 @@ one_time_init_3:
        ai   r0,>80
        dec  r3
        jne  one_time_init_1
+*      Bottom panel
+       bl   @display_panel
        .endproc
 txt_please_wait:
        text "PLEASE WAIT..."
 *// one_time_init
+
+*********************************************************************
+*
+* Display bottom panel
+*
+display_panel:
+       .proc
+       clr  r7
+       li   r8,8
+display_panel_1:
+       mov  r7,r0
+       li   r1,empty_patterns
+       li   r2,4
+       bl   @display_panel_graphics
+       ai   r7,4
+       dec  r8
+       jne  display_panel_1
+       li   r0,8
+       li   r1,map_patterns
+       li   r2,4
+       bl   @display_panel_graphics
+       li   r0,12
+       li   r1,arrows_patterns
+       li   r2,8
+       bl   @display_panel_graphics
+       li   r0,20
+       li   r1,attack_patterns
+       li   r2,4
+       bl   @display_panel_graphics
+       .endproc
+*// display_panel
+
+*********************************************************************
+*
+* Display panel graphics
+*
+* r0: Column (0-31)
+* r1: Address of graphics data (patterns followed by colors)
+* r2: Width in columns
+*
+* Modifies r0-r6
+*
+display_panel_graphics:
+       .proc
+       sla  r0,6                       ; * 64
+       ai   r0,ptrntb+>1020
+       mov  r0,r4
+       mov  r2,r5
+       li   r6,2
+display_panel_graphics_1:
+       bl   @vwad
+       li   r3,32
+display_panel_graphics_2:
+       movb *r1+,*r15
+       dec  r3
+       jne  display_panel_graphics_2
+       ai   r0,64
+       dec  r2
+       jne  display_panel_graphics_1
+       mov  r4,r0
+       ai   r0,>2000
+       mov  r5,r2
+       dec  r6
+       jne  display_panel_graphics_1
+       .endproc
+*// display_panel_graphics
 
 *********************************************************************
 *
