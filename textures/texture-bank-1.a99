@@ -5,5 +5,5 @@
        copy "walls/pipe-sludge.a99"
        copy "walls/panel.a99"
        copy "walls/finish.a99"
-       copy "walls/tile.a99"
+       copy "walls/tile-recess.a99"
 
