@@ -1,8 +1,7 @@
-PAT0
-COL0
        copy "../panel/empty.a99"
        copy "../panel/map.a99"
        copy "../panel/attack.a99"
-       copy "../panel/potion-green.a99"
        copy "../panel/potion-red.a99"
+       copy "../panel/potion-green.a99"
+       copy "../panel/key.a99"
        copy "../panel/arrows.a99"

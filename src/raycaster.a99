@@ -558,7 +558,7 @@ wall_color_5:
        andi r12,>00ff
        mov  r12,@column_hit_x(r5)
 wall_color_6:
-       srl  r4,1
+       srl  r4,1                       ; Shift out secret door bit
        mov  r4,@column_texture(r5)
        rt
 *// wall_color
@@ -1887,8 +1887,9 @@ update_health_bar_4:
 pointer_actions:
        .proc
        mov  @pointer_click,r0
-       jeq  pointer_actions_3
-       jgt  pointer_actions_3
+       jlt  pointer_actions_0
+       b    @pointer_actions_3
+pointer_actions_0:
        mov  @pointer_x,r6
        srl  r6,8
        mov  @pointer_y,r7
@@ -1908,13 +1909,15 @@ pointer_actions:
        movb *r2,r3
        szcb @byte_80,r3
        jeq  pointer_actions_2
+*      Door
        cb   r3,@door
        jne  pointer_actions_4
        bl   @open_door
        seto @full_redraw_required
 pointer_actions_4:
+*      Button
        cb   r3,@tile_button
-       jne  pointer_actions_2
+       jne  pointer_actions_4a
        mov  @column_hit_x(r4),r0
        srl  r0,5
        ci   r0,3
@@ -1927,6 +1930,31 @@ pointer_actions_4:
        jne  pointer_actions_2
 *      Remove block
        movb @space,*r2
+       seto @full_redraw_required
+       jmp  pointer_actions_2
+pointer_actions_4a:
+*      Red potion
+       cb   r3,@tile_red_potion
+       jne  pointer_actions_4b
+       movb @tile_recess,*r2
+       seto @full_redraw_required
+       li   r0,20
+       li   r1,potion_red_patterns
+       li   r2,4
+       bl   @display_panel_graphics
+       jmp  pointer_actions_2
+pointer_actions_4b:
+*      Green potion
+       cb   r3,@tile_green_potion
+       jne  pointer_actions_4c
+       movb @tile_recess,*r2
+       seto @full_redraw_required
+       jmp  pointer_actions_2
+pointer_actions_4c:
+*      Key
+       cb   r3,@tile_key
+       jne  pointer_actions_2
+       movb @tile_recess,*r2
        seto @full_redraw_required
        jmp  pointer_actions_2
 pointer_actions_1:
@@ -3027,8 +3055,16 @@ tile_button:
        byte 12
 goal:
        byte 28
-tile_x:
-       byte 0
+tile_recess:
+       byte 30
+tile_red_potion:
+       byte 40
+tile_green_potion:
+       byte 42
+tile_key:
+       byte 44
+tile_unused:
+       byte 44
 byte_00:
        byte >00
 byte_01:
@@ -3146,6 +3182,7 @@ col_index:
        copy "../TexGen/col-index.a99"
 sprite_index:
        copy "../TexGen/sprite-index.a99"
+       copy "bottom-panel.a99"
 
 **
 *      Screen buffer (6K for full screen)
@@ -3167,7 +3204,6 @@ upper_ram_max:
        aorg screen_buffer
        copy "sprites.a99"
        copy "sprite-patterns.a99"
-       copy "bottom-panel.a99"
 
 ***************************************************************
 *

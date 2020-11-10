@@ -1,4 +1,4 @@
-potion-green_patterns:
+potion_green_patterns:
        byte >ff,>c0,>bf,>bf,>bf,>bf,>bf,>bf
        byte >bf,>bf,>bf,>bf,>bf,>bf,>bf,>bf
        byte >bf,>be,>be,>be,>be,>be,>be,>bf
@@ -15,12 +15,12 @@ potion-green_patterns:
        byte >fd,>fd,>fd,>fd,>fd,>fd,>fd,>fd
        byte >fd,>82,>82,>82,>82,>82,>82,>fd
        byte >fd,>fd,>fd,>fd,>fd,>fd,>fc,>ff
-potion-green_colors:
+potion_green_colors:
        byte >10,>1f,>1f,>1f,>1f,>1f,>1f,>1f
        byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
        byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>1f
        byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>10
-       byte >10,>f0,>10,>16,>1f,>1f,>1f,>1f
+       byte >10,>f0,>10,>18,>1f,>1f,>1f,>1f
        byte >1f,>1f,>1f,>1f,>1f,>1f,>1f,>f1
        byte >f1,>1f,>1f,>1f,>31,>10,>30,>30
        byte >20,>12,>1c,>1c,>1f,>10,>f0,>10
