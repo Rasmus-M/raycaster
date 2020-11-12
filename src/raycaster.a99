@@ -112,6 +112,8 @@ first_object_texture:
        equ  24
 first_monster_texture:
        equ  32
+first_action_block:
+       equ  32
 background_bank_select:
        equ  >6040
 background_address:
@@ -1426,7 +1428,7 @@ move_forward:
        a    @dy,r1
        bl   @get_map_value
        jeq  move_forward_2
-       cb   @goal,r2                   ; Check for goal
+       cb   @block_goal,r2                   ; Check for goal
        jne  move_forward_1
        inc  @status                    ; Finish
        jmp  move_forward_3
@@ -1733,7 +1735,7 @@ bullet_collisions:
        movb *r2,r3
        szcb @byte_80,r3
        jeq  bullet_collisions_2
-       cb   r3,@door
+       cb   r3,@block_door
        jne  bullet_collisions_1
        bl   @open_door
        seto @full_redraw_required
@@ -1906,56 +1908,16 @@ pointer_actions_0:
        mov  @column_map_y(r4),r1
        swpb r1
        bl   @get_map_address
+       clr  r3
        movb *r2,r3
        szcb @byte_80,r3
        jeq  pointer_actions_2
-*      Door
-       cb   r3,@door
-       jne  pointer_actions_4
-       bl   @open_door
-       seto @full_redraw_required
-pointer_actions_4:
-*      Button
-       cb   r3,@tile_button
-       jne  pointer_actions_4a
-       mov  @column_hit_x(r4),r0
-       srl  r0,5
-       ci   r0,3
-       jne  pointer_actions_2
-       bl   @get_vertical_texture_pointer_position
-       mov  r1,r1
-       jlt  pointer_actions_2
-       andi r1,>00e0
-       ci   r1,>0060
-       jne  pointer_actions_2
-*      Remove block
-       movb @space,*r2
-       seto @full_redraw_required
-       jmp  pointer_actions_2
-pointer_actions_4a:
-*      Red potion
-       cb   r3,@tile_red_potion
-       jne  pointer_actions_4b
-       movb @tile_recess,*r2
-       seto @full_redraw_required
-       li   r0,20
-       li   r1,potion_red_patterns
-       li   r2,4
-       bl   @display_panel_graphics
-       jmp  pointer_actions_2
-pointer_actions_4b:
-*      Green potion
-       cb   r3,@tile_green_potion
-       jne  pointer_actions_4c
-       movb @tile_recess,*r2
-       seto @full_redraw_required
-       jmp  pointer_actions_2
-pointer_actions_4c:
-*      Key
-       cb   r3,@tile_key
-       jne  pointer_actions_2
-       movb @tile_recess,*r2
-       seto @full_redraw_required
+       swpb r3
+       ai   r3,-first_action_block
+       andi r3,>00fe
+       mov  @block_jumptable(r3),r3
+       jeq  pointer_actions_2
+       bl   *r3
        jmp  pointer_actions_2
 pointer_actions_1:
 *      Bottom panel
@@ -1972,7 +1934,7 @@ pointer_actions_1:
        srl  r1,2
        soc  r0,r1
        sla  r1,1
-       mov  @move_jumptable(r1),r0
+       mov  @arrows_jumptable(r1),r0
        jeq  pointer_actions_2
        bl   *r0
        jmp  pointer_actions_2
@@ -1989,14 +1951,23 @@ pointer_actions_1b:
        ai   r1,3
 pointer_actions_1c:
        sla  r1,1
-       mov  @action_jumptable(r1),r0
+       mov  @icon_jumptable(r1),r0
        jeq  pointer_actions_2
        bl   *r0
 pointer_actions_2:
        abs  @pointer_click
 pointer_actions_3:
        .endproc
-move_jumptable:
+block_jumptable:
+       data door_block_clicked
+       data 0
+       data button_block_clicked
+       data 0
+       data red_potion_block_clicked
+       data green_potion_block_clicked
+       data key_block_clicked
+       data 0
+arrows_jumptable:
        data turn_left
        data move_forward
        data turn_right
@@ -2005,7 +1976,7 @@ move_jumptable:
        data move_back
        data move_right
        data 0
-action_jumptable:
+icon_jumptable:
        data 0
        data display_map
        data fire_bullet
@@ -2013,6 +1984,76 @@ action_jumptable:
        data 0
        data 0
 *// pointer_actions
+
+
+*********************************************************************
+*
+* Door clicked
+*
+door_block_clicked:
+       .proc
+       bl   @open_door
+       seto @full_redraw_required
+       .endproc
+*// door_block_clicked
+
+*********************************************************************
+*
+* Button block clicked
+*
+button_block_clicked:
+       .proc
+       mov  @column_hit_x(r4),r0
+       srl  r0,5
+       ci   r0,3
+       jne  button_block_clicked_1
+       bl   @get_vertical_texture_pointer_position
+       mov  r1,r1
+       jlt  button_block_clicked_1
+       andi r1,>00e0
+       ci   r1,>0060
+*      Remove block
+       movb @block_space,*r2
+       seto @full_redraw_required
+button_block_clicked_1:
+       .endproc
+*// button_block_clicked
+
+*********************************************************************
+*
+* Red potion block clicked
+*
+red_potion_block_clicked:
+       .proc
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       li   r0,20
+       li   r1,potion_red_patterns
+       li   r2,4
+       bl   @display_panel_graphics
+       .endproc
+*// red_potion_block_clicked
+*********************************************************************
+*
+* Green potion block clicked
+*
+green_potion_block_clicked:
+       .proc
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       .endproc
+*// green_potion_block_clicked
+
+*********************************************************************
+*
+* Key block clicked
+*
+key_block_clicked:
+       .proc
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       .endproc
+*// key_block_clicked
 
 ****************************************************
 *
@@ -2205,7 +2246,7 @@ fire_bullet_1:
 *
 open_door:
        .proc
-       movb @space,*r2
+       movb @block_space,*r2
        li   r8,doors
        mov  @n_doors,r9
        jeq  open_door_3
@@ -2429,7 +2470,7 @@ init_level_1:
        clr  r1
        movb @door_y(r4),r1
        bl   @get_map_address
-       movb @door,*r2
+       movb @block_door,*r2
        mov  @door_object_inits,r6
        clr  *r6                        ; Mark as not completed
        ai   r4,door_size
@@ -3047,30 +3088,30 @@ bullet_distance:
 **
 * Constants
 *
-space:
-       byte 0
-door:
-       byte 16
-tile_button:
-       byte 12
-goal:
-       byte 28
-tile_recess:
-       byte 30
-tile_red_potion:
-       byte 40
-tile_green_potion:
-       byte 42
-tile_key:
-       byte 44
-tile_unused:
-       byte 44
 byte_00:
        byte >00
 byte_01:
        byte >01
 byte_80:
        byte >80
+block_space:
+       byte 0
+block_door:
+       byte 32
+block_goal:
+       byte 34
+block_button:
+       byte 36
+block_recess:
+       byte 38
+block_red_potion:
+       byte 40
+block_green_potion:
+       byte 42
+block_key:
+       byte 44
+block_unused:
+       byte 46
 
 **
 * Column data structure

@@ -1,9 +1,11 @@
-       copy "walls/door.a99"
        copy "walls/pipe-right-down.a99"
        copy "walls/pipe.a99"
-       copy "walls/pipe-left-down.a99"
        copy "walls/pipe-sludge.a99"
-       copy "walls/panel.a99"
-       copy "walls/finish.a99"
-       copy "walls/tile-recess.a99"
+       copy "walls/pipe-left-down.a99"
+       copy "walls/plain-green.a99"
+       copy "walls/plain-blue.a99"
+       copy "walls/plain-red.a99"
+       copy "walls/plain-grey.a99"
+
+
 
