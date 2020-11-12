@@ -58,12 +58,16 @@ screen_height:
        equ  160
 n_directions:
        equ  256
+turn_speed:
+       equ  64
 angle_mask:
        equ  2*n_directions-1
 n_rays:
        equ  screen_width
 max_steps:
        equ  24
+allow_missing_ray:
+       equ  0
 max_wall_height:
        equ  528
 max_sprite_width:
@@ -72,13 +76,11 @@ max_sprite_height:
        equ  160
 max_sprite_distance:
        equ  16
-max_bullet_distance:
-       equ  16
 max_sprites:
        equ  16
-n_sprite_patterns:
+n_hw_sprite_patterns:
        equ  24
-n_fixed_sprites:
+n_fixed_hw_sprites:
        equ  10
 enemy_speed:
        equ  >0010
@@ -86,8 +88,8 @@ bullet_speed_z:
        equ  ->0c00
 bullet_accl_z:
        equ  >0100
-gun_color:
-       equ  >01
+max_bullet_distance:
+       equ  16
 bullet_color:
        equ  >0f
 backdrop_color:
@@ -108,6 +110,10 @@ texture_height:
        equ  64
 texture_size:
        equ  (texture_width/2)*texture_height
+max_texture_height_2:                  ; Up to this value
+       equ  192                        ; all even heights are indexed
+max_texture_height_8:                  ; Up to this value
+       equ  528                        ; every 8th height is indexed
 first_object_texture:
        equ  24
 first_monster_texture:
@@ -120,10 +126,8 @@ background_address:
        equ  >6800
 background_height:
        equ  192
-turn_speed:
-       equ  64
-allow_missing_ray:
-       equ  0
+inventory_size:
+       equ  8
 
 **
 * Scratch pad
@@ -205,14 +209,12 @@ pointer_x:
        equ  current_background_bank_select+2
 pointer_y:
        equ  pointer_x+2
-pointer_vx:
-       equ  pointer_y+2
-pointer_vy:
-       equ  pointer_vx+2
 pointer_click:
-       equ  pointer_vy+2
-snd_channel_1:
+       equ  pointer_y+2
+inventory_index:
        equ  pointer_click+2
+snd_channel_1:
+       equ  inventory_index+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -280,11 +282,11 @@ finish:
 pause:
        li   r14,120
 pause_loop:
-       blwp @wait_int
+       bl   @wait_int
        dec  r14
        jne  pause_loop
 pause_loop_1:
-       blwp @wait_int
+       bl   @wait_int
        li   r0,KEY_FI
        bl   @check_key
        jeq  pause_loop_1
@@ -300,7 +302,7 @@ delay_1:
        mov  @interrupt_count,r0
        ci   r0,3
        jhe  delay_2
-       blwp @wait_int
+       bl   @wait_int
        jmp  delay_1
 delay_2:
        .endproc
@@ -310,37 +312,42 @@ delay_2:
 *
 * Wait for interrupt
 *
-* Called with blwp
-*
 wait_int:
-       data intws
-       data wait_int_0
-wait_int_0:
        movb @vdpsta,r12                ; Clear any pending interrupt
        clr  r12
 wait_int_1:
        tb   2                          ; Test CRU bit for VDP interrupt
        jeq  wait_int_1
-       jmp  interrupt
+       blwp @interrupt
+       rt
 *// wait_int
 
 *********************************************************************
 *
 * Check for interrupt
 *
-* Called with blwp
 *
 check_int:
-       data intws
-       data check_int_0
-check_int_0:
        clr  r12
        tb   2                          ; Test CRU bit for VDP interrupt
        jeq  check_int_1
+       blwp @interrupt
+check_int_1:
+       rt
+*// check_int
+
+***************************************************************
+*
+* Interrupt routine
+* Called with blwp @interrupt
+*
 interrupt:
+       data intws
+       data interrupt_1
+interrupt_1:
        inc  @interrupt_count
        movb @vdpsta,r12
-       mov  @wrksp+20,r10
+       mov  @wrksp+20,r10              ; Copy stack pointer
 ;       .push r15
 ;       li   r15,vdpwd
 ;       bl   @set_vdp_regs
@@ -348,9 +355,8 @@ interrupt:
        bl   @joystick_input
        bl   @snd_player
 ;       .pop r15
-check_int_1:
        rtwp
-*// check_int
+*// interrupt
 
 ***************************************************************
 *
@@ -383,7 +389,7 @@ upload_sprites:
        swpb r1
        movb r1,*r15
 *      Skip fixed sprites
-       ai   r0,(n_fixed_sprites+1)*4
+       ai   r0,(n_fixed_hw_sprites+1)*4
        bl   @vwad
 *      Bullets
        bl   @draw_bullets
@@ -409,7 +415,7 @@ cast_if_required_1:
        bl   @skip_cast_rays
        seto @column_redraw_cleared
 cast_if_required_2:
-       blwp @check_int
+       bl   @check_int
        .endproc
 *// cast_if_required
 
@@ -462,7 +468,7 @@ cast_rays_3:
        inct r2                         ; Increment it
        andi r2,angle_mask              ; Wrap around
        mov  r2,@ray_angle              ; Save it
-       blwp @check_int
+       bl   @check_int
        dec  @ray_count                 ; Count down
        jne  cast_rays_1                ; Loop if more rays to cast
        .endproc
@@ -753,7 +759,7 @@ draw_screen_4:
        ai   r4,column_size
        inc  r5
 draw_screen_5:
-       blwp @check_int
+       bl   @check_int
        ci   r5,n_rays
        jlt  draw_screen_1
 *      Done
@@ -966,11 +972,6 @@ draw_odd_background_pixels_4:
 * On return r0 contains the address of the routine to draw the column,
 * and r1 contains the texture source address,
 
-max_texture_height_2:                  ; Up to this value
-       equ  192                        ; all even heights are indexed
-max_texture_height_8:                  ; Up to this value
-       equ  528                        ; every 8th height is indexed
-
 prepare_texture:
 *      Select SAMS bank
        swpb r1
@@ -1040,7 +1041,7 @@ draw_sprites_1:
        jgt  draw_sprites_2
 *      Sprite is within view and distance
        bl   @draw_sprite
-       blwp @check_int
+       bl   @check_int
 draw_sprites_2:
        ai   r4,sprite_size
        dec  r5
@@ -1238,7 +1239,7 @@ upload_screen_2:
        ai   r5,screen_height-64
        dec  r7
        jne  upload_screen_2
-       blwp @check_int
+       bl   @check_int
        ai   r5,64-(screen_height*screen_width/2)
        ai   r0,>800
        dec  r6
@@ -1255,7 +1256,7 @@ upload_screen_2a:
        ai   r0,64
        dec  r7
        jne  upload_screen_2a
-       blwp @check_int
+       bl   @check_int
        .endif
        clr  @full_redraw_required
        jmp  upload_screen_8
@@ -1293,7 +1294,7 @@ upload_screen_6:
        bl   @upload_screen_loop_pad
        .endif
        ai   r0,64-(screen_height/64*>800)
-       blwp @check_int
+       bl   @check_int
 upload_screen_7:
        ai   r1,column_size*2
        dec  r2
@@ -1363,7 +1364,7 @@ keyboard_input_7:
        bl   @display_map
 *      Done
 keyboard_input_8:
-       blwp @check_int
+       bl   @check_int
        .endproc
 dirs:
        data >0100,>0000
@@ -1660,7 +1661,7 @@ move_enemies_2:
        dec  r5
        jne  move_enemies_1
 move_enemies_3:
-       blwp @check_int
+       bl   @check_int
        .endproc
 *// move_enemies
 
@@ -1781,7 +1782,7 @@ bullet_collisions_4:
 bullet_collisions_1:
        clr  @bullet_active
 bullet_collisions_0:
-       blwp @check_int
+       bl   @check_int
        .endproc
 *// bullet_collisions
 
@@ -1822,7 +1823,7 @@ sprite_collisions_2:
        dec  r5
        jne  sprite_collisions_1
 sprite_collisions_3:
-       blwp @check_int
+       bl   @check_int
        .endproc
 *// sprite_collisions
 
@@ -2155,7 +2156,7 @@ display_map_5:
 *      Display player position
        mov  @sal_no,r0                 ; Which table to update?
        sla  r0,7
-       ai   r0,spratb+((n_fixed_sprites+1)*4)
+       ai   r0,spratb+((n_fixed_hw_sprites+1)*4)
        bl   @vwad                      ; Set VDP address
        movb @y,r0
        ab   @map_y,r0
@@ -2429,6 +2430,25 @@ remove_sprite:
        .endproc
 *// remove_sprite
 
+*********************************************************************
+*
+* Add object to inventory
+*
+add_inventory:
+       .proc
+
+       .endproc
+*// add_inventory
+
+*********************************************************************
+*
+* Display inventory
+*
+display_inventory:
+       .proc
+
+       .endproc
+*// display_inventory
 
 *********************************************************************
 *
@@ -2452,6 +2472,7 @@ init_level:
        mov  r0,@pointer_x
        li   r0,>6000
        mov  r0,@pointer_y
+       clr  @inventory_index
 *      Init columns
        li   r1,columns
        li   r2,n_rays
@@ -2570,7 +2591,7 @@ one_time_init_5:
 *      Sprite patterns
        li   r0,sprptb
        li   r1,SPR0
-       li   r2,n_sprite_patterns*32
+       li   r2,n_hw_sprite_patterns*32
        bl   @vmbw
 *      Sprite attribute tables
        li   r0,spratb+4
@@ -2584,7 +2605,7 @@ one_time_init_2:
        movb *r1+,*r15
        dec  r2
        jne  one_time_init_2
-       li   r2,(n_fixed_sprites-4)*4
+       li   r2,(n_fixed_hw_sprites-4)*4
 one_time_init_3:
        movb *r4+,*r15
        dec  r2
@@ -3171,7 +3192,7 @@ sprite_size:
 n_sprites:
        data 0
 sprites:
-       bss  sprite_size*16
+       bss  max_sprites*sprite_size
 
 **
 * Sprite init data structure
@@ -3208,6 +3229,27 @@ door_sprite_inits:
        equ  2
 door_size:
        equ  4
+
+**
+* Object types
+*
+object_type_red_position:
+       equ  1
+object_type_green_position:
+       equ  2
+object_type_key:
+       equ  3
+
+**
+* Object structure
+*
+object_type:
+       equ  0
+object_size:
+       equ  2
+
+inventory:
+       bss  object_size*inventory_size
 
 ***************************************************************
 *
