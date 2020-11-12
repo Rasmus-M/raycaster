@@ -3243,8 +3243,8 @@ upper_ram_max:
 *      Loaded on top of screen buffer
 *
        aorg screen_buffer
-       copy "sprites.a99"
-       copy "sprite-patterns.a99"
+       copy "hw-sprite-init.a99"
+       copy "hw-sprite-patterns.a99"
 
 ***************************************************************
 *
