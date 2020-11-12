@@ -1,83 +1,83 @@
 **
-* Object types
+* Sprite types
 *
-object_type_box:
+sprite_type_box:
        equ  1
-object_type_barrel:
+sprite_type_barrel:
        equ  2
-object_type_obj1:
+sprite_type_obj1:
        equ  3
-object_type_obj2:
+sprite_type_obj2:
        equ  4
-object_type_eye:
+sprite_type_eye:
        equ  5
-object_type_blob:
+sprite_type_blob:
        equ  6
-object_type_mon1:
+sprite_type_mon1:
        equ  7
-object_type_mon2:
+sprite_type_mon2:
        equ  8
-object_type_mon3:
+sprite_type_mon3:
        equ  9
-object_type_mon4:
+sprite_type_mon4:
        equ  10
-object_type_mon5:
+sprite_type_mon5:
        equ  11
-object_type_mon6:
+sprite_type_mon6:
        equ  12
-object_type_mon7:
+sprite_type_mon7:
        equ  13
-object_type_mon8:
+sprite_type_mon8:
        equ  14
-object_type_mon9:
+sprite_type_mon9:
        equ  15
-object_type_mon10:
+sprite_type_mon10:
        equ  16
-object_type_mon11:
+sprite_type_mon11:
        equ  17
-object_type_mon12:
+sprite_type_mon12:
        equ  18
-object_type_mon13:
+sprite_type_mon13:
        equ  19
-object_type_mon14:
+sprite_type_mon14:
        equ  20
-object_type_mon15:
+sprite_type_mon15:
        equ  21
-object_type_mon16:
+sprite_type_mon16:
        equ  22
-object_type_mon17:
+sprite_type_mon17:
        equ  23
-object_type_mon18:
+sprite_type_mon18:
        equ  24
-object_type_mon19:
+sprite_type_mon19:
        equ  25
-object_type_mon20:
+sprite_type_mon20:
        equ  26
-object_type_mon21:
+sprite_type_mon21:
        equ  27
-object_type_mon22:
+sprite_type_mon22:
        equ  28
-object_type_mon23:
+sprite_type_mon23:
        equ  29
-object_type_mon24:
+sprite_type_mon24:
        equ  30
-object_type_mon25:
+sprite_type_mon25:
        equ  31
-object_type_mon26:
+sprite_type_mon26:
        equ  32
 
-object_type_object:
-       equ  object_type_box
-object_type_monster:
-       equ  object_type_eye
+sprite_type_object:
+       equ  sprite_type_box
+sprite_type_monster:
+       equ  sprite_type_eye
 
 **
-* Object type init tables
+* Sprite type init tables
 *
 obj:   equ first_object_texture
 mon:   equ first_monster_texture
 
-object_texture_table:
+sprite_texture_table:
        data 0
        data obj                        ; Box
        data obj+1                      ; Barrel
@@ -112,7 +112,7 @@ object_texture_table:
        data mon+26                     ; mon25
        data mon+27                     ; mon26
 
-object_speech_table:
+sprite_speech_table:
        data 0
        data come_and_get_me            ; Box
        data 0                          ; Barrel
@@ -147,7 +147,7 @@ object_speech_table:
        data 0                          ; mon25
        data 0                          ; mon26
 
-object_health_table:
+sprite_health_table:
        data 0
        data 0                          ; Box
        data 0                          ; Barrel

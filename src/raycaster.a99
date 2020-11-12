@@ -66,15 +66,15 @@ max_steps:
        equ  24
 max_wall_height:
        equ  528
-max_object_width:
+max_sprite_width:
        equ  32
-max_object_height:
+max_sprite_height:
        equ  160
-max_object_distance:
+max_sprite_distance:
        equ  16
 max_bullet_distance:
        equ  16
-max_objects:
+max_sprites:
        equ  16
 n_sprite_patterns:
        equ  24
@@ -258,12 +258,12 @@ main_loop:
        bl   @upload_sprites
        bl   @cast_if_required
        bl   @draw_screen
-       bl   @draw_objects
+       bl   @draw_sprites
        bl   @upload_screen
        bl   @keyboard_input
        bl   @pointer_actions
        bl   @bullet_collisions
-       bl   @object_collisions
+       bl   @sprite_collisions
        bl   @move_enemies
        bl   @move_bullets
        bl   @update_health_bar
@@ -1004,73 +1004,73 @@ prepare_texture_3:
 
 *********************************************************************
 *
-* Draw objects
+* Draw sprites
 *
-draw_objects:
+draw_sprites:
        .proc
-       li   r4,objects
-       mov  @n_objects,r5
-       jeq  draw_objects_3
-draw_objects_1:
+       li   r4,sprites
+       mov  @n_sprites,r5
+       jeq  draw_sprites_3
+draw_sprites_1:
        mov  *r4,r0                     ; Active?
-       jeq  draw_objects_2
-       mov  @object_x(r4),r0
+       jeq  draw_sprites_2
+       mov  @sprite_x(r4),r0
        s    @x,r0                      ; dx
-       mov  @object_y(r4),r1
+       mov  @sprite_y(r4),r1
        s    @y,r1                      ; dy
        mov  r0,r2
        abs  r2
        mov  r1,r3
        abs  r3
        a    r2,r3                      ; Taxi distance
-       ci   r3,max_object_distance*256
-       jhe  draw_objects_2
+       ci   r3,max_sprite_distance*256
+       jhe  draw_sprites_2
 *      Look up angle
        bl   @atan2
-       mov  r6,@object_angle(r4)
+       mov  r6,@sprite_angle(r4)
        srl  r6,7
        s    @angle,r6
-       ci   r6,-n_rays-max_object_width
-       jlt  draw_objects_2
-       ci   r6,n_rays+max_object_width-1
-       jgt  draw_objects_2
+       ci   r6,-n_rays-max_sprite_width
+       jlt  draw_sprites_2
+       ci   r6,n_rays+max_sprite_width-1
+       jgt  draw_sprites_2
 *      Look up distance
        bl   @euclidian_distance
-       ci   r7,max_object_distance*256
-       jgt  draw_objects_2
-*      Object is within view and distance
-       bl   @draw_object
+       ci   r7,max_sprite_distance*256
+       jgt  draw_sprites_2
+*      Sprite is within view and distance
+       bl   @draw_sprite
        blwp @check_int
-draw_objects_2:
-       ai   r4,object_size
+draw_sprites_2:
+       ai   r4,sprite_size
        dec  r5
-       jne  draw_objects_1
-draw_objects_3:
+       jne  draw_sprites_1
+draw_sprites_3:
        .endproc
-*// draw_objects
+*// draw_sprites
 
 *********************************************************************
 *
-* Draw object
+* Draw sprite
 *
-* r4: object to draw
+* r4: sprite to draw
 * r6: angle relative to player (2 units per column)
 * r7: distance FP 8.8 (last 6 bits are zero)
 *
-draw_object:
+draw_sprite:
        .proc
        .push r4
        .push r5
 *      Width, Height
        ci   r7,>0100
-       jgt  draw_object_1
-       li   r2,max_object_height
-       jmp  draw_object_2
-draw_object_1:
+       jgt  draw_sprite_1
+       li   r2,max_sprite_height
+       jmp  draw_sprite_2
+draw_sprite_1:
        clr  r2
-       li   r3,max_object_height*256   ; max_object_height as FP 24.8
-       div  r7,r2                      ; Size (FP 16.0) = max_object_height / distance
-draw_object_2:
+       li   r3,max_sprite_height*256   ; max_sprite_height as FP 24.8
+       div  r7,r2                      ; Size (FP 16.0) = max_sprite_height / distance
+draw_sprite_2:
        mov  r2,r3                      ; Height = size
        srl  r2,2                       ; Width = size / 4
 *      Column
@@ -1083,25 +1083,25 @@ draw_object_2:
        s    r3,r1                      ; Minus sprite height
        srl  r1,1                       ; Divided by 2
 *      Texture
-       mov  @object_texture(r4),r4     ; Texture number
+       mov  @sprite_texture(r4),r4     ; Texture number
 *      Distance
        mov  r7,r5                      ; Depth/distance
 *      Draw sprite
-       bl   @draw_sprite
+       bl   @draw_texture
        .pop r5
        .pop r4
 *      Speak first time
-       mov  @object_speech(r4),r1
-       jeq  draw_object_11
+       mov  @sprite_speech(r4),r1
+       jeq  draw_sprite_11
        bl   @say_phrase
-       clr  @object_speech(r4)
-draw_object_11:
+       clr  @sprite_speech(r4)
+draw_sprite_11:
        .endproc
-*// draw_object
+*// draw_sprite
 
 *********************************************************************
 *
-* Draw sprite
+* Draw texture
 *
 * r0: column
 * r1: row
@@ -1116,7 +1116,7 @@ draw_object_11:
 * Pixels in left nybble (32 columns x 64 rows = 2048 bytes)
 * Pixels in right nybble (32 columns x 64 rows = 2048 bytes)
 *
-draw_sprite:
+draw_texture:
        .proc
        .push r15
        andi r3,>00fe
@@ -1125,16 +1125,16 @@ draw_sprite:
 *      Screen buffer address (r1)
        mov  r0,r8                      ; Save screen column
        mov  r0,r13                     ; Screen column
-       jgt  draw_sprite_0a
+       jgt  draw_texture_0a
        neg  r13
-draw_sprite_0a:
+draw_texture_0a:
        andi r13,>003e                  ; Make even
        li   r14,screen_height/2        ; Column size in bytes
        mpy  r14,r13                    ; Even column * column size in bytes
        mov  r0,r0
-       jgt  draw_sprite_0b
+       jgt  draw_texture_0b
        neg  r14
-draw_sprite_0b:
+draw_texture_0b:
        a    r14,r1                     ; Add to row
        ai   r1,screen_buffer           ; Add base address
 *      Texture address (r0)
@@ -1144,18 +1144,18 @@ draw_sprite_0b:
        li   r0,sams_window             ; Texture base address (FP 16.0)
 *      Texture X offset (r4) and increment (r5)
        clr  r4                         ; Texture X offset FP 8.8
-       ci   r2,texture_width           ; Check how to calculate texture width / sprite width
-       jgt  draw_sprite_1
+       ci   r2,texture_width           ; Check how to calculate texture width / texture width
+       jgt  draw_texture_1
        clr  r13                        ; Texture width FP 24.8
        li   r14,texture_width*256
-       div  r2,r13                     ; Div by sprite width FP 16.0 -> increment as FP 8.8
-       jmp  draw_sprite_2
-draw_sprite_1:
+       div  r2,r13                     ; Div by texture width FP 16.0 -> increment as FP 8.8
+       jmp  draw_texture_2
+draw_texture_1:
        li   r13,texture_width          ; Texture width FP 16.16
        clr  r14
-       div  r2,r13                     ; Div sprite width FP 16.0 -> increment as FP 0.16
+       div  r2,r13                     ; Div texture width FP 16.0 -> increment as FP 0.16
        srl  r13,8                      ; Increment as FP 8.8
-draw_sprite_2:
+draw_texture_2:
        mov  r13,r5                     ; Texture X offset increment per pixel FP 8.8
 *      Address of unrolled drawing code
        mov  r3,r6
@@ -1164,20 +1164,20 @@ draw_sprite_2:
        mov  *r6+,r7
        mov  *r6,r6
 *      Column loop
-draw_sprite_5:
+draw_texture_5:
        mov  r8,r13                     ; Screen column
-       jlt  draw_sprite_5a             ; Skip column if out of screen
+       jlt  draw_texture_5a             ; Skip column if out of screen
        ci   r13,screen_width-1         ; Check against right side of screen
-       jgt  draw_sprite_5a             ; Skip column if out of screen
+       jgt  draw_texture_5a             ; Skip column if out of screen
        sla  r13,4                      ; * 16 (size of column structure)
-       c    r12,@columns+column_distance(r13)  ; Compare sprite depth to wall distance
-       jlt  draw_sprite_6              ; Draw if less than
+       c    r12,@columns+column_distance(r13)  ; Compare texture depth to wall distance
+       jlt  draw_texture_6              ; Draw if less than
 *      Skip column
-draw_sprite_5a:
+draw_texture_5a:
        a    r3,r1
-       jmp  draw_sprite_11
+       jmp  draw_texture_11
 *      Draw column
-draw_sprite_6:
+draw_texture_6:
        mov  r12,@columns+column_distance(r13)    ; Record new distance for column
        seto @columns+column_redraw(r13) ; Mark column for drawing
        andi r0,>f000                   ; Round texture address to whole 4K
@@ -1186,33 +1186,33 @@ draw_sprite_6:
        srl  r13,2                      ; Texture column index * 64
        soc  r13,r0                     ; Add to texture address
        coc  @one,r8                    ; Test if screen column is even/odd
-       jeq  draw_sprite_7              ; Jump if odd
+       jeq  draw_texture_7              ; Jump if odd
 *      Even destination column
        li   r9,>f000                   ; Mask for even pixel
        andi r0,>f7ff                   ; Modify texture address for even pixels
-       jmp  draw_sprite_8
+       jmp  draw_texture_8
 *      Odd destination column
-draw_sprite_7:
+draw_texture_7:
        li   r9,>0f00                   ; Mask for odd pixel
        ori  r0,>0800                   ; Modify texture address for odd pixels
 *      Row loop
-draw_sprite_8:
+draw_texture_8:
        seto *r7                        ; Select ROM bank for drawing routine
        bl   *r6                        ; Call drawing routine. On return r0 += texture_height, r1 += height
-draw_sprite_11:
+draw_texture_11:
        s    r3,r1                      ; Move screen buffer address back to top of column
        coc  @one,r8                    ; Test if screen column is even/odd
-       jne  draw_sprite_12             ; Jump if even
+       jne  draw_texture_12             ; Jump if even
        ai   r1,screen_height           ; For odd column, move screen buffer address to next column
-draw_sprite_12:
+draw_texture_12:
        a    r5,r4                      ; Increment texture x offset
        inc  r8                         ; Next column
        dec  r2                         ; Column counter (width)
-       jne  draw_sprite_5              ; Next column
+       jne  draw_texture_5              ; Next column
 *      Return
        .pop r15
        .endproc
-*// draw_sprite
+*// draw_texture
 
 *********************************************************************
 *
@@ -1574,22 +1574,22 @@ upload_screen_loop_end:
 *
 move_enemies:
        .proc
-       li   r4,objects
-       mov  @n_objects,r5
+       li   r4,sprites
+       mov  @n_sprites,r5
        jeq  move_enemies_3
 move_enemies_1:
        mov  *r4,r0
        jeq  move_enemies_2
-       mov  @object_type(r4),r0
-       ci   r0,object_type_monster
+       mov  @sprite_type(r4),r0
+       ci   r0,sprite_type_monster
        jlt  move_enemies_2
 *      x
-       mov  @object_x(r4),r0
+       mov  @sprite_x(r4),r0
        mov  @x,r2
        s    r0,r2
        mov  r2,r6
 *      y
-       mov  @object_y(r4),r1
+       mov  @sprite_y(r4),r1
        mov  @y,r3
        s    r1,r3
        mov  r3,r7
@@ -1597,7 +1597,7 @@ move_enemies_1:
        abs  r6
        abs  r7
        a    r6,r7
-       ci   r7,max_object_distance*256
+       ci   r7,max_sprite_distance*256
        jhe  move_enemies_2
 *      x
        mov  r2,r2
@@ -1640,8 +1640,8 @@ move_enemies_7:
        jne  move_enemies_2
 move_enemies_8:
 *      Move
-       mov  r0,@object_x(r4)
-       mov  r1,@object_y(r4)
+       mov  r0,@sprite_x(r4)
+       mov  r1,@sprite_y(r4)
 *      Attack
        ci   r7,>0500
        jgt  move_enemies_2
@@ -1650,13 +1650,13 @@ move_enemies_8:
        jl   move_enemies_2
        bl   @path_clear
        jne  move_enemies_2
-       seto @object_attacking(r4)
+       seto @sprite_attacking(r4)
        dec  @health
        bl   @play_shot_2
        jmp  move_enemies_3
-*      Next object
+*      Next sprite
 move_enemies_2:
-       ai   r4,object_size
+       ai   r4,sprite_size
        dec  r5
        jne  move_enemies_1
 move_enemies_3:
@@ -1740,31 +1740,31 @@ bullet_collisions:
        bl   @open_door
        seto @full_redraw_required
        jmp  bullet_collisions_1
-*      Check for object collison
+*      Check for sprite collison
 bullet_collisions_2:
-       li   r4,objects
-       mov  @n_objects,r5
+       li   r4,sprites
+       mov  @n_sprites,r5
        jeq  bullet_collisions_0
 bullet_collisions_3:
        mov  *r4,r2
        jeq  bullet_collisions_4
-       mov  @object_type(r4),r2
-       ci   r2,object_type_monster
+       mov  @sprite_type(r4),r2
+       ci   r2,sprite_type_monster
        jlt  bullet_collisions_4
-       mov  @object_x(r4),r2
+       mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2
        ci   r2,>0080
        jgt  bullet_collisions_4
-       mov  @object_y(r4),r3
+       mov  @sprite_y(r4),r3
        s    r1,r3
        abs  r3
        ci   r3,>0080
        jgt  bullet_collisions_4
 *      hit
-       dec  @object_health(r4)
+       dec  @sprite_health(r4)
        jgt  bullet_collisions_3a
-       bl   @remove_object
+       bl   @remove_sprite
        li   r0,25
        a    r0,@score
        seto @full_redraw_required
@@ -1773,7 +1773,7 @@ bullet_collisions_3a:
        bl   @play_shot_2
        jmp  bullet_collisions_1
 bullet_collisions_4:
-       ai   r4,object_size
+       ai   r4,sprite_size
        dec  r5
        jne  bullet_collisions_3
        jmp  bullet_collisions_0
@@ -1787,44 +1787,44 @@ bullet_collisions_0:
 
 *********************************************************************
 *
-* Object collisions
+* Sprite collisions
 *
-object_collisions:
+sprite_collisions:
        .proc
-       li   r4,objects
-       mov  @n_objects,r5
-       jeq  object_collisions_3
+       li   r4,sprites
+       mov  @n_sprites,r5
+       jeq  sprite_collisions_3
        mov  @x,r0
        mov  @y,r1
-object_collisions_1:
+sprite_collisions_1:
        mov  *r4,r2
-       jeq  object_collisions_2
-       mov  @object_type(r4),r2
-       ci   r2,object_type_monster
-       jhe  object_collisions_2
-       mov  @object_x(r4),r2
+       jeq  sprite_collisions_2
+       mov  @sprite_type(r4),r2
+       ci   r2,sprite_type_monster
+       jhe  sprite_collisions_2
+       mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2
        ci   r2,>0100
-       jgt  object_collisions_2
-       mov  @object_y(r4),r3
+       jgt  sprite_collisions_2
+       mov  @sprite_y(r4),r3
        s    r1,r3
        abs  r3
        ci   r3,>0100
-       jgt  object_collisions_2
-       bl   @remove_object
+       jgt  sprite_collisions_2
+       bl   @remove_sprite
        li   r0,100
        a    r0,@score
        bl   @play_chest
-       jmp  object_collisions_3
-object_collisions_2:
-       ai   r4,object_size
+       jmp  sprite_collisions_3
+sprite_collisions_2:
+       ai   r4,sprite_size
        dec  r5
-       jne  object_collisions_1
-object_collisions_3:
+       jne  sprite_collisions_1
+sprite_collisions_3:
        blwp @check_int
        .endproc
-*// object_collisions
+*// sprite_collisions
 
 *********************************************************************
 *
@@ -2255,15 +2255,15 @@ open_door_1:
        jne  open_door_2
        cb   r1,@door_y(r8)
        jne  open_door_2
-       mov  @door_object_inits(r8),r4
+       mov  @door_sprite_inits(r8),r4
        mov  *r4,r5                     ; Already created?
        jne  open_door_3
        seto *r4+                       ; Mark as created
-       mov  *r4+,r5                    ; Number of objects to create
+       mov  *r4+,r5                    ; Number of sprites to create
        jeq  open_door_3
 open_door_4:
-       bl   @create_object
-       ai   r4,object_init_size
+       bl   @create_sprite
+       ai   r4,sprite_init_size
        dec  r5
        jne  open_door_4
        jmp  open_door_3
@@ -2278,17 +2278,17 @@ open_door_3:
 *********************************************************************
 *
 * Path clear
-* Is path from object to player clear?
+* Is path from sprite to player clear?
 *
-* r4: Object pointer
+* r4: Sprite pointer
 *
 * On return eq is set if path is clear.
 *
 path_clear:
        .proc
-       mov  @object_x(r4),r0
-       mov  @object_y(r4),r1
-       mov  @object_angle(r4),r6
+       mov  @sprite_x(r4),r0
+       mov  @sprite_y(r4),r1
+       mov  @sprite_angle(r4),r6
        ai   r6,>8000
        srl  r6,8
        sla  r6,1
@@ -2353,81 +2353,81 @@ get_map_address:
 
 *********************************************************************
 *
-* Reset objects
+* Reset sprites
 *
-reset_objects:
-       li   r5,objects
-       li   r6,max_objects
-reset_objects_1:
+reset_sprites:
+       li   r5,sprites
+       li   r6,max_sprites
+reset_sprites_1:
        clr  *r5
-       ai   r5,object_size
+       ai   r5,sprite_size
        dec  r6
-       jne  reset_objects_1
+       jne  reset_sprites_1
        rt
-*// reset_objects
+*// reset_sprites
 
 *********************************************************************
 *
-* Create object
+* Create sprite
 *
-* r4: Object init data
+* r4: Sprite init data
 *
-* On return r6 contains the address of the object, or 0 if it failed
+* On return r6 contains the address of the sprite, or 0 if it failed
 * Uses: r2,r3,r6,r7
 *
-create_object:
-       li   r6,objects
+create_sprite:
+       li   r6,sprites
        clr  r7
-create_object_1:
-       mov  *r6,r3                     ; Object active?
-       jne  create_object_2
+create_sprite_1:
+       mov  *r6,r3                     ; Sprite active?
+       jne  create_sprite_2
        inc  *r6                        ; set active
-       mov  @object_init_type(r4),r2
-       mov  r2,@object_type(r6)
-       movb @object_init_x(r4),@object_x(r6)
-       movb @byte_80,@object_x+1(r6)
-       movb @object_init_y(r4),@object_y(r6)
-       movb @byte_80,@object_y+1(r6)
+       mov  @sprite_init_type(r4),r2
+       mov  r2,@sprite_type(r6)
+       movb @sprite_init_x(r4),@sprite_x(r6)
+       movb @byte_80,@sprite_x+1(r6)
+       movb @sprite_init_y(r4),@sprite_y(r6)
+       movb @byte_80,@sprite_y+1(r6)
        mov  r2,r3
        sla  r3,1
-       mov  @object_texture_table(r3),@object_texture(r6)
-       mov  @object_speech_table(r3),@object_speech(r6)
-       mov  @object_health_table(r3),@object_health(r6)
-       clr  @object_attacking(r6)
-*      Next object
-       c    r7,@n_objects
-       jlt  create_object_3
-       inc  @n_objects
-       jmp  create_object_3
-create_object_2:
-       ai   r6,object_size
+       mov  @sprite_texture_table(r3),@sprite_texture(r6)
+       mov  @sprite_speech_table(r3),@sprite_speech(r6)
+       mov  @sprite_health_table(r3),@sprite_health(r6)
+       clr  @sprite_attacking(r6)
+*      Next sprite
+       c    r7,@n_sprites
+       jlt  create_sprite_3
+       inc  @n_sprites
+       jmp  create_sprite_3
+create_sprite_2:
+       ai   r6,sprite_size
        inc  r7
-       ci   r7,max_objects
-       jlt  create_object_1
+       ci   r7,max_sprites
+       jlt  create_sprite_1
        clr  r6
-create_object_3:
+create_sprite_3:
        rt
-*// create_object
+*// create_sprite
 
 *********************************************************************
 *
-* Remove object
+* Remove sprite
 *
-* r4: Address of object
+* r4: Address of sprite
 *
-remove_object:
+remove_sprite:
        .proc
        mov  r4,r0
-       ai   r0,object_size
+       ai   r0,sprite_size
        mov  r4,r1
-       li   r2,objects+(object_size*max_objects)
+       li   r2,sprites+(sprite_size*max_sprites)
        s    r4,r2
        bl   @copy
-       li   r0,objects+(object_size*(max_objects-1))
+       li   r0,sprites+(sprite_size*(max_sprites-1))
        clr  *r0
-       dec  @n_objects
+       dec  @n_sprites
        .endproc
-*// remove_object
+*// remove_sprite
 
 
 *********************************************************************
@@ -2471,20 +2471,20 @@ init_level_1:
        movb @door_y(r4),r1
        bl   @get_map_address
        movb @block_door,*r2
-       mov  @door_object_inits,r6
+       mov  @door_sprite_inits,r6
        clr  *r6                        ; Mark as not completed
        ai   r4,door_size
        dec  r5
        jne  init_level_1
 init_level_1a:
-*      Init objects
-       bl   @reset_objects
-       li   r4,object_init_data
+*      Init sprites
+       bl   @reset_sprites
+       li   r4,sprite_init_data
        mov  *r4+,r5
        jeq  init_level_2a
 init_level_2:
-       bl   @create_object
-       ai   r4,object_init_size
+       bl   @create_sprite
+       ai   r4,sprite_init_size
        dec  r5
        jne  init_level_2
 init_level_2a:
@@ -3142,58 +3142,58 @@ columns:
        bss  n_rays*column_size
 
 **
-* Object data structure
+* Sprite data structure
 *
-object_active:                         ; 0 = inactive, <> 0 = active,
+sprite_active:                         ; 0 = inactive, <> 0 = active,
        equ  0
-object_type:
+sprite_type:
        equ  2
-object_x:
+sprite_x:
        equ  4
-object_y:
+sprite_y:
        equ  6
-object_texture:
+sprite_texture:
        equ  8
-object_speech:
+sprite_speech:
        equ  10
-object_attacking:
+sprite_attacking:
        equ  12
-object_health:
+sprite_health:
        equ  14
-object_angle:
+sprite_angle:
        equ  16
-object_size:
+sprite_size:
        equ  18
 
 **
-* Object list
+* Sprite list
 *
-n_objects:
+n_sprites:
        data 0
-objects:
-       bss  object_size*16
+sprites:
+       bss  sprite_size*16
 
 **
-* Object init data structure
+* Sprite init data structure
 *
-object_init_type:
+sprite_init_type:
        equ  0
-object_init_x:
+sprite_init_x:
        equ  2
-object_init_y:
+sprite_init_y:
        equ  3
-object_init_size:
+sprite_init_size:
        equ  4
 
 **
-* Object init data
+* Sprite init data
 *
-object_init_data:
+sprite_init_data:
        data 2
-       data object_type_barrel
+       data sprite_type_barrel
        byte >11                      ; x
        byte >02                      ; y
-       data object_type_eye
+       data sprite_type_eye
        byte >02                      ; x
        byte >06                      ; y
 
@@ -3204,7 +3204,7 @@ door_x:
        equ  0
 door_y:
        equ  1
-door_object_inits:
+door_sprite_inits:
        equ  2
 door_size:
        equ  4
@@ -3216,7 +3216,7 @@ door_size:
 
        copy "math_tables.a99"          ; 2K
        copy "sound-fx.a99"
-       copy "objects.a99"
+       copy "sprite-types.a99"
 doors:
        copy "doors.a99"
 col_index:
