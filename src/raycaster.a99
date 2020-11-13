@@ -1915,6 +1915,7 @@ pointer_actions_0:
        jeq  pointer_actions_2
        swpb r3
        ai   r3,-first_action_block
+       jlt  pointer_actions_2
        andi r3,>00fe
        mov  @block_jumptable(r3),r3
        jeq  pointer_actions_2
@@ -1995,9 +1996,7 @@ inventory_clicked_left:
        mov  @inventory_index,r1
        dec  r1
        andi r1,inventory_size-1
-       sla  r1,1
-       clr  @inventory(r1)
-       bl   @display_inventory
+       bl   @remove_inventory
        .endproc
 *// inventory_clicked_left
 
@@ -2008,9 +2007,7 @@ inventory_clicked_left:
 inventory_clicked_middle:
        .proc
        mov  @inventory_index,r1
-       sla  r1,1
-       clr  @inventory(r1)
-       bl   @display_inventory
+       bl   @remove_inventory
        .endproc
 *// inventory_clicked_middle
 
@@ -2023,9 +2020,7 @@ inventory_clicked_right:
        mov  @inventory_index,r1
        inc  r1
        andi r1,inventory_size-1
-       sla  r1,1
-       clr  @inventory(r1)
-       bl   @display_inventory
+       bl   @remove_inventory
        .endproc
 *// inventory_clicked_right
 
@@ -2505,10 +2500,15 @@ add_inventory_3:
 *
 * Remove object from inventory
 *
-* r0: Address of object type to add
+* r1: Address of object type to remove
 *
 remove_inventory:
        .proc
+       sla  r1,1
+       ai   r1,inventory
+       mov  *r1,r0
+       clr  *r1
+       bl   @display_inventory
        .endproc
 *// remove_inventory
 
