@@ -1981,11 +1981,53 @@ icon_jumptable:
        data 0
        data display_map
        data fire_bullet
-       data 0
-       data 0
-       data 0
+       data inventory_clicked_left
+       data inventory_clicked_middle
+       data inventory_clicked_right
 *// pointer_actions
 
+*********************************************************************
+*
+* Inventory clicked left
+*
+inventory_clicked_left:
+       .proc
+       mov  @inventory_index,r1
+       dec  r1
+       andi r1,inventory_size-1
+       sla  r1,1
+       clr  @inventory(r1)
+       bl   @display_inventory
+       .endproc
+*// inventory_clicked_left
+
+*********************************************************************
+*
+* Inventory clicked middle
+*
+inventory_clicked_middle:
+       .proc
+       mov  @inventory_index,r1
+       sla  r1,1
+       clr  @inventory(r1)
+       bl   @display_inventory
+       .endproc
+*// inventory_clicked_middle
+
+*********************************************************************
+*
+* Inventory clicked right
+*
+inventory_clicked_right:
+       .proc
+       mov  @inventory_index,r1
+       inc  r1
+       andi r1,inventory_size-1
+       sla  r1,1
+       clr  @inventory(r1)
+       bl   @display_inventory
+       .endproc
+*// inventory_clicked_right
 
 *********************************************************************
 *
@@ -2458,6 +2500,17 @@ add_inventory_1:
 add_inventory_3:
        .endproc
 *// add_inventory
+
+*********************************************************************
+*
+* Remove object from inventory
+*
+* r0: Address of object type to add
+*
+remove_inventory:
+       .proc
+       .endproc
+*// remove_inventory
 
 *********************************************************************
 *
