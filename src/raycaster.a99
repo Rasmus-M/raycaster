@@ -2028,10 +2028,8 @@ red_potion_block_clicked:
        .proc
        movb @block_recess,*r2
        seto @full_redraw_required
-       li   r0,20
-       li   r1,potion_red_patterns
-       li   r2,4
-       bl   @display_panel_graphics
+       li   r0,object_type_red_position
+       bl   @add_inventory
        .endproc
 *// red_potion_block_clicked
 *********************************************************************
@@ -2042,6 +2040,8 @@ green_potion_block_clicked:
        .proc
        movb @block_recess,*r2
        seto @full_redraw_required
+       li   r0,object_type_green_position
+       bl   @add_inventory
        .endproc
 *// green_potion_block_clicked
 
@@ -2053,6 +2053,8 @@ key_block_clicked:
        .proc
        movb @block_recess,*r2
        seto @full_redraw_required
+       li   r0,object_type_key
+       bl   @add_inventory
        .endproc
 *// key_block_clicked
 
@@ -2434,9 +2436,26 @@ remove_sprite:
 *
 * Add object to inventory
 *
+* r0: Address of object type to add
+*
 add_inventory:
        .proc
-
+       mov  @inventory_index,r1
+       li   r2,inventory_size
+add_inventory_0:
+       mov  r1,r3
+       sla  r3,1                       ; * object_size
+       mov  @inventory+object_type(r3),r4
+       jne  add_inventory_1
+       mov  r0,@inventory(r3)
+       bl   @display_inventory
+       jmp  add_inventory_3
+add_inventory_1:
+       inc  r1
+       andi r1,inventory_size-1
+       dec  r2
+       jne  add_inventory_0
+add_inventory_3:
        .endproc
 *// add_inventory
 
@@ -2446,7 +2465,29 @@ add_inventory:
 *
 display_inventory:
        .proc
-
+       mov  @inventory_index,r7
+       dec  r7
+       andi r7,inventory_size-1
+       li   r8,20
+       li   r9,3
+display_inventory_1:
+       mov  r8,r0
+       mov  r7,r12
+       sla  r12,1                       ; * object_size
+       mov  @inventory+object_type(r12),r1
+       jeq  display_inventory_2
+       mov  @object_type_panel_graphics(r1),r1
+       jmp  display_inventory_3
+display_inventory_2:
+       li   r1,empty_patterns
+display_inventory_3:
+       li   r2,4
+       bl   @display_panel_graphics
+       inc  r7
+       andi r7,inventory_size-1
+       ai   r8,4
+       dec  r9
+       jne  display_inventory_1
        .endproc
 *// display_inventory
 
@@ -2472,7 +2513,6 @@ init_level:
        mov  r0,@pointer_x
        li   r0,>6000
        mov  r0,@pointer_y
-       clr  @inventory_index
 *      Init columns
        li   r1,columns
        li   r2,n_rays
@@ -2509,6 +2549,16 @@ init_level_2:
        dec  r5
        jne  init_level_2
 init_level_2a:
+*      Init inventory
+       li   r4,inventory
+       li   r5,inventory_size
+init_level_3:
+       clr  @object_type(r4)
+       ai   r4,object_size
+       dec  r5
+       jne  init_level_3
+       clr  @inventory_index
+       bl   @display_inventory
 *      Speak
        li   r1,start_of_level
        bl   @say_phrase
@@ -3231,14 +3281,22 @@ door_size:
        equ  4
 
 **
+* Object type structure
+*
+object_type_panel_graphics:
+       equ  0
+object_type_size:
+       equ  2
+
+**
 * Object types
 *
 object_type_red_position:
-       equ  1
+       data potion_red_patterns
 object_type_green_position:
-       equ  2
+       data potion_green_patterns
 object_type_key:
-       equ  3
+       data key_patterns
 
 **
 * Object structure
