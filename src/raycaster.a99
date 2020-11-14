@@ -79,9 +79,11 @@ max_sprite_distance:
 max_sprites:
        equ  16
 n_hw_sprite_patterns:
-       equ  24
+       equ  26
 n_fixed_hw_sprites:
-       equ  10
+       equ  12
+n_compass_hw_sprites:
+       equ  6
 enemy_speed:
        equ  >0010
 bullet_speed_z:
@@ -257,7 +259,7 @@ restart:
 main_loop:
        clr  @interrupt_count
        bl   @set_vdp_regs
-       bl   @upload_sprites
+       bl   @upload_hw_sprites
        bl   @cast_if_required
        bl   @draw_screen
        bl   @draw_sprites
@@ -351,7 +353,7 @@ interrupt_1:
 ;       .push r15
 ;       li   r15,vdpwd
 ;       bl   @set_vdp_regs
-;       bl   @upload_sprites
+;       bl   @upload_hw_sprites
        bl   @joystick_input
        bl   @snd_player
 ;       .pop r15
@@ -373,9 +375,9 @@ set_vdp_regs:
 
 *********************************************************************
 *
-* Upload sprites
+* Upload hardware sprites
 *
-upload_sprites:
+upload_hw_sprites:
        .proc
        mov  @sal_no,r0                 ; Which buffer to update?
        sla  r0,7
@@ -398,7 +400,7 @@ upload_sprites:
        .endproc
 end_marker_byte:
        byte >d0
-*// upload_sprites
+*// upload_hw_sprites
 
 *********************************************************************
 *
@@ -1840,8 +1842,8 @@ update_health_bar:
        dec  @status
        clr  r0
 update_health_bar_0:
-       mov  r0,r1
-       mov  r0,r2
+       mov  r0,r1                      ; Copy health
+       mov  r0,r2                      ; Copy health
        srl  r0,4                       ; Which sprite 0-3 to update
        sla  r0,5                       ; Sprite pattern offset
        andi r1,>0008                   ; Isolate column bit
@@ -1854,19 +1856,19 @@ update_health_bar_0:
        andi r2,>0007                   ; Number of pixels to show
        li   r0,8
        s    r2,r0                      ; Number of pixels to clear
-       srl  r1,0
-       sla  r1,0
-       swpb r1
-       li   r2,12
+       srl  r1,0                       ; Shift pixels out
+       sla  r1,0                       ; Shift remaining pixels back
+       swpb r1                         ; Pattern to MSB
+       li   r2,12                      ; Number of rows to update
 update_health_bar_1:
-       movb r1,*r15
-       movb r1,*r15
+       movb r1,*r15                    ; Change sprite pattern
+       movb r1,*r15                    ; Change sprite pattern
        dect r2
        jne  update_health_bar_1
 *      Full columns to clear
        mov  @old_health,r2
        srl  r2,3                       ; Old column
-       mov  @health,r2
+       mov  @health,r0
        srl  r0,3                       ; New column
        s    r0,r2                      ; Column difference
        jeq  update_health_bar_3
@@ -1993,10 +1995,20 @@ icon_jumptable:
 *
 inventory_clicked_left:
        .proc
+       ci   r6,176
+       jhe  inventory_clicked_left_1
+       mov  @inventory_index,r0
+       dec  r0
+       andi r0,inventory_size-1
+       mov  r0,@inventory_index
+       bl   @display_inventory
+       jmp  inventory_clicked_left_2
+inventory_clicked_left_1:
        mov  @inventory_index,r1
        dec  r1
        andi r1,inventory_size-1
        bl   @remove_inventory
+inventory_clicked_left_2:
        .endproc
 *// inventory_clicked_left
 
@@ -2017,10 +2029,20 @@ inventory_clicked_middle:
 *
 inventory_clicked_right:
        .proc
+       ci   r6,240
+       jl   inventory_clicked_right_1
+       mov  @inventory_index,r0
+       inc  r0
+       andi r0,inventory_size-1
+       mov  r0,@inventory_index
+       bl   @display_inventory
+       jmp  inventory_clicked_right_2
+inventory_clicked_right_1:
        mov  @inventory_index,r1
        inc  r1
        andi r1,inventory_size-1
        bl   @remove_inventory
+inventory_clicked_right_2:
        .endproc
 *// inventory_clicked_right
 
@@ -2485,6 +2507,7 @@ add_inventory_0:
        mov  @inventory+object_type(r3),r4
        jne  add_inventory_1
        mov  r0,@inventory(r3)
+       mov  r1,@inventory_index
        bl   @display_inventory
        jmp  add_inventory_3
 add_inventory_1:
@@ -2611,6 +2634,8 @@ init_level_3:
        dec  r5
        jne  init_level_3
        clr  @inventory_index
+       li   r0,object_type_red_position
+       bl   @add_inventory
        bl   @display_inventory
 *      Speak
        li   r1,start_of_level
@@ -2702,13 +2727,13 @@ one_time_init_5:
        li   r4,sal_compass
 one_time_init_1:
        bl   @vwad
-       li   r2,4*4
-       li   r1,sal_health
+       li   r2,(n_fixed_hw_sprites-n_compass_hw_sprites)*4
+       li   r1,sal_fixed
 one_time_init_2:
        movb *r1+,*r15
        dec  r2
        jne  one_time_init_2
-       li   r2,(n_fixed_hw_sprites-4)*4
+       li   r2,n_compass_hw_sprites*4
 one_time_init_3:
        movb *r4+,*r15
        dec  r2

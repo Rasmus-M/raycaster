@@ -97,3 +97,11 @@ SPR23  DATA >AAAA,>AAAA,>AAAA,>AAAA    ; Color 3
        DATA >AAAA,>AAAA,>0000,>0000    ;
        DATA >AAAA,>AAAA,>AAAA,>AAAA    ;
        DATA >AAAA,>AAAA,>0000,>0000    ;
+SPR24  DATA >0000,>0001,>0307,>0F1F    ; Color 15
+       DATA >1F0F,>0703,>0100,>0000    ;
+       DATA >0000,>C0C0,>C0C0,>C0C0    ;
+       DATA >C0C0,>C0C0,>C0C0,>0000    ;
+SPR25  DATA >0000,>0303,>0303,>0303    ; Color 15
+       DATA >0303,>0303,>0303,>0000    ;
+       DATA >0000,>0080,>C0E0,>F0F8    ;
+       DATA >F8F0,>E0C0,>8000,>0000    ;

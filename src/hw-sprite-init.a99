@@ -1,11 +1,14 @@
 compass_y:
        equ  175-32
 
-sal_health:
+sal_fixed:
        byte >04,>08,>50,>08            ; Health bar
        byte >04,>18,>54,>0a
        byte >04,>28,>58,>0b
        byte >04,>38,>5c,>03
+       byte >a7,>a0,>60,>0e            ; Arrows
+       byte >a7,>f0,>64,>0e
+
 sal_compass:
 *      East
        byte compass_y-17,104,16,4               ; Compass
