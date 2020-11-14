@@ -1892,7 +1892,7 @@ pointer_actions:
        .proc
        mov  @pointer_click,r0
        jlt  pointer_actions_0
-       b    @pointer_actions_3
+       jmp  pointer_actions_3
 pointer_actions_0:
        mov  @pointer_x,r6
        srl  r6,8
@@ -1923,6 +1923,8 @@ pointer_actions_0:
        bl   *r3
        jmp  pointer_actions_2
 pointer_actions_1:
+       ci   r7,191
+       jhe  pointer_actions_2
 *      Bottom panel
        mov  r6,r0
        mov  r7,r1
