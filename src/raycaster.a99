@@ -79,7 +79,7 @@ max_sprite_distance:
 max_sprites:
        equ  16
 n_hw_sprite_patterns:
-       equ  26
+       equ  27
 n_fixed_hw_sprites:
        equ  12
 n_compass_hw_sprites:
@@ -211,10 +211,16 @@ pointer_x:
        equ  current_background_bank_select+2
 pointer_y:
        equ  pointer_x+2
-pointer_click:
+pointer_pattern:
        equ  pointer_y+2
-inventory_index:
+pointer_color:
+       equ  pointer_pattern+1
+pointer_click:
+       equ  pointer_color+1
+is_target_pointer:
        equ  pointer_click+2
+inventory_index:
+       equ  is_target_pointer+2
 snd_channel_1:
        equ  inventory_index+2
 snd_channel_2:
@@ -229,10 +235,8 @@ snd_track_2:
        equ  snd_track_1+snd_track_size
 snd_track_3:
        equ  snd_track_2+snd_track_size
-module_speed:
-       equ  snd_track_3+snd_track_size
 get_speech_status:
-       equ  module_speed+2
+       equ  snd_track_3+2
 speech_ptr:
        equ  get_speech_status+6
 speech_on:
@@ -383,13 +387,11 @@ upload_hw_sprites:
        sla  r0,7
        ai   r0,spratb
        bl   @vwad                      ; Set VDP address
-*      Pointer
+*      Pointer has highest priority
        movb @pointer_y,*r15
        movb @pointer_x,*r15
-       li   r1,>2c0f
-       movb r1,*r15
-       swpb r1
-       movb r1,*r15
+       movb @pointer_pattern,*r15
+       movb @pointer_color,*r15
 *      Skip fixed sprites
        ai   r0,(n_fixed_hw_sprites+1)*4
        bl   @vwad
@@ -1442,6 +1444,7 @@ move_forward_1:
 move_forward_2:       mov  r0,@x
        mov  r1,@y
        seto @full_redraw_required
+       movb @pointer_pattern_arrow,@pointer_pattern
 move_forward_3:
        .endproc
 *// move_forward
@@ -1891,13 +1894,24 @@ update_health_bar_4:
 pointer_actions:
        .proc
        mov  @pointer_click,r0
-       jlt  pointer_actions_0
-       jmp  pointer_actions_3
-pointer_actions_0:
+       jeq  pointer_actions_3
+       jgt  pointer_actions_3
+       cb   @pointer_pattern,@pointer_pattern_target
+       jne  pointer_actions_4
+       seto @is_target_pointer
+       jmp  pointer_actions_5
+pointer_actions_4:
+       clr @is_target_pointer
+pointer_actions_5:
+       movb @pointer_pattern_arrow,@pointer_pattern
        mov  @pointer_x,r6
-       srl  r6,8
+       sra  r6,8
+       ai   r6,5
+       andi r6,>00ff
        mov  @pointer_y,r7
-       srl  r7,8
+       sra  r7,8
+       ai   r7,4
+       andi r7,>00ff
        ci   r7,screen_height
        jhe  pointer_actions_1
 *      Raycasting area
@@ -1923,7 +1937,7 @@ pointer_actions_0:
        bl   *r3
        jmp  pointer_actions_2
 pointer_actions_1:
-       ci   r7,191
+       ci   r7,192
        jhe  pointer_actions_2
 *      Bottom panel
        mov  r6,r0
@@ -2053,6 +2067,7 @@ inventory_clicked:
        sla  r0,1                       ; * object_size
        ai   r0,inventory
        mov  *r0,r2                     ; Get object type
+       jeq  inventory_clicked_1
        mov  @object_type_number(r2),r3
        sla  r3,1
        mov  @inventory_jumptable(r3),r3
@@ -2072,8 +2087,8 @@ inventory_jumptable:
 *
 key_clicked:
        .proc
-       clr  @door_4+door_key
        bl   @remove_inventory
+       movb @pointer_pattern_target,@pointer_pattern
        .endproc
 *// key_clicked
 
@@ -2622,6 +2637,8 @@ init_level:
        mov  r0,@pointer_x
        li   r0,>6000
        mov  r0,@pointer_y
+       li   r0,>2c0f
+       mov  r0,@pointer_pattern
 *      Init columns
        li   r1,columns
        li   r2,n_rays
@@ -3294,6 +3311,10 @@ block_key:
        byte 44
 block_unused:
        byte 46
+pointer_pattern_arrow:
+       byte >2c
+pointer_pattern_target:
+       byte >68
 
 **
 * Column data structure
