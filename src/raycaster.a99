@@ -1741,7 +1741,6 @@ bullet_collisions:
        cb   r3,@block_door
        jne  bullet_collisions_1
        bl   @open_door
-       seto @full_redraw_required
        jmp  bullet_collisions_1
 *      Check for sprite collison
 bullet_collisions_2:
@@ -1995,19 +1994,16 @@ icon_jumptable:
 *
 inventory_clicked_left:
        .proc
-       ci   r6,176
-       jhe  inventory_clicked_left_1
-       mov  @inventory_index,r0
-       dec  r0
-       andi r0,inventory_size-1
-       mov  r0,@inventory_index
-       bl   @display_inventory
-       jmp  inventory_clicked_left_2
-inventory_clicked_left_1:
        mov  @inventory_index,r1
        dec  r1
        andi r1,inventory_size-1
-       bl   @remove_inventory
+       ci   r6,176
+       jhe  inventory_clicked_left_1
+       mov  r1,@inventory_index
+       bl   @display_inventory
+       jmp  inventory_clicked_left_2
+inventory_clicked_left_1:
+       bl   @inventory_clicked
 inventory_clicked_left_2:
        .endproc
 *// inventory_clicked_left
@@ -2019,7 +2015,7 @@ inventory_clicked_left_2:
 inventory_clicked_middle:
        .proc
        mov  @inventory_index,r1
-       bl   @remove_inventory
+       bl   @inventory_clicked
        .endproc
 *// inventory_clicked_middle
 
@@ -2029,31 +2025,63 @@ inventory_clicked_middle:
 *
 inventory_clicked_right:
        .proc
-       ci   r6,240
-       jl   inventory_clicked_right_1
-       mov  @inventory_index,r0
-       inc  r0
-       andi r0,inventory_size-1
-       mov  r0,@inventory_index
-       bl   @display_inventory
-       jmp  inventory_clicked_right_2
-inventory_clicked_right_1:
        mov  @inventory_index,r1
        inc  r1
        andi r1,inventory_size-1
-       bl   @remove_inventory
+       ci   r6,240
+       jl   inventory_clicked_right_1
+       mov  r1,@inventory_index
+       bl   @display_inventory
+       jmp  inventory_clicked_right_2
+inventory_clicked_right_1:
+       bl   @inventory_clicked
 inventory_clicked_right_2:
        .endproc
 *// inventory_clicked_right
 
 *********************************************************************
 *
-* Door clicked
+* Inventory clicked
+*
+* r1: inventory index clicked
+*
+inventory_clicked:
+       .proc
+       mov  r1,r0
+       sla  r0,1                       ; * object_size
+       ai   r0,inventory
+       mov  *r0,r2                     ; Get object type
+       mov  @object_type_number(r2),r3
+       sla  r3,1
+       mov  @inventory_jumptable(r3),r3
+       jeq  inventory_clicked_1
+       bl   *r3
+inventory_clicked_1
+       .endproc
+inventory_jumptable:
+       data remove_inventory
+       data remove_inventory
+       data key_clicked
+*// inventory_clicked
+
+*********************************************************************
+*
+* Key clicked
+*
+key_clicked:
+       .proc
+       clr  @door_4+door_key
+       bl   @remove_inventory
+       .endproc
+*// key_clicked
+
+*********************************************************************
+*
+* Door block clicked
 *
 door_block_clicked:
        .proc
        bl   @open_door
-       seto @full_redraw_required
        .endproc
 *// door_block_clicked
 
@@ -2308,7 +2336,6 @@ fire_bullet_1:
 *
 open_door:
        .proc
-       movb @block_space,*r2
        li   r8,doors
        mov  @n_doors,r9
        jeq  open_door_3
@@ -2317,6 +2344,10 @@ open_door_1:
        jne  open_door_2
        cb   r1,@door_y(r8)
        jne  open_door_2
+       mov  @door_key(r8),r4
+       jne  open_door_3
+       movb @block_space,*r2
+       seto @full_redraw_required
        mov  @door_sprite_inits(r8),r4
        mov  *r4,r5                     ; Already created?
        jne  open_door_3
@@ -2523,13 +2554,13 @@ add_inventory_3:
 *
 * Remove object from inventory
 *
-* r1: Address of object type to remove
+* r1: Inventory index to remove
 *
 remove_inventory:
        .proc
-       sla  r1,1
+       sla  r1,1                       ; * object_size
        ai   r1,inventory
-       mov  *r1,r0
+       mov  *r1,r0                     ; Get object type
        clr  *r1
        bl   @display_inventory
        .endproc
@@ -2608,7 +2639,7 @@ init_level_1:
        movb @door_y(r4),r1
        bl   @get_map_address
        movb @block_door,*r2
-       mov  @door_sprite_inits,r6
+       mov  @door_sprite_inits(r4),r6
        clr  *r6                        ; Mark as not completed
        ai   r4,door_size
        dec  r5
@@ -3353,27 +3384,34 @@ door_x:
        equ  0
 door_y:
        equ  1
-door_sprite_inits:
+door_key:
        equ  2
-door_size:
+door_sprite_inits:
        equ  4
+door_size:
+       equ  6
 
 **
 * Object type structure
 *
-object_type_panel_graphics:
+object_type_number:
        equ  0
-object_type_size:
+object_type_panel_graphics:
        equ  2
+object_type_size:
+       equ  4
 
 **
 * Object types
 *
 object_type_red_position:
+       data 0
        data potion_red_patterns
 object_type_green_position:
+       data 1
        data potion_green_patterns
 object_type_key:
+       data 2
        data key_patterns
 
 **

@@ -1,202 +1,252 @@
 door_1:
        byte >1a
        byte >02
+       data 0
        data door_1_init
 door_2:
        byte >1e
        byte >02
+       data 0
        data door_2_init
 door_3:
        byte >3a
        byte >02
+       data 0
        data door_3_init
 door_4:
        byte >0b
        byte >03
+       data 1                          ; Locked
        data door_4_init
 door_5:
        byte >2f
        byte >03
+       data 0
        data door_5_init
 door_6:
        byte >3c
        byte >06
+       data 0
        data door_6_init
 door_7:
        byte >07
        byte >07
+       data 0
        data door_7_init
 door_8:
        byte >16
        byte >07
+       data 0
        data door_8_init
 door_9:
        byte >26
        byte >07
+       data 0
        data door_9_init
 door_10:
        byte >11
        byte >08
+       data 0
        data door_10_init
 door_11:
        byte >39
        byte >08
+       data 0
        data door_11_init
 door_12:
        byte >04
        byte >0a
+       data 0
        data door_12_init
 door_13:
        byte >0a
        byte >0a
+       data 0
        data door_13_init
 door_14:
        byte >1f
        byte >0b
+       data 0
        data door_14_init
 door_15:
        byte >2d
        byte >0d
+       data 0
        data door_15_init
 door_16:
        byte >10
        byte >0e
+       data 0
        data door_16_init
 door_17:
        byte >1a
        byte >0f
+       data 0
        data door_17_init
 door_18:
        byte >09
        byte >11
+       data 0
        data door_18_init
 door_19:
        byte >02
        byte >12
+       data 0
        data door_19_init
 door_20:
        byte >38
        byte >12
+       data 0
        data door_20_init
 door_21:
        byte >2b
        byte >14
+       data 0
        data door_21_init
 door_22:
        byte >2f
        byte >14
+       data 0
        data door_22_init
 door_23:
        byte >2d
        byte >16
+       data 0
        data door_23_init
 door_24:
        byte >0b
        byte >18
+       data 0
        data door_24_init
 door_25:
        byte >18
        byte >19
+       data 0
        data door_25_init
 door_26:
        byte >06
        byte >1a
+       data 0
        data door_26_init
 door_27:
        byte >38
        byte >1a
+       data 0
        data door_27_init
 door_28:
        byte >21
        byte >1c
+       data 0
        data door_28_init
 door_29:
        byte >12
        byte >1d
+       data 0
        data door_29_init
 door_30:
        byte >3c
        byte >1d
+       data 0
        data door_30_init
 door_31:
        byte >0c
        byte >1e
+       data 0
        data door_31_init
 door_32:
        byte >04
        byte >1f
+       data 0
        data door_32_init
 door_33:
        byte >1b
        byte >1f
+       data 0
        data door_33_init
 door_34:
        byte >03
        byte >21
+       data 0
        data door_34_init
 door_35:
        byte >03
        byte >25
+       data 0
        data door_35_init
 door_36:
        byte >10
        byte >25
+       data 0
        data door_36_init
 door_37:
        byte >0b
        byte >26
+       data 0
        data door_37_init
 door_38:
        byte >38
        byte >26
+       data 0
        data door_38_init
 door_39:
        byte >28
        byte >29
+       data 0
        data door_39_init
 door_40:
        byte >09
        byte >2c
+       data 0
        data door_40_init
 door_41:
        byte >17
        byte >2e
+       data 0
        data door_41_init
 door_42:
        byte >22
        byte >2f
+       data 0
        data door_42_init
 door_43:
        byte >03
        byte >31
+       data 0
        data door_43_init
 door_44:
        byte >28
        byte >31
+       data 0
        data door_44_init
 door_45:
        byte >0f
        byte >32
+       data 0
        data door_45_init
 door_46:
        byte >15
        byte >33
+       data 0
        data door_46_init
 door_47:
        byte >38
        byte >35
+       data 0
        data door_47_init
 door_48:
        byte >32
        byte >39
+       data 0
        data door_48_init
 door_49:
        byte >39
        byte >3b
+       data 0
        data door_49_init
 door_50:
        byte >32
        byte >3e
+       data 0
        data door_50_init
 
 n_doors:

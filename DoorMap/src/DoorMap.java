@@ -26,6 +26,7 @@ public class DoorMap {
                     sb.append("door_").append(n).append(":\n");
                     sb.append("       byte ").append(hexByte(x)).append("\n");
                     sb.append("       byte ").append(hexByte(y)).append("\n");
+                    sb.append("       data 0\n"); // Key
                     sb.append("       data door_").append(n).append("_init\n");
                     doorPositions.add(new Point(x, y));
                     n++;
@@ -40,8 +41,8 @@ public class DoorMap {
             Point2D doorPosition = doorPositions.get(i -1);
             sb.append("door_").append(i).append("_init:\n");
             sb.append("       data 0\n");               // Completed?
-            sb.append("       data 1\n");               // Number of objects
-            sb.append("       data object_type_mon").append((i % 26) + 1).append("\n"); // Object type
+            sb.append("       data 1\n");               // Number of sprites
+            sb.append("       data sprite_type_mon").append((i % 26) + 1).append("\n"); // Sprite type
             sb.append("       byte ").append(hexByte((int) doorPosition.getX())).append("\n"); // x
             sb.append("       byte ").append(hexByte((int) doorPosition.getY())).append("\n"); // y
         }
