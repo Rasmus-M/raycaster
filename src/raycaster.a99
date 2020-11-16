@@ -1441,10 +1441,10 @@ move_forward_1:
        andi r2,>0100                   ; Test secret door bit
        jeq  move_forward_3             ; If not set we cannot move
 *      Move:
-move_forward_2:       mov  r0,@x
+move_forward_2:
+       mov  r0,@x
        mov  r1,@y
        seto @full_redraw_required
-       movb @pointer_pattern_arrow,@pointer_pattern
 move_forward_3:
        .endproc
 *// move_forward
@@ -2017,6 +2017,7 @@ inventory_clicked_left:
        jhe  inventory_clicked_left_1
        mov  r1,@inventory_index
        bl   @display_inventory
+       movb @pointer_pattern_arrow,@pointer_pattern
        jmp  inventory_clicked_left_2
 inventory_clicked_left_1:
        bl   @inventory_clicked
@@ -2048,6 +2049,7 @@ inventory_clicked_right:
        jl   inventory_clicked_right_1
        mov  r1,@inventory_index
        bl   @display_inventory
+       movb @pointer_pattern_arrow,@pointer_pattern
        jmp  inventory_clicked_right_2
 inventory_clicked_right_1:
        bl   @inventory_clicked
@@ -2086,10 +2088,8 @@ inventory_jumptable:
 * Key clicked
 *
 key_clicked:
-       .proc
-       bl   @remove_inventory
        movb @pointer_pattern_target,@pointer_pattern
-       .endproc
+       rt
 *// key_clicked
 
 *********************************************************************
@@ -2098,6 +2098,21 @@ key_clicked:
 *
 door_block_clicked:
        .proc
+       abs  @is_target_pointer
+       jeq  door_block_clicked_1
+       bl   @find_door
+       mov  r8,r8
+       jeq  door_block_clicked_1
+       clr  @door_key(r8)
+       .push r0
+       .push r1
+       .push r2
+       mov  @inventory_index,r1
+       bl   @remove_inventory
+       .pop r2
+       .pop r1
+       .pop r0
+door_block_clicked_1:
        bl   @open_door
        .endproc
 *// door_block_clicked
@@ -2353,37 +2368,53 @@ fire_bullet_1:
 *
 open_door:
        .proc
-       li   r8,doors
-       mov  @n_doors,r9
-       jeq  open_door_3
-open_door_1:
-       cb   r0,@door_x(r8)
-       jne  open_door_2
-       cb   r1,@door_y(r8)
-       jne  open_door_2
+       bl   @find_door
+       mov  r8,r8
+       jeq  open_door_2
        mov  @door_key(r8),r4
-       jne  open_door_3
+       jne  open_door_2
        movb @block_space,*r2
        seto @full_redraw_required
        mov  @door_sprite_inits(r8),r4
        mov  *r4,r5                     ; Already created?
-       jne  open_door_3
+       jne  open_door_2
        seto *r4+                       ; Mark as created
        mov  *r4+,r5                    ; Number of sprites to create
-       jeq  open_door_3
-open_door_4:
+       jeq  open_door_2
+open_door_1:
        bl   @create_sprite
        ai   r4,sprite_init_size
        dec  r5
-       jne  open_door_4
-       jmp  open_door_3
-open_door_2:
-       ai   r8,door_size
-       dec  r9
        jne  open_door_1
-open_door_3:
+open_door_2:
        .endproc
 *// open_door
+
+*********************************************************************
+*
+* Find door
+*
+* r0: x FP 8.8
+* r1: y FP 8.8
+*
+find_door:
+       li   r8,doors
+       mov  @n_doors,r9
+       jeq  find_door_3
+find_door_1:
+       cb   r0,@door_x(r8)
+       jne  find_door_2
+       cb   r1,@door_y(r8)
+       jeq  find_door_4
+find_door_2:
+       ai   r8,door_size
+       dec  r9
+       jne  find_door_1
+find_door_3:
+       clr  r8
+find_door_4:
+       rt
+*// find_door
 
 *********************************************************************
 *
