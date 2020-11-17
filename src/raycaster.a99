@@ -2070,13 +2070,14 @@ inventory_clicked:
        mov  r1,r0
        sla  r0,1                       ; * object_size
        ai   r0,inventory
-       mov  *r0,r2                     ; Get object type
+       mov  *r0,r2                     ; Get object
        jeq  inventory_clicked_1
-       mov  @object_type_number(r2),r3
-       sla  r3,1
-       mov  @inventory_jumptable(r3),r3
+       mov  @object_type(r2),r3        ; Get object type
+       mov  @object_type_number(r3),r4
+       sla  r4,1
+       mov  @inventory_jumptable(r4),r4
        jeq  inventory_clicked_1
-       bl   *r3
+       bl   *r4
 inventory_clicked_1
        .endproc
 inventory_jumptable:
@@ -2104,6 +2105,7 @@ door_block_clicked:
        abs  @is_target_pointer
        jeq  door_block_clicked_1
        mov  @selected_object,r8
+       mov  @object_type(r8),r8
        ci   r8,object_type_key
        jne  door_block_clicked_1
        bl   @find_door
@@ -2138,6 +2140,7 @@ button_block_clicked:
        jlt  button_block_clicked_1
        andi r1,>00e0
        ci   r1,>0060
+       jne  button_block_clicked_1
 *      Remove block
        movb @block_space,*r2
        seto @full_redraw_required
@@ -2151,10 +2154,13 @@ button_block_clicked_1:
 *
 red_potion_block_clicked:
        .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  red_potion_block_clicked_1
        movb @block_recess,*r2
        seto @full_redraw_required
-       li   r0,object_type_red_position
        bl   @add_inventory
+red_potion_block_clicked_1:
        .endproc
 *// red_potion_block_clicked
 *********************************************************************
@@ -2163,10 +2169,13 @@ red_potion_block_clicked:
 *
 green_potion_block_clicked:
        .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  green_potion_block_clicked_1
        movb @block_recess,*r2
        seto @full_redraw_required
-       li   r0,object_type_green_position
        bl   @add_inventory
+green_potion_block_clicked_1:
        .endproc
 *// green_potion_block_clicked
 
@@ -2176,10 +2185,13 @@ green_potion_block_clicked:
 *
 key_block_clicked:
        .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  key_block_clicked_1
        movb @block_recess,*r2
        seto @full_redraw_required
-       li   r0,object_type_key
        bl   @add_inventory
+key_block_clicked_1:
        .endproc
 *// key_block_clicked
 
@@ -2424,6 +2436,31 @@ find_door_4:
 
 *********************************************************************
 *
+* Find object
+*
+* r0: x FP 8.8
+* r1: y FP 8.8
+*
+find_object:
+       li   r8,objects
+       mov  @n_objects,r9
+find_object_1:
+       cb   r0,@object_map_x(r8)
+       jne  find_object_2
+       cb   r1,@object_map_y(r8)
+       jeq  find_object_4
+find_object_2:
+       ai   r8,object_size
+       dec  r9
+       jne  find_object_1
+find_object_3:
+       clr  r8
+find_object_4:
+       rt
+*// find_object
+
+*********************************************************************
+*
 * Path clear
 * Is path from sprite to player clear?
 *
@@ -2580,7 +2617,7 @@ remove_sprite:
 *
 * Add object to inventory
 *
-* r0: Address of object type to add
+* r0: Address of object to add
 *
 add_inventory:
        .proc
@@ -2589,9 +2626,9 @@ add_inventory:
 add_inventory_0:
        mov  r1,r3
        sla  r3,1                       ; * object_size
-       mov  @inventory+object_type(r3),r4
+       mov  @inventory(r3),r4          ; Get object
        jne  add_inventory_1
-       mov  r0,@inventory(r3)
+       mov  r0,@inventory(r3)          ; Store object
        mov  r1,@inventory_index
        bl   @display_inventory
        jmp  add_inventory_3
@@ -2614,7 +2651,7 @@ remove_inventory:
        .proc
        sla  r1,1                       ; * object_size
        ai   r1,inventory
-       mov  *r1,r0                     ; Get object type
+       mov  *r1,r0                     ; Get object
        clr  *r1
        bl   @display_inventory
        .endproc
@@ -2635,8 +2672,9 @@ display_inventory_1:
        mov  r8,r0
        mov  r7,r12
        sla  r12,1                       ; * object_size
-       mov  @inventory+object_type(r12),r1
+       mov  @inventory(r12),r1
        jeq  display_inventory_2
+       mov  @object_type(r1),r1
        mov  @object_type_panel_graphics(r1),r1
        jmp  display_inventory_3
 display_inventory_2:
@@ -2716,12 +2754,11 @@ init_level_2a:
        li   r4,inventory
        li   r5,inventory_size
 init_level_3:
-       clr  @object_type(r4)
-       ai   r4,object_size
+       clr  *r4+
        dec  r5
        jne  init_level_3
        clr  @inventory_index
-       li   r0,object_type_red_position
+       li   r0,objects
        bl   @add_inventory
        bl   @display_inventory
 *      Speak
@@ -3479,8 +3516,34 @@ object_type_key:
 *
 object_type:
        equ  0
-object_size:
+object_map_x:
        equ  2
+object_map_y:
+       equ  3
+object_size:
+       equ  4
+
+objects:
+       data object_type_red_position
+       byte 0
+       byte 0
+       data object_type_key
+       byte 9
+       byte 3
+       data object_type_key
+       byte 8
+       byte 1
+       data object_type_red_position
+       byte 14
+       byte 3
+       data object_type_red_position
+       byte 1
+       byte 12
+       data object_type_green_position
+       byte 14
+       byte 1
+n_objects:
+       data (n_objects - objects) / object_size
 
 inventory:
        bss  object_size*inventory_size
