@@ -221,8 +221,10 @@ is_target_pointer:
        equ  pointer_click+2
 inventory_index:
        equ  is_target_pointer+2
-snd_channel_1:
+selected_object:
        equ  inventory_index+2
+snd_channel_1:
+       equ  selected_object+2
 snd_channel_2:
        equ  snd_channel_1+snd_channel_size
 snd_channel_3:
@@ -244,7 +246,7 @@ speech_on:
 cast_ray_loop_pad:
        equ  speech_on+2
 upload_screen_loop_pad:
-       equ  cast_ray_loop_pad+40
+       equ  cast_ray_loop_pad+30
 pad_max:
        equ  upload_screen_loop_pad+22
 
@@ -2088,6 +2090,7 @@ inventory_jumptable:
 * Key clicked
 *
 key_clicked:
+       mov  r2,@selected_object
        movb @pointer_pattern_target,@pointer_pattern
        rt
 *// key_clicked
@@ -2100,6 +2103,9 @@ door_block_clicked:
        .proc
        abs  @is_target_pointer
        jeq  door_block_clicked_1
+       mov  @selected_object,r8
+       ci   r8,object_type_key
+       jne  door_block_clicked_1
        bl   @find_door
        mov  r8,r8
        jeq  door_block_clicked_1
