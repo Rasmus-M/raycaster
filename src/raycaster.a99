@@ -1590,7 +1590,7 @@ move_enemies_1:
        jeq  move_enemies_2
        mov  @sprite_type(r4),r0
        ci   r0,sprite_type_monster
-       jlt  move_enemies_2
+       jl   move_enemies_2
 *      x
        mov  @sprite_x(r4),r0
        mov  @x,r2
@@ -1757,7 +1757,7 @@ bullet_collisions_3:
        jeq  bullet_collisions_4
        mov  @sprite_type(r4),r2
        ci   r2,sprite_type_monster
-       jlt  bullet_collisions_4
+       jl   bullet_collisions_4
        mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2
@@ -2572,11 +2572,9 @@ create_sprite_1:
        movb @byte_80,@sprite_x+1(r6)
        movb @sprite_init_y(r4),@sprite_y(r6)
        movb @byte_80,@sprite_y+1(r6)
-       mov  r2,r3
-       sla  r3,1
-       mov  @sprite_texture_table(r3),@sprite_texture(r6)
-       mov  @sprite_speech_table(r3),@sprite_speech(r6)
-       mov  @sprite_health_table(r3),@sprite_health(r6)
+       mov  @sprite_type_texture(r2),@sprite_texture(r6)
+       mov  @sprite_type_speech(r2),@sprite_speech(r6)
+       mov  @sprite_type_health(r2),@sprite_health(r6)
        clr  @sprite_attacking(r6)
 *      Next sprite
        c    r7,@n_sprites
