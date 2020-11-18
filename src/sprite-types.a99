@@ -1,17 +1,3 @@
-**
-* Sprite type structure
-*
-sprite_type_number:
-       equ  0
-sprite_type_texture:
-       equ  2
-sprite_type_speech:
-       equ  4
-sprite_type_health:
-       equ  6
-sprite_type_size:
-       equ  8
-
 tex_obj:
        equ first_object_texture
 tex_mon:

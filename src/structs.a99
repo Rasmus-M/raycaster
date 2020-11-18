@@ -1,0 +1,108 @@
+**
+* Column data structure
+*
+column_height:
+       equ  0
+column_distance:
+       equ  2
+column_texture:
+       equ  4
+column_hit_x:
+       equ  6
+column_distance_copy:
+       equ  8
+column_redraw:
+       equ  10
+column_map_x:
+       equ  12
+column_map_y:
+       equ  14
+column_size:
+       equ  16                         ; Must be 2^n
+
+**
+* Sprite type structure
+*
+sprite_type_number:
+       equ  0
+sprite_type_texture:
+       equ  2
+sprite_type_speech:
+       equ  4
+sprite_type_health:
+       equ  6
+sprite_type_size:
+       equ  8
+
+**
+* Sprite data structure
+*
+sprite_active:                         ; 0 = inactive, <> 0 = active,
+       equ  0
+sprite_type:
+       equ  2
+sprite_x:
+       equ  4
+sprite_y:
+       equ  6
+sprite_texture:
+       equ  8
+sprite_speech:
+       equ  10
+sprite_attacking:
+       equ  12
+sprite_health:
+       equ  14
+sprite_angle:
+       equ  16
+sprite_size:
+       equ  18
+
+**
+* Sprite init data structure
+*
+sprite_init_type:
+       equ  0
+sprite_init_x:
+       equ  2
+sprite_init_y:
+       equ  3
+sprite_init_size:
+       equ  4
+
+**
+* Door structure
+*
+door_x:
+       equ  0
+door_y:
+       equ  1
+door_key:
+       equ  2
+door_sprite_inits:
+       equ  4
+door_size:
+       equ  6
+
+**
+* Object type structure
+*
+object_type_number:
+       equ  0
+object_type_panel_graphics:
+       equ  2
+object_type_size:
+       equ  4
+
+**
+* Object structure
+*
+object_type:
+       equ  0
+object_map_x:
+       equ  2
+object_map_y:
+       equ  3
+object_size:
+       equ  4
+
