@@ -1,4 +1,5 @@
        copy "../panel/empty.a99"
+       copy "../panel/score.a99"
        copy "../panel/map.a99"
        copy "../panel/attack.a99"
        copy "../panel/potion-red.a99"

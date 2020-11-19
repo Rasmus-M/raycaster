@@ -2887,6 +2887,10 @@ display_panel_1:
        ai   r7,4
        dec  r8
        jne  display_panel_1
+       li   r0,0
+       li   r1,score_patterns
+       li   r2,4
+       bl   @display_panel_graphics
        li   r0,4
        li   r1,map_patterns
        li   r2,4
