@@ -53,6 +53,8 @@ map_width:
        equ  64
 map_height:
        equ  64
+map_size:
+       equ  map_width*map_height
 screen_width:
        equ  64
 screen_height:
@@ -2254,43 +2256,54 @@ display_score_1:
 *
 display_map:
        .proc
-*      Set patterns and colors
-       li   r0,ptrnt2+(12*8*8)
-       clr  r1
-       li   r2,64*8
-       bl   @vsmw
-       li   r0,colrt2+(12*8*8)
+*      Set colors
+       li   r0,ptrntb
+       li   r1,>0000
+       bl   @display_map_background
+       li   r0,colrtb
        li   r1,>f100
-       li   r2,64*8
-       bl   @vsmw
+       bl   @display_map_background
 *      Display map
-       li   r0,ptrnt2+(12*8*8)
-       bl   @vwad
-       li   r6,>0080                   ; A bit to set
-       li   r0,map                     ; Source address
-       li   r3,map_width/8             ; Column counter
+       li   r0,ptrntb+(8*8*8)+(2*8)    ; VDP write address
+       li   r6,>00c0                   ; One fat pixel = two bits to set
+       li   r7,map                     ; Source address
+       li   r3,map_width/4             ; Column counter
+       li   r8,>003e                   ; For testing end of screen 3rd
 *      Column loop
 display_map_7:
-       li   r4,map_height            ; Row counter
+       bl   @vwad                      ; Set VDP write address
+       li   r4,map_height              ; Row counter
 *      Line loop
 display_map_6:
        clr  r2                         ; Result byte to write to VDP
-       li   r5,8                       ; Bits in a byte
+       li   r5,4                       ; Fat pixels in a byte
 *      Bit loop
 display_map_8:
-       movb *r0+,r1                    ; Get map byte
-       andi r1,>8000
+       movb *r7+,r1                    ; Get map byte
+       andi r1,>8000                   ; Has it been visited?
        jeq  display_map_5              ; Don't set map bit if zero
-       soc  r6,r2                      ; Set bit
+       soc  r6,r2                      ; Set bits
 display_map_5:
-       sla  r2,1                       ; Shift result left to accept next bit
+       sla  r2,2                       ; Shift result left to accept next bits
        dec  r5
        jne  display_map_8              ; Next bit
-       movb r2,*r15                    ; Write 8 pixels to VDP
-       ai   r0,map_width-8             ; Next row of map
+       movb r2,*r15                    ; Write 4 fat pixels to VDP
+       movb r2,*r15                    ; Write 4 fat pixels to VDP
+*      Next line
+       coc  r8,r0                      ; End of screen 3rd?
+       jne  display_map_9
+       ai   r0,>800-62
+       bl   @vwad
+       jmp  display_map_10
+display_map_9:
+       inct r0
+display_map_10:
+       ai   r7,map_width-4             ; Next row of map
        dec  r4
        jne  display_map_6
-       ai   r0,(-map_height*map_width)+8
+*      Next column
+       ai   r0,->1000+64
+       ai   r7,4-map_size
        dec  r3
        jne  display_map_7              ; Next column
 *      Display player position
@@ -2298,10 +2311,13 @@ display_map_5:
        sla  r0,7
        ai   r0,spratb+((n_fixed_hw_sprites+1)*4)
        bl   @vwad                      ; Set VDP address
+       clr  r0
        movb @y,r0
+       sla  r0,1
        ab   @map_y,r0
        movb r0,*r15
        movb @x,r0
+       sla  r0,1
        ab   @map_x,r0
        movb r0,*r15
        li   r0,>4805
@@ -2331,24 +2347,66 @@ display_map_3:
        bl   @check_key
        jne  display_map_3
 *      Restore patterns
-       li   r0,colrt2+(12*8*8)
+       li   r0,colrtb
        li   r1,>1100
-       li   r2,64*8
-       bl   @vsmw
-       li   r0,ptrnt2+(12*8*8)
+       bl   @display_map_background
+       li   r0,ptrntb
        li   r1,>f000
-       li   r2,64*8
-       bl   @vsmw
+       bl   @display_map_background
 *      Upload screen
        seto @full_redraw_required
        bl   @upload_screen
        .endproc
 map_x:
-       byte 96-8
+       byte 64-8
 map_y:
-       byte 64-9
-
+       byte 16-9
 *// display_map
+
+*********************************************************************
+*
+* Display map background
+*
+* r0: Base address
+* r1: Byte to write
+*
+display_map_background:
+       .proc
+       mov  r0,r4
+*      Top
+       ai   r0,(8*8*8)+(2*8)
+       li   r3,16
+display_map_11:
+       bl   @vwad                      ; Set VDP write address
+       li   r2,48
+display_map_12:
+       movb r1,*r15
+       dec  r2
+       jne  display_map_12
+       ai   r0,64
+       dec  r3
+       jne  display_map_11
+*      Middle
+       mov  r4,r0
+       ai   r0,>800+(8*8*8)
+       li   r2,64*16
+       bl   @vsmw
+*      Bottom
+       mov  r4,r0
+       ai   r0,>1000+(8*8*8)
+       li   r3,16
+display_map_13:
+       bl   @vwad                      ; Set VDP write address
+       li   r2,16
+display_map_14:
+       movb r1,*r15
+       dec  r2
+       jne  display_map_14
+       ai   r0,64
+       dec  r3
+       jne  display_map_13
+       .endproc
+*// display_map_background
 
 *********************************************************************
 *

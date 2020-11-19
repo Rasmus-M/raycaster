@@ -10,7 +10,7 @@ rem call make.bat
 cd ..
 
 cd textures
-call make.bat
+rem call make.bat
 cd ..
 
 @copy /b bin\RAYCASTER8.bin + ^
