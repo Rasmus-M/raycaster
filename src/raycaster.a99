@@ -279,7 +279,7 @@ main_loop:
        bl   @pointer_actions           ; Needs map
        bl   @bullet_collisions         ; Needs map, math
        bl   @sprite_collisions         ; Needs map, math
-       bl   @move_enemies              ; Needs map, math
+       bl   @move_sprites              ; Needs map, math
        bl   @move_bullets              ; Needs map, math
        bl   @update_health_bar
 ;      bl   @display_score
@@ -1583,19 +1583,20 @@ upload_screen_loop_end:
 
 *********************************************************************
 *
-* Move enemies
+* Move sprites
 *
-move_enemies:
+move_sprites:
        .proc
        li   r4,sprites
        mov  @n_sprites,r5
-       jeq  move_enemies_3
-move_enemies_1:
+       jeq  move_sprites_3
+move_sprites_1:
        mov  *r4,r0
-       jeq  move_enemies_2
-       mov  @sprite_type(r4),r0
-       ci   r0,sprite_type_monster
-       jl   move_enemies_2
+       jeq  move_sprites_2
+       mov  @sprite_type(r4),r1
+       mov  @sprite_type_props(r1),r0
+       coc  @sprite_can_move,r0
+       jne  move_sprites_2
 *      x
        mov  @sprite_x(r4),r0
        mov  @x,r2
@@ -1611,71 +1612,71 @@ move_enemies_1:
        abs  r7
        a    r6,r7
        ci   r7,max_sprite_distance*256
-       jhe  move_enemies_2
+       jhe  move_sprites_2
 *      x
        mov  r2,r2
-       jeq  move_enemies_5
-       jlt  move_enemies_4
+       jeq  move_sprites_5
+       jlt  move_sprites_4
        ci   r2,enemy_speed
-       jlt  move_enemies_5
+       jlt  move_sprites_5
        li   r2,enemy_speed
-       jmp  move_enemies_5
-move_enemies_4:
+       jmp  move_sprites_5
+move_sprites_4:
        ci   r2,-enemy_speed
-       jgt  move_enemies_5
+       jgt  move_sprites_5
        li   r2,-enemy_speed
-move_enemies_5:
+move_sprites_5:
 *      y
        mov  r3,r3
-       jeq  move_enemies_7
-       jlt  move_enemies_6
+       jeq  move_sprites_7
+       jlt  move_sprites_6
        ci   r3,enemy_speed
-       jlt  move_enemies_7
+       jlt  move_sprites_7
        li   r3,enemy_speed
-       jmp  move_enemies_7
-move_enemies_6:
+       jmp  move_sprites_7
+move_sprites_6:
        ci   r3,-enemy_speed
-       jgt  move_enemies_7
+       jgt  move_sprites_7
        li   r3,-enemy_speed
-move_enemies_7:
+move_sprites_7:
 *      Check map
        mov  r2,r6
        a    r2,r0
        a    r3,r1
        bl   @get_map_value
-       jeq  move_enemies_8
+       jeq  move_sprites_8
        s    r6,r0
        bl   @get_map_value
-       jeq  move_enemies_8
+       jeq  move_sprites_8
        a    r6,r0
        s    r3,r1
        bl   @get_map_value
-       jne  move_enemies_2
-move_enemies_8:
+       jne  move_sprites_2
+move_sprites_8:
 *      Move
        mov  r0,@sprite_x(r4)
        mov  r1,@sprite_y(r4)
 *      Attack
        ci   r7,>0500
-       jgt  move_enemies_2
+       jgt  move_sprites_2
        bl   @rand
        ci   r0,>f800
-       jl   move_enemies_2
+       jl   move_sprites_2
        bl   @path_clear
-       jne  move_enemies_2
+       jne  move_sprites_2
        seto @sprite_attacking(r4)
        dec  @health
        bl   @play_shot_2
-       jmp  move_enemies_3
+       jmp  move_sprites_3
 *      Next sprite
-move_enemies_2:
+move_sprites_2:
        ai   r4,sprite_size
        dec  r5
-       jne  move_enemies_1
-move_enemies_3:
+       jne  move_sprites_1
+move_sprites_3:
        bl   @check_int
        .endproc
-*// move_enemies
+*// move_sprites
 
 *********************************************************************
 *
@@ -1761,8 +1762,9 @@ bullet_collisions_3:
        mov  *r4,r2
        jeq  bullet_collisions_4
        mov  @sprite_type(r4),r2
-       ci   r2,sprite_type_monster
-       jl   bullet_collisions_4
+       mov  @sprite_type_props(r2),r2
+       coc  @sprite_can_be_attacked,r2
+       jne   bullet_collisions_4
        mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2
@@ -1812,8 +1814,9 @@ sprite_collisions_1:
        mov  *r4,r2
        jeq  sprite_collisions_2
        mov  @sprite_type(r4),r2
-       ci   r2,sprite_type_monster
-       jhe  sprite_collisions_2
+       mov  @sprite_type_props(r2),r2
+       coc  @sprite_can_be_collected,r2
+       jne  sprite_collisions_2
        mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2

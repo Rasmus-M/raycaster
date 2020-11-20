@@ -23,7 +23,7 @@ column_size:
 **
 * Sprite type structure
 *
-sprite_type_number:
+sprite_type_props:
        equ  0
 sprite_type_texture:
        equ  2
