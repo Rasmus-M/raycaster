@@ -13,6 +13,10 @@ cd textures
 rem call make.bat
 cd ..
 
+cd panel
+call make.bat
+cd ..
+
 @copy /b bin\RAYCASTER8.bin + ^
     bin\col-bank-4.bin + ^
     bin\col-bank-5.bin + ^
@@ -41,7 +45,7 @@ cd ..
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
-    bin\empty.bin + ^
+    bin\bottom-panel.bin + ^
     bin\empty-2k.bin + backgrounds\background-00-even.bin + ^
     bin\empty-2k.bin + backgrounds\background-01-even.bin + ^
     bin\empty-2k.bin + backgrounds\background-02-even.bin + ^

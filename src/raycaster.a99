@@ -133,6 +133,8 @@ background_height:
        equ  192
 inventory_size:
        equ  8
+bottom_panel_bank_select:
+       equ  >603e
 
 **
 * Scratch pad
@@ -269,16 +271,16 @@ main_loop:
        clr  @interrupt_count
        bl   @set_vdp_regs
        bl   @upload_hw_sprites
-       bl   @cast_if_required
-       bl   @draw_screen
-       bl   @draw_sprites
-       bl   @upload_screen
-       bl   @keyboard_input
-       bl   @pointer_actions
-       bl   @bullet_collisions
-       bl   @sprite_collisions
-       bl   @move_enemies
-       bl   @move_bullets
+       bl   @cast_if_required          ; Needs map, math
+       bl   @draw_screen               ; Needs screen buffer, textures, draw code (ROM)
+       bl   @draw_sprites              ; Needs screen buffer, textures, draw code (ROM)
+       bl   @upload_screen             ; Needs screen buffer
+       bl   @keyboard_input            ; Needs map
+       bl   @pointer_actions           ; Needs map
+       bl   @bullet_collisions         ; Needs map, math
+       bl   @sprite_collisions         ; Needs map, math
+       bl   @move_enemies              ; Needs map, math
+       bl   @move_bullets              ; Needs map, math
        bl   @update_health_bar
 ;      bl   @display_score
        bl   @speak
@@ -2976,6 +2978,7 @@ display_panel_1:
 *
 display_panel_graphics:
        .proc
+       seto @bottom_panel_bank_select
        sla  r0,6                       ; * 64
        ai   r0,ptrntb+>1020
        mov  r0,r4
@@ -3535,7 +3538,6 @@ col_index:
        copy "../TexGen/col-index.a99"
 sprite_index:
        copy "../TexGen/sprite-index.a99"
-       copy "bottom-panel.a99"
 
 ***************************************************************
 *
@@ -3576,4 +3578,21 @@ map:
 lower_ram_max:
        equ  $
 
+***************************************************************
+*
+* Cartridge
+* Included to calculate label values only.
+*
+***************************************************************
+
+       aorg >6000
+       copy "../panel/bottom-panel.a99"
+
+***************************************************************
+*
+* End
        end  main
+*
+***************************************************************
+
+

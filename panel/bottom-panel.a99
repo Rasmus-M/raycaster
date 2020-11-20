@@ -1,0 +1,8 @@
+       copy "empty.a99"
+       copy "score.a99"
+       copy "map.a99"
+       copy "attack.a99"
+       copy "potion-red.a99"
+       copy "potion-green.a99"
+       copy "key.a99"
+       copy "arrows.a99"
