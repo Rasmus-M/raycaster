@@ -104,7 +104,7 @@ char_0:
 initial_health:
        equ  63
 texture_bank_select:
-       equ  >6030
+       equ  >6028
 texture_sams_page:                     ; 16
        equ  >1000
 n_texture_banks:

@@ -6,7 +6,7 @@ xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
 java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 
 cd TexGen
-call make.bat
+rem call make.bat
 cd ..
 
 cd textures
@@ -30,10 +30,6 @@ cd ..
     bin\sprite-bank-17.bin + ^
     bin\sprite-bank-18.bin + ^
     bin\sprite-bank-19.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
-    bin\empty.bin + ^
     bin\texture-bank-0.bin + ^
     bin\texture-bank-1.bin + ^
     bin\texture-bank-2.bin + ^
@@ -42,6 +38,10 @@ cd ..
     bin\texture-bank-5.bin + ^
     bin\texture-bank-6.bin + ^
     bin\texture-bank-7.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
     bin\empty-2k.bin + backgrounds\background-00-even.bin + ^
     bin\empty-2k.bin + backgrounds\background-01-even.bin + ^
     bin\empty-2k.bin + backgrounds\background-02-even.bin + ^
