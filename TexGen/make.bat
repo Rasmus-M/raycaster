@@ -6,8 +6,8 @@ xas99.py -b -R col-bank8.a99 -o ../bin/col-bank-8.bin
 xas99.py -b -R col-bank9.a99 -o ../bin/col-bank-9.bin
 xas99.py -b -R col-bank10.a99 -o ../bin/col-bank-10.bin
 xas99.py -b -R col-bank11.a99 -o ../bin/col-bank-11.bin
-xas99.py -b -R col-bank12.a99 -o ../bin/col-bank-12.bin
 
+xas99.py -b -R sprite-bank12.a99 -o ../bin/sprite-bank-12.bin
 xas99.py -b -R sprite-bank13.a99 -o ../bin/sprite-bank-13.bin
 xas99.py -b -R sprite-bank14.a99 -o ../bin/sprite-bank-14.bin
 xas99.py -b -R sprite-bank15.a99 -o ../bin/sprite-bank-15.bin
@@ -15,7 +15,3 @@ xas99.py -b -R sprite-bank16.a99 -o ../bin/sprite-bank-16.bin
 xas99.py -b -R sprite-bank17.a99 -o ../bin/sprite-bank-17.bin
 xas99.py -b -R sprite-bank18.a99 -o ../bin/sprite-bank-18.bin
 xas99.py -b -R sprite-bank19.a99 -o ../bin/sprite-bank-19.bin
-xas99.py -b -R sprite-bank20.a99 -o ../bin/sprite-bank-20.bin
-xas99.py -b -R sprite-bank21.a99 -o ../bin/sprite-bank-21.bin
-xas99.py -b -R sprite-bank22.a99 -o ../bin/sprite-bank-22.bin
-xas99.py -b -R sprite-bank23.a99 -o ../bin/sprite-bank-23.bin

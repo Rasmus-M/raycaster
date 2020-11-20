@@ -118,7 +118,7 @@ texture_size:
 max_texture_height_2:                  ; Up to this value
        equ  192                        ; all even heights are indexed
 max_texture_height_8:                  ; Up to this value
-       equ  528                        ; every 8th height is indexed
+       equ  456                        ; every 8th height is indexed
 first_object_texture:
        equ  24
 first_monster_texture:
