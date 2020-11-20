@@ -101,7 +101,7 @@ backdrop_color:
        equ  >0e
 char_0:
        equ  >30
-initial_health:
+max_health:
        equ  63
 texture_bank_select:
        equ  >6028
@@ -1665,7 +1665,7 @@ move_sprites_8:
        bl   @path_clear
        jne  move_sprites_2
        seto @sprite_attacking(r4)
-       dec  @health
+       dect @health
        bl   @play_shot_2
        jmp  move_sprites_3
 *      Next sprite
@@ -1899,6 +1899,22 @@ update_health_bar_4:
 
 *********************************************************************
 *
+* Add health
+*
+* r0: health to add
+*
+add_health:
+       a    @health,r0
+       ci   r0,max_health
+       jle  add_health_1
+       li   r0,max_health
+add_health_1:
+       mov  r0,@health
+       rt
+*// add_health
+
+*********************************************************************
+*
 * Actions when clicking with pointer on screen
 *
 pointer_actions:
@@ -2089,10 +2105,34 @@ inventory_clicked:
 inventory_clicked_1
        .endproc
 inventory_jumptable:
-       data remove_inventory
-       data remove_inventory
+       data red_potion_clicked
+       data green_potion_clicked
        data key_clicked
 *// inventory_clicked
+
+*********************************************************************
+*
+* Red potion clicked
+*
+red_potion_clicked:
+       .proc
+       bl   @remove_inventory
+       li   r0,8
+       bl   @add_health
+       .endproc
+*// red_potion_clicked
+
+*********************************************************************
+*
+* Green potion clicked
+*
+green_potion_clicked:
+       .proc
+       bl   @remove_inventory
+       li   r0,4
+       bl   @add_health
+       .endproc
+*// green_potion_clicked
 
 *********************************************************************
 *
@@ -2763,7 +2803,7 @@ init_level:
        mov  @start_dir,@angle
        mov  @start_dx,@dx
        mov  @start_dy,@dy
-       li   r0,initial_health
+       li   r0,max_health
        mov  r0,@health
        mov  r0,@old_health
        clr  @score
