@@ -2248,21 +2248,17 @@ key_block_clicked_1:
 * Get vertical texture pointer position
 *
 * r4: address of column structure
-* r7: screen x
+* r7: screen y
 * On return r1 contains the relative position as FP 8.8,
 * or -1 if no hit.
 *
 get_vertical_texture_pointer_position:
        mov  @column_height(r4),r5      ; Column height
-       ci   r5,screen_height
-       jle  get_vertical_texture_pointer_position_0
-       li   r5,screen_height
-get_vertical_texture_pointer_position_0:
        li   r8,screen_height           ; Screen height
-       s    r5,r8                      ; Column height - screen height
-       srl  r8,1                       ; / 2
-       mov  r7,r1                      ; Screen x
-       s    r8,r1                      ; Screen x - (Column height - screen height) / 2
+       s    r5,r8                      ; Screen height - column height
+       sra  r8,1                       ; / 2 = texture top y
+       mov  r7,r1                      ; Screen y
+       s    r8,r1                      ; Screen y - texture top y
        jlt  get_vertical_texture_pointer_position_1 ; Offset from top of column < 0?
        c    r1,r5                      ; Offset from top of column >= column height
        jhe  get_vertical_texture_pointer_position_1
