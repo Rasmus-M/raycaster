@@ -282,7 +282,7 @@ main_loop:
        bl   @move_sprites              ; Needs map, math
        bl   @move_bullets              ; Needs map, math
        bl   @update_health_bar
-;      bl   @display_score
+       bl   @display_score
        bl   @speak
        bl   @delay
        mov  @status,r0
@@ -2290,7 +2290,8 @@ display_score:
        jeq  display_score_1
        li   r0,26+32
        li   r2,5
-       bl   @display_decimal
+       bl   @calculate_decimal
+       bl   @display_score_on_screen
 display_score_1:
        .endproc
 *// display_score
@@ -3080,34 +3081,26 @@ vdp_registers:
 
 *********************************************************************
 *
-* Display decimal number
+* Calculate decimal number
 *
-* r0: Screen offset
 * r1: Number to display
 * r2: Number of digits
 *
-display_decimal:
-       .proc
-       ai   r0,nametb
-       mov  r0,r4
-       bl   @vwad
+calculate_decimal:
+       li   r4,decimal_buffer
        li   r3,5
        s    r2,r3
        sla  r3,1
        ai   r3,d10000
        dec  r2
-display_decimal_1:
+calculate_decimal_1:
        clr  r0
        div  *r3+,r0
-       ai   r0,char_0
-       swpb r0
-       movb r0,*r15
+       mov  r0,*r4+
        dec  r2
-       jne  display_decimal_1
-       ai   r1,char_0
-       swpb r1
-       movb r1,*r15
-       .endproc
+       jne  calculate_decimal_1
+       mov  r1,*r4
+       rt
 d10000:
        data 10000
 d1000:
@@ -3116,7 +3109,102 @@ d100:
        data 100
 d10:
        data 10
-*// display_decimal
+decimal_buffer:
+       bss  10
+*// calculate_decimal
+
+*********************************************************************
+*
+* Display score on screen
+*
+* Score to display is in @decimal_buffer
+*
+display_score_on_screen:
+       .proc
+*      Copy empty patterns to buffer
+       seto @bottom_panel_bank_select
+       li   r0,empty_patterns+2
+       li   r1,display_score_buffer
+       li   r2,4
+display_score_on_screen_1:
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       mov  *r0+,*r1+
+       ai   r0,24
+       dec  r2
+       jne  display_score_on_screen_1
+*      Copy number patterns to buffer
+       li   r0,4                       ; X shift
+       li   r1,display_score_buffer
+       li   r2,5                       ; Number of dígits
+       li   r3,decimal_buffer
+display_score_on_screen_4:
+       mov  *r3+,r4                    ; Get digit
+       sla  r4,3                       ; * 8
+       ai   r4,PAT0                    ; Add pattern base address
+       li   r5,8                       ; Number of pattern rows
+       mov  r0,r0
+       jne  display_score_on_screen_9
+*      Zero shift
+display_score_on_screen_10:
+       socb *r4+,*r1+                  ; Write byte
+       dec  r5
+       jne  display_score_on_screen_10
+       jmp  display_score_on_screen_13
+display_score_on_screen_9:
+       ci   r0,4
+       jgt  display_score_on_screen_12
+*      Shift and one byte
+display_score_on_screen_11
+       movb *r4+,r6                    ; Get pattern byte
+       srl  r6,0                       ; Shift it
+       socb r6,*r1+                    ; Write byte
+       dec  r5
+       jne  display_score_on_screen_11
+       jmp  display_score_on_screen_13
+*      Shift and two bytes
+display_score_on_screen_12:
+       clr  r6
+       movb *r4+,r6                    ; Get pattern byte
+       srl  r6,0                       ; Shift it
+       socb r6,*r1                     ; Write byte 1
+       ai   r1,8
+       socb @r6lb,*r1                  ; Write byte 2
+       ai   r1,-7
+       dec  r5
+       jne  display_score_on_screen_12
+*      Next digit
+display_score_on_screen_13:
+       ai   r0,5                       ; Increase shift
+       ci   r0,8
+       jlt  display_score_on_screen_8
+       ai   r0,-8
+       jmp  display_score_on_screen_14
+display_score_on_screen_8:
+       ai   r1,-8
+display_score_on_screen_14:
+       dec  r2
+       jne  display_score_on_screen_4
+*      Copy buffer to screen
+       li   r0,ptrnt3+34
+       li   r1,display_score_buffer
+       li   r2,4
+display_score_on_screen_2:
+       bl   @vwad
+       li   r3,8
+display_score_on_screen_3:
+       movb *r1+,*r15
+       movb *r1+,*r15
+       dect r3
+       jne  display_score_on_screen_3
+       ai   r0,64
+       dec  r2
+       jne  display_score_on_screen_2
+       .endproc
+display_score_buffer:
+       bss 32
+*// display_score_on_screen
 
 *********************************************************************
 *
@@ -3581,6 +3669,7 @@ col_index:
        copy "../TexGen/col-index.a99"
 sprite_index:
        copy "../TexGen/sprite-index.a99"
+       copy "number-patterns.a99"
 
 ***************************************************************
 *
