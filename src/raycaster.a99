@@ -2495,6 +2495,7 @@ open_door:
        movb @block_space,*r2
        seto @full_redraw_required
        mov  @door_sprite_inits(r8),r4
+       jeq  open_door_2
        mov  *r4,r5                     ; Already created?
        jne  open_door_2
        seto *r4+                       ; Mark as created
@@ -3594,18 +3595,6 @@ n_sprites:
        data 0
 sprites:
        bss  max_sprites*sprite_size
-
-**
-* Sprite init data
-*
-sprite_init_data:
-       data 2
-       data sprite_type_barrel
-       byte >11                      ; x
-       byte >02                      ; y
-       data sprite_type_eye
-       byte >02                      ; x
-       byte >06                      ; y
 
 **
 * Object types

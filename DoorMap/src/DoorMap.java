@@ -1,5 +1,3 @@
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -8,64 +6,200 @@ import java.util.ArrayList;
 
 public class DoorMap {
 
+    private static final int SPACE = 0;
+    private static final int DOOR = 32;
+    private static final int BUTTON = 36;
+    private static final int ROOM = 128;
+    private static final int FIRST_SPRITE = 136;
+    private static final int SECRET_DOOR_MASK = 1;
+    private static final String MAP_LABEL = "MD0";
+
     public static void main(String... args) throws IOException {
         DoorMap doorMap = new DoorMap();
-        byte[] buffer = doorMap.readMapFile("MD0", null);
-        int[][] map = doorMap.mapFromBuffer(buffer);
-        doorMap.generateDoorsFile(map);
+        doorMap.generate("map4.a99", "..\\src\\doors.a99", "..\\src\\map.a99");
     }
 
-    public void generateDoorsFile(int[][] map) throws IOException {
+    public void generate(String inputMapFilePath, String doorsFilePath, String outputMapFilePath) throws IOException {
+        byte[] buffer = readMapFile(inputMapFilePath, MAP_LABEL, null);
+        int[][] map = mapFromBuffer(buffer);
+        ArrayList<Room> rooms = findRooms(map);
+        ArrayList<Door> doors  = findDoors(map, rooms);
+        ArrayList<Sprite> initialSprites = findInitialSprites(map);
+        generateDoorsFile(doorsFilePath, doors, rooms, initialSprites);
+        generateMapFile(outputMapFilePath, map);
+    }
+
+    private void generateMapFile(String filePath, int[][] map) throws IOException {
         StringBuilder sb = new StringBuilder();
-        ArrayList<Point2D> doorPositions = new ArrayList<>();
-        int n = 1;
-        for (int y = 0; y < 64; y++) {
-            for (int x = 0; x < 64; x++) {
-                int value = map[y][x];
-                if (value == 13) {
-                    sb.append("door_").append(n).append(":\n");
-                    sb.append("       byte ").append(hexByte(x)).append("\n");
-                    sb.append("       byte ").append(hexByte(y)).append("\n");
-                    sb.append("       data 0\n"); // Key
-                    sb.append("       data door_").append(n).append("_init\n");
-                    doorPositions.add(new Point(x, y));
-                    n++;
+        sb.append(MAP_LABEL).append(":\n");
+        for (int[] row : map) {
+            for (int x = 0; x < row.length; x++) {
+                int value = row[x];
+                if (x % 16 == 0) {
+                    sb.append("       byte ");
+                }
+                sb.append(hexByte(value));
+                if (x % 16 == 15) {
+                    sb.append("\n");
+                } else {
+                    sb.append(",");
                 }
             }
         }
-        sb.append("\n");
-        sb.append("n_doors:\n");
-        sb.append("       data (n_doors - door_1) / door_size\n");
-        sb.append("\n");
-        for (int i = 1; i < n; i++) {
-            Point2D doorPosition = doorPositions.get(i -1);
-            sb.append("door_").append(i).append("_init:\n");
-            sb.append("       data 0\n");               // Completed?
-            sb.append("       data 1\n");               // Number of sprites
-            sb.append("       data sprite_type_mon").append((i % 26) + 1).append("\n"); // Sprite type
-            sb.append("       byte ").append(hexByte((int) doorPosition.getX())).append("\n"); // x
-            sb.append("       byte ").append(hexByte((int) doorPosition.getY())).append("\n"); // y
-        }
-
-        File outputFile = new File("doors.a99");
+        File outputFile = new File(filePath);
         FileWriter fileWriter = new FileWriter(outputFile);
         fileWriter.write(sb.toString());
         fileWriter.close();
     }
 
-    public int[][] mapFromBuffer(byte[] buffer) {
+    private void generateDoorsFile(String filePath, ArrayList<Door> doors, ArrayList<Room> rooms, ArrayList<Sprite> initialSprites) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int n = 1;
+        for (Door door : doors) {
+            Room room = door.getRoom();
+            sb.append("door_").append(n).append(":\n");
+            sb.append("       byte ").append(hexByte(door.getPosition().getX())).append("\n");
+            sb.append("       byte ").append(hexByte(door.getPosition().getY())).append("\n");
+            sb.append("       data 0\n"); // Key
+            if (room != null && room.getSprites().size() > 0) {
+                sb.append("       data room_").append(rooms.indexOf(room) + 1).append("_init\n");
+            } else {
+                sb.append("       data 0\n");
+            }
+            n++;
+        }
+        sb.append("\n");
+        sb.append("n_doors:\n");
+        sb.append("       data (n_doors - door_1) / door_size\n");
+        sb.append("\n");
+        sb.append("**\n");
+        sb.append("* Sprite init data\n");
+        sb.append("*\n");
+        sb.append("sprite_init_data:\n");
+        writeSpriteList(sb, initialSprites);
+        int i = 1;
+        for (Room room : rooms) {
+            if (room.getSprites().size() > 0) {
+                sb.append("room_").append(i).append("_init:\n");
+                sb.append("       data 0\n"); // Initialized?
+                writeSpriteList(sb, room.getSprites());
+            }
+            i++;
+        }
+        File outputFile = new File(filePath);
+        FileWriter fileWriter = new FileWriter(outputFile);
+        fileWriter.write(sb.toString());
+        fileWriter.close();
+    }
+
+    private void writeSpriteList(StringBuilder sb, ArrayList<Sprite> sprites) {
+        sb.append("       data ").append(sprites.size()).append("\n");
+        for (Sprite sprite : sprites) {
+            sb.append("       data ").append(sprite.getType()).append("\n");
+            sb.append("       byte ").append(hexByte(sprite.getPosition().getX())).append("\n");
+            sb.append("       byte ").append(hexByte(sprite.getPosition().getY())).append("\n");
+        }
+    }
+
+    private ArrayList<Sprite> findInitialSprites(int[][] map) {
+        ArrayList<Sprite> sprites = new ArrayList<>();
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++){
+                int value = map[y][x];
+                if (value >= FIRST_SPRITE) {
+                    Square square = new Square(x, y);
+                    sprites.add(new Sprite(value - FIRST_SPRITE, square));
+                    map[y][x] = SPACE;
+                }
+            }
+        }
+        return sprites;
+    }
+
+    private ArrayList<Door> findDoors(int[][] map, ArrayList<Room> rooms) {
+        ArrayList<Door> doors = new ArrayList<>();
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++){
+                int value = map[y][x];
+                if (value == DOOR) {
+                    Square square = new Square(x, y);
+                    Door door = new Door(square);
+                    door.setRoom(findRoomForDoor(rooms, door));
+                    doors.add(door);
+                }
+            }
+        }
+        return doors;
+    }
+
+    private Room findRoomForDoor(ArrayList<Room> rooms, Door door) {
+        for (Room room : rooms) {
+            if (room.isNextTo(door.getPosition())) {
+                return room;
+            }
+        }
+        return null;
+    }
+
+    private ArrayList<Room> findRooms(int[][] map) {
+        ArrayList<Room> rooms = new ArrayList<>();
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++){
+                if (map[y][x] == ROOM) {
+                    Square square = new Square(x, y);
+                    if (findContainingRoom(square, rooms) == null) {
+                        Room room = new Room();
+                        measureRoom(room, map, square);
+                        rooms.add(room);
+                    }
+                }
+            }
+        }
+        return rooms;
+    }
+
+    private void measureRoom(Room room, int[][] map, Square square) {
+        if (square.getY() < 0 || square.getY() >= map.length || square.getX() < 0 || square.getX() >= map[square.getY()].length) {
+            return;
+        }
+        int value = map[square.getY()][square.getX()];
+        if (value == ROOM || value >= FIRST_SPRITE) {
+            if (value == ROOM) {
+                room.addSquare(square);
+            } else {
+                Sprite sprite = new Sprite(value - FIRST_SPRITE, square);
+                room.addSprite(sprite);
+            }
+            map[square.getY()][square.getX()] = SPACE;
+            measureRoom(room, map, new Square(square.getX() + 1, square.getY()));
+            measureRoom(room, map, new Square(square.getX() - 1, square.getY()));
+            measureRoom(room, map, new Square(square.getX(), square.getY() + 1));
+            measureRoom(room, map, new Square(square.getX(), square.getY() - 1));
+        }
+    }
+
+    private Room findContainingRoom(Square square, ArrayList<Room> rooms) {
+        for (Room room : rooms) {
+            if (room.contains(square)) {
+                return room;
+            }
+        }
+        return null;
+    }
+
+    private int[][] mapFromBuffer(byte[] buffer) {
         int[][] map = new int[64][64];
         int n = 0;
         for (int y = 0; y < 64; y++) {
             for (int x = 0; x < 64; x++) {
-                map[y][x] = buffer[n++];
+                map[y][x] = buffer[n++] & 0xff;
             }
         }
         return map;
     }
 
-    public byte[] readMapFile(String startMarker, String endMarker) throws IOException {
-        File inputFile = new File("../src/map.a99");
+    private byte[] readMapFile(String filePath, String startMarker, String endMarker) throws IOException {
+        File inputFile = new File(filePath);
         byte[] buffer = new byte[0x1000];
         int n = 0;
         boolean started = startMarker == null;
@@ -115,12 +249,11 @@ public class DoorMap {
         return token;
     }
 
-    String hexByte(int i) {
+    private String hexByte(int i) {
         String hex = Integer.toHexString(i);
         while (hex.length() < 2) {
             hex = "0" + hex;
         }
         return ">" + hex;
     }
-
 }
