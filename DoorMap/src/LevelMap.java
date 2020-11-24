@@ -66,6 +66,10 @@ public class LevelMap {
             sb.append("       byte ").append(hexByte(object.getPosition().getX())).append("\n");
             sb.append("       byte ").append(hexByte(object.getPosition().getY())).append("\n");
         }
+        sb.append("\n");
+        sb.append("n_objects:\n");
+        sb.append("       data (n_objects - objects) / object_size\n");
+        sb.append("\n");
         sb.append("**\n");
         sb.append("* Doors\n");
         sb.append("*\n");
@@ -120,6 +124,7 @@ public class LevelMap {
 
     private ArrayList<Obj> findObjects(int[][] map) {
         ArrayList<Obj> objects = new ArrayList<>();
+        objects.add(new Obj(0, new Square(0, 0)));
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++){
                 int value = map[y][x];
