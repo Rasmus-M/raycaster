@@ -4,19 +4,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DoorMap {
+public class LevelMap {
 
     private static final int SPACE = 0;
     private static final int DOOR = 32;
     private static final int BUTTON = 36;
     private static final int ROOM = 128;
+    private static final int FIRST_OBJECT = 40;
+    private static final int LAST_OBJECT = 45;
     private static final int FIRST_SPRITE = 136;
     private static final int SECRET_DOOR_MASK = 1;
     private static final String MAP_LABEL = "MD0";
 
     public static void main(String... args) throws IOException {
-        DoorMap doorMap = new DoorMap();
-        doorMap.generate("map4.a99", "..\\src\\doors.a99", "..\\src\\map.a99");
+        LevelMap levelMap = new LevelMap();
+        levelMap.generate("map4.a99", "..\\src\\level.a99", "..\\src\\map.a99");
     }
 
     public void generate(String inputMapFilePath, String doorsFilePath, String outputMapFilePath) throws IOException {
@@ -25,7 +27,8 @@ public class DoorMap {
         ArrayList<Room> rooms = findRooms(map);
         ArrayList<Door> doors  = findDoors(map, rooms);
         ArrayList<Sprite> initialSprites = findInitialSprites(map);
-        generateDoorsFile(doorsFilePath, doors, rooms, initialSprites);
+        ArrayList<Obj> objects = findObjects(map);
+        generateLevelFile(doorsFilePath, doors, rooms, initialSprites, objects);
         generateMapFile(outputMapFilePath, map);
     }
 
@@ -52,8 +55,22 @@ public class DoorMap {
         fileWriter.close();
     }
 
-    private void generateDoorsFile(String filePath, ArrayList<Door> doors, ArrayList<Room> rooms, ArrayList<Sprite> initialSprites) throws IOException {
+    private void generateLevelFile(String filePath, ArrayList<Door> doors, ArrayList<Room> rooms, ArrayList<Sprite> initialSprites, ArrayList<Obj> objects) throws IOException {
         StringBuilder sb = new StringBuilder();
+        sb.append("**\n");
+        sb.append("* Objects\n");
+        sb.append("*\n");
+        sb.append("objects:\n");
+        for (Obj object : objects) {
+            sb.append("       data ").append(object.getType()).append("\n");
+            sb.append("       byte ").append(hexByte(object.getPosition().getX())).append("\n");
+            sb.append("       byte ").append(hexByte(object.getPosition().getY())).append("\n");
+        }
+        sb.append("**\n");
+        sb.append("* Doors\n");
+        sb.append("*\n");
+        sb.append("doors:\n");
+        sb.append("       equ  $\n");
         int n = 1;
         for (Door door : doors) {
             Room room = door.getRoom();
@@ -99,6 +116,20 @@ public class DoorMap {
             sb.append("       byte ").append(hexByte(sprite.getPosition().getX())).append("\n");
             sb.append("       byte ").append(hexByte(sprite.getPosition().getY())).append("\n");
         }
+    }
+
+    private ArrayList<Obj> findObjects(int[][] map) {
+        ArrayList<Obj> objects = new ArrayList<>();
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++){
+                int value = map[y][x];
+                if (value >= FIRST_OBJECT && value <= LAST_OBJECT) {
+                    Square square = new Square(x, y);
+                    objects.add(new Obj((value - FIRST_OBJECT) / 2, square));
+                }
+            }
+        }
+        return objects;
     }
 
     private ArrayList<Sprite> findInitialSprites(int[][] map) {

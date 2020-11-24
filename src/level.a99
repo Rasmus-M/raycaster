@@ -1,3 +1,33 @@
+**
+* Objects
+*
+objects:
+       data object_type_red_position
+       byte 0
+       byte 0
+       data object_type_key
+       byte 9
+       byte 3
+       data object_type_key
+       byte 8
+       byte 1
+       data object_type_red_position
+       byte 14
+       byte 3
+       data object_type_red_position
+       byte 1
+       byte 12
+       data object_type_green_position
+       byte 14
+       byte 1
+n_objects:
+       data (n_objects - objects) / object_size
+
+**
+* Doors
+*
+doors:
+       equ  $
 door_1:
        byte >1a
        byte >02

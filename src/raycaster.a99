@@ -3610,31 +3610,6 @@ object_type_key:
        data key_patterns
 
 **
-* Objects
-*
-objects:
-       data object_type_red_position
-       byte 0
-       byte 0
-       data object_type_key
-       byte 9
-       byte 3
-       data object_type_key
-       byte 8
-       byte 1
-       data object_type_red_position
-       byte 14
-       byte 3
-       data object_type_red_position
-       byte 1
-       byte 12
-       data object_type_green_position
-       byte 14
-       byte 1
-n_objects:
-       data (n_objects - objects) / object_size
-
-**
 * Inventory
 *
 inventory:
@@ -3648,8 +3623,7 @@ inventory:
        copy "math_tables.a99"          ; 2K
        copy "sound-fx.a99"
        copy "sprite-types.a99"
-doors:
-       copy "doors.a99"
+       copy "level.a99"
 col_index:
        copy "../TexGen/col-index.a99"
 sprite_index:
