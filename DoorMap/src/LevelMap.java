@@ -8,6 +8,7 @@ public class LevelMap {
 
     private static final int SPACE = 0;
     private static final int DOOR = 32;
+    private static final int DOOR_LOCKED = 33;
     private static final int BUTTON = 36;
     private static final int ROOM = 128;
     private static final int FIRST_OBJECT = 40;
@@ -81,7 +82,7 @@ public class LevelMap {
             sb.append("door_").append(n).append(":\n");
             sb.append("       byte ").append(hexByte(door.getPosition().getX())).append("\n");
             sb.append("       byte ").append(hexByte(door.getPosition().getY())).append("\n");
-            sb.append("       data 0\n"); // Key
+            sb.append("       data ").append(door.isLocked() ? 1 : 0).append("\n");
             if (room != null && room.getSprites().size() > 0) {
                 sb.append("       data room_").append(rooms.indexOf(room) + 1).append("_init\n");
             } else {
@@ -157,10 +158,11 @@ public class LevelMap {
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++){
                 int value = map[y][x];
-                if (value == DOOR) {
+                if (value == DOOR || value == DOOR_LOCKED) {
                     Square square = new Square(x, y);
                     Door door = new Door(square);
                     door.setRoom(findRoomForDoor(rooms, door));
+                    door.setLocked(value == DOOR_LOCKED);
                     doors.add(door);
                 }
             }

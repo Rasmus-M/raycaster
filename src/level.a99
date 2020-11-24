@@ -50,7 +50,7 @@ door_3:
 door_4:
        byte >0b
        byte >03
-       data 0
+       data 1
        data room_1_init
 door_5:
        byte >2f

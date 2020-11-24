@@ -226,8 +226,10 @@ is_target_pointer:
        equ  pointer_click+2
 inventory_index:
        equ  is_target_pointer+2
-selected_object:
+target_inventory_index:
        equ  inventory_index+2
+selected_object:
+       equ  target_inventory_index+2
 snd_channel_1:
        equ  selected_object+2
 snd_channel_2:
@@ -2139,6 +2141,7 @@ green_potion_clicked:
 * Key clicked
 *
 key_clicked:
+       mov  r1,@target_inventory_index
        mov  r2,@selected_object
        movb @pointer_pattern_target,@pointer_pattern
        rt
@@ -2163,7 +2166,7 @@ door_block_clicked:
        .push r0
        .push r1
        .push r2
-       mov  @inventory_index,r1
+       mov  @target_inventory_index,r1
        bl   @remove_inventory
        .pop r2
        .pop r1
