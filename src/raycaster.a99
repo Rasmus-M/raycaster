@@ -1449,6 +1449,8 @@ move_forward:
 move_forward_1:
        andi r2,>0100                   ; Test secret door bit
        jeq  move_forward_3             ; If not set we cannot move
+       bl   @get_map_address
+       bl   @open_door
 *      Move:
 move_forward_2:
        mov  r0,@x
@@ -1753,6 +1755,9 @@ bullet_collisions:
        jeq  bullet_collisions_2
        cb   r3,@block_door
        jne  bullet_collisions_1
+       mov  @bullet_distance,r3
+       ci   r3,2*256
+       jgt  bullet_collisions_1
        bl   @open_door
        jmp  bullet_collisions_1
 *      Check for sprite collison
@@ -2495,7 +2500,12 @@ open_door:
        jeq  open_door_2
        mov  @door_key(r8),r4
        jne  open_door_2
+       movb *r2,r3
+       andi r3,>7f00
+       cb   r3,@block_door
+       jne  open_door_0
        movb @block_space,*r2
+open_door_0:
        seto @full_redraw_required
        mov  @door_sprite_inits(r8),r4
        jeq  open_door_2
@@ -2820,46 +2830,49 @@ init_level:
 *      Init columns
        li   r1,columns
        li   r2,n_rays
-init_level_0:
+init_level_1:
        seto @column_redraw(r1)
        ai   r1,column_size
        dec  r2
-       jne  init_level_0
+       jne  init_level_1
 *      Init doors
        li   r4,doors
        mov  @n_doors,r5
-       jeq  init_level_1a
-init_level_1:
+       jeq  init_level_4
+init_level_2:
        clr  r0
        movb @door_x(r4),r0
        clr  r1
        movb @door_y(r4),r1
        bl   @get_map_address
+       cb   *r2,@block_space
+       jne  init_level_3
        movb @block_door,*r2
+init_level_3:
        mov  @door_sprite_inits(r4),r6
        clr  *r6                        ; Mark as not completed
        ai   r4,door_size
        dec  r5
-       jne  init_level_1
-init_level_1a:
+       jne  init_level_2
+init_level_4:
 *      Init sprites
        bl   @reset_sprites
        li   r4,sprite_init_data
        mov  *r4+,r5
-       jeq  init_level_2a
-init_level_2:
+       jeq  init_level_6
+init_level_5:
        bl   @create_sprite
        ai   r4,sprite_init_size
        dec  r5
-       jne  init_level_2
-init_level_2a:
+       jne  init_level_5
+init_level_6:
 *      Init inventory
        li   r4,inventory
        li   r5,inventory_size
-init_level_3:
+init_level_7:
        clr  *r4+
        dec  r5
-       jne  init_level_3
+       jne  init_level_7
        clr  @inventory_index
        li   r0,objects
        bl   @add_inventory

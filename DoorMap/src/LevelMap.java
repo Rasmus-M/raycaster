@@ -158,7 +158,7 @@ public class LevelMap {
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++){
                 int value = map[y][x];
-                if (value == DOOR || value == DOOR_LOCKED) {
+                if (value == DOOR || value == DOOR_LOCKED || (value & SECRET_DOOR_MASK) != 0) {
                     Square square = new Square(x, y);
                     Door door = new Door(square);
                     door.setRoom(findRoomForDoor(rooms, door));
