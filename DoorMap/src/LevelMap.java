@@ -10,9 +10,10 @@ public class LevelMap {
     private static final int DOOR = 32;
     private static final int DOOR_LOCKED = 33;
     private static final int BUTTON = 36;
-    private static final int ROOM = 128;
     private static final int FIRST_OBJECT = 40;
     private static final int LAST_OBJECT = 45;
+    private static final int LAST_BLOCK = 47;
+    private static final int ROOM = 128;
     private static final int FIRST_SPRITE = 136;
     private static final int SECRET_DOOR_MASK = 1;
     private static final String MAP_LABEL = "MD0";
@@ -158,7 +159,7 @@ public class LevelMap {
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++){
                 int value = map[y][x];
-                if (value == DOOR || value == DOOR_LOCKED || (value & SECRET_DOOR_MASK) != 0) {
+                if (value == DOOR || value == DOOR_LOCKED || value <= LAST_BLOCK && (value & SECRET_DOOR_MASK) != 0) {
                     Square square = new Square(x, y);
                     Door door = new Door(square);
                     door.setRoom(findRoomForDoor(rooms, door));
