@@ -271,8 +271,6 @@ restart:
        bl   @init_level
 main_loop:
        clr  @interrupt_count
-       bl   @set_vdp_regs
-       bl   @upload_hw_sprites
        bl   @cast_if_required          ; Needs map, math
        bl   @draw_screen               ; Needs screen buffer, textures, draw code (ROM)
        bl   @draw_sprites              ; Needs screen buffer, textures, draw code (ROM)
@@ -363,13 +361,12 @@ interrupt_1:
        inc  @interrupt_count
        movb @vdpsta,r12
        mov  @wrksp+20,r10              ; Copy stack pointer
-;       .push r15
-;       li   r15,vdpwd
-;       bl   @set_vdp_regs
-;       bl   @upload_hw_sprites
+       mov  @wrksp+30,r15
+       bl   @set_vdp_regs
+       bl   @upload_hw_sprites
        bl   @joystick_input
        bl   @snd_player
-;       .pop r15
+       clr  r15
        rtwp
 *// interrupt
 
@@ -1037,13 +1034,16 @@ draw_sprites_1:
        mov  r1,r3
        abs  r3
        a    r2,r3                      ; Taxi distance
-       ci   r3,max_sprite_distance*2*256
+       jeq  draw_sprites_2
+       ci   r3,max_sprite_distance*3/2*256
        jhe  draw_sprites_2
 *      Look up angle
        bl   @atan2
        mov  r6,@sprite_angle(r4)
-       srl  r6,7
-       s    @angle,r6
+       mov  @angle,r2
+       sla  r2,7
+       s    r2,r6
+       sra  r6,7
        ci   r6,-n_rays-max_sprite_width
        jlt  draw_sprites_2
        ci   r6,n_rays+max_sprite_width-1
@@ -1617,6 +1617,8 @@ move_sprites_1:
        a    r6,r7
        ci   r7,max_sprite_distance*256
        jhe  move_sprites_2
+       ci   r7,1*256
+       jle  move_sprites_9
 *      x
        mov  r2,r2
        jeq  move_sprites_5
@@ -1661,10 +1663,11 @@ move_sprites_8:
        mov  r0,@sprite_x(r4)
        mov  r1,@sprite_y(r4)
 *      Attack
+move_sprites_9:
        ci   r7,>0500
        jgt  move_sprites_2
        bl   @rand
-       ci   r0,>f800
+       ci   r0,>e000
        jl   move_sprites_2
        bl   @path_clear
        jne  move_sprites_2

@@ -17,12 +17,48 @@ objects:
        data object_type_red_position
        byte >0e
        byte >03
+       data object_type_green_position
+       byte >38
+       byte >05
        data object_type_key
        byte >18
        byte >09
        data object_type_red_position
        byte >01
        byte >0c
+       data object_type_red_position
+       byte >3a
+       byte >10
+       data object_type_green_position
+       byte >24
+       byte >13
+       data object_type_key
+       byte >2f
+       byte >18
+       data object_type_key
+       byte >29
+       byte >1f
+       data object_type_red_position
+       byte >09
+       byte >21
+       data object_type_green_position
+       byte >15
+       byte >24
+       data object_type_red_position
+       byte >3b
+       byte >28
+       data object_type_key
+       byte >07
+       byte >2e
+       data object_type_red_position
+       byte >04
+       byte >38
+       data object_type_key
+       byte >1c
+       byte >39
+       data object_type_green_position
+       byte >20
+       byte >3d
 
 n_objects:
        data (n_objects - objects) / object_size
@@ -672,7 +708,7 @@ room_47_init:
        byte >2e
 room_48_init:
        data 0
-       data 6
+       data 5
        data sprite_type_box
        byte >09
        byte >30
@@ -685,9 +721,6 @@ room_48_init:
        data sprite_type_box
        byte >06
        byte >34
-       data sprite_type_box
-       byte >07
-       byte >2e
        data sprite_type_box
        byte >05
        byte >2e
