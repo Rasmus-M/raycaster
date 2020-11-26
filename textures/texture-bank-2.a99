@@ -5,4 +5,4 @@
        copy "walls/tile-red-potion.a99"
        copy "walls/tile-green-potion.a99"
        copy "walls/tile-key.a99"
-       copy "walls/empty.a99"
+       copy "walls/trees.a99"

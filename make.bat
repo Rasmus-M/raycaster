@@ -14,7 +14,7 @@ rem call make.bat
 cd ..
 
 cd panel
-call make.bat
+rem call make.bat
 cd ..
 
 @copy /b bin\RAYCASTER8.bin + ^

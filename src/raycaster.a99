@@ -3591,7 +3591,7 @@ block_green_potion:
        byte 42
 block_key:
        byte 44
-block_unused:
+block_trees:
        byte 46
 pointer_pattern_arrow:
        byte >2c
