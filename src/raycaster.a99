@@ -1672,7 +1672,8 @@ move_sprites_9:
        bl   @path_clear
        jne  move_sprites_2
        seto @sprite_attacking(r4)
-       dect @health
+       li   r0,1
+       bl   @sub_health
        bl   @play_shot_2
        jmp  move_sprites_3
 *      Next sprite
@@ -1859,22 +1860,48 @@ update_health_bar:
        .proc
        c    @health,@old_health
        jeq  update_health_bar_4
-       mov  @health,r0
+*      Column difference
+       mov  @old_health,r3
+       srl  r3,3                       ; Old column
+       mov  @health,r2
+       srl  r2,3                       ; New column
+       s    r2,r3                      ; Columns removed
+       jeq  update_health_bar_0
        jgt  update_health_bar_0
-       dec  @status
-       clr  r0
+*      Full columns to add
+       mov  @old_health,r0
+       srl  r0,3                       ; Old column
+       sla  r0,4                       ; Column offset
+       ai   r0,sprptb+(20*32)          ; Add base address
+       bl   @vwad
+       li   r1,>aa00
+       mov  r3,r2
+       neg  r2
+update_health_bar_5:
+       li   r4,6
+update_health_bar_7:
+       movb r1,*r15
+       movb r1,*r15
+       dec  r4
+       jne  update_health_bar_7
+       clr  *r15
+       clr  *r15
+       clr  *r15
+       clr  *r15
+       dec  r2
+       jne  update_health_bar_5
+       jmp  update_health_bar_6
+*      VDP address for pixels within column
 update_health_bar_0:
-       mov  r0,r1                      ; Copy health
-       mov  r0,r2                      ; Copy health
-       srl  r0,4                       ; Which sprite 0-3 to update
-       sla  r0,5                       ; Sprite pattern offset
-       andi r1,>0008                   ; Isolate column bit
-       sla  r1,1                       ; Column offset
-       a    r1,r0                      ; Add to address
+       mov  @health,r0                 ; Health
+       srl  r0,3                       ; Old column
+       sla  r0,4                       ; Column offset
        ai   r0,sprptb+(20*32)          ; Add base address
        bl   @vwad
 *      Pixels within column
+update_health_bar_6:
        li   r1,>00aa                   ; Pattern
+       mov  @health,r2
        andi r2,>0007                   ; Number of pixels to show
        li   r0,8
        s    r2,r0                      ; Number of pixels to clear
@@ -1888,11 +1915,7 @@ update_health_bar_1:
        dect r2
        jne  update_health_bar_1
 *      Full columns to clear
-       mov  @old_health,r2
-       srl  r2,3                       ; Old column
-       mov  @health,r0
-       srl  r0,3                       ; New column
-       s    r0,r2                      ; Column difference
+       mov  r3,r2
        jeq  update_health_bar_3
        jlt  update_health_bar_3
        sla  r2,4                       ; columns * 16
@@ -1922,6 +1945,23 @@ add_health_1:
        mov  r0,@health
        rt
 *// add_health
+
+*********************************************************************
+*
+* Subtract health
+*
+* r0: health to subtract
+*
+sub_health:
+       neg  r0
+       a    @health,r0
+       jgt  sub_health_1
+       dec  @status
+       clr  r0
+sub_health_1:
+       mov  r0,@health
+       rt
+*// sub_health
 
 *********************************************************************
 *
