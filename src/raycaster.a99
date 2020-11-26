@@ -78,7 +78,7 @@ max_sprite_width:
 max_sprite_height:
        equ  160
 max_sprite_distance:
-       equ  16
+       equ  8
 max_sprites:
        equ  16
 n_hw_sprite_patterns:
@@ -92,7 +92,7 @@ enemy_speed:
 bullet_speed_z:
        equ  ->0c00
 bullet_accl_z:
-       equ  >0100
+       equ  >0120
 max_bullet_distance:
        equ  16
 bullet_color:
@@ -1037,7 +1037,7 @@ draw_sprites_1:
        mov  r1,r3
        abs  r3
        a    r2,r3                      ; Taxi distance
-       ci   r3,max_sprite_distance*256
+       ci   r3,max_sprite_distance*2*256
        jhe  draw_sprites_2
 *      Look up angle
        bl   @atan2
@@ -2468,7 +2468,7 @@ fire_bullet:
        jne  fire_bullet_1
        mov  @x,@bullet_x
        mov  @y,@bullet_y
-       li   r3,>9000
+       li   r3,>8000
        mov  r3,@bullet_z               ; Screen y coordinate
        mov  @angle,r2
        mov  @cos_table(r2),@bullet_vx
