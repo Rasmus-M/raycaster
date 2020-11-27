@@ -2551,7 +2551,7 @@ open_door:
        mov  @door_key(r8),r4
        jne  open_door_2
        movb *r2,r3
-       andi r3,>7f00
+       andi r3,>7e00
        cb   r3,@block_door
        jne  open_door_0
        movb @block_space,*r2
