@@ -24,16 +24,16 @@ sprite_type_barrel:
        data 0
        data 0
 sprite_type_pillar:
-       data :0000000000000000
+       data :0100000000000000
        data first_object_texture+2
        data 0
-       data 0
-sprite_type_obj3:
-       data :0000000000000000
+       data 3
+sprite_type_pillar_broken:
+       data :0100000000000000
        data first_object_texture+3
        data 0
        data 0
-sprite_type_obj4:
+sprite_type_grate:
        data :0000000000000000
        data first_object_texture+4
        data 0

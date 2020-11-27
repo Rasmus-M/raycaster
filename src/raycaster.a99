@@ -1775,7 +1775,7 @@ bullet_collisions_3:
        mov  @sprite_type(r4),r2
        mov  @sprite_type_props(r2),r2
        coc  @sprite_can_be_attacked,r2
-       jne   bullet_collisions_4
+       jne  bullet_collisions_4
        mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2
@@ -1795,6 +1795,13 @@ bullet_collisions_3:
        seto @full_redraw_required
        jmp  bullet_collisions_1
 bullet_collisions_3a:
+       mov  @sprite_type(r4),r2
+       ci   r2,sprite_type_pillar
+       jne  bullet_collisions_3b
+       li   r2,sprite_type_pillar_broken
+       mov  @sprite_type_texture(r2),@sprite_texture(r4)
+       seto @full_redraw_required
+bullet_collisions_3b:
        bl   @play_shot_2
        jmp  bullet_collisions_1
 bullet_collisions_4:

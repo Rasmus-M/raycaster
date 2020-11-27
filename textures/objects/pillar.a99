@@ -79,12 +79,12 @@
        byte >cc,>cc,>cc,>cc,>cc,>cc,>cc,>cc
        byte >33,>33,>22,>22,>22,>22,>22,>22
        byte >22,>22,>22,>22,>22,>22,>cc,>cc
-       byte >cc,>1c,>cc,>1c,>cc,>1c,>cc,>1c
-       byte >cc,>1c,>cc,>1c,>cc,>1c,>cc,>1c
-       byte >cc,>1c,>cc,>1c,>cc,>1c,>cc,>1c
-       byte >cc,>1c,>cc,>1c,>cc,>1c,>cc,>1c
-       byte >cc,>1c,>cc,>1c,>cc,>1c,>cc,>1c
-       byte >cc,>1c,>cc,>1c,>cc,>1c,>cc,>1c
+       byte >cc,>cc,>cc,>cc,>cc,>cc,>cc,>cc
+       byte >cc,>cc,>cc,>cc,>cc,>cc,>cc,>cc
+       byte >cc,>cc,>cc,>cc,>cc,>cc,>cc,>cc
+       byte >cc,>cc,>cc,>cc,>cc,>cc,>cc,>cc
+       byte >cc,>cc,>cc,>cc,>cc,>cc,>cc,>cc
+       byte >cc,>cc,>cc,>cc,>cc,>cc,>cc,>cc
        byte >33,>33,>22,>22,>22,>22,>22,>22
        byte >22,>22,>22,>22,>22,>22,>cc,>cc
        byte >00,>00,>00,>00,>00,>00,>00,>00

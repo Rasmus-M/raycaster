@@ -79,296 +79,301 @@ door_2:
        data 0
        data room_5_init
 door_3:
+       byte >26
+       byte >02
+       data 0
+       data room_6_init
+door_4:
        byte >3a
        byte >02
        data 0
        data room_3_init
-door_4:
+door_5:
        byte >0b
        byte >03
        data 1
        data room_1_init
-door_5:
+door_6:
        byte >2f
        byte >03
        data 0
        data 0
-door_6:
+door_7:
        byte >3c
        byte >06
        data 0
        data room_3_init
-door_7:
+door_8:
        byte >07
        byte >07
        data 0
        data room_8_init
-door_8:
+door_9:
        byte >16
        byte >07
        data 0
        data room_9_init
-door_9:
+door_10:
        byte >26
        byte >07
        data 0
        data room_6_init
-door_10:
+door_11:
        byte >11
        byte >08
        data 0
        data room_12_init
-door_11:
+door_12:
        byte >39
        byte >08
        data 0
        data 0
-door_12:
+door_13:
        byte >04
        byte >0a
        data 0
        data room_13_init
-door_13:
+door_14:
        byte >0a
        byte >0a
        data 0
        data room_12_init
-door_14:
+door_15:
        byte >1f
        byte >0b
        data 0
        data room_10_init
-door_15:
+door_16:
        byte >3c
        byte >0b
        data 0
        data 0
-door_16:
+door_17:
        byte >17
        byte >0d
        data 0
        data room_14_init
-door_17:
+door_18:
        byte >22
        byte >0d
        data 0
        data room_16_init
-door_18:
+door_19:
        byte >2d
        byte >0d
        data 0
        data 0
-door_19:
+door_20:
        byte >10
        byte >0e
        data 0
        data room_18_init
-door_20:
+door_21:
        byte >1a
        byte >0f
        data 0
        data room_14_init
-door_21:
+door_22:
        byte >09
        byte >11
        data 0
        data room_21_init
-door_22:
+door_23:
        byte >02
        byte >12
        data 0
        data room_22_init
-door_23:
+door_24:
        byte >38
        byte >12
        data 0
        data room_20_init
-door_24:
+door_25:
        byte >2b
        byte >14
        data 0
        data room_23_init
-door_25:
+door_26:
        byte >2f
        byte >14
        data 0
        data room_24_init
-door_26:
+door_27:
        byte >2d
        byte >16
        data 0
        data room_30_init
-door_27:
+door_28:
        byte >38
        byte >16
        data 0
        data room_26_init
-door_28:
+door_29:
        byte >0b
        byte >18
        data 0
        data room_28_init
-door_29:
+door_30:
        byte >18
        byte >19
        data 0
        data room_25_init
-door_30:
+door_31:
        byte >06
        byte >1a
        data 0
        data room_27_init
-door_31:
+door_32:
        byte >38
        byte >1a
        data 0
        data room_31_init
-door_32:
+door_33:
        byte >21
        byte >1c
        data 0
        data room_29_init
-door_33:
+door_34:
        byte >12
        byte >1d
        data 0
        data room_32_init
-door_34:
+door_35:
        byte >3c
        byte >1d
        data 0
        data room_31_init
-door_35:
+door_36:
        byte >0c
        byte >1e
        data 0
        data room_34_init
-door_36:
+door_37:
        byte >04
        byte >1f
        data 0
        data room_27_init
-door_37:
+door_38:
        byte >1b
        byte >1f
        data 0
        data room_25_init
-door_38:
+door_39:
        byte >03
        byte >21
        data 0
        data room_36_init
-door_39:
+door_40:
        byte >1b
        byte >21
        data 0
        data room_39_init
-door_40:
+door_41:
        byte >36
        byte >23
        data 0
        data room_35_init
-door_41:
+door_42:
        byte >03
        byte >25
        data 0
        data room_41_init
-door_42:
+door_43:
        byte >10
        byte >25
        data 0
        data room_38_init
-door_43:
+door_44:
        byte >0b
        byte >26
        data 0
        data room_40_init
-door_44:
+door_45:
        byte >1a
        byte >26
        data 0
        data room_39_init
-door_45:
+door_46:
        byte >38
        byte >26
        data 0
        data room_42_init
-door_46:
+door_47:
        byte >28
        byte >29
        data 0
        data room_45_init
-door_47:
+door_48:
        byte >09
        byte >2c
        data 0
        data room_43_init
-door_48:
+door_49:
        byte >30
        byte >2c
        data 0
        data room_46_init
-door_49:
+door_50:
        byte >17
        byte >2e
        data 0
        data room_47_init
-door_50:
+door_51:
        byte >22
        byte >2f
        data 0
        data room_44_init
-door_51:
+door_52:
        byte >03
        byte >31
        data 0
        data room_48_init
-door_52:
+door_53:
        byte >28
        byte >31
        data 0
        data room_45_init
-door_53:
+door_54:
        byte >0f
        byte >32
        data 0
        data 0
-door_54:
+door_55:
        byte >15
        byte >33
        data 0
        data room_49_init
-door_55:
+door_56:
        byte >06
        byte >35
        data 0
        data room_53_init
-door_56:
+door_57:
        byte >38
        byte >35
        data 0
        data room_52_init
-door_57:
+door_58:
        byte >13
        byte >38
        data 0
        data room_54_init
-door_58:
+door_59:
        byte >32
        byte >39
        data 0
        data room_51_init
-door_59:
+door_60:
        byte >39
        byte >3b
        data 1
        data 0
-door_60:
+door_61:
        byte >2a
        byte >3e
        data 0
        data 0
-door_61:
+door_62:
        byte >32
        byte >3e
        data 0
