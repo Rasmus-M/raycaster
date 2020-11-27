@@ -27,7 +27,7 @@ sprite_type_pillar:
        data :0100000000000000
        data first_object_texture+2
        data 0
-       data 3
+       data 2
 sprite_type_pillar_broken:
        data :0100000000000000
        data first_object_texture+3
