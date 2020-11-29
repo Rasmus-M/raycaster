@@ -46,41 +46,41 @@ cd ..
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\bottom-panel.bin + ^
-    bin\empty-2k.bin + backgrounds\background-00-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-01-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-02-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-03-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-04-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-05-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-06-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-07-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-00-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-01-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-02-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-03-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-04-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-05-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-06-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-07-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-10-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-11-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-12-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-13-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-14-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-15-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-16-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-17-even.bin + ^
-    bin\empty-2k.bin + backgrounds\background-10-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-11-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-12-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-13-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-14-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-15-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-16-odd.bin + ^
-    bin\empty-2k.bin + backgrounds\background-17-odd.bin ^
+    backgrounds\background-00-even.bin + backgrounds\background-10-even.bin + ^
+    backgrounds\background-01-even.bin + backgrounds\background-11-even.bin + ^
+    backgrounds\background-02-even.bin + backgrounds\background-12-even.bin + ^
+    backgrounds\background-03-even.bin + backgrounds\background-13-even.bin + ^
+    backgrounds\background-04-even.bin + backgrounds\background-14-even.bin + ^
+    backgrounds\background-05-even.bin + backgrounds\background-15-even.bin + ^
+    backgrounds\background-06-even.bin + backgrounds\background-16-even.bin + ^
+    backgrounds\background-07-even.bin + backgrounds\background-17-even.bin + ^
+    backgrounds\background-00-odd.bin + backgrounds\background-10-odd.bin + ^
+    backgrounds\background-01-odd.bin + backgrounds\background-11-odd.bin + ^
+    backgrounds\background-02-odd.bin + backgrounds\background-12-odd.bin + ^
+    backgrounds\background-03-odd.bin + backgrounds\background-13-odd.bin + ^
+    backgrounds\background-04-odd.bin + backgrounds\background-14-odd.bin + ^
+    backgrounds\background-05-odd.bin + backgrounds\background-15-odd.bin + ^
+    backgrounds\background-06-odd.bin + backgrounds\background-16-odd.bin + ^
+    backgrounds\background-07-odd.bin + backgrounds\background-17-odd.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin ^
     .\texcaster8.bin
 
-java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+java -jar tools/CopyHeader.jar texcaster8.bin 60 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
 
 WHERE jar
 @IF %ERRORLEVEL% NEQ 0 GOTO :end

@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class TexGen {
 
-    static final int screenHeight = 160;
+    static final int screenHeight = 128;
     static final int textureHeight = 64;
 
     static int[] heights = {

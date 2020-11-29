@@ -1,6 +1,9 @@
 compass_y:
        equ  175-32
 
+sal:
+       byte >c0,>00,>00,>00
+       byte >c0,>00,>00,>00
 sal_fixed:
        byte >01,>02,>50,>08            ; Health bar
        byte >01,>12,>54,>0a

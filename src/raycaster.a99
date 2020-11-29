@@ -58,7 +58,9 @@ map_size:
 screen_width:
        equ  64
 screen_height:
-       equ  160
+       equ  128
+height_at_distance_1:
+       equ  176
 n_directions:
        equ  256
 turn_speed:
@@ -76,13 +78,15 @@ max_wall_height:
 max_sprite_width:
        equ  32
 max_sprite_height:
-       equ  160
+       equ  128
 max_sprite_distance:
        equ  8
 max_sprites:
        equ  16
 n_hw_sprite_patterns:
        equ  27
+n_high_priority_hw_sprites:
+       equ  2
 n_fixed_hw_sprites:
        equ  12
 n_compass_hw_sprites:
@@ -128,9 +132,9 @@ first_action_block:
 background_bank_select:
        equ  >6040
 background_address:
-       equ  >6800
+       equ  >6000
 background_height:
-       equ  192
+       equ  128
 inventory_size:
        equ  8
 bottom_panel_bank_select:
@@ -398,8 +402,8 @@ upload_hw_sprites:
        movb @pointer_x,*r15
        movb @pointer_pattern,*r15
        movb @pointer_color,*r15
-*      Skip fixed sprites
-       ai   r0,(n_fixed_hw_sprites+1)*4
+*      Skip high priority and fixed sprites
+       ai   r0,(n_high_priority_hw_sprites+n_fixed_hw_sprites)*4
        bl   @vwad
 *      Bullets
        bl   @draw_bullets
@@ -463,8 +467,8 @@ cast_rays_1:
        .endif
 cast_rays_2:
        clr  r0
-       li   r1,screen_height*256       ; screen height as FP 24.8
-       div  r2,r0                      ; height = screen height / distance, as FP 16.0
+       li   r1,height_at_distance_1*256 ; Height at distance 1 as FP 24.8
+       div  r2,r0                       ; height = height at distance 1 / distance, as FP 16.0
 cast_rays_3:
        andi r0,>fffe                   ; Make height even
        mov  r0,@column_height(r5)
@@ -731,11 +735,10 @@ cast_ray_loop_end:
 *
 draw_screen:
        .proc
-       bl   @calc_background_bank
+       bl   @calc_background_address
        li   r3,screen_buffer
        li   r4,columns
        clr  r5
-       li   r8,background_address
 draw_screen_1:
 *      Check even or odd
        mov  r5,r0
@@ -774,25 +777,29 @@ draw_screen_5:
        jlt  draw_screen_1
 *      Done
        .endproc
-*// draw_screen
+*// draw_screen½
 
 *********************************************************************
 *
-* Calculate ROM bank for background
+* Calculate ROM bank and address for background
 *
-calc_background_bank:
+* On return @current_background_bank_select contains the ROM back select
+* and R8 contains the address.
+*
+calc_background_address:
        mov  @angle,r0
        andi r0,>01c0
        srl  r0,5
        ai   r0,background_bank_select
+       mov  r0,@current_background_bank_select
+       li   r8,background_address
        mov  @x,r1
        xor  @y,r1
        andi r1,>0100
-       srl  r1,3
-       a    r1,r0
-       mov  r0,@current_background_bank_select
+       sla  r1,4
+       a    r1,r8
        rt
-*// calc_background_bank
+*// calc_background_address
 
 *********************************************************************
 *
@@ -1257,8 +1264,8 @@ upload_screen_2:
        ai   r0,>800
        dec  r6
        jne  upload_screen_1
-*      Remaining lines
        .ifne screen_height%64, 0
+*      Remaining lines
        li   r7,screen_width/2
 upload_screen_2a:
        movb @r0lb,*r14
@@ -1299,8 +1306,8 @@ upload_screen_6:
        ai   r0,>800
        dec  r6
        jne  upload_screen_6
-*      Remaining lines
        .ifne screen_height%64, 0
+*      Remaining lines
        movb @r0lb,*r14
        movb r0,*r14
        li   r8,(screen_height%64)/8
@@ -2026,6 +2033,10 @@ pointer_actions_1:
        mov  r6,r0
        mov  r7,r1
        ai   r1,-screen_height
+       ci   r1,32
+       jlt  pointer_actions_2
+       ai   r1,-32
+*      Check for arrows
        ci   r0,104
        jl   pointer_actions_1a
        ci   r0,152
@@ -2040,10 +2051,12 @@ pointer_actions_1:
        jeq  pointer_actions_2
        bl   *r0
        jmp  pointer_actions_2
+*      Left of arrows
 pointer_actions_1a:
        mov  r0,r1
        srl  r1,5
        jmp  pointer_actions_1c
+*      Right of arrows
 pointer_actions_1b:
        ci   r0,160
        jl   pointer_actions_2
@@ -2364,7 +2377,7 @@ display_map:
        li   r1,>f100
        bl   @display_map_background
 *      Display map
-       li   r0,ptrntb+(8*8*8)+(2*8)    ; VDP write address
+       li   r0,ptrntb+(8*8*8)          ; VDP write address
        li   r6,>00c0                   ; One fat pixel = two bits to set
        li   r7,map                     ; Source address
        li   r3,map_width/4             ; Column counter
@@ -2409,7 +2422,7 @@ display_map_10:
 *      Display player position
        mov  @sal_no,r0                 ; Which table to update?
        sla  r0,7
-       ai   r0,spratb+((n_fixed_hw_sprites+1)*4)
+       ai   r0,spratb+4
        bl   @vwad                      ; Set VDP address
        clr  r0
        movb @y,r0
@@ -2446,6 +2459,12 @@ display_map_3:
        li   r0,KEY_FI
        bl   @check_key
        jne  display_map_3
+*      Hide player position
+       mov  @sal_no,r0                 ; Which table to update?
+       sla  r0,7
+       ai   r0,spratb+4
+       li   r1,>c000
+       bl   @vsbw
 *      Restore patterns
        li   r0,colrtb
        li   r1,>1100
@@ -2460,7 +2479,7 @@ display_map_3:
 map_x:
        byte 64-8
 map_y:
-       byte 16-9
+       byte -9
 *// display_map
 
 *********************************************************************
@@ -2472,39 +2491,16 @@ map_y:
 *
 display_map_background:
        .proc
+       ai   r0,(8*8*8)
        mov  r0,r4
 *      Top
-       ai   r0,(8*8*8)+(2*8)
-       li   r3,16
-display_map_11:
-       bl   @vwad                      ; Set VDP write address
-       li   r2,48
-display_map_12:
-       movb r1,*r15
-       dec  r2
-       jne  display_map_12
-       ai   r0,64
-       dec  r3
-       jne  display_map_11
-*      Middle
-       mov  r4,r0
-       ai   r0,>800+(8*8*8)
        li   r2,64*16
        bl   @vsmw
-*      Bottom
+*      Middle
        mov  r4,r0
-       ai   r0,>1000+(8*8*8)
-       li   r3,16
-display_map_13:
-       bl   @vwad                      ; Set VDP write address
-       li   r2,16
-display_map_14:
-       movb r1,*r15
-       dec  r2
-       jne  display_map_14
-       ai   r0,64
-       dec  r3
-       jne  display_map_13
+       ai   r0,>800
+       li   r2,64*16
+       bl   @vsmw
        .endproc
 *// display_map_background
 
@@ -2835,14 +2831,15 @@ display_inventory_1:
        mov  r8,r0
        mov  r7,r12
        sla  r12,1                       ; * object_size
-       mov  @inventory(r12),r1
+       mov  @inventory(r12),r3
        jeq  display_inventory_2
-       mov  @object_type(r1),r1
-       mov  @object_type_panel_graphics(r1),r1
+       mov  @object_type(r3),r3
+       mov  @object_type_panel_graphics(r3),r3
        jmp  display_inventory_3
 display_inventory_2:
-       li   r1,empty_patterns
+       li   r3,empty_patterns
 display_inventory_3:
+       li   r1,4
        li   r2,4
        bl   @display_panel_graphics
        inc  r7
@@ -2978,17 +2975,25 @@ one_time_init_0:
        jne  one_time_init_0
 *      Init speech
        bl   @init_speech
-*      Graphics smode
+*      Graphics mode
        bl   @graphics_mode
 *      Patterns
        li   r0,ptrntb
        li   r1,>f000
-       li   r2,>1800
+       li   r2,>1000
+       bl   @vsmw
+       li   r0,ptrnt3
+       clr  r1
+       li   r2,>800
        bl   @vsmw
 *      Colors
        li   r0,colrtb
        clr  r1
-       li   r2,>1800
+       li   r2,>1000
+       bl   @vsmw
+       li   r0,colrt3
+       li   r1,>f100
+       li   r2,>800
        bl   @vsmw
 *      Name table
        li   r0,nametb
@@ -3012,13 +3017,13 @@ one_time_init_5:
        li   r2,n_hw_sprite_patterns*32
        bl   @vmbw
 *      Sprite attribute tables
-       li   r0,spratb+4
+       li   r0,spratb
        li   r3,8
        li   r4,sal_compass
 one_time_init_1:
        bl   @vwad
-       li   r2,(n_fixed_hw_sprites-n_compass_hw_sprites)*4
-       li   r1,sal_fixed
+       li   r2,(n_high_priority_hw_sprites+n_fixed_hw_sprites-n_compass_hw_sprites)*4
+       li   r1,sal
 one_time_init_2:
        movb *r1+,*r15
        dec  r2
@@ -3044,33 +3049,28 @@ txt_please_wait:
 *
 display_panel:
        .proc
-       clr  r7
-       li   r8,8
+       li   r7,display_panel_data
+       li   r8,10
 display_panel_1:
-       mov  r7,r0
-       li   r1,empty_patterns
-       li   r2,4
+       mov  *r7+,r0
+       mov  *r7+,r1
+       mov  *r7+,r2
+       mov  *r7+,r3
        bl   @display_panel_graphics
-       ai   r7,4
        dec  r8
        jne  display_panel_1
-       li   r0,0
-       li   r1,score_patterns
-       li   r2,4
-       bl   @display_panel_graphics
-       li   r0,4
-       li   r1,map_patterns
-       li   r2,4
-       bl   @display_panel_graphics
-       li   r0,8
-       li   r1,attack_patterns
-       li   r2,4
-       bl   @display_panel_graphics
-       li   r0,12
-       li   r1,arrows_patterns
-       li   r2,8
-       bl   @display_panel_graphics
        .endproc
+display_panel_data:
+       data 0,0,4,empty_patterns
+       data 4,0,4,empty_patterns
+       data 8,0,4,empty_patterns
+       data 20,0,4,empty_patterns
+       data 24,0,4,empty_patterns
+       data 28,0,4,empty_patterns
+       data 0,4,4,score_patterns
+       data 4,4,4,map_patterns
+       data 8,4,4,attack_patterns
+       data 12,4,8,arrows_patterns
 *// display_panel
 
 *********************************************************************
@@ -3078,8 +3078,9 @@ display_panel_1:
 * Display panel graphics
 *
 * r0: Column (0-31)
-* r1: Address of graphics data (patterns followed by colors)
+* r1: Row (0-4)
 * r2: Width in columns
+* r3: Address of graphics data (patterns followed by colors)
 *
 * Modifies r0-r6
 *
@@ -3087,25 +3088,28 @@ display_panel_graphics:
        .proc
        seto @bottom_panel_bank_select
        sla  r0,6                       ; * 64
-       ai   r0,ptrntb+>1020
+       ai   r0,ptrnt3
+       sla  r1,3
+       a    r1,r0
        mov  r0,r4
-       mov  r2,r5
        li   r6,2
+display_panel_graphics_0:
+       mov  r2,r5
 display_panel_graphics_1:
        bl   @vwad
-       li   r3,32
+       li   r1,32
 display_panel_graphics_2:
-       movb *r1+,*r15
-       dec  r3
+       movb *r3+,*r15
+       movb *r3+,*r15
+       dect r1
        jne  display_panel_graphics_2
        ai   r0,64
-       dec  r2
+       dec  r5
        jne  display_panel_graphics_1
        mov  r4,r0
        ai   r0,>2000
-       mov  r5,r2
        dec  r6
-       jne  display_panel_graphics_1
+       jne  display_panel_graphics_0
        .endproc
 *// display_panel_graphics
 
