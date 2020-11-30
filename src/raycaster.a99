@@ -2032,39 +2032,11 @@ pointer_actions_1:
 *      Bottom panel
        mov  r6,r0
        mov  r7,r1
-       ai   r1,-screen_height
-       ci   r1,32
-       jlt  pointer_actions_2
-       ai   r1,-32
-*      Check for arrows
-       ci   r0,104
-       jl   pointer_actions_1a
-       ci   r0,152
-       jhe  pointer_actions_1b
-       ai   r0,-104
-       srl  r0,4
-       andi r1,>0010
-       srl  r1,2
-       soc  r0,r1
-       sla  r1,1
-       mov  @arrows_jumptable(r1),r0
-       jeq  pointer_actions_2
-       bl   *r0
-       jmp  pointer_actions_2
-*      Left of arrows
-pointer_actions_1a:
-       mov  r0,r1
-       srl  r1,5
-       jmp  pointer_actions_1c
-*      Right of arrows
-pointer_actions_1b:
-       ci   r0,160
-       jl   pointer_actions_2
-       mov  r0,r1
-       ai   r1,-160
-       srl  r1,5
-       ai   r1,3
-pointer_actions_1c:
+       srl  r0,5                       ; Icon column = x / 32
+       ai   r1,-screen_height          ; y relative to bottom panel
+       srl  r1,5                       ; Icon row = y / 32
+       sla  r1,3                       ; Icon row * 8
+       a    r0,r1                      ; Icon row * 8 + icon column
        sla  r1,1
        mov  @icon_jumptable(r1),r0
        jeq  pointer_actions_2
@@ -2082,6 +2054,50 @@ block_jumptable:
        data green_potion_block_clicked
        data key_block_clicked
        data 0
+icon_jumptable:
+       data 0
+       data 0
+       data 0
+       data 0                          ; Compass
+       data 0                          ; Compass
+       data 0
+       data 0
+       data 0
+*      Row 2
+       data 0                          ; Score
+       data display_map
+       data fire_bullet
+       data arrows_clicked
+       data arrows_clicked
+       data inventory_clicked_left
+       data inventory_clicked_middle
+       data inventory_clicked_right
+*// pointer_actions
+
+*********************************************************************
+*
+* Arrows clicked
+*
+arrows_clicked:
+       .proc
+       mov  r6,r0
+       ai   r0,-105
+       jlt  arrows_clicked_1
+       ci   r0,48
+       jhe  arrows_clicked_1
+       mov  r7,r1
+       ai   r1,-160
+       jlt  arrows_clicked_1
+       srl  r0,4                       ; x / 16
+       srl  r1,4                       ; y / 16
+       sla  r1,2
+       a    r0,r1
+       sla  r1,1
+       mov  @arrows_jumptable(r1),r0
+       jeq  arrows_clicked_1
+       bl   *r0
+arrows_clicked_1:
+       .endproc
 arrows_jumptable:
        data turn_left
        data move_forward
@@ -2091,14 +2107,7 @@ arrows_jumptable:
        data move_back
        data move_right
        data 0
-icon_jumptable:
-       data 0
-       data display_map
-       data fire_bullet
-       data inventory_clicked_left
-       data inventory_clicked_middle
-       data inventory_clicked_right
-*// pointer_actions
+*// arrows_clicked
 
 *********************************************************************
 *
