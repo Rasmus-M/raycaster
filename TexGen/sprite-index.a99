@@ -1,243 +1,195 @@
 sprite_vector_0:
-       data >6018
+       data >6016
        data >6000
 sprite_vector_2:
-       data >6018
+       data >6016
        data >6002
 sprite_vector_4:
-       data >6018
+       data >6016
        data >6024
 sprite_vector_6:
-       data >6018
+       data >6016
        data >6066
 sprite_vector_8:
-       data >6018
+       data >6016
        data >60c8
 sprite_vector_a:
-       data >6018
+       data >6016
        data >614a
 sprite_vector_c:
-       data >6018
+       data >6016
        data >61ec
 sprite_vector_e:
-       data >6018
+       data >6016
        data >62ae
 sprite_vector_10:
-       data >6018
+       data >6016
        data >6390
 sprite_vector_12:
-       data >6018
+       data >6016
        data >6492
 sprite_vector_14:
-       data >6018
+       data >6016
        data >65a4
 sprite_vector_16:
-       data >6018
+       data >6016
        data >66c6
 sprite_vector_18:
-       data >6018
+       data >6016
        data >67fc
 sprite_vector_1a:
-       data >6018
+       data >6016
        data >694e
 sprite_vector_1c:
-       data >6018
+       data >6016
        data >6abc
 sprite_vector_1e:
-       data >6018
+       data >6016
        data >6c46
 sprite_vector_20:
-       data >6018
+       data >6016
        data >6dec
 sprite_vector_22:
-       data >6018
+       data >6016
        data >6fae
 sprite_vector_24:
-       data >6018
+       data >6016
        data >7184
 sprite_vector_26:
-       data >6018
+       data >6016
        data >736e
 sprite_vector_28:
-       data >6018
+       data >6016
        data >756a
 sprite_vector_2a:
-       data >6018
+       data >6016
        data >777c
 sprite_vector_2c:
-       data >6018
+       data >6016
        data >79a2
 sprite_vector_2e:
-       data >6018
+       data >6016
        data >7bda
 sprite_vector_30:
-       data >601a
+       data >6018
        data >6000
 sprite_vector_32:
-       data >601a
+       data >6018
        data >6262
 sprite_vector_34:
-       data >601a
+       data >6018
        data >64d8
 sprite_vector_36:
-       data >601a
+       data >6018
        data >6762
 sprite_vector_38:
-       data >601a
+       data >6018
        data >69fe
 sprite_vector_3a:
-       data >601a
+       data >6018
        data >6cb0
 sprite_vector_3c:
-       data >601a
+       data >6018
        data >6f76
 sprite_vector_3e:
-       data >601a
+       data >6018
        data >7250
 sprite_vector_40:
-       data >601a
+       data >6018
        data >753c
 sprite_vector_42:
-       data >601a
+       data >6018
        data >783e
 sprite_vector_44:
-       data >601a
+       data >6018
        data >7b48
 sprite_vector_46:
-       data >601c
+       data >601a
        data >6000
 sprite_vector_48:
-       data >601c
+       data >601a
        data >631a
 sprite_vector_4a:
-       data >601c
+       data >601a
        data >663c
 sprite_vector_4c:
-       data >601c
+       data >601a
        data >6966
 sprite_vector_4e:
-       data >601c
+       data >601a
        data >6c98
 sprite_vector_50:
-       data >601c
+       data >601a
        data >6fd2
 sprite_vector_52:
-       data >601c
+       data >601a
        data >7314
 sprite_vector_54:
-       data >601c
+       data >601a
        data >765e
 sprite_vector_56:
-       data >601c
+       data >601a
        data >79b0
 sprite_vector_58:
-       data >601e
+       data >601c
        data >6000
 sprite_vector_5a:
-       data >601e
+       data >601c
        data >6362
 sprite_vector_5c:
-       data >601e
+       data >601c
        data >66cc
 sprite_vector_5e:
-       data >601e
+       data >601c
        data >6a3e
 sprite_vector_60:
-       data >601e
+       data >601c
        data >6db8
 sprite_vector_62:
-       data >601e
+       data >601c
        data >713a
 sprite_vector_64:
-       data >601e
+       data >601c
        data >74c4
 sprite_vector_66:
-       data >601e
+       data >601c
        data >7856
 sprite_vector_68:
-       data >601e
+       data >601c
        data >7bf0
 sprite_vector_6a:
-       data >6020
+       data >601e
        data >6000
 sprite_vector_6c:
-       data >6020
+       data >601e
        data >63aa
 sprite_vector_6e:
-       data >6020
+       data >601e
        data >675c
 sprite_vector_70:
-       data >6020
+       data >601e
        data >6b16
 sprite_vector_72:
-       data >6020
+       data >601e
        data >6ed8
 sprite_vector_74:
-       data >6020
+       data >601e
        data >72a2
 sprite_vector_76:
-       data >6020
+       data >601e
        data >7674
 sprite_vector_78:
-       data >6020
+       data >601e
        data >7a4e
 sprite_vector_7a:
-       data >6022
+       data >6020
        data >6000
 sprite_vector_7c:
-       data >6022
+       data >6020
        data >63ea
 sprite_vector_7e:
-       data >6022
+       data >6020
        data >67dc
 sprite_vector_80:
-       data >6022
+       data >6020
        data >6bd6
-sprite_vector_82:
-       data >6022
-       data >6fd8
-sprite_vector_84:
-       data >6022
-       data >73e6
-sprite_vector_86:
-       data >6022
-       data >7800
-sprite_vector_88:
-       data >6024
-       data >6000
-sprite_vector_8a:
-       data >6024
-       data >6432
-sprite_vector_8c:
-       data >6024
-       data >6870
-sprite_vector_8e:
-       data >6024
-       data >6cba
-sprite_vector_90:
-       data >6024
-       data >7110
-sprite_vector_92:
-       data >6024
-       data >7572
-sprite_vector_94:
-       data >6024
-       data >79e0
-sprite_vector_96:
-       data >6026
-       data >6000
-sprite_vector_98:
-       data >6026
-       data >6486
-sprite_vector_9a:
-       data >6026
-       data >6918
-sprite_vector_9c:
-       data >6026
-       data >6db6
-sprite_vector_9e:
-       data >6026
-       data >7260
-sprite_vector_a0:
-       data >6026
-       data >7716

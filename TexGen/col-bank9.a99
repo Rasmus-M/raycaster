@@ -523,7 +523,7 @@ odd_col_a8:
        socb *r1,*r3+
        rt
 odd_col_aa:
-       ai   r1,7
+       ai   r1,8
        socb *r1,*r3+
        socb *r1,*r3+
        socb *r1+,*r3+

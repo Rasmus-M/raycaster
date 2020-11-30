@@ -25,15 +25,12 @@ cd ..
     bin\col-bank-8.bin + ^
     bin\col-bank-9.bin + ^
     bin\col-bank-10.bin + ^
-    bin\col-bank-11.bin + ^
+    bin\sprite-bank-11.bin + ^
     bin\sprite-bank-12.bin + ^
     bin\sprite-bank-13.bin + ^
     bin\sprite-bank-14.bin + ^
     bin\sprite-bank-15.bin + ^
     bin\sprite-bank-16.bin + ^
-    bin\sprite-bank-17.bin + ^
-    bin\sprite-bank-18.bin + ^
-    bin\sprite-bank-19.bin + ^
     bin\texture-bank-0.bin + ^
     bin\texture-bank-1.bin + ^
     bin\texture-bank-2.bin + ^
@@ -42,6 +39,9 @@ cd ..
     bin\texture-bank-5.bin + ^
     bin\texture-bank-6.bin + ^
     bin\texture-bank-7.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^

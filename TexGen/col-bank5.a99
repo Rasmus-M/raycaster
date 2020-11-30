@@ -3369,7 +3369,7 @@ even_col_a8:
        movb *r1,*r3+
        rt
 even_col_aa:
-       ai   r1,7
+       ai   r1,8
        movb *r1,*r3+
        movb *r1,*r3+
        movb *r1+,*r3+
