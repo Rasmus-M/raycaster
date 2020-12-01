@@ -55,10 +55,14 @@ map_height:
        equ  64
 map_size:
        equ  map_width*map_height
+map_sams_page:
+       equ  >0000
 screen_width:
        equ  64
 screen_height:
        equ  128
+screen_buffer_sams_page:
+       equ  >0100
 height_at_distance_1:
        equ  160
 n_directions:
@@ -439,6 +443,8 @@ cast_if_required_2:
 *
 cast_rays:
        .proc
+       li   r0,map_sams_page
+       mov  r0,@sams_reg_3             ; Page map into >3000
        li   r0,columns
        mov  r0,@column_ptr
        li   r2,n_rays                  ; Number of rays to cast
@@ -735,6 +741,8 @@ cast_ray_loop_end:
 *
 draw_screen:
        .proc
+       li   r0,screen_buffer_sams_page
+       mov  r0,@sams_reg_3                     ; Page screen buffer into >3000
        bl   @calc_background_address
        li   r3,screen_buffer
        li   r4,columns
@@ -1329,6 +1337,8 @@ upload_screen_8:
 *
 keyboard_input:
        .proc
+       li   r0,map_sams_page
+       mov  r0,@sams_reg_3             ; Page map into >3000
 *      Space - Fire
        li   r0,KEY_SP
        bl   @check_key
@@ -3021,6 +3031,8 @@ one_time_init_5:
        dec  r3
        jne  one_time_init_4
 *      Sprite patterns
+       li   r0,>0200
+       mov  r0,@sams_reg_2
        li   r0,sprptb
        li   r1,SPR0
        li   r2,n_hw_sprite_patterns*32
@@ -3035,7 +3047,7 @@ one_time_init_1:
        li   r1,sal
 one_time_init_2:
        movb *r1+,*r15
-       dec  r2
+        dec  r2
        jne  one_time_init_2
        li   r2,n_compass_hw_sprites*4
 one_time_init_3:
@@ -3045,6 +3057,15 @@ one_time_init_3:
        ai   r0,>80
        dec  r3
        jne  one_time_init_1
+*      Copy map to SAMS
+       li   r0,map_sams_page
+       mov  r0,@sams_reg_2
+       li   r0,map
+       li   r1,>2000
+       li   r2,map_size
+       bl   @copy
+       li   r0,>0200
+       mov  r0,@sams_reg_2
 *      Bottom panel
        bl   @display_panel
        .endproc
@@ -3709,27 +3730,8 @@ sprite_index:
        copy "../TexGen/sprite-index.a99"
        copy "number-patterns.a99"
 
-***************************************************************
-*
-*      Screen buffer (6K for full screen)
-*
-*      Organised as n columns of m bytes
-*      First m bytes for column 0, next m bytes for column 1 etc.
-*      Each column contains 2 fat (4x1, 16 color) pixels horizontally
-*      and m pixels vertically.
-
-screen_buffer:
-       bss  screen_height*screen_width/2
 upper_ram_max:
        equ  $
-
-**
-*      One time init data
-*      Loaded on top of screen buffer
-*
-       aorg screen_buffer
-       copy "hw-sprite-init.a99"
-       copy "hw-sprite-patterns.a99"
 
 ***************************************************************
 *
@@ -3739,14 +3741,37 @@ upper_ram_max:
 
        aorg >2000
 
+**
+*      One time init data
+*
+       copy "hw-sprite-init.a99"
+       copy "hw-sprite-patterns.a99"
+
+lower_ram_max:
+       equ  $
+
+**
+*      Textures
+*
 textures:
-       bss  >1000
+       equ  >2000
+
+       aorg >3000
+
 map:
        equ  >3000
        copy "map.a99"
 
-lower_ram_max:
-       equ  $
+**
+*      Screen buffer (currently 4k, 6K for full screen)
+*
+*      Organised as n columns of m bytes
+*      First m bytes for column 0, next m bytes for column 1 etc.
+*      Each column contains 2 fat (4x1, 16 color) pixels horizontally
+*      and m pixels vertically.
+
+screen_buffer:
+       equ  >3000
 
 ***************************************************************
 *
