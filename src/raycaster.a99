@@ -252,8 +252,10 @@ snd_track_2:
        equ  snd_track_1+snd_track_size
 snd_track_3:
        equ  snd_track_2+snd_track_size
+module_speed:
+       equ  snd_track_3+snd_track_size
 get_speech_status:
-       equ  snd_track_3+2
+       equ  module_speed+2
 speech_ptr:
        equ  get_speech_status+6
 speech_on:
@@ -334,7 +336,6 @@ delay_2:
 * Wait for interrupt
 *
 wait_int:
-       movb @vdpsta,r12                ; Clear any pending interrupt
        clr  r12
 wait_int_1:
        tb   2                          ; Test CRU bit for VDP interrupt
@@ -369,27 +370,13 @@ interrupt_1:
        inc  @interrupt_count
        movb @vdpsta,r12
        mov  @wrksp+20,r10              ; Copy stack pointer
-       mov  @wrksp+30,r15
-       bl   @set_vdp_regs
+       li   r15,vdpwd
        bl   @upload_hw_sprites
        bl   @joystick_input
-       bl   @snd_player
+       bl   @module_player
        clr  r15
        rtwp
 *// interrupt
-
-***************************************************************
-*
-* Set VDP registers
-*
-set_vdp_regs:
-       .proc
-*      Set sprite attribute table
-       li   r0,>0500+(spratb/>80)
-       a    @sal_no,r0
-       bl   @vwtr
-       .endproc
-*// set_vdp_regs
 
 *********************************************************************
 *
@@ -1149,8 +1136,7 @@ draw_texture:
        .proc
        .push r15
        andi r3,>00fe
-       li   r15,r13lb
-       mov  r5,r12                     ; Save depth/distance
+       mov  r5,r15                     ; Save depth/distance
 *      Screen buffer address (r1)
        mov  r0,r8                      ; Save screen column
        mov  r0,r13                     ; Screen column
@@ -1195,19 +1181,19 @@ draw_texture_2:
 *      Column loop
 draw_texture_5:
        mov  r8,r13                     ; Screen column
-       jlt  draw_texture_5a             ; Skip column if out of screen
+       jlt  draw_texture_5a            ; Skip column if out of screen
        ci   r13,screen_width-1         ; Check against right side of screen
-       jgt  draw_texture_5a             ; Skip column if out of screen
-       sla  r13,4                      ; * 16 (size of column structure)
-       c    r12,@columns+column_distance(r13)  ; Compare texture depth to wall distance
-       jlt  draw_texture_6              ; Draw if less than
+       jgt  draw_texture_5a            ; Skip column if out of screen
+       sla  r13,4                      ; * 16 (column_size)
+       c    r15,@columns+column_distance(r13)  ; Compare texture depth to wall distance
+       jlt  draw_texture_6             ; Draw if less than
 *      Skip column
 draw_texture_5a:
        a    r3,r1
        jmp  draw_texture_11
 *      Draw column
 draw_texture_6:
-       mov  r12,@columns+column_distance(r13)    ; Record new distance for column
+       mov  r15,@columns+column_distance(r13)    ; Record new distance for column
        seto @columns+column_redraw(r13) ; Mark column for drawing
        andi r0,>f000                   ; Round texture address to whole 4K
        mov  r4,r13                     ; Texture x offset
@@ -1215,7 +1201,7 @@ draw_texture_6:
        srl  r13,2                      ; Texture column index * 64
        soc  r13,r0                     ; Add to texture address
        coc  @one,r8                    ; Test if screen column is even/odd
-       jeq  draw_texture_7              ; Jump if odd
+       jeq  draw_texture_7             ; Jump if odd
 *      Even destination column
        li   r9,>f000                   ; Mask for even pixel
        andi r0,>f7ff                   ; Modify texture address for even pixels
@@ -1228,16 +1214,17 @@ draw_texture_7:
 draw_texture_8:
        seto *r7                        ; Select ROM bank for drawing routine
        bl   *r6                        ; Call drawing routine. On return r0 += texture_height, r1 += height
+       bl   @check_int
 draw_texture_11:
        s    r3,r1                      ; Move screen buffer address back to top of column
        coc  @one,r8                    ; Test if screen column is even/odd
-       jne  draw_texture_12             ; Jump if even
+       jne  draw_texture_12            ; Jump if even
        ai   r1,screen_height           ; For odd column, move screen buffer address to next column
 draw_texture_12:
        a    r5,r4                      ; Increment texture x offset
        inc  r8                         ; Next column
        dec  r2                         ; Column counter (width)
-       jne  draw_texture_5              ; Next column
+       jne  draw_texture_5             ; Next column
 *      Return
        .pop r15
        .endproc
@@ -1412,6 +1399,7 @@ dirs:
 * Turn left
 *
 turn_left:
+       .proc
        mov  @angle,r0
        ai   r0,-turn_speed             ; Turn left
        andi r0,angle_mask
@@ -1424,7 +1412,8 @@ turn_left:
        srl  r1,2
        mov  r1,@sal_no
        seto @full_redraw_required
-       rt
+       bl   @set_sal
+       .endproc
 *// turn_left
 
 *********************************************************************
@@ -1432,6 +1421,7 @@ turn_left:
 * Turn right
 *
 turn_right:
+       .proc
        mov  @angle,r0
        ai   r0,turn_speed              ; Turn right
        andi r0,angle_mask
@@ -1444,8 +1434,21 @@ turn_right:
        srl  r1,2
        mov  r1,@sal_no
        seto @full_redraw_required
-       rt
+       bl   @set_sal
+       .endproc
 *// turn_right
+
+***************************************************************
+*
+* Set sprite attribute table
+*
+set_sal:
+       .proc
+       li   r0,>0500+(spratb/>80)
+       a    @sal_no,r0
+       bl   @vwtr
+       .endproc
+*// set_sal
 
 *********************************************************************
 *
@@ -2848,9 +2851,9 @@ display_inventory:
        li   r9,3
 display_inventory_1:
        mov  r8,r0
-       mov  r7,r12
-       sla  r12,1                       ; * object_size
-       mov  @inventory(r12),r3
+       mov  r7,r13
+       sla  r13,1                       ; * object_size
+       mov  @inventory(r13),r3
        jeq  display_inventory_2
        mov  @object_type(r3),r3
        mov  @object_type_panel_graphics(r3),r3
@@ -2951,6 +2954,10 @@ init_level_7:
        li   r1,SPR20
        li   r2,4*32
        bl   @vmbw
+       bl   @set_sal
+*      Music
+       li   r0,obstacles_module
+       bl   @play_module
        .endproc
 *// init_level
 
@@ -2987,10 +2994,10 @@ one_time_init:
 *      Copy textures to SAMS
        li   r0,texture_bank_select
        li   r1,texture_sams_page
-       li   r12,n_texture_banks
+       li   r13,n_texture_banks
 one_time_init_0:
        bl   @copy_textures_to_sams
-       dec  r12
+       dec  r13
        jne  one_time_init_0
 *      Init speech
        bl   @init_speech
@@ -3612,7 +3619,7 @@ euclidian_distance_2:
        copy "sams.a99"
        copy "speech.a99"
        copy "sound-fx-routines.a99"
-;      copy "music-player.a99"
+       copy "music-player.a99"
        copy "sound-player.a99"
 
 ***************************************************************
@@ -3722,6 +3729,7 @@ inventory:
 
        copy "math_tables.a99"          ; 2K
        copy "sound-fx.a99"
+       copy "obstacles-music.a99"
        copy "sprite-types.a99"
        copy "level.a99"
 col_index:

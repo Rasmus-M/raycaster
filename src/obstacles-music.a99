@@ -1,0 +1,825 @@
+obstacles_module:
+       data >0006
+       data obstacles_track_01
+       data obstacles_track_02
+       data obstacles_track_03
+       data >0000
+obstacles_track_01:
+       data snd_channel_2
+obstacles_track_01_rpt:
+       data obstacles_seq_00FC
+       data obstacles_seq_0106
+       data obstacles_seq_0110
+       data obstacles_seq_0110
+       data obstacles_seq_011A
+       data obstacles_seq_0122
+       data obstacles_seq_012F
+       data obstacles_seq_0137
+       data obstacles_seq_012F
+       data obstacles_seq_0140
+       data obstacles_seq_0149
+       data obstacles_seq_015B
+       data obstacles_seq_0149
+       data obstacles_seq_0168
+       data >00FF
+       data obstacles_track_01_rpt
+       data >0000
+obstacles_track_02:
+       data snd_channel_3
+obstacles_track_02_rpt:
+       data obstacles_seq_016F
+       data obstacles_seq_016F
+       data obstacles_seq_017A
+       data obstacles_seq_0185
+       data obstacles_seq_0190
+       data obstacles_seq_0190
+       data obstacles_seq_019C
+       data obstacles_seq_01AA
+       data obstacles_seq_019C
+       data obstacles_seq_01AA
+       data obstacles_seq_01B8
+       data obstacles_seq_01C9
+       data obstacles_seq_01B8
+       data obstacles_seq_01DA
+       data >00FF
+       data obstacles_track_02_rpt
+       data >0000
+obstacles_track_03:
+       data snd_channel_4
+obstacles_track_03_rpt:
+       data obstacles_seq_01EC
+       data obstacles_seq_01EC
+       data obstacles_seq_01EC
+       data obstacles_seq_01EC
+       data obstacles_seq_01EC
+       data obstacles_seq_01FE
+       data obstacles_seq_0210
+       data obstacles_seq_0210
+       data obstacles_seq_0210
+       data obstacles_seq_0210
+       data obstacles_seq_0222
+       data obstacles_seq_0222
+       data obstacles_seq_0222
+       data obstacles_seq_0234
+       data >00FF
+       data obstacles_track_03_rpt
+       data >0000
+obstacles_seq_00FC:
+       data obstacles_note_0246
+       data >0007
+       data obstacles_note_0249
+       data >0001
+       data obstacles_note_024C
+       data >0003
+       data obstacles_note_024F
+       data >0009
+       data obstacles_note_0249
+       data >0001
+       data obstacles_note_024C
+       data >0005
+       data >0000
+obstacles_seq_016F:
+       data obstacles_note_0297
+       data >0003
+       data obstacles_note_029A
+       data >0001
+       data obstacles_note_0297
+       data >0007
+       data obstacles_note_0297
+       data >0005
+       data obstacles_note_029A
+       data >0001
+       data obstacles_note_0297
+       data >0007
+       data obstacles_note_0297
+       data >0001
+       data >0000
+obstacles_seq_01EC:
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data >0000
+obstacles_seq_0106:
+       data obstacles_note_0246
+       data >0007
+       data obstacles_note_0249
+       data >0001
+       data obstacles_note_024C
+       data >0003
+       data obstacles_note_024F
+       data >0009
+       data obstacles_note_0249
+       data >0001
+       data obstacles_note_024C
+       data >0005
+       data >0000
+obstacles_seq_0110:
+       data obstacles_note_0246
+       data >0001
+       data obstacles_note_0252
+       data >0005
+       data obstacles_note_0249
+       data >0001
+       data obstacles_note_024C
+       data >0003
+       data obstacles_note_024F
+       data >0005
+       data obstacles_note_024F
+       data >0003
+       data obstacles_note_0249
+       data >0001
+       data obstacles_note_024C
+       data >0005
+       data >0000
+obstacles_seq_017A:
+       data obstacles_note_029D
+       data >0003
+       data obstacles_note_02A0
+       data >0001
+       data obstacles_note_029D
+       data >0007
+       data obstacles_note_029D
+       data >0005
+       data obstacles_note_02A0
+       data >0001
+       data obstacles_note_029D
+       data >0007
+       data obstacles_note_029D
+       data >0001
+       data >0000
+obstacles_seq_0185:
+       data obstacles_note_029D
+       data >0003
+       data obstacles_note_02A0
+       data >0001
+       data obstacles_note_029D
+       data >0007
+       data obstacles_note_029D
+       data >0005
+       data obstacles_note_02A0
+       data >0001
+       data obstacles_note_029D
+       data >0007
+       data obstacles_note_029D
+       data >0001
+       data >0000
+obstacles_seq_011A:
+       data obstacles_note_0255
+       data >0005
+       data obstacles_note_0258
+       data >0005
+       data obstacles_note_024C
+       data >0003
+       data obstacles_note_025B
+       data >0005
+       data obstacles_note_025E
+       data >0005
+       data obstacles_note_0261
+       data >0003
+       data >0000
+obstacles_seq_0190:
+       data obstacles_note_02A3
+       data >0003
+       data obstacles_note_02A6
+       data >0001
+       data obstacles_note_02A3
+       data >0007
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A9
+       data >0003
+       data obstacles_note_02AC
+       data >0001
+       data obstacles_note_02A9
+       data >0007
+       data obstacles_note_02A9
+       data >0001
+       data >0000
+obstacles_seq_0122:
+       data obstacles_note_0255
+       data >0005
+       data obstacles_note_0258
+       data >0005
+       data obstacles_note_024C
+       data >0003
+       data obstacles_note_0264
+       data >0001
+       data obstacles_note_0267
+       data >0001
+       data obstacles_note_026A
+       data >0001
+       data obstacles_note_0267
+       data >0001
+       data obstacles_note_0264
+       data >0001
+       data obstacles_note_0261
+       data >0001
+       data obstacles_note_026D
+       data >0001
+       data obstacles_note_0270
+       data >0001
+       data >0000
+obstacles_seq_01FE:
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data >0000
+obstacles_seq_012F:
+       data obstacles_note_0273
+       data >0005
+       data obstacles_note_0276
+       data >0005
+       data obstacles_note_0249
+       data >0003
+       data obstacles_note_0258
+       data >0005
+       data obstacles_note_024F
+       data >0005
+       data obstacles_note_0276
+       data >0003
+       data >0000
+obstacles_seq_019C:
+       data >0002
+       data obstacles_note_02AF
+       data >0001
+       data obstacles_note_02B2
+       data >0001
+       data obstacles_note_02AF
+       data >0003
+       data obstacles_note_02AF
+       data >0001
+       data obstacles_note_02B5
+       data >0001
+       data obstacles_note_02AF
+       data >0003
+       data obstacles_note_02AF
+       data >0001
+       data obstacles_note_02B2
+       data >0001
+       data obstacles_note_02AF
+       data >0005
+       data obstacles_note_02B5
+       data >0001
+       data obstacles_note_02AF
+       data >0001
+       data >0000
+obstacles_seq_0210:
+       data obstacles_note_02C8
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C8
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C8
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C8
+       data >0001
+       data obstacles_note_02C8
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data >0000
+obstacles_seq_0137:
+       data obstacles_note_0258
+       data >0005
+       data obstacles_note_024F
+       data >0005
+       data obstacles_note_0276
+       data >0003
+       data obstacles_note_0255
+       data >0007
+       data obstacles_note_0279
+       data >0007
+       data >0000
+obstacles_seq_01AA:
+       data >0002
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02BB
+       data >0001
+       data obstacles_note_02B8
+       data >0003
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02B5
+       data >0001
+       data obstacles_note_02B8
+       data >0003
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02BB
+       data >0001
+       data obstacles_note_02B8
+       data >0005
+       data obstacles_note_02B5
+       data >0001
+       data obstacles_note_02B8
+       data >0001
+       data >0000
+obstacles_seq_0140:
+       data obstacles_note_0258
+       data >0005
+       data obstacles_note_024F
+       data >0005
+       data obstacles_note_0276
+       data >0003
+       data obstacles_note_0255
+       data >000B
+       data obstacles_note_0258
+       data >0001
+       data obstacles_note_0249
+       data >0001
+       data >0000
+obstacles_seq_0149:
+       data obstacles_note_027C
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_0282
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_027C
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_0282
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_0285
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_0288
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_0285
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_0288
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data >0000
+obstacles_seq_01B8:
+       data obstacles_note_029D
+       data >0001
+       data obstacles_note_029D
+       data >0001
+       data obstacles_note_02A0
+       data >0001
+       data obstacles_note_029D
+       data >0001
+       data obstacles_note_029D
+       data >0001
+       data obstacles_note_029D
+       data >0001
+       data obstacles_note_02A0
+       data >0001
+       data obstacles_note_029D
+       data >0001
+       data obstacles_note_02A9
+       data >0001
+       data obstacles_note_02A9
+       data >0001
+       data obstacles_note_02AC
+       data >0001
+       data obstacles_note_02A9
+       data >0001
+       data obstacles_note_02A9
+       data >0001
+       data obstacles_note_02A9
+       data >0001
+       data obstacles_note_02AC
+       data >0003
+       data >0000
+obstacles_seq_0222:
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data >0000
+obstacles_seq_015B:
+       data obstacles_note_028B
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_028E
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_028B
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_028E
+       data >0001
+       data obstacles_note_027F
+       data >0001
+       data obstacles_note_0291
+       data >0005
+       data obstacles_note_028B
+       data >0005
+       data obstacles_note_0285
+       data >0003
+       data >0000
+obstacles_seq_01C9:
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A6
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A6
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02BE
+       data >0001
+       data obstacles_note_02BE
+       data >0001
+       data obstacles_note_02B2
+       data >0001
+       data obstacles_note_02BE
+       data >0001
+       data obstacles_note_02BE
+       data >0001
+       data obstacles_note_02BE
+       data >0001
+       data obstacles_note_02B2
+       data >0003
+       data >0000
+obstacles_seq_0168:
+       data obstacles_note_028B
+       data >0005
+       data obstacles_note_0291
+       data >0005
+       data obstacles_note_027F
+       data >0003
+       data obstacles_note_0294
+       data >000F
+       data >0000
+obstacles_seq_01DA:
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A6
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02A6
+       data >0001
+       data obstacles_note_02A3
+       data >0001
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02C1
+       data >0001
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02B8
+       data >0001
+       data obstacles_note_02C1
+       data >0001
+       data obstacles_note_02B8
+       data >0001
+       data >0000
+obstacles_seq_0234:
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C4
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data obstacles_note_02C6
+       data >0001
+       data >0000
+obstacles_note_0246:
+       data obstacles_instr_00
+       data G3
+obstacles_note_0249:
+       data obstacles_instr_00
+       data D3
+obstacles_note_024C:
+       data obstacles_instr_00
+       data E3
+obstacles_note_024F:
+       data obstacles_instr_00
+       data B3
+obstacles_note_0297:
+       data obstacles_instr_01
+       data >005B
+obstacles_note_029A:
+       data obstacles_instr_05
+       data E1
+obstacles_note_02C4:
+       data obstacles_instr_02
+       data P3
+obstacles_note_02C6:
+       data obstacles_instr_03
+       data W0
+obstacles_note_0252:
+       data obstacles_instr_07
+       data G3
+obstacles_note_029D:
+       data obstacles_instr_01
+       data >0072
+obstacles_note_02A0:
+       data obstacles_instr_05
+       data C1
+obstacles_note_0255:
+       data obstacles_instr_00
+       data A3
+obstacles_note_0258:
+       data obstacles_instr_00
+       data C3
+obstacles_note_025B:
+       data obstacles_instr_00
+       data D#3
+obstacles_note_025E:
+       data obstacles_instr_00
+       data F#3
+obstacles_note_0261:
+       data obstacles_instr_00
+       data C4
+obstacles_note_02A3:
+       data obstacles_instr_01
+       data G#3
+obstacles_note_02A6:
+       data obstacles_instr_05
+       data A1
+obstacles_note_02A9:
+       data obstacles_instr_01
+       data >0079
+obstacles_note_02AC:
+       data obstacles_instr_05
+       data B1
+obstacles_note_0264:
+       data obstacles_instr_00
+       data D#4
+obstacles_note_0267:
+       data obstacles_instr_00
+       data E4
+obstacles_note_026A:
+       data obstacles_instr_00
+       data F#4
+obstacles_note_026D:
+       data obstacles_instr_00
+       data B4
+obstacles_note_0270:
+       data obstacles_instr_00
+       data A4
+obstacles_note_0273:
+       data obstacles_instr_00
+       data D2
+obstacles_note_0276:
+       data obstacles_instr_00
+       data G2
+obstacles_note_02AF:
+       data obstacles_instr_01
+       data F#4
+obstacles_note_02B2:
+       data obstacles_instr_05
+       data G1
+obstacles_note_02B5:
+       data obstacles_instr_05
+       data G4
+obstacles_note_02C8:
+       data obstacles_instr_04
+       data W2
+obstacles_note_0279:
+       data obstacles_instr_00
+       data A#3
+obstacles_note_02B8:
+       data obstacles_instr_01
+       data C#4
+obstacles_note_02BB:
+       data obstacles_instr_05
+       data D1
+obstacles_note_027C:
+       data obstacles_instr_06
+       data E3
+obstacles_note_027F:
+       data obstacles_instr_06
+       data G2
+obstacles_note_0282:
+       data obstacles_instr_06
+       data E2
+obstacles_note_0285:
+       data obstacles_instr_06
+       data D3
+obstacles_note_0288:
+       data obstacles_instr_06
+       data D2
+obstacles_note_028B:
+       data obstacles_instr_06
+       data C3
+obstacles_note_028E:
+       data obstacles_instr_06
+       data C2
+obstacles_note_0291:
+       data obstacles_instr_06
+       data B3
+obstacles_note_02BE:
+       data obstacles_instr_01
+       data >0099
+obstacles_note_0294:
+       data obstacles_instr_06
+       data A3
+obstacles_note_02C1:
+       data obstacles_instr_05
+       data D4
+obstacles_instr_00:
+       byte T2
+       byte 48
+       byte 47
+       byte 2
+       data >0000
+obstacles_instr_01:
+       byte T3
+       byte 32
+       byte 255
+       byte 0
+       data >0000
+obstacles_instr_02:
+       byte P3
+       byte 24
+       byte 0
+       byte 10
+       data >0000
+obstacles_instr_03:
+       byte W0
+       byte 8
+       byte 0
+       byte 31
+       data >0000
+obstacles_instr_04:
+       byte W2
+       byte 12
+       byte 0
+       byte 21
+       data >0000
+obstacles_instr_05:
+       byte T3
+       byte 10
+       byte 0
+       byte 25
+       data >0000
+obstacles_instr_06:
+       byte T2
+       byte 46
+       byte 143
+       byte -3
+       data >0000
+obstacles_instr_07:
+       byte T2
+       byte 48
+       byte 63
+       byte 2
+       data >0000

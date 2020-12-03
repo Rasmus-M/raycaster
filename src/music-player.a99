@@ -78,7 +78,9 @@ module_player_6:
 *      New repeat
 module_player_7:
        dec  r4                         ; Already did one
-       movb @r4lb,@snd_track_repeat_count(r5)
+       swpb r4
+       movb r4,@snd_track_repeat_count(r5)
+;       movb @r4lb,@snd_track_repeat_count(r5)
        mov  *r6,r6                     ; Load new location
        jmp  module_player_3
 module_player_8:
@@ -95,7 +97,9 @@ module_player_8:
 module_player_9:
        mpy  @module_speed,r3
        dec  r4                         ; Already did one
-       movb @r4lb,@snd_track_duration_count(r5)
+       swpb r4
+       movb r4,@snd_track_duration_count(r5)
+;       movb @r4lb,@snd_track_duration_count(r5)
 *      Next track
 module_player_11:
        ai   r5,snd_track_size
