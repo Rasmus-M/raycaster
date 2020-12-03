@@ -418,9 +418,9 @@ cast_if_required:
        jmp  cast_if_required_2
 cast_if_required_1:
        bl   @skip_cast_rays
+       bl   @check_int
        seto @column_redraw_cleared
 cast_if_required_2:
-       bl   @check_int
        .endproc
 *// cast_if_required
 
@@ -772,7 +772,7 @@ draw_screen_5:
        jlt  draw_screen_1
 *      Done
        .endproc
-*// draw_screen½
+*// draw_screen
 
 *********************************************************************
 *
@@ -1027,6 +1027,7 @@ draw_sprites:
 draw_sprites_1:
        mov  *r4,r0                     ; Active?
        jeq  draw_sprites_2
+       bl   @check_int
        mov  @sprite_x(r4),r0
        s    @x,r0                      ; dx
        mov  @sprite_y(r4),r1
@@ -1056,7 +1057,6 @@ draw_sprites_1:
        jgt  draw_sprites_2
 *      Sprite is within view and distance
        bl   @draw_sprite
-       bl   @check_int
 draw_sprites_2:
        ai   r4,sprite_size
        dec  r5
@@ -1315,6 +1315,7 @@ upload_screen_7:
        dec  r2
        jne  upload_screen_4
 upload_screen_8:
+       bl   @check_int
        .endproc
 *// upload_screen
 
@@ -1615,8 +1616,9 @@ move_sprites:
        mov  @n_sprites,r5
        jeq  move_sprites_3
 move_sprites_1:
-       mov  *r4,r0
+       mov  *r4,r0                     ; Active?
        jeq  move_sprites_2
+       bl   @check_int
        mov  @sprite_type(r4),r1
        mov  @sprite_type_props(r1),r0
        coc  @sprite_can_move,r0
@@ -1702,7 +1704,6 @@ move_sprites_2:
        dec  r5
        jne  move_sprites_1
 move_sprites_3:
-       bl   @check_int
        .endproc
 *// move_sprites
 
@@ -1851,6 +1852,7 @@ sprite_collisions:
 sprite_collisions_1:
        mov  *r4,r2
        jeq  sprite_collisions_2
+       bl   @check_int
        mov  @sprite_type(r4),r2
        mov  @sprite_type_props(r2),r2
        coc  @sprite_can_be_collected,r2
@@ -1875,7 +1877,6 @@ sprite_collisions_2:
        dec  r5
        jne  sprite_collisions_1
 sprite_collisions_3:
-       bl   @check_int
        .endproc
 *// sprite_collisions
 
@@ -2950,6 +2951,8 @@ init_level_7:
        li   r1,start_of_level
        bl   @say_phrase
 *      Sprite patterns
+       li   r0,>0200
+       mov  r0,@sams_reg_2
        li   r0,sprptb+(20*32)
        li   r1,SPR20
        li   r2,4*32
