@@ -27,6 +27,7 @@ play_shot_1:
        .proc
        li   r0,snd_shot_1
        li   r1,snd_channel_1
+       li   r2,>0040
        bl   @play_snd
        .endproc
 *// play_shot_1
@@ -38,7 +39,8 @@ play_shot_1:
 play_shot_2:
        .proc
        li   r0,snd_shot_2
-       li   r1,snd_channel_2
+       li   r1,snd_channel_1
+       li   r2,>0100
        bl   @play_snd
        .endproc
 *// play_shot_2
@@ -50,7 +52,7 @@ play_shot_2:
 play_chest:
        .proc
        li   r0,snd_chest
-       li   r1,snd_channel_3
+       li   r1,snd_channel_1
        li   r2,>0040
        bl   @play_snd
        .endproc
@@ -64,7 +66,7 @@ play_chest:
 play_die:
        .proc
        li   r0,snd_die
-       li   r1,snd_channel_3
+       li   r1,snd_channel_1
        li   r2,>0040
        bl   @play_snd
        .endproc
@@ -77,7 +79,7 @@ play_die:
 play_finish:
        .proc
        li   r0,snd_finish
-       li   r1,snd_channel_3
+       li   r1,snd_channel_1
        li   r2,>03ff
        bl   @play_snd
        .endproc

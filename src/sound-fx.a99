@@ -2,15 +2,17 @@
 * Sound FXs
 *
 snd_shot_1:
-       byte W2
+       byte T1
        byte 16                         ; Frames
        byte 0                          ; Attn start
        byte 16                         ; Attn step
+       data 2                          ; Freq step
 snd_shot_2:
-       byte W1
+       byte T1
        byte 16                         ; Frames
        byte 0                          ; Attn start
-       byte 16                         ; Attn step
+       byte 0                          ; Attn step
+       data -8                         ; Freq step
 snd_chest:
        byte T1
        byte 64                         ; Frames
