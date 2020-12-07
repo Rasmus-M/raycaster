@@ -143,6 +143,8 @@ inventory_size:
        equ  8
 bottom_panel_bank_select:
        equ  >603e
+map_bank_select:
+       equ  >603c
 
 **
 * Scratch pad
@@ -2495,14 +2497,13 @@ display_map_3:
        li   r0,ptrntb
        li   r1,>f000
        bl   @display_map_background
-*      Upload screen
+*      Redraw screen
        seto @full_redraw_required
-       bl   @upload_screen
        .endproc
 map_x:
        byte 64-8
 map_y:
-       byte -9
+       byte 0-9
 *// display_map
 
 *********************************************************************
@@ -2905,20 +2906,19 @@ init_level_1:
        ai   r1,column_size
        dec  r2
        jne  init_level_1
+*      Init map
+       seto @map_bank_select
+       li   r0,map_sams_page
+       mov  r0,@sams_reg_3
+       li   r0,>6000
+       li   r1,map
+       li   r2,map_size
+       bl   @copy
 *      Init doors
        li   r4,doors
        mov  @n_doors,r5
        jeq  init_level_4
 init_level_2:
-       clr  r0
-       movb @door_x(r4),r0
-       clr  r1
-       movb @door_y(r4),r1
-       bl   @get_map_address
-       cb   *r2,@block_space
-       jne  init_level_3
-       movb @block_door,*r2
-init_level_3:
        mov  @door_sprite_inits(r4),r6
        clr  *r6                        ; Mark as not completed
        ai   r4,door_size
@@ -2947,9 +2947,6 @@ init_level_7:
        li   r0,objects
        bl   @add_inventory
        bl   @display_inventory
-*      Speak
-       li   r1,start_of_level
-       bl   @say_phrase
 *      Sprite patterns
        li   r0,>0200
        mov  r0,@sams_reg_2
@@ -3067,15 +3064,6 @@ one_time_init_3:
        ai   r0,>80
        dec  r3
        jne  one_time_init_1
-*      Copy map to SAMS
-       li   r0,map_sams_page
-       mov  r0,@sams_reg_2
-       li   r0,map
-       li   r1,>2000
-       li   r2,map_size
-       bl   @copy
-       li   r0,>0200
-       mov  r0,@sams_reg_2
 *      Bottom panel
        bl   @display_panel
        .endproc
@@ -3767,11 +3755,8 @@ lower_ram_max:
 textures:
        equ  >2000
 
-       aorg >3000
-
 map:
        equ  >3000
-       copy "map.a99"
 
 **
 *      Screen buffer (currently 4k, 6K for full screen)

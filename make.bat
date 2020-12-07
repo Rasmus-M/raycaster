@@ -5,6 +5,8 @@ xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
 
 java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 
+xas99.py -b -w src/map.a99 -o bin/map.bin
+
 cd TexGen
 rem call make.bat
 cd ..
@@ -44,7 +46,7 @@ cd ..
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
-    bin\empty.bin + ^
+    bin\map.bin + bin\empty-2k.bin + bin\empty-2k.bin + ^
     bin\bottom-panel.bin + ^
     backgrounds\background-00-even.bin + backgrounds\background-10-even.bin + ^
     backgrounds\background-01-even.bin + backgrounds\background-11-even.bin + ^
