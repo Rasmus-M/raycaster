@@ -12,12 +12,12 @@ public class LevelMap {
     private static final int BUTTON = 36;
     private static final int FIRST_OBJECT = 40;
     private static final int LAST_OBJECT = 45;
-    private static final int LAST_BLOCK = 47;
+    private static final int LAST_BLOCK = 127;
     private static final int ROOM = 128;
     private static final int START = 129;
     private static final int FIRST_SPRITE = 136;
     private static final int SECRET_DOOR_MASK = 1;
-    private static final String MAP_LABEL = "MD0";
+    private static final String MAP_LABEL = "MD";
 
     public static void main(String... args) throws IOException {
         LevelMap levelMap = new LevelMap();

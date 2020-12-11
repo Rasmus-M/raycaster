@@ -2,9 +2,9 @@
 * Variables
 *
 start_x:
-       data >0180
+       data >0080
 start_y:
-       data >0280
+       data >1d80
 start_dir:
        data 0
 start_dx:
@@ -18,60 +18,6 @@ objects:
        data object_type_red_position
        byte >00
        byte >00
-       data object_type_key
-       byte >08
-       byte >01
-       data object_type_green_position
-       byte >0e
-       byte >01
-       data object_type_key
-       byte >09
-       byte >03
-       data object_type_red_position
-       byte >0e
-       byte >03
-       data object_type_green_position
-       byte >38
-       byte >05
-       data object_type_key
-       byte >18
-       byte >09
-       data object_type_red_position
-       byte >01
-       byte >0c
-       data object_type_red_position
-       byte >3a
-       byte >10
-       data object_type_green_position
-       byte >24
-       byte >13
-       data object_type_key
-       byte >2f
-       byte >18
-       data object_type_key
-       byte >29
-       byte >1f
-       data object_type_red_position
-       byte >09
-       byte >21
-       data object_type_green_position
-       byte >15
-       byte >24
-       data object_type_red_position
-       byte >3b
-       byte >28
-       data object_type_key
-       byte >07
-       byte >2e
-       data object_type_red_position
-       byte >04
-       byte >38
-       data object_type_key
-       byte >1c
-       byte >39
-       data object_type_green_position
-       byte >20
-       byte >3d
 
 n_objects:
        data (n_objects - objects) / object_size
@@ -82,315 +28,55 @@ n_objects:
 doors:
        equ  $
 door_1:
-       byte >1a
-       byte >02
+       byte >08
+       byte >03
+       data 0
+       data room_1_init
+door_2:
+       byte >18
+       byte >05
+       data 0
+       data room_2_init
+door_3:
+       byte >0c
+       byte >07
+       data 0
+       data room_3_init
+door_4:
+       byte >1b
+       byte >07
        data 0
        data room_4_init
-door_2:
-       byte >1e
-       byte >02
+door_5:
+       byte >18
+       byte >0a
        data 0
        data room_5_init
-door_3:
-       byte >26
-       byte >02
-       data 0
-       data room_6_init
-door_4:
-       byte >3a
-       byte >02
-       data 0
-       data room_3_init
-door_5:
-       byte >0b
-       byte >03
-       data 1
-       data room_1_init
 door_6:
-       byte >2f
-       byte >03
-       data 0
-       data 0
-door_7:
-       byte >3c
-       byte >06
-       data 0
-       data room_3_init
-door_8:
-       byte >07
-       byte >07
-       data 0
-       data room_8_init
-door_9:
-       byte >16
-       byte >07
-       data 0
-       data room_9_init
-door_10:
-       byte >26
-       byte >07
-       data 0
-       data room_6_init
-door_11:
-       byte >11
-       byte >08
-       data 0
-       data room_12_init
-door_12:
-       byte >39
-       byte >08
-       data 0
-       data 0
-door_13:
-       byte >04
-       byte >0a
-       data 0
-       data room_13_init
-door_14:
-       byte >0a
-       byte >0a
-       data 0
-       data room_12_init
-door_15:
-       byte >1f
-       byte >0b
-       data 0
-       data room_10_init
-door_16:
-       byte >3c
-       byte >0b
-       data 0
-       data 0
-door_17:
-       byte >17
-       byte >0d
-       data 0
-       data room_14_init
-door_18:
-       byte >22
-       byte >0d
-       data 0
-       data room_16_init
-door_19:
-       byte >2d
-       byte >0d
-       data 0
-       data 0
-door_20:
-       byte >10
+       byte >0c
        byte >0e
        data 0
-       data room_18_init
-door_21:
-       byte >1a
-       byte >0f
+       data room_6_init
+door_7:
+       byte >12
+       byte >0e
        data 0
-       data room_14_init
-door_22:
-       byte >09
+       data 0
+door_8:
+       byte >0f
        byte >11
        data 0
-       data room_21_init
-door_23:
-       byte >02
-       byte >12
-       data 0
-       data room_22_init
-door_24:
-       byte >38
-       byte >12
-       data 0
-       data room_20_init
-door_25:
-       byte >2b
-       byte >14
-       data 0
-       data room_23_init
-door_26:
-       byte >2f
-       byte >14
-       data 0
-       data room_24_init
-door_27:
-       byte >2d
-       byte >16
-       data 0
-       data room_30_init
-door_28:
-       byte >38
-       byte >16
-       data 0
-       data room_26_init
-door_29:
-       byte >0b
-       byte >18
-       data 0
-       data room_28_init
-door_30:
-       byte >18
-       byte >19
-       data 0
-       data room_25_init
-door_31:
-       byte >06
-       byte >1a
-       data 0
-       data room_27_init
-door_32:
-       byte >38
-       byte >1a
-       data 0
-       data room_31_init
-door_33:
-       byte >21
-       byte >1c
-       data 0
-       data room_29_init
-door_34:
-       byte >12
-       byte >1d
-       data 0
-       data room_32_init
-door_35:
-       byte >3c
-       byte >1d
-       data 0
-       data room_31_init
-door_36:
+       data room_6_init
+door_9:
        byte >0c
-       byte >1e
-       data 0
-       data room_34_init
-door_37:
-       byte >04
-       byte >1f
-       data 0
-       data room_27_init
-door_38:
-       byte >1b
-       byte >1f
-       data 0
-       data room_25_init
-door_39:
-       byte >03
-       byte >21
-       data 0
-       data room_36_init
-door_40:
-       byte >1b
-       byte >21
-       data 0
-       data room_39_init
-door_41:
-       byte >36
-       byte >23
-       data 0
-       data room_35_init
-door_42:
-       byte >03
-       byte >25
-       data 0
-       data room_41_init
-door_43:
-       byte >10
-       byte >25
-       data 0
-       data room_38_init
-door_44:
-       byte >0b
-       byte >26
-       data 0
-       data room_40_init
-door_45:
        byte >1a
-       byte >26
        data 0
-       data room_39_init
-door_46:
-       byte >38
-       byte >26
+       data room_7_init
+door_10:
+       byte >1c
+       byte >1d
        data 0
-       data room_42_init
-door_47:
-       byte >28
-       byte >29
-       data 0
-       data room_45_init
-door_48:
-       byte >09
-       byte >2c
-       data 0
-       data room_43_init
-door_49:
-       byte >30
-       byte >2c
-       data 0
-       data room_46_init
-door_50:
-       byte >17
-       byte >2e
-       data 0
-       data room_47_init
-door_51:
-       byte >22
-       byte >2f
-       data 0
-       data room_44_init
-door_52:
-       byte >03
-       byte >31
-       data 0
-       data room_48_init
-door_53:
-       byte >28
-       byte >31
-       data 0
-       data room_45_init
-door_54:
-       byte >0f
-       byte >32
-       data 0
-       data 0
-door_55:
-       byte >15
-       byte >33
-       data 0
-       data room_49_init
-door_56:
-       byte >06
-       byte >35
-       data 0
-       data room_53_init
-door_57:
-       byte >38
-       byte >35
-       data 0
-       data room_52_init
-door_58:
-       byte >13
-       byte >38
-       data 0
-       data room_54_init
-door_59:
-       byte >32
-       byte >39
-       data 0
-       data room_51_init
-door_60:
-       byte >39
-       byte >3b
-       data 1
-       data 0
-door_61:
-       byte >2a
-       byte >3e
-       data 0
-       data 0
-door_62:
-       byte >32
-       byte >3e
-       data 0
-       data room_56_init
+       data room_8_init
 
 n_doors:
        data (n_doors - door_1) / door_size
@@ -399,394 +85,55 @@ n_doors:
 * Sprite init data
 *
 sprite_init_data:
-       data 5
-       data sprite_type_barrel
-       byte >11
-       byte >02
-       data sprite_type_eye
-       byte >02
-       byte >06
-       data sprite_type_mon7
-       byte >11
-       byte >06
-       data sprite_type_box
-       byte >28
-       byte >1a
-       data sprite_type_pillar
-       byte >02
-       byte >3d
+       data 1
+       data sprite_type_obj5
+       byte >04
+       byte >1d
 room_1_init:
        data 0
        data 1
-       data sprite_type_mon9
-       byte >0b
+       data sprite_type_box
        byte >01
+       byte >02
+room_2_init:
+       data 0
+       data 1
+       data sprite_type_box
+       byte >16
+       byte >04
 room_3_init:
        data 0
        data 1
-       data sprite_type_mon23
-       byte >3d
-       byte >02
+       data sprite_type_obj5
+       byte >0c
+       byte >05
 room_4_init:
        data 0
-       data 2
-       data sprite_type_mon2
-       byte >1a
-       byte >06
-       data sprite_type_box
-       byte >1a
-       byte >07
+       data 1
+       data sprite_type_obj5
+       byte >1b
+       byte >05
 room_5_init:
        data 0
        data 1
-       data sprite_type_mon4
-       byte >1e
-       byte >04
+       data sprite_type_barrel
+       byte >18
+       byte >08
 room_6_init:
        data 0
-       data 2
-       data sprite_type_pillar
-       byte >25
-       byte >05
-       data sprite_type_pillar
-       byte >27
-       byte >05
+       data 1
+       data sprite_type_obj5
+       byte >0f
+       byte >0e
+room_7_init:
+       data 0
+       data 1
+       data sprite_type_barrel
+       byte >0c
+       byte >1d
 room_8_init:
        data 0
        data 1
-       data sprite_type_blob
-       byte >07
-       byte >0b
-room_9_init:
-       data 0
-       data 1
-       data sprite_type_mon10
-       byte >16
-       byte >09
-room_10_init:
-       data 0
-       data 1
-       data sprite_type_mon13
-       byte >1f
-       byte >08
-room_12_init:
-       data 0
-       data 1
-       data sprite_type_mon11
-       byte >0d
-       byte >0b
-room_13_init:
-       data 0
-       data 1
-       data sprite_type_mon12
-       byte >02
-       byte >0f
-room_14_init:
-       data 0
-       data 3
-       data sprite_type_barrel
-       byte >1f
-       byte >0d
-       data sprite_type_barrel
-       byte >19
-       byte >0d
-       data sprite_type_box
-       byte >1c
-       byte >0d
-room_16_init:
-       data 0
-       data 1
-       data sprite_type_mon16
-       byte >26
-       byte >0f
-room_17_init:
-       data 0
-       data 1
-       data sprite_type_mon9
-       byte >2d
-       byte >10
-room_18_init:
-       data 0
-       data 4
-       data sprite_type_mon14
-       byte >12
-       byte >11
-       data sprite_type_mon5
-       byte >10
-       byte >11
-       data sprite_type_pillar
-       byte >0e
-       byte >11
-       data sprite_type_box
-       byte >10
-       byte >13
-room_19_init:
-       data 0
-       data 1
-       data sprite_type_box
-       byte >1a
-       byte >12
-room_20_init:
-       data 0
-       data 1
-       data sprite_type_mon17
-       byte >3d
-       byte >12
-room_21_init:
-       data 0
-       data 1
-       data sprite_type_mon8
-       byte >08
-       byte >13
-room_22_init:
-       data 0
-       data 2
-       data sprite_type_mon6
-       byte >02
-       byte >14
-       data sprite_type_box
-       byte >02
-       byte >15
-room_23_init:
-       data 0
-       data 1
-       data sprite_type_mon20
-       byte >29
-       byte >14
-room_24_init:
-       data 0
-       data 1
-       data sprite_type_mon22
-       byte >32
-       byte >14
-room_25_init:
-       data 0
-       data 3
-       data sprite_type_mon20
-       byte >1d
-       byte >18
        data sprite_type_box
        byte >1e
-       byte >19
-       data sprite_type_mon21
-       byte >1d
-       byte >1b
-room_26_init:
-       data 0
-       data 1
-       data sprite_type_mon18
-       byte >3a
-       byte >16
-room_27_init:
-       data 0
-       data 1
-       data sprite_type_mon15
-       byte >04
-       byte >18
-room_28_init:
-       data 0
-       data 4
-       data sprite_type_pillar
-       byte >10
-       byte >18
-       data sprite_type_pillar
-       byte >0d
-       byte >18
-       data sprite_type_pillar
-       byte >10
-       byte >1a
-       data sprite_type_pillar
-       byte >0d
-       byte >1a
-room_29_init:
-       data 0
-       data 1
-       data sprite_type_mon6
-       byte >21
-       byte >17
-room_30_init:
-       data 0
-       data 1
-       data sprite_type_mon21
-       byte >2d
-       byte >19
-room_31_init:
-       data 0
-       data 1
-       data sprite_type_mon19
-       byte >3d
-       byte >1a
-room_32_init:
-       data 0
-       data 1
-       data sprite_type_mon7
-       byte >16
-       byte >1f
-room_33_init:
-       data 0
-       data 1
-       data sprite_type_mon5
-       byte >3c
-       byte >21
-room_34_init:
-       data 0
-       data 1
-       data sprite_type_mon8
-       byte >0e
-       byte >21
-room_35_init:
-       data 0
-       data 2
-       data sprite_type_barrel
-       byte >37
-       byte >20
-       data sprite_type_barrel
-       byte >35
-       byte >20
-room_36_init:
-       data 0
-       data 1
-       data sprite_type_mon24
-       byte >01
-       byte >23
-room_38_init:
-       data 0
-       data 2
-       data sprite_type_barrel
-       byte >13
-       byte >23
-       data sprite_type_barrel
-       byte >13
-       byte >26
-room_39_init:
-       data 0
-       data 2
-       data sprite_type_mon8
-       byte >18
-       byte >24
-       data sprite_type_barrel
-       byte >1d
-       byte >24
-room_40_init:
-       data 0
-       data 2
-       data sprite_type_barrel
-       byte >08
-       byte >26
-       data sprite_type_mon25
-       byte >07
-       byte >23
-room_41_init:
-       data 0
-       data 1
-       data sprite_type_box
-       byte >01
-       byte >27
-room_42_init:
-       data 0
-       data 1
-       data sprite_type_mon4
-       byte >39
-       byte >28
-room_43_init:
-       data 0
-       data 3
-       data sprite_type_box
-       byte >13
-       byte >2c
-       data sprite_type_mon26
-       byte >0f
-       byte >29
-       data sprite_type_mon27
-       byte >0f
-       byte >31
-room_44_init:
-       data 0
-       data 1
-       data sprite_type_mon6
-       byte >23
-       byte >2b
-room_45_init:
-       data 0
-       data 1
-       data sprite_type_pillar
-       byte >28
-       byte >2d
-room_46_init:
-       data 0
-       data 1
-       data sprite_type_barrel
-       byte >32
-       byte >2a
-room_47_init:
-       data 0
-       data 1
-       data sprite_type_mon7
-       byte >1a
-       byte >2e
-room_48_init:
-       data 0
-       data 5
-       data sprite_type_box
-       byte >09
-       byte >30
-       data sprite_type_mon28
-       byte >06
-       byte >31
-       data sprite_type_box
-       byte >09
-       byte >32
-       data sprite_type_box
-       byte >06
-       byte >34
-       data sprite_type_box
-       byte >05
-       byte >2e
-room_49_init:
-       data 0
-       data 1
-       data sprite_type_mon31
-       byte >13
-       byte >33
-room_50_init:
-       data 0
-       data 1
-       data sprite_type_pillar
-       byte >22
-       byte >34
-room_51_init:
-       data 0
-       data 2
-       data sprite_type_eye
-       byte >33
-       byte >33
-       data sprite_type_box
-       byte >31
-       byte >35
-room_52_init:
-       data 0
-       data 1
-       data sprite_type_blob
-       byte >3b
-       byte >34
-room_53_init:
-       data 0
-       data 2
-       data sprite_type_box
-       byte >0c
-       byte >38
-       data sprite_type_mon29
-       byte >06
-       byte >38
-room_54_init:
-       data 0
-       data 1
-       data sprite_type_mon30
-       byte >13
-       byte >3b
-room_56_init:
-       data 0
-       data 1
-       data sprite_type_mon3
-       byte >38
-       byte >3d
+       byte >1e
