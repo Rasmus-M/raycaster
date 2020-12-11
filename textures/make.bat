@@ -6,4 +6,5 @@ xas99.py -b -w texture-bank-4.a99 -o ../bin/texture-bank-4.bin
 xas99.py -b -w texture-bank-5.a99 -o ../bin/texture-bank-5.bin
 xas99.py -b -w texture-bank-6.a99 -o ../bin/texture-bank-6.bin
 xas99.py -b -w texture-bank-7.a99 -o ../bin/texture-bank-7.bin
+xas99.py -b -w texture-bank-8.a99 -o ../bin/texture-bank-8.bin
 

@@ -1,4 +1,17 @@
 **
+* Variables
+*
+start_x:
+       data >0180
+start_y:
+       data >0280
+start_dir:
+       data 0
+start_dx:
+       data >0100
+start_dy:
+       data >0000
+**
 * Objects
 *
 objects:

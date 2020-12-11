@@ -41,7 +41,7 @@ cd ..
     bin\texture-bank-5.bin + ^
     bin\texture-bank-6.bin + ^
     bin\texture-bank-7.bin + ^
-    bin\empty.bin + ^
+    bin\texture-bank-8.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^

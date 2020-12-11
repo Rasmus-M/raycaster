@@ -14,6 +14,7 @@ public class LevelMap {
     private static final int LAST_OBJECT = 45;
     private static final int LAST_BLOCK = 47;
     private static final int ROOM = 128;
+    private static final int START = 129;
     private static final int FIRST_SPRITE = 136;
     private static final int SECRET_DOOR_MASK = 1;
     private static final String MAP_LABEL = "MD0";
@@ -30,7 +31,8 @@ public class LevelMap {
         ArrayList<Door> doors  = findDoors(map, rooms);
         ArrayList<Sprite> initialSprites = findInitialSprites(map);
         ArrayList<Obj> objects = findObjects(map);
-        generateLevelFile(doorsFilePath, doors, rooms, initialSprites, objects);
+        Square start = findStart(map);
+        generateLevelFile(doorsFilePath, doors, rooms, initialSprites, objects, start);
         generateMapFile(outputMapFilePath, map);
     }
 
@@ -57,8 +59,22 @@ public class LevelMap {
         fileWriter.close();
     }
 
-    private void generateLevelFile(String filePath, ArrayList<Door> doors, ArrayList<Room> rooms, ArrayList<Sprite> initialSprites, ArrayList<Obj> objects) throws IOException {
+    private void generateLevelFile(String filePath, ArrayList<Door> doors, ArrayList<Room> rooms, ArrayList<Sprite> initialSprites, ArrayList<Obj> objects, Square start) throws IOException {
         StringBuilder sb = new StringBuilder();
+
+        sb.append("**\n");
+        sb.append("* Variables\n");
+        sb.append("*\n");
+        sb.append("start_x:\n");
+        sb.append("       data ").append(hexWord(start.getX() << 8 | 0x80)).append("\n");
+        sb.append("start_y:\n");
+        sb.append("       data ").append(hexWord(start.getY() << 8 | 0x80)).append("\n");
+        sb.append("start_dir:\n");
+        sb.append("       data 0\n");
+        sb.append("start_dx:\n");
+        sb.append("       data >0100\n");
+        sb.append("start_dy:\n");
+        sb.append("       data >0000\n");
         sb.append("**\n");
         sb.append("* Objects\n");
         sb.append("*\n");
@@ -137,6 +153,19 @@ public class LevelMap {
             }
         }
         return objects;
+    }
+
+    private Square findStart(int[][] map) {
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++){
+                int value = map[y][x];
+                if (value == START) {
+                    map[y][x] = SPACE;
+                    return new Square(x, y);
+                }
+            }
+        }
+        return null;
     }
 
     private ArrayList<Sprite> findInitialSprites(int[][] map) {
@@ -291,6 +320,14 @@ public class LevelMap {
     private String hexByte(int i) {
         String hex = Integer.toHexString(i);
         while (hex.length() < 2) {
+            hex = "0" + hex;
+        }
+        return ">" + hex;
+    }
+
+    private String hexWord(int i) {
+        String hex = Integer.toHexString(i);
+        while (hex.length() < 4) {
             hex = "0" + hex;
         }
         return ">" + hex;

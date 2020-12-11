@@ -128,9 +128,9 @@ max_texture_height_2:                  ; Up to this value
 max_texture_height_8:                  ; Up to this value
        equ  456                        ; every 8th height is indexed
 first_object_texture:
-       equ  24
-first_monster_texture:
        equ  32
+first_monster_texture:
+       equ  40
 first_action_block:
        equ  32
 background_bank_select:
@@ -3617,16 +3617,6 @@ euclidian_distance_2:
 *
 * Data
 *
-start_x:
-       data >0180
-start_y:
-       data >0280
-start_dir:
-       data 0
-start_dx:
-       data >0100
-start_dy:
-       data >0000
 bullet_active:
        data 0
 bullet_x:
