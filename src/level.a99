@@ -2,7 +2,7 @@
 * Variables
 *
 start_x:
-       data >0080
+       data >0180
 start_y:
        data >1d80
 start_dir:

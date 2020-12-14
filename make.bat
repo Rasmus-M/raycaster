@@ -48,22 +48,30 @@ cd ..
     bin\empty.bin + ^
     bin\map.bin + bin\empty-2k.bin + bin\empty-2k.bin + ^
     bin\bottom-panel.bin + ^
-    backgrounds\background-00-even.bin + backgrounds\background-10-even.bin + ^
-    backgrounds\background-01-even.bin + backgrounds\background-11-even.bin + ^
-    backgrounds\background-02-even.bin + backgrounds\background-12-even.bin + ^
-    backgrounds\background-03-even.bin + backgrounds\background-13-even.bin + ^
-    backgrounds\background-04-even.bin + backgrounds\background-14-even.bin + ^
-    backgrounds\background-05-even.bin + backgrounds\background-15-even.bin + ^
-    backgrounds\background-06-even.bin + backgrounds\background-16-even.bin + ^
-    backgrounds\background-07-even.bin + backgrounds\background-17-even.bin + ^
-    backgrounds\background-00-odd.bin + backgrounds\background-10-odd.bin + ^
-    backgrounds\background-01-odd.bin + backgrounds\background-11-odd.bin + ^
-    backgrounds\background-02-odd.bin + backgrounds\background-12-odd.bin + ^
-    backgrounds\background-03-odd.bin + backgrounds\background-13-odd.bin + ^
-    backgrounds\background-04-odd.bin + backgrounds\background-14-odd.bin + ^
-    backgrounds\background-05-odd.bin + backgrounds\background-15-odd.bin + ^
-    backgrounds\background-06-odd.bin + backgrounds\background-16-odd.bin + ^
-    backgrounds\background-07-odd.bin + backgrounds\background-17-odd.bin + ^
+    backgrounds\background-100.bin + backgrounds\background-110.bin + ^
+    backgrounds\background-101.bin + backgrounds\background-111.bin + ^
+    backgrounds\background-102.bin + backgrounds\background-112.bin + ^
+    backgrounds\background-103.bin + backgrounds\background-113.bin + ^
+    backgrounds\background-104.bin + backgrounds\background-114.bin + ^
+    backgrounds\background-105.bin + backgrounds\background-115.bin + ^
+    backgrounds\background-106.bin + backgrounds\background-116.bin + ^
+    backgrounds\background-107.bin + backgrounds\background-117.bin + ^
+    backgrounds\background-000.bin + backgrounds\background-010.bin + ^
+    backgrounds\background-001.bin + backgrounds\background-011.bin + ^
+    backgrounds\background-002.bin + backgrounds\background-012.bin + ^
+    backgrounds\background-003.bin + backgrounds\background-013.bin + ^
+    backgrounds\background-004.bin + backgrounds\background-014.bin + ^
+    backgrounds\background-005.bin + backgrounds\background-015.bin + ^
+    backgrounds\background-006.bin + backgrounds\background-016.bin + ^
+    backgrounds\background-007.bin + backgrounds\background-017.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
+    bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^
     bin\empty.bin + ^

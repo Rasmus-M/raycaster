@@ -1,6 +1,6 @@
 *********************************************************************
 *
-* Textures raycaster
+* Textured raycaster
 * For the TI-99/4A home computer
 *
 * April 2020 -
@@ -113,7 +113,7 @@ max_health:
        equ  63
 texture_bank_select:
        equ  >6022
-texture_sams_page:                     ; 16
+texture_sams_page:
        equ  >1000
 n_texture_banks:
        equ  9
@@ -135,6 +135,10 @@ first_action_block:
        equ  32
 background_bank_select:
        equ  >6040
+background_sams_page:
+       equ  >4000
+n_background_banks:
+       equ  8
 background_address:
        equ  >6000
 background_height:
@@ -220,10 +224,10 @@ full_redraw_required:
        equ  column_ptr+2
 column_redraw_cleared:
        equ  full_redraw_required+2
-current_background_bank_select:
+current_background_page_select:
        equ  column_redraw_cleared+2
 pointer_x:
-       equ  current_background_bank_select+2
+       equ  current_background_page_select+2
 pointer_y:
        equ  pointer_x+2
 pointer_pattern:
@@ -783,21 +787,20 @@ draw_screen_5:
 *
 * Calculate ROM bank and address for background
 *
-* On return @current_background_bank_select contains the ROM back select
+* On return @current_background_page_select contains the ROM back select
 * and R8 contains the address.
 *
 calc_background_address:
        mov  @angle,r0
        andi r0,>01c0
-       srl  r0,5
-       ai   r0,background_bank_select
-       mov  r0,@current_background_bank_select
-       li   r8,background_address
+       sla  r0,3
        mov  @x,r1
        xor  @y,r1
-       andi r1,>0100
-       sla  r1,4
-       a    r1,r8
+       andi r1,>2100
+       a    r1,r0
+       ai   r0,background_sams_page
+       mov  r0,@current_background_page_select
+       li   r8,sams_window
        rt
 *// calc_background_address
 
@@ -860,8 +863,8 @@ draw_even_column_8:
 * We can assume that if r8 is odd then r3 is also odd.
 *
 draw_even_background_pixels:
-       mov  @current_background_bank_select,r0
-       seto *r0
+       mov  @current_background_page_select,r0
+       mov  r0,@sams_reg_2
        coc  @one,r3
        jne  draw_even_background_pixels_0
        movb *r8+,*r3+
@@ -949,9 +952,9 @@ draw_odd_column_8:
 * We can assume that if r8 is odd then r3 is also odd.
 *
 draw_odd_background_pixels:
-       mov  @current_background_bank_select,r0
-       ai   r0,>10
-       seto *r0
+       mov  @current_background_page_select,r0
+       ai   r0,>1000
+       mov  r0,@sams_reg_2
        coc  @one,r3
        jne  draw_odd_background_pixels_0
        socb *r8+,*r3+
@@ -3002,6 +3005,11 @@ one_time_init_0:
        bl   @copy_textures_to_sams
        dec  r13
        jne  one_time_init_0
+*      Copy backgrounds to SAMS
+       li   r0,background_bank_select
+       li   r1,background_sams_page
+       bl   @copy_background_to_sams
+       bl   @copy_background_to_sams
 *      Init speech
        bl   @init_speech
 *      Graphics mode

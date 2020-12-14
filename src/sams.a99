@@ -1,5 +1,7 @@
 sams_window:
        equ  >2000
+sams_window_2:
+       equ  >3000
 sams_reg_2:
        equ  >4004
 sams_reg_3:
@@ -125,3 +127,46 @@ unpack_texture_2:
        jne   unpack_texture_1
        rt
 *// unpack texture
+
+*********************************************************************
+*
+* Copy background from ROM to SAMS
+*
+* r0: ROM bank select address
+* r1: SAMS page no (MSB)
+*
+copy_background_to_sams:
+       .proc
+*      Copy ROM banks to SAMS
+       li   r6,n_background_banks
+       mov  r1,r7
+copy_background_to_sams_1:
+       bl   @copy_rom_to_sams
+       dec  r6
+       jne  copy_background_to_sams_1
+*      Duplicate SAMS banks with masked values
+       mov  r0,r8                      ; Save new ROM bank select
+       mov  r7,r0                      ; First SAMS bank
+       li   r6,n_background_banks*2    ; Number of pages to duplicate
+copy_background_to_sams_2:
+       mov  r0,@sams_reg_2             ; Select source page
+       mov  r1,@sams_reg_3             ; Select destination page
+       li   r2,>1000                   ; Counter for number of bytes in a page
+       li   r3,sams_window             ; Source address
+       li   r4,sams_window_2           ; Destination address
+       li   r9,>0f00
+       li   r13,>f000
+copy_background_to_sams_3:
+       movb *r3,r5                     ; Get source byte
+       szcb r9,*r3+                    ; Isolate left nybble
+       szcb r13,r5                     ; Isolate right nybble
+       movb r5,*r4+                    ; Write to destination
+       dec  r2                         ; Bytes counter
+       jne  copy_background_to_sams_3  ; Next byte
+       ai   r0,>0100                   ; Next source page
+       ai   r1,>0100                   ; Next destination page
+       dec  r6                         ; Page counter
+       jne  copy_background_to_sams_2  ; Next page
+       mov  r8,r0                      ; Restore new ROM bank select
+       .endproc
+*// copy_background_to_sams
