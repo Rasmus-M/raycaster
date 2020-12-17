@@ -192,7 +192,10 @@ public class LevelMap {
                     Square square = new Square(x, y);
                     Door door = new Door(square);
                     door.setRoom(findRoomForDoor(rooms, door));
-                    door.setLocked(value == DOOR_LOCKED);
+                    if (value == DOOR_LOCKED) {
+                        door.setLocked(true);
+                        map[y][x] = DOOR;
+                    }
                     doors.add(door);
                 }
             }

@@ -1471,15 +1471,15 @@ move_forward:
        a    @dy,r1
        bl   @get_map_value
        jeq  move_forward_2
-       cb   @block_goal,r2                   ; Check for goal
+       cb   @block_goal,r2             ; Check for goal
        jne  move_forward_1
        inc  @status                    ; Finish
        jmp  move_forward_3
 move_forward_1:
        andi r2,>0100                   ; Test secret door bit
        jeq  move_forward_3             ; If not set we cannot move
-       bl   @get_map_address
-       bl   @open_door
+       bl   @get_map_address           ; Address needed for open_door
+       bl   @open_door                 ; Open secret door
 *      Move:
 move_forward_2:
        mov  r0,@x
@@ -2573,29 +2573,29 @@ open_door:
        .proc
        bl   @find_door
        mov  r8,r8
-       jeq  open_door_2
+       jeq  open_door_3
        mov  @door_key(r8),r4
-       jne  open_door_2
+       jne  open_door_3
        movb *r2,r3
        andi r3,>7e00
        cb   r3,@block_door
-       jne  open_door_0
+       jne  open_door_1
        movb @block_space,*r2
-open_door_0:
+open_door_1:
        seto @full_redraw_required
        mov  @door_sprite_inits(r8),r4
-       jeq  open_door_2
+       jeq  open_door_3
        mov  *r4,r5                     ; Already created?
-       jne  open_door_2
+       jne  open_door_3
        seto *r4+                       ; Mark as created
        mov  *r4+,r5                    ; Number of sprites to create
-       jeq  open_door_2
-open_door_1:
+       jeq  open_door_3
+open_door_2:
        bl   @create_sprite
        ai   r4,sprite_init_size
        dec  r5
-       jne  open_door_1
-open_door_2:
+       jne  open_door_2
+open_door_3:
        .endproc
 *// open_door
 
