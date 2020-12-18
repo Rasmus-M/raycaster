@@ -1769,86 +1769,71 @@ bullet_color_byte:
 
 *********************************************************************
 *
-* Bullet collisions
+* Bullet collides with walls or sprites
 *
 bullet_collisions:
        .proc
        abs  @bullet_active
-       jeq  bullet_collisions_0
+       jeq  bullet_collisions_5
 *      Check distance
        mov  @bullet_distance,r0
        ci   r0,max_bullet_distance*256
-       jgt  bullet_collisions_1
+       jgt  bullet_collisions_4
 *      Check for wall collision
        mov  @bullet_x,r0
        mov  @bullet_y,r1
        bl   @get_map_address
        movb *r2,r3
        szcb @byte_80,r3
-       jeq  bullet_collisions_2
+       jeq  bullet_collisions_1
        cb   r3,@block_door
-       jne  bullet_collisions_1
+       jne  bullet_collisions_4
        mov  @bullet_distance,r3
        ci   r3,2*256
-       jgt  bullet_collisions_1
+       jgt  bullet_collisions_4
        bl   @open_door
-       jmp  bullet_collisions_1
+       jmp  bullet_collisions_4
 *      Check for sprite collison
-bullet_collisions_2:
+bullet_collisions_1:
        li   r4,sprites
        mov  @n_sprites,r5
-       jeq  bullet_collisions_0
-bullet_collisions_3:
+       jeq  bullet_collisions_5
+bullet_collisions_2:
        mov  *r4,r2
-       jeq  bullet_collisions_4
+       jeq  bullet_collisions_3
        mov  @sprite_type(r4),r2
        mov  @sprite_type_props(r2),r2
        coc  @sprite_can_be_attacked,r2
-       jne  bullet_collisions_4
+       jne  bullet_collisions_3
        mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2
        ci   r2,>0080
-       jgt  bullet_collisions_4
+       jgt  bullet_collisions_3
        mov  @sprite_y(r4),r3
        s    r1,r3
        abs  r3
        ci   r3,>0080
-       jgt  bullet_collisions_4
+       jgt  bullet_collisions_3
 *      hit
-       dec  @sprite_health(r4)
-       jgt  bullet_collisions_3a
-       bl   @remove_sprite
-       li   r0,25
-       a    r0,@score
-       seto @full_redraw_required
-       jmp  bullet_collisions_1
-bullet_collisions_3a:
-       mov  @sprite_type(r4),r2
-       ci   r2,sprite_type_pillar
-       jne  bullet_collisions_3b
-       li   r2,sprite_type_pillar_broken
-       mov  @sprite_type_texture(r2),@sprite_texture(r4)
-       seto @full_redraw_required
-bullet_collisions_3b:
-       bl   @play_shot_2
-       jmp  bullet_collisions_1
-bullet_collisions_4:
+       bl   @hit_sprite
+       jmp  bullet_collisions_4
+bullet_collisions_3:
        ai   r4,sprite_size
        dec  r5
-       jne  bullet_collisions_3
-       jmp  bullet_collisions_0
+       jne  bullet_collisions_2
+       jmp  bullet_collisions_5
 *      Remove bullet
-bullet_collisions_1:
+bullet_collisions_4:
        clr  @bullet_active
-bullet_collisions_0:
+bullet_collisions_5:
        bl   @check_int
        .endproc
 *// bullet_collisions
 
 *********************************************************************
 *
-* Sprite collisions
+* Player collides with sprite
 *
 sprite_collisions:
        .proc
@@ -1998,6 +1983,36 @@ sub_health_1:
        mov  r0,@health
        rt
 *// sub_health
+
+*********************************************************************
+*
+* Player hits sprite
+*
+* r4: Points to sprite structure
+*
+hit_sprite:
+       .proc
+       dec  @sprite_health(r4)
+       jgt  hit_sprite_1
+*      Sprite is dead
+       bl   @remove_sprite
+       li   r0,25
+       a    r0,@score
+       seto @full_redraw_required
+       jmp  hit_sprite_3
+*      Sprite is not dead
+hit_sprite_1:
+       mov  @sprite_type(r4),r2
+       mov  @sprite_type_next(r2),r3
+       jeq  hit_sprite_2
+       mov  @sprite_type_texture(r3),@sprite_texture(r4)
+       mov  @sprite_type_health(r3),@sprite_health(r4)
+       seto @full_redraw_required
+hit_sprite_2:
+       bl   @play_shot_2
+hit_sprite_3:
+       .endproc
+*// hit_sprite
 
 *********************************************************************
 *

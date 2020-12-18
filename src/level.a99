@@ -275,9 +275,12 @@ n_doors:
 * Sprite init data
 *
 sprite_init_data:
-       data 1
+       data 2
        data sprite_type_obj5
        byte >04
+       byte >1d
+       data sprite_type_pillar
+       byte >09
        byte >1d
 room_1_init:
        data 0
