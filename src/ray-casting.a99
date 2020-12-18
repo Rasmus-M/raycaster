@@ -1,0 +1,220 @@
+***************************************************************
+*
+* r0: x position to cast from (FP 8.8)
+* r1: y position to cast from (FP 8.8)
+* r2: Direction index of ray to cast
+*
+* On return r0,r1 contains the map coordinates
+* r2 contains the distance, or -1 if no hit
+* r3 contains the side hit (0 = x-side, 1 = y-side)
+* r4 contains the map entry/color
+*
+cast_ray:
+       .proc
+*      Set up variables
+       mov  r0,r6                      ; Player x
+       mov  r1,r8                      ; Player y
+       andi r0,>ff00                   ; mapX
+       andi r1,>ff00                   ; mapY
+       andi r6,>00ff                   ; fracX
+       andi r8,>00ff                   ; fracY
+       mov  @inv_cos_table(r2),r4      ; deltaDistX
+       mov  @inv_sin_table(r2),r5      ; deltaDistY
+*      Calculate sideDistX
+       mov  @cos_table(r2),r3          ; dirX
+       jlt  cast_ray_1                 ; dirX < 0 ?
+       jgt  cast_ray_2                 ; dirX > 0 ?
+       clr  r6                         ; stepX
+       li   r7,>7f00                   ; sideDistX (max value)
+       jmp  cast_ray_3
+cast_ray_1:
+       mpy  r4,r6                      ; sideDistX = fracX * deltaDistX
+       swpb r7                         ; Fractional part to LSB
+       movb @r6lb,r7                   ; Integer part to MSB
+       li   r6,-1                      ; stepX = -1
+       jmp  cast_ray_3
+cast_ray_2:
+       neg  r6                         ; -fracX
+       ai   r6,>0100                   ; 1 - fracX
+       mpy  r4,r6                      ; sideDistX = (1 - fracX) * deltaDistX
+       swpb r7                         ; Fractional part to LSB
+       movb @r6lb,r7                   ; Integer part to MSB
+       li   r6,1                       ; stepX = 1
+*      Calculate sideDistY
+cast_ray_3:
+       mov  @sin_table(r2),r3          ; dirY
+       jlt  cast_ray_4                 ; dirY < 0 ?
+       jgt  cast_ray_5                 ; dirY < 0 ?
+       clr  r8                         ; stepY
+       li   r9,>7f00                   ; sideDistY (max value)
+       jmp  cast_ray_6
+cast_ray_4:
+       mpy  r5,r8                      ; sideDistY = fracY * deltaDistY
+       swpb r9                         ; Fractional part to LSB
+       movb @r8lb,r9                   ; Integer part to MSB
+       li   r8,-map_width              ; stepY = -1
+       jmp  cast_ray_6
+cast_ray_5:
+       neg  r8                         ; -fracY
+       ai   r8,>0100                   ; 1 - fracY
+       mpy  r5,r8                      ; sideDistY = (1 - fracY) * deltaDistY
+       swpb r9                         ; Fractional part to LSB
+       movb @r8lb,r9                   ; Integer part to MSB
+       li   r8,map_width               ; stepY = 1
+*      Map address from coordinates
+cast_ray_6:
+       bl   @get_map_address
+       mov  r2,r12
+*      Cast the ray
+       li   r2,max_steps               ; Step counter
+cast_ray_6a:
+       bl   @cast_ray_loop_pad
+       cb   r13,@block_space_secret    ; Is it an invisible secret door?
+       jeq  cast_ray_6a                ; Yes, continue
+*      Update visible map
+       socb @byte_80,*r12              ; Record map visited
+       szcb @byte_80,r13               ; Clear visited bit on hit block
+*      Coordinates from map address
+       ai   r12,-map
+       mov  r12,r0
+       andi r0,>3f
+       mov  r12,r1
+       srl  r1,6
+*      Calculate distance
+       .ifeq allow_missing_ray,1
+       mov  r2,r2                      ; Steps left
+       jne  cast_ray_7
+       li   r2,max_steps*256           ; Max distance
+       clr  r4                         ; Reset color
+       jmp  cast_ray_10
+       .endif
+cast_ray_7:
+       mov  r3,r3                      ; xSide ?
+       jne  cast_ray_8
+       s    r4,r7                      ; sideDistX -= deltaDistX
+       mov  r7,r2                      ; Distance
+       jmp  cast_ray_9
+cast_ray_8:
+       s    r5,r9                      ; sideDistY -= deltaDistY
+       mov  r9,r2                      ; Distance
+*      Color and side
+cast_ray_9:
+       clr  r4                         ; Clear color
+       movb r13,@r4lb                  ; Set color
+cast_ray_10:
+       abs  r3                         ; Side
+       .endproc                        ; Return
+*// cast_ray
+
+***************************************************************
+*
+* Cast ray loop
+*
+cast_ray_loop:
+       c    r7,r9                      ; sideDistX < sideDistY ?
+       jgt  cast_ray_loop_1
+       a    r4,r7                      ; sideDistX += deltaDistX
+       a    r6,r12                     ; mapX += stepX
+       movb *r12,r13                   ; Check map
+       .ifeq allow_missing_ray,1
+       jne  cast_ray_loop_3            ; Exit if not empty
+       dec  r2                         ; Distance count down
+       jne  cast_ray_loop              ; Loop until we give up
+       .else
+       jeq  cast_ray_loop
+       .endif
+       jmp  cast_ray_loop_3
+cast_ray_loop_1:
+       a    r5,r9                      ; sideDistY += deltaDistY
+       a    r8,r12                     ; mapY += stepY
+       movb *r12,r13                   ; Check map
+       .ifeq allow_missing_ray,1
+       jne  cast_ray_loop_2            ; Exit if not empty
+       dec  r2                         ; Distance count down
+       jne  cast_ray_loop              ; Loop until we give up
+       .else
+       jeq  cast_ray_loop
+       .endif
+cast_ray_loop_2:
+       seto r3                         ; xSide = -1
+       rt
+cast_ray_loop_3:
+       clr  r3                         ; xSide = 1
+       rt
+cast_ray_loop_end:
+       equ  $
+*// cast_ray_loop
+
+*********************************************************************
+*
+* Fish-eye correction
+* Calculate perpendicualar distance from euclidian distance in r2
+*
+fish_eye_correction:
+       mov  @ray_angle,r12             ; Ray direction
+       s    @angle,r12                 ; Angle offset
+       andi r12,angle_mask             ; Wrap around
+       mov  @cos_table(r12),r12        ; Cosine of angle (positive)
+       mpy  r2,r12                     ; Multiply by distance
+       movb @r12lb,r2                  ; Move result back
+       movb r13,@r2lb                  ; into r2
+       rt
+*// fish_eye_correction
+
+*********************************************************************
+*
+* Calculate wall color from map color
+*
+* r3: 0 = x face, 1 = y face
+* r4: map color
+* r5: column to update
+*
+* Updates column.column_texture and column.column_hit_x.
+*
+wall_color:
+       mov  r4,r4                      ; Color
+       jeq  wall_color_6               ; Return
+wall_color_1:
+       mov  @ray_angle,r12             ; Ray direction
+       mov  r3,r3                      ; Check side
+       jne  wall_color_3               ; Jump if y side
+*      Texture x side
+       mov  @sin_table(r12),r12        ; dirY
+       jlt  wall_color_2
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       a    @y,r12                     ; playerY + sin(a)
+       jmp  wall_color_5
+wall_color_2:
+       neg  r12
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       neg  r12
+       a    @y,r12                     ; playerY + sin(a)
+       jmp  wall_color_5
+*      Texture y side
+wall_color_3:
+       mov  @cos_table(r12),r12        ; dirX
+       jlt  wall_color_4
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       a    @x,r12                     ; playerY + sin(a)
+       jmp  wall_color_5
+wall_color_4:
+       neg  r12
+       mpy  @distance,r12              ; Multiply by distance
+       swpb r12                        ; Rearrange result
+       movb r13,@r12lb                 ; as FP 8.8
+       neg  r12
+       a    @x,r12                     ; playerY + sin(a)
+wall_color_5:
+       andi r12,>00ff
+       mov  r12,@column_hit_x(r5)
+wall_color_6:
+       srl  r4,1                       ; Shift out secret door bit
+       mov  r4,@column_texture(r5)
+       rt
+*// wall_color

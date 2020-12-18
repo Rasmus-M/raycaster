@@ -1,0 +1,354 @@
+*********************************************************************
+*
+* Calculate ROM bank and address for background
+*
+* On return @current_background_page_select contains the ROM back select
+* and R8 contains the address.
+*
+calc_background_address:
+       mov  @angle,r0
+       andi r0,>01c0
+       sla  r0,3
+       mov  @x,r1
+       xor  @y,r1
+       andi r1,>2100
+       a    r1,r0
+       ai   r0,background_sams_page
+       mov  r0,@current_background_page_select
+       li   r8,sams_window
+       rt
+*// calc_background_address
+
+*********************************************************************
+*
+* Draw even column
+*
+* r3: Screen buffer
+* r4: Column structure
+* r5: Column number
+* r8: Background address
+*
+draw_even_column:
+       .proc
+       mov  @column_height(r4),r6      ; Wall height
+       ci   r6,screen_height
+       jle  draw_even_column_1
+       li   r6,screen_height
+draw_even_column_1:
+*      Sky
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       srl  r2,1                       ; Div 2
+       mov  r2,r7                      ; Save height of sky
+       jeq  draw_even_column_3
+       bl   @draw_even_background_pixels
+*      Wall
+draw_even_column_3:
+       mov  r6,r2                      ; Wall height
+       jeq  draw_even_column_5         ; Jump if zero
+       a    r2,r8                      ; Add height to background source address
+       mov  @column_hit_x(r4),r0
+       mov  @column_texture(r4),r1     ; Color / texture number
+       bl   @prepare_texture           ; Calculate texture address
+       ai   r0,even_col_vector_0
+*      Cartridge bank for drawing code
+       mov  *r0+,r2
+       seto *r2
+*      Draw routine address
+       mov  *r0,r2
+       bl   *r2
+*      Floor
+draw_even_column_5:
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       s    r7,r2                      ; Minus sky height
+       jeq  draw_even_column_8
+       bl   @draw_even_background_pixels
+draw_even_column_8:
+       .endproc
+*// draw_even_column
+
+*********************************************************************
+*
+* Draw a column of background pixels (even)
+*
+* r8: Source address
+* r2: Number of pixels to draw (not zero)
+* r3: Screen buffer address
+* We can assume that if r8 is odd then r3 is also odd.
+*
+draw_even_background_pixels:
+       mov  @current_background_page_select,r0
+       mov  r0,@sams_reg_2
+       coc  @one,r3
+       jne  draw_even_background_pixels_0
+       movb *r8+,*r3+
+       dec  r2
+       jeq  draw_even_background_pixels_4
+draw_even_background_pixels_0:
+       mov  r2,r0
+       srl  r2,3
+       jeq  draw_even_background_pixels_2
+draw_even_background_pixels_1:
+       mov  *r8+,*r3+
+       mov  *r8+,*r3+
+       mov  *r8+,*r3+
+       mov  *r8+,*r3+
+       dec  r2
+       jne  draw_even_background_pixels_1
+draw_even_background_pixels_2:
+       andi r0,7
+       jeq  draw_even_background_pixels_4
+draw_even_background_pixels_3:
+       movb *r8+,*r3+
+       dec  r0
+       jne  draw_even_background_pixels_3
+draw_even_background_pixels_4:
+       rt
+*// draw_even_background_pixels
+
+*********************************************************************
+*
+* Draw odd column
+*
+* r3: Screen buffer
+* r4: Column structure
+* r5: Column number
+* r8: Background address
+*
+draw_odd_column:
+       .proc
+       mov  @column_height(r4),r6      ; Wall height
+       ci   r6,screen_height
+       jle  draw_odd_column_1
+       li   r6,screen_height
+draw_odd_column_1:
+*      Sky
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       srl  r2,1                       ; Div 2
+       mov  r2,r7                      ; Save height of sky
+       jeq  draw_odd_column_3
+       bl   @draw_odd_background_pixels
+*      Wall
+draw_odd_column_3:
+       mov  r6,r2                      ; Wall height
+       jeq  draw_odd_column_5          ; Jump if zero
+       a    r2,r8                      ; Add height to background source address
+       mov  @column_hit_x(r4),r0
+       mov  @column_texture(r4),r1     ; Color / texture number
+       bl   @prepare_texture           ; Calculate texture address
+       ai   r1,2048                    ; Add offset to odd column texture
+       ai   r0,odd_col_vector_0
+*      Cartridge bank for drawing code
+       mov  *r0+,r2
+       seto *r2
+*      Draw routine address
+       mov  *r0,r2
+       bl   *r2
+*      Floor
+draw_odd_column_5:
+       li   r2,screen_height           ; Screen height
+       s    r6,r2                      ; Minus wall height
+       s    r7,r2                      ; Minus sky height
+       jeq  draw_odd_column_8
+       bl   @draw_odd_background_pixels
+draw_odd_column_8:
+       .endproc
+*// draw_odd_column
+
+*********************************************************************
+*
+* Draw a column of background pixels (odd)
+*
+* r8: Source address
+* r2: Number of pixels to draw (not zero)
+* r3: Screen buffer address
+* We can assume that if r8 is odd then r3 is also odd.
+*
+draw_odd_background_pixels:
+       mov  @current_background_page_select,r0
+       ai   r0,>1000
+       mov  r0,@sams_reg_2
+       coc  @one,r3
+       jne  draw_odd_background_pixels_0
+       socb *r8+,*r3+
+       dec  r2
+       jeq  draw_odd_background_pixels_4
+draw_odd_background_pixels_0:
+       mov  r2,r0
+       srl  r2,3
+       jeq  draw_odd_background_pixels_2
+draw_odd_background_pixels_1:
+       soc  *r8+,*r3+
+       soc  *r8+,*r3+
+       soc  *r8+,*r3+
+       soc  *r8+,*r3+
+       dec  r2
+       jne  draw_odd_background_pixels_1
+draw_odd_background_pixels_2:
+       andi r0,7
+       jeq  draw_odd_background_pixels_4
+draw_odd_background_pixels_3:
+       socb *r8+,*r3+
+       dec  r0
+       jne  draw_odd_background_pixels_3
+draw_odd_background_pixels_4:
+       rt
+*// draw_odd_background_pixels
+
+*********************************************************************
+*
+* Calculate texture routine address
+*
+* r1: Texture number
+* r4: Column structure
+*
+* On return r0 contains the address of the routine to draw the column,
+* and r1 contains the texture source address,
+
+prepare_texture:
+*      Select SAMS bank
+       swpb r1
+       ai   r1,texture_sams_page
+       mov  r1,@sams_reg_2
+*      Texture address
+       mov  r0,r1
+       srl  r1,3                       ; Column of texture
+       sla  r1,6                       ; * 64
+       ai   r1,textures                ; Base texture column source address
+*      Column drawing vector offset
+       mov  @column_height(r4),r0
+       ci   r0,max_texture_height_2    ; Is every second height indexed?
+       jh   prepare_texture_1
+       ;      srl  r0,1                       ; / 2
+       ;      sla  r0,2                       ; * 4
+       sla  r0,1                       ; * 2
+       jmp  prepare_texture_3
+prepare_texture_1:
+       ci   r0,max_texture_height_8    ; Is every 8th height indexed?
+       jle   prepare_texture_2
+       li   r0,max_texture_height_8    ; Above max, set to max value
+prepare_texture_2:
+       ai   r0,-max_texture_height_2
+       srl  r0,3                       ; / 8
+       sla  r0,2                       ; * 4
+       ai   r0,max_texture_height_2*2
+prepare_texture_3:
+       rt
+*// prepare_texture
+
+*********************************************************************
+*
+* Draw texture
+*
+* r0: column
+* r1: row
+* r2: width
+* r3: height
+* r4: texture number
+* r5: depth/distance (FP 8.8)
+*
+* Modifies all registers except r3, r10, r15
+*
+* Texture organised as:
+* Pixels in left nybble (32 columns x 64 rows = 2048 bytes)
+* Pixels in right nybble (32 columns x 64 rows = 2048 bytes)
+*
+draw_texture:
+       .proc
+       .push r15
+       andi r3,>00fe
+       mov  r5,r15                     ; Save depth/distance
+*      Screen buffer address (r1)
+       mov  r0,r8                      ; Save screen column
+       mov  r0,r13                     ; Screen column
+       jgt  draw_texture_0a
+       neg  r13
+draw_texture_0a:
+       andi r13,>003e                  ; Make even
+       li   r14,screen_height/2        ; Column size in bytes
+       mpy  r14,r13                    ; Even column * column size in bytes
+       mov  r0,r0
+       jgt  draw_texture_0b
+       neg  r14
+draw_texture_0b:
+       a    r14,r1                     ; Add to row
+       ai   r1,screen_buffer           ; Add base address
+*      Texture address (r0)
+       swpb r4                         ; To MSB
+       ai   r4,texture_sams_page       ; Add base SAMS page
+       mov  r4,@sams_reg_2             ; Page it in
+       li   r0,sams_window             ; Texture base address (FP 16.0)
+*      Texture X offset (r4) and increment (r5)
+       clr  r4                         ; Texture X offset FP 8.8
+       ci   r2,texture_width           ; Check how to calculate texture width / texture width
+       jgt  draw_texture_1
+       clr  r13                        ; Texture width FP 24.8
+       li   r14,texture_width*256
+       div  r2,r13                     ; Div by texture width FP 16.0 -> increment as FP 8.8
+       jmp  draw_texture_2
+draw_texture_1:
+       li   r13,texture_width          ; Texture width FP 16.16
+       clr  r14
+       div  r2,r13                     ; Div texture width FP 16.0 -> increment as FP 0.16
+       srl  r13,8                      ; Increment as FP 8.8
+draw_texture_2:
+       mov  r13,r5                     ; Texture X offset increment per pixel FP 8.8
+*      Address of unrolled drawing code
+       mov  r3,r6
+       sla  r6,1
+       ai   r6,sprite_index
+       mov  *r6+,r7
+       mov  *r6,r6
+*      Column loop
+draw_texture_5:
+       mov  r8,r13                     ; Screen column
+       jlt  draw_texture_5a            ; Skip column if out of screen
+       ci   r13,screen_width-1         ; Check against right side of screen
+       jgt  draw_texture_5a            ; Skip column if out of screen
+       sla  r13,4                      ; * 16 (column_size)
+       c    r15,@columns+column_distance(r13)  ; Compare texture depth to wall distance
+       jlt  draw_texture_6             ; Draw if less than
+*      Skip column
+draw_texture_5a:
+       a    r3,r1
+       jmp  draw_texture_11
+*      Draw column
+draw_texture_6:
+       mov  r15,@columns+column_distance(r13)    ; Record new distance for column
+       seto @columns+column_redraw(r13) ; Mark column for drawing
+       andi r0,>f000                   ; Round texture address to whole 4K
+       mov  r4,r13                     ; Texture x offset
+       andi r13,>1f00                  ; Isolate texture column bits
+       srl  r13,2                      ; Texture column index * 64
+       soc  r13,r0                     ; Add to texture address
+       coc  @one,r8                    ; Test if screen column is even/odd
+       jeq  draw_texture_7             ; Jump if odd
+*      Even destination column
+       li   r9,>f000                   ; Mask for even pixel
+       andi r0,>f7ff                   ; Modify texture address for even pixels
+       jmp  draw_texture_8
+*      Odd destination column
+draw_texture_7:
+       li   r9,>0f00                   ; Mask for odd pixel
+       ori  r0,>0800                   ; Modify texture address for odd pixels
+*      Row loop
+draw_texture_8:
+       seto *r7                        ; Select ROM bank for drawing routine
+       bl   *r6                        ; Call drawing routine. On return r0 += texture_height, r1 += height
+       bl   @check_int
+draw_texture_11:
+       s    r3,r1                      ; Move screen buffer address back to top of column
+       coc  @one,r8                    ; Test if screen column is even/odd
+       jne  draw_texture_12            ; Jump if even
+       ai   r1,screen_height           ; For odd column, move screen buffer address to next column
+draw_texture_12:
+       a    r5,r4                      ; Increment texture x offset
+       inc  r8                         ; Next column
+       dec  r2                         ; Column counter (width)
+       jne  draw_texture_5             ; Next column
+*      Return
+       .pop r15
+       .endproc
+*// draw_texture
