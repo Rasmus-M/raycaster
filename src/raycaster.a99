@@ -226,8 +226,10 @@ column_redraw_cleared:
        equ  full_redraw_required+2
 current_background_page_select:
        equ  column_redraw_cleared+2
-pointer_x:
+has_sprite_moved:
        equ  current_background_page_select+2
+pointer_x:
+       equ  has_sprite_moved+2
 pointer_y:
        equ  pointer_x+2
 pointer_pattern:
@@ -568,6 +570,11 @@ draw_screen_5:
 *
 draw_sprites:
        .proc
+       abs  @full_redraw_required
+       jne  draw_sprites_0
+       abs  @has_sprite_moved
+       jeq  draw_sprites_3
+draw_sprites_0:
        li   r4,sprites
        mov  @n_sprites,r5
        jeq  draw_sprites_3
@@ -1044,6 +1051,7 @@ upload_screen_loop_end:
 *
 move_sprites:
        .proc
+       clr  @has_sprite_moved
        li   r4,sprites
        mov  @n_sprites,r5
        jeq  move_sprites_3
@@ -1116,6 +1124,7 @@ move_sprites_8:
 *      Move
        mov  r0,@sprite_x(r4)
        mov  r1,@sprite_y(r4)
+       seto @has_sprite_moved
 *      Attack
 move_sprites_9:
        ci   r7,>0500
@@ -2337,6 +2346,7 @@ init_level:
        seto @old_score
        clr  @status
        seto @full_redraw_required
+       seto @has_sprite_moved
        li   r0,>7800
        mov  r0,@pointer_x
        li   r0,>6000
