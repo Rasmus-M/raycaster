@@ -1896,6 +1896,7 @@ display_map_10:
 *      Next column
        ai   r0,->1000+64
        ai   r7,4-map_size
+       bl   @check_int
        dec  r3
        jne  display_map_7              ; Next column
 *      Display player position
@@ -1916,8 +1917,8 @@ display_map_10:
        movb r0,*r15
        movb @r0lb,*r15
 *      Wait key
-       bl   @mute_sound
 display_map_1:
+       bl   @wait_int
        li   r0,KEY_M
        bl   @check_key
        jne  display_map_1
@@ -1925,6 +1926,7 @@ display_map_1:
        bl   @check_key
        jne  display_map_1
 display_map_2:
+       bl   @wait_int
        li   r0,KEY_M
        bl   @check_key
        jne  display_map_3
@@ -1932,6 +1934,7 @@ display_map_2:
        bl   @check_key
        jeq  display_map_2
 display_map_3:
+       bl   @wait_int
        li   r0,KEY_M
        bl   @check_key
        jne  display_map_3
@@ -1974,11 +1977,13 @@ display_map_background:
 *      Top
        li   r2,64*16
        bl   @vsmw
+       bl   @check_int
 *      Middle
        mov  r4,r0
        ai   r0,>800
        li   r2,64*16
        bl   @vsmw
+       bl   @check_int
        .endproc
 *// display_map_background
 
