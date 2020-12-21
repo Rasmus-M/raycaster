@@ -1,0 +1,425 @@
+*********************************************************************
+*
+* Joystick input
+*
+joystick_input:
+       .proc
+       clr  r1
+       clr  r2
+       li   r0,JOY_FI
+       bl   @check_key
+*      Fire
+       jeq  joystick_input_0
+       mov  @pointer_click,r0
+       jne  joystick_input_1
+       seto @pointer_click
+       jmp  joystick_input_1
+joystick_input_0:
+       clr  @pointer_click
+*      Left
+joystick_input_1:
+       tb   1
+       jeq  joystick_input_2
+       li   r1,->0100
+       jmp  joystick_input_3
+*      Right
+joystick_input_2:
+       tb   2
+       jeq  joystick_input_3
+       li   r1,>0100
+*      Down
+joystick_input_3:
+       tb   3
+       jeq  joystick_input_4
+       li   r2,>0100
+       jmp  joystick_input_5
+*      Up
+joystick_input_4:
+       tb   4
+       jeq  joystick_input_5
+       li   r2,->0100
+       jmp  joystick_input_5
+joystick_input_5:
+       a    r1,@pointer_x
+       a    r2,@pointer_y
+joystick_input_6:
+       .endproc
+*// joystick_input
+
+*********************************************************************
+*
+* Actions when clicking with pointer on screen
+*
+pointer_actions:
+       .proc
+       mov  @pointer_click,r0
+       jeq  pointer_actions_3
+       jgt  pointer_actions_3
+       cb   @pointer_pattern,@pointer_pattern_target
+       jne  pointer_actions_4
+       seto @is_target_pointer
+       jmp  pointer_actions_5
+pointer_actions_4:
+       clr @is_target_pointer
+pointer_actions_5:
+       movb @pointer_pattern_arrow,@pointer_pattern
+       mov  @pointer_x,r6
+       sra  r6,8
+       ai   r6,5
+       andi r6,>00ff
+       mov  @pointer_y,r7
+       sra  r7,8
+       ai   r7,4
+       andi r7,>00ff
+       ci   r7,screen_height
+       jhe  pointer_actions_1
+*      Raycasting area
+       mov  r6,r4
+       srl  r4,2                       ; Column index
+       sla  r4,4                       ; Column structure offset
+       ai   r4,columns                 ; Column structure address
+       mov  @column_map_x(r4),r0
+       swpb r0
+       mov  @column_map_y(r4),r1
+       swpb r1
+       bl   @get_map_address
+       clr  r3
+       movb *r2,r3
+       szcb @byte_80,r3
+       jeq  pointer_actions_2
+       swpb r3
+       ai   r3,-first_action_block
+       jlt  pointer_actions_2
+       andi r3,>00fe
+       mov  @block_jumptable(r3),r3
+       jeq  pointer_actions_2
+       bl   *r3
+       jmp  pointer_actions_2
+pointer_actions_1:
+       ci   r7,192
+       jhe  pointer_actions_2
+*      Bottom panel
+       mov  r6,r0
+       mov  r7,r1
+       srl  r0,5                       ; Icon column = x / 32
+       ai   r1,-screen_height          ; y relative to bottom panel
+       srl  r1,5                       ; Icon row = y / 32
+       sla  r1,3                       ; Icon row * 8
+       a    r0,r1                      ; Icon row * 8 + icon column
+       sla  r1,1
+       mov  @icon_jumptable(r1),r0
+       jeq  pointer_actions_2
+       bl   *r0
+pointer_actions_2:
+       abs  @pointer_click
+pointer_actions_3:
+       .endproc
+block_jumptable:
+       data door_block_clicked
+       data 0
+       data button_block_clicked
+       data 0
+       data red_potion_block_clicked
+       data green_potion_block_clicked
+       data key_block_clicked
+       data 0
+icon_jumptable:
+       data 0
+       data 0
+       data 0
+       data 0                          ; Compass
+       data 0                          ; Compass
+       data 0
+       data 0
+       data 0
+*      Row 2
+       data 0                          ; Score
+       data display_map
+       data fire_bullet
+       data arrows_clicked
+       data arrows_clicked
+       data inventory_clicked_left
+       data inventory_clicked_middle
+       data inventory_clicked_right
+*// pointer_actions
+
+*********************************************************************
+*
+* Arrows clicked
+*
+arrows_clicked:
+       .proc
+       mov  r6,r0
+       ai   r0,-105
+       jlt  arrows_clicked_1
+       ci   r0,48
+       jhe  arrows_clicked_1
+       mov  r7,r1
+       ai   r1,-160
+       jlt  arrows_clicked_1
+       srl  r0,4                       ; x / 16
+       srl  r1,4                       ; y / 16
+       sla  r1,2
+       a    r0,r1
+       sla  r1,1
+       mov  @arrows_jumptable(r1),r0
+       jeq  arrows_clicked_1
+       bl   *r0
+arrows_clicked_1:
+       .endproc
+arrows_jumptable:
+       data turn_left
+       data move_forward
+       data turn_right
+       data 0
+       data move_left
+       data move_back
+       data move_right
+       data 0
+*// arrows_clicked
+
+*********************************************************************
+*
+* Inventory clicked left
+*
+inventory_clicked_left:
+       .proc
+       mov  @inventory_index,r1
+       dec  r1
+       andi r1,inventory_size-1
+       ci   r6,176
+       jhe  inventory_clicked_left_1
+       mov  r1,@inventory_index
+       bl   @display_inventory
+       movb @pointer_pattern_arrow,@pointer_pattern
+       jmp  inventory_clicked_left_2
+inventory_clicked_left_1:
+       bl   @inventory_clicked
+inventory_clicked_left_2:
+       .endproc
+*// inventory_clicked_left
+
+*********************************************************************
+*
+* Inventory clicked middle
+*
+inventory_clicked_middle:
+       .proc
+       mov  @inventory_index,r1
+       bl   @inventory_clicked
+       .endproc
+*// inventory_clicked_middle
+
+*********************************************************************
+*
+* Inventory clicked right
+*
+inventory_clicked_right:
+       .proc
+       mov  @inventory_index,r1
+       inc  r1
+       andi r1,inventory_size-1
+       ci   r6,240
+       jl   inventory_clicked_right_1
+       mov  r1,@inventory_index
+       bl   @display_inventory
+       movb @pointer_pattern_arrow,@pointer_pattern
+       jmp  inventory_clicked_right_2
+inventory_clicked_right_1:
+       bl   @inventory_clicked
+inventory_clicked_right_2:
+       .endproc
+*// inventory_clicked_right
+
+*********************************************************************
+*
+* Inventory clicked
+*
+* r1: inventory index clicked
+*
+inventory_clicked:
+       .proc
+       mov  r1,r0
+       sla  r0,1                       ; * object_size
+       ai   r0,inventory
+       mov  *r0,r2                     ; Get object
+       jeq  inventory_clicked_1
+       mov  @object_type(r2),r3        ; Get object type
+       mov  @object_type_number(r3),r4
+       sla  r4,1
+       mov  @inventory_jumptable(r4),r4
+       jeq  inventory_clicked_1
+       bl   *r4
+inventory_clicked_1
+       .endproc
+inventory_jumptable:
+       data red_potion_clicked
+       data green_potion_clicked
+       data key_clicked
+*// inventory_clicked
+
+*********************************************************************
+*
+* Red potion clicked
+*
+red_potion_clicked:
+       .proc
+       bl   @remove_inventory
+       li   r0,8
+       bl   @add_health
+       .endproc
+*// red_potion_clicked
+
+*********************************************************************
+*
+* Green potion clicked
+*
+green_potion_clicked:
+       .proc
+       bl   @remove_inventory
+       li   r0,4
+       bl   @add_health
+       .endproc
+*// green_potion_clicked
+
+*********************************************************************
+*
+* Key clicked
+*
+key_clicked:
+       mov  r1,@target_inventory_index
+       mov  r2,@selected_object
+       movb @pointer_pattern_target,@pointer_pattern
+       rt
+*// key_clicked
+
+*********************************************************************
+*
+* Door block clicked
+*
+door_block_clicked:
+       .proc
+       abs  @is_target_pointer
+       jeq  door_block_clicked_1
+       mov  @selected_object,r8
+       mov  @object_type(r8),r8
+       ci   r8,object_type_key
+       jne  door_block_clicked_1
+       bl   @find_door
+       mov  r8,r8
+       jeq  door_block_clicked_1
+       clr  @door_key(r8)
+       .push r0
+       .push r1
+       .push r2
+       mov  @target_inventory_index,r1
+       bl   @remove_inventory
+       .pop r2
+       .pop r1
+       .pop r0
+door_block_clicked_1:
+       bl   @open_door
+       .endproc
+*// door_block_clicked
+
+*********************************************************************
+*
+* Button block clicked
+*
+button_block_clicked:
+       .proc
+       mov  @column_hit_x(r4),r0
+       srl  r0,5
+       ci   r0,3
+       jne  button_block_clicked_1
+       bl   @get_vertical_texture_pointer_position
+       mov  r1,r1
+       jlt  button_block_clicked_1
+       andi r1,>00e0
+       ci   r1,>0060
+       jne  button_block_clicked_1
+*      Remove block
+       movb @block_space,*r2
+       seto @full_redraw_required
+button_block_clicked_1:
+       .endproc
+*// button_block_clicked
+
+*********************************************************************
+*
+* Red potion block clicked
+*
+red_potion_block_clicked:
+       .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  red_potion_block_clicked_1
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       bl   @add_inventory
+red_potion_block_clicked_1:
+       .endproc
+*// red_potion_block_clicked
+*********************************************************************
+*
+* Green potion block clicked
+*
+green_potion_block_clicked:
+       .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  green_potion_block_clicked_1
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       bl   @add_inventory
+green_potion_block_clicked_1:
+       .endproc
+*// green_potion_block_clicked
+
+*********************************************************************
+*
+* Key block clicked
+*
+key_block_clicked:
+       .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  key_block_clicked_1
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       bl   @add_inventory
+key_block_clicked_1:
+       .endproc
+*// key_block_clicked
+
+****************************************************
+*
+* Get vertical texture pointer position
+*
+* r4: address of column structure
+* r7: screen y
+* On return r1 contains the relative position as FP 8.8,
+* or -1 if no hit.
+*
+get_vertical_texture_pointer_position:
+       mov  @column_height(r4),r5      ; Column height
+       li   r8,screen_height           ; Screen height
+       s    r5,r8                      ; Screen height - column height
+       sra  r8,1                       ; / 2 = texture top y
+       mov  r7,r1                      ; Screen y
+       s    r8,r1                      ; Screen y - texture top y
+       jlt  get_vertical_texture_pointer_position_1 ; Offset from top of column < 0?
+       c    r1,r5                      ; Offset from top of column >= column height
+       jhe  get_vertical_texture_pointer_position_1
+*      Relative
+       mov  r1,r8                      ; Offset FP 16.16
+       clr  r9
+       div  r5,r8                      ; Offset / height (FP 0.16)
+       mov  r8,r1
+       srl  r1,8
+       jmp get_vertical_texture_pointer_position_2
+get_vertical_texture_pointer_position_1:
+       seto r1
+get_vertical_texture_pointer_position_2:
+       rt
+* // get_vertical_texture_pointer_position
