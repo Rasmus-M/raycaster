@@ -317,6 +317,7 @@ draw_texture_5a:
 *      Draw column
 draw_texture_6:
        mov  r15,@columns+column_distance(r13)    ; Record new distance for column
+       mov  @current_sprite,@columns+column_sprite(r13)
        seto @columns+column_redraw(r13) ; Mark column for drawing
        andi r0,>f000                   ; Round texture address to whole 4K
        mov  r4,r13                     ; Texture x offset

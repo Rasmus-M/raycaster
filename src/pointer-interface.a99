@@ -63,25 +63,34 @@ pointer_actions_4:
        clr @is_target_pointer
 pointer_actions_5:
        movb @pointer_pattern_arrow,@pointer_pattern
-       mov  @pointer_x,r6
-       sra  r6,8
-       ai   r6,5
+       mov  @pointer_x,r6              ; Pointer sprite x
+       sra  r6,8                       ; Shift to LSB
+       ai   r6,5                       ; Offset to pointer tip
        andi r6,>00ff
-       mov  @pointer_y,r7
-       sra  r7,8
-       ai   r7,4
+       mov  @pointer_y,r7              ; Pointer sprite y
+       sra  r7,8                       ; Shift to LSB
+       ai   r7,4                       ; Offset to pointer tip
        andi r7,>00ff
        ci   r7,screen_height
        jhe  pointer_actions_1
 *      Raycasting area
-       mov  r6,r4
-       srl  r4,2                       ; Column index
+       mov  r6,r4                      ; Pointer x
+       srl  r4,2                       ; Column index (0-63)
        sla  r4,4                       ; Column structure offset
        ai   r4,columns                 ; Column structure address
-       mov  @column_map_x(r4),r0
-       swpb r0
-       mov  @column_map_y(r4),r1
-       swpb r1
+*      Sprite collision
+       mov  @column_sprite(r4),r3
+       jeq  pointer_actions_0
+       clr  @column_sprite(r4)
+       mov  r3,r4
+       bl   @hit_sprite
+       jmp  pointer_actions_2
+*      Wall collision
+pointer_actions_0:
+       clr  r0
+       movb @column_map_x(r4),r0       ; Wall hit position x
+       clr  r1
+       movb @column_map_y(r4),r1       ; Wall hit position y
        bl   @get_map_address
        clr  r3
        movb *r2,r3

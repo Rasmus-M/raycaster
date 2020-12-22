@@ -228,8 +228,10 @@ current_background_page_select:
        equ  column_redraw_cleared+2
 has_sprite_moved:
        equ  current_background_page_select+2
-pointer_x:
+current_sprite:
        equ  has_sprite_moved+2
+pointer_x:
+       equ  current_sprite+2
 pointer_y:
        equ  pointer_x+2
 pointer_pattern:
@@ -455,8 +457,8 @@ cast_rays_1:
        mov  @ray_angle,r2              ; Direction
        bl   @cast_ray                  ; Cast ray (r2=distance, r3=side, r4=color)
        mov  @column_ptr,r5
-       mov  r0,@column_map_x(r5)
-       mov  r1,@column_map_y(r5)
+       movb @r0lb,@column_map_x(r5)
+       movb @r1lb,@column_map_y(r5)
        mov  r2,@distance               ; Save euclidian distance
        bl   @fish_eye_correction       ; Adjust distance in r2
 *      Calculate height and color of column
@@ -575,6 +577,7 @@ draw_sprites:
        abs  @has_sprite_moved
        jeq  draw_sprites_3
 draw_sprites_0:
+       bl   @clear_column_sprite_pointers
        li   r4,sprites
        mov  @n_sprites,r5
        jeq  draw_sprites_3
@@ -621,6 +624,21 @@ draw_sprites_3:
 
 *********************************************************************
 *
+* Clear column sprite pointers
+*
+clear_column_sprite_pointers:
+       li   r4,columns+column_sprite
+       li   r5,n_rays
+clear_column_sprite_pointers_1:
+       clr  *r4
+       ai   r4,column_size
+       dec  r5
+       jne  clear_column_sprite_pointers_1
+       rt
+*// clear_column_sprite_pointers
+
+*********************************************************************
+*
 * Draw sprite
 *
 * r4: sprite to draw
@@ -629,8 +647,8 @@ draw_sprites_3:
 *
 draw_sprite:
        .proc
-       .push r4
        .push r5
+       mov  r4,@current_sprite
 *      Width, Height
        ci   r7,>0100
        jgt  draw_sprite_1
@@ -658,14 +676,14 @@ draw_sprite_2:
        mov  r7,r5                      ; Depth/distance
 *      Draw sprite
        bl   @draw_texture
-       .pop r5
-       .pop r4
 *      Speak first time
+       mov  @current_sprite,r4
        mov  @sprite_speech(r4),r1
        jeq  draw_sprite_11
        bl   @say_phrase
        clr  @sprite_speech(r4)
 draw_sprite_11:
+       .pop r5
        .endproc
 *// draw_sprite
 

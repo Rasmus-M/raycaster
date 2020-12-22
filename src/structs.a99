@@ -16,6 +16,8 @@ column_redraw:
 column_map_x:
        equ  12
 column_map_y:
+       equ  13
+column_sprite:
        equ  14
 column_size:
        equ  16                         ; Must be 2^n
