@@ -1263,10 +1263,7 @@ sprite_collisions_1:
        abs  r3
        ci   r3,>0100
        jgt  sprite_collisions_2
-       bl   @remove_sprite
-       li   r0,100
-       a    r0,@score
-       bl   @play_chest
+       bl   @collect_sprite
        jmp  sprite_collisions_3
 sprite_collisions_2:
        ai   r4,sprite_size
@@ -1416,6 +1413,22 @@ hit_sprite_2:
 hit_sprite_3:
        .endproc
 *// hit_sprite
+
+*********************************************************************
+*
+* Collect sprite
+*
+* r4: Points to sprite structure
+*
+collect_sprite:
+       .proc
+       bl   @remove_sprite
+       li   r0,100
+       a    r0,@score
+       bl   @play_chest
+       seto @full_redraw_required
+       .endproc
+*// collect_sprite
 
 ****************************************************
 *

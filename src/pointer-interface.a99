@@ -83,7 +83,7 @@ pointer_actions_5:
        jeq  pointer_actions_0
        clr  @column_sprite(r4)
        mov  r3,r4
-       bl   @hit_sprite
+       bl   @sprite_clicked
        jmp  pointer_actions_2
 *      Wall collision
 pointer_actions_0:
@@ -301,6 +301,28 @@ key_clicked:
        movb @pointer_pattern_target,@pointer_pattern
        rt
 *// key_clicked
+
+*********************************************************************
+*
+* Sprite clicked
+*
+* r4: Points to sprite structure
+*
+sprite_clicked:
+       .proc
+       mov  @sprite_type(r4),r1
+       mov  @sprite_type_props(r1),r0
+       coc  @sprite_can_be_attacked,r0
+       jne  sprite_clicked_1
+       bl   @hit_sprite
+       jmp  sprite_clicked_2
+sprite_clicked_1:
+       coc  @sprite_can_be_collected,r0
+       jne  sprite_clicked_2
+       bl   @collect_sprite
+sprite_clicked_2:
+       .endproc
+*// sprite_clicked
 
 *********************************************************************
 *
