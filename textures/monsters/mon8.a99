@@ -50,7 +50,7 @@
        byte >cc,>cc,>cc,>cc,>a1,>a1,>2c,>2c
        byte >cc,>cc,>c1,>c1,>1a,>1a,>cc,>cc
        byte >c1,>c1,>11,>11,>19,>19,>1b,>1b
-       byte >ca,>ca,>ab,>ab,>6a,>6a,>11,>11
+       byte >ca,>ca,>ab,>ab,>6a,>6a,>f1,>f1
        byte >11,>11,>aa,>aa,>a1,>a1,>b1,>b1
        byte >b1,>b1,>a1,>a1,>a1,>a1,>aa,>aa
        byte >a1,>a1,>61,>61,>11,>11,>00,>00
@@ -58,7 +58,7 @@
        byte >cc,>cc,>cc,>cc,>c1,>c1,>cc,>cc
        byte >cc,>cc,>1c,>1c,>ac,>ac,>cc,>cc
        byte >1c,>1c,>1c,>1c,>aa,>aa,>aa,>aa
-       byte >61,>61,>61,>61,>6a,>6a,>a1,>a1
+       byte >61,>61,>61,>61,>6a,>6a,>af,>af
        byte >a1,>a1,>6a,>6a,>11,>11,>11,>11
        byte >1a,>1a,>1a,>1a,>aa,>aa,>6a,>6a
        byte >16,>16,>16,>16,>11,>11,>00,>00

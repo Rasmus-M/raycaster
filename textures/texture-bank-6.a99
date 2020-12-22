@@ -1,4 +1,3 @@
-       copy "monsters/mon7.a99"
        copy "monsters/mon8.a99"
        copy "monsters/mon9.a99"
        copy "monsters/mon10.a99"
@@ -6,3 +5,4 @@
        copy "monsters/mon12.a99"
        copy "monsters/mon13.a99"
        copy "monsters/mon14.a99"
+       copy "monsters/mon15.a99"

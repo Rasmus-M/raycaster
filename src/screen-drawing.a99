@@ -49,7 +49,7 @@ draw_even_column_3:
        a    r2,r8                      ; Add height to background source address
        mov  @column_hit_x(r4),r0
        mov  @column_texture(r4),r1     ; Color / texture number
-       bl   @prepare_texture           ; Calculate texture address
+       bl   @calc_texture_address           ; Calculate texture address
        ai   r0,even_col_vector_0
 *      Cartridge bank for drawing code
        mov  *r0+,r2
@@ -137,7 +137,7 @@ draw_odd_column_3:
        a    r2,r8                      ; Add height to background source address
        mov  @column_hit_x(r4),r0
        mov  @column_texture(r4),r1     ; Color / texture number
-       bl   @prepare_texture           ; Calculate texture address
+       bl   @calc_texture_address           ; Calculate texture address
        ai   r1,2048                    ; Add offset to odd column texture
        ai   r0,odd_col_vector_0
 *      Cartridge bank for drawing code
@@ -207,7 +207,7 @@ draw_odd_background_pixels_4:
 * On return r0 contains the address of the routine to draw the column,
 * and r1 contains the texture source address,
 
-prepare_texture:
+calc_texture_address:
 *      Select SAMS bank
        swpb r1
        ai   r1,texture_sams_page
@@ -220,23 +220,23 @@ prepare_texture:
 *      Column drawing vector offset
        mov  @column_height(r4),r0
        ci   r0,max_texture_height_2    ; Is every second height indexed?
-       jh   prepare_texture_1
+       jh   calc_texture_address_1
        ;      srl  r0,1                       ; / 2
        ;      sla  r0,2                       ; * 4
        sla  r0,1                       ; * 2
-       jmp  prepare_texture_3
-prepare_texture_1:
+       jmp  calc_texture_address_3
+calc_texture_address_1:
        ci   r0,max_texture_height_8    ; Is every 8th height indexed?
-       jle   prepare_texture_2
+       jle   calc_texture_address_2
        li   r0,max_texture_height_8    ; Above max, set to max value
-prepare_texture_2:
+calc_texture_address_2:
        ai   r0,-max_texture_height_2
        srl  r0,3                       ; / 8
        sla  r0,2                       ; * 4
        ai   r0,max_texture_height_2*2
-prepare_texture_3:
+calc_texture_address_3:
        rt
-*// prepare_texture
+*// calc_texture_address
 
 *********************************************************************
 *

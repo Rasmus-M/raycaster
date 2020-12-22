@@ -43,7 +43,7 @@ sprite_type_grate:
        data 0
        data 0
        data 0
-sprite_type_obj5:                      ; stump
+sprite_type_stump:
        data :0000000000000000
        data first_object_texture+5
        data 0

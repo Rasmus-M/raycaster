@@ -136,7 +136,7 @@ first_action_block:
 background_bank_select:
        equ  >6040
 background_sams_page:
-       equ  >4000
+       equ  >c000
 n_background_banks:
        equ  8
 background_address:

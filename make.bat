@@ -12,7 +12,7 @@ rem call make.bat
 cd ..
 
 cd textures
-rem call make.bat
+call make.bat
 cd ..
 
 cd panel
