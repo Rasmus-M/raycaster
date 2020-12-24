@@ -12,9 +12,9 @@ sams_reg_3:
 * Initialize SAMS
 *
 init_sams:
-*      Enable register access
-       li   r12,>1e00
-       sbo  0
+       .proc
+*      Endable register access
+       bl   @sams_enable_reg_access
 *      Set standard mapping
        li   r0,>4000
        clr  r1
@@ -25,9 +25,49 @@ init_sams_1:
        dec  r2
        jne  init_sams_1
 *      Enable mapper
+       bl   @sams_enable_mapper
+       .endproc
+*// init_sams
+
+*********************************************************************
+*
+* Enable SAMS register access
+*
+sams_enable_reg_access:
+       li   r12,>1e00
+       sbo  0
+       rt
+*// sams_enable_reg_access
+
+*********************************************************************
+*
+* Disable SAMS register access
+*
+sams_disable_reg_access:
+       li   r12,>1e00
+       sbz  0
+       rt
+*// sams_disable_reg_access
+
+*********************************************************************
+*
+* Enable SAMS mapper
+*
+sams_enable_mapper:
+       li   r12,>1e00
        sbo  1
        rt
-*// init_sams
+*// sams_enable_mapper
+
+*********************************************************************
+*
+* Disable SAMS mapper
+*
+sams_disable_mapper:
+       li   r12,>1e00
+       sbz  1
+       rt
+*// sams_disable_mapper
 
 *********************************************************************
 *

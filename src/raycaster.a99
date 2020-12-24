@@ -382,7 +382,15 @@ interrupt_1:
        mov  @wrksp+20,r10              ; Copy stack pointer
        li   r15,vdpwd
        bl   @upload_hw_sprites
+       mov  @tipi_crubase,r0
+       jne  interrupt_2
        bl   @joystick_input
+       jmp  interrupt_3
+interrupt_2:
+       bl   @sams_disable_reg_access
+       bl   @tipi_read_mouse
+       bl   @sams_enable_reg_access
+interrupt_3:
        bl   @module_player
        clr  r15
        rtwp
@@ -2043,6 +2051,10 @@ one_time_init:
        bl   @vmbw
 *      Init SAMS
        bl   @init_sams
+*      Detect TIPI
+       bl   @sams_disable_reg_access
+       bl   @tipi_detect
+       bl   @sams_enable_reg_access
 *      Clear scratch pad
        li   r0,padvar
        li   r2,>8400-padvar
@@ -2681,6 +2693,7 @@ euclidian_distance_2:
        copy "pointer-interface.a99"
        copy "vdp.a99"
        copy "sams.a99"
+       copy "tipi.a99"
        copy "speech.a99"
        copy "sound-fx-routines.a99"
        copy "music-player.a99"

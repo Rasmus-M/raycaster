@@ -1,0 +1,133 @@
+*********************************************************************
+*
+* TIPI read mouse
+*
+* r0: Length of message
+* r1: Address of message
+*
+tipi_read_mouse:
+       .proc
+       bl   @tipi_enable
+       li   r0,1
+       li   r1,tipi_msg_mouse
+       bl   @tipi_send_msg
+       li   r1,tipi_mouse_data
+       bl   @tipi_receive_msg
+       movb @tipi_mouse_button,r0
+       andi r0,>0100
+       jeq  tipi_read_mouse_1
+       mov  @pointer_click,r0
+       jne  tipi_read_mouse_1
+       seto @pointer_click
+       jmp  tipi_read_mouse_2
+tipi_read_mouse_1:
+       clr  @pointer_click
+tipi_read_mouse_2:
+       ab   @tipi_mouse_delta_x,@pointer_x
+       ab   @tipi_mouse_delta_y,@pointer_y
+       bl   @tipi_disable
+       .endproc
+*// tipi_read_mouse
+
+*********************************************************************
+*
+* Detect TIPI
+*
+tipi_detect:
+       .proc
+       li   r0,>1000
+       mov  r0,@tipi_crubase
+tipi_detect_1:
+       bl   @tipi_enable
+       li   r0,>4008
+       mov  *r0,r0                     ; First DSR entry
+       ai   r0,5                       ; Device name starts here
+       li   r1,tipi_name
+       li   r2,4
+tipi_detect_4:
+       cb   *r0+,*r1+
+       jne  tipi_detect_5
+       dec  r2
+       jne  tipi_detect_4
+       jmp  tipi_detect_3
+tipi_detect_5:
+       mov  @tipi_crubase,r0
+       ai   r0,>0100
+       mov  r0,@tipi_crubase
+       ci   r0,>2000
+       jlt  tipi_detect_1
+tipi_detect_2:
+       clr  @tipi_crubase
+tipi_detect_3:
+       bl   @tipi_disable
+       .endproc
+tipi_name:
+       text "TIPI"
+*// tipi_detect
+
+*********************************************************************
+*
+* Enable TIPI
+*
+tipi_enable:
+       mov  @tipi_crubase,r12
+       sbo  0
+       rt
+*// tipi_enable
+
+*********************************************************************
+*
+* TIPI disable
+*
+tipi_disable:
+       mov  @tipi_crubase,r12
+       sbz  0
+       rt
+*// tipi_disable
+
+*********************************************************************
+*
+* TIPI send messsage
+*
+* r0: Length of message
+* r1: Address of message
+*
+tipi_send_msg:
+       .proc
+       mov  @>4012,r4
+       bl   *r4
+       .endproc
+*// tipi_send_msg
+
+*********************************************************************
+*
+* TIPI receive message
+*
+* r1: Address of message
+*
+* On return r0 contains the length of the message.
+*
+tipi_receive_msg:
+       .proc
+       mov  @>4010,r4
+       bl   *r4
+       .endproc
+*// tipi_receive_msg
+
+*********************************************************************
+*
+* Data
+*
+tipi_crubase:
+       data 0
+tipi_msg_mouse:
+       byte >20
+       even
+tipi_mouse_data:
+       equ  $
+tipi_mouse_delta_x:
+       byte >00
+tipi_mouse_delta_y:
+       byte >00
+tipi_mouse_button:
+       byte >00
