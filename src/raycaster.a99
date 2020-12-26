@@ -2029,7 +2029,7 @@ init_level_7:
        bl   @vmbw
        bl   @set_sal
 *      Music
-       li   r0,obstacles_module
+       li   r0,raycaster_module
        bl   @play_module
        .endproc
 *// init_level
@@ -2800,7 +2800,7 @@ inventory:
 
        copy "math_tables.a99"          ; 2K
        copy "sound-fx.a99"
-       copy "obstacles-music.a99"
+       copy "../audio/raycaster-music.a99"
        copy "sprite-types.a99"
        copy "level.a99"
 col_index:
