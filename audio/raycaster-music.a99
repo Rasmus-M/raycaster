@@ -6,490 +6,536 @@ raycaster_module:
        data >0000
 raycaster_track_01:
        data snd_channel_2
-       data raycaster_seq_01DC
-       data raycaster_seq_01DC
-       data raycaster_seq_01E1
-       data raycaster_seq_01E6
 raycaster_track_01_rpt:
-       data raycaster_seq_01F0
-       data raycaster_seq_01F0
-       data raycaster_seq_01E1
-       data raycaster_seq_01E1
-       data raycaster_seq_01F5
-       data raycaster_seq_01F5
-       data raycaster_seq_01F5
-       data raycaster_seq_01F5
-       data raycaster_seq_01FF
-       data raycaster_seq_0207
-       data raycaster_seq_020F
-       data raycaster_seq_01E1
-       data raycaster_seq_01FF
-       data raycaster_seq_0216
-       data raycaster_seq_021E
-       data raycaster_seq_01F5
-       data raycaster_seq_01FF
-       data raycaster_seq_0207
-       data raycaster_seq_020F
-       data raycaster_seq_01E1
-       data raycaster_seq_0223
-       data raycaster_seq_022D
-       data raycaster_seq_0237
-       data raycaster_seq_01F0
-       data raycaster_seq_023C
-       data raycaster_seq_0244
-       data raycaster_seq_024C
+       data raycaster_seq_021C
+       data raycaster_seq_021C
+       data raycaster_seq_0221
+       data raycaster_seq_0226
+       data raycaster_seq_0230
+       data raycaster_seq_0230
+       data raycaster_seq_0221
+       data raycaster_seq_0221
+       data raycaster_seq_0235
+       data raycaster_seq_023F
+       data raycaster_seq_023F
+       data raycaster_seq_023F
+       data raycaster_seq_0249
        data raycaster_seq_0251
-       data raycaster_seq_0256
-       data raycaster_seq_025E
-       data raycaster_seq_021E
-       data raycaster_seq_0266
-       data raycaster_seq_023C
-       data raycaster_seq_0244
-       data raycaster_seq_024C
+       data raycaster_seq_0259
+       data raycaster_seq_0221
+       data raycaster_seq_0249
+       data raycaster_seq_0260
+       data raycaster_seq_0268
+       data raycaster_seq_023F
+       data raycaster_seq_0249
        data raycaster_seq_0251
-       data raycaster_seq_0270
-       data raycaster_seq_0278
-       data raycaster_seq_0251
-       data raycaster_seq_0266
+       data raycaster_seq_0259
+       data raycaster_seq_0221
+       data raycaster_seq_026D
+       data raycaster_seq_0277
+       data raycaster_seq_0281
+       data raycaster_seq_0230
+       data raycaster_seq_0286
+       data raycaster_seq_028E
+       data raycaster_seq_0296
+       data raycaster_seq_029B
+       data raycaster_seq_02A0
+       data raycaster_seq_0260
+       data raycaster_seq_0268
+       data raycaster_seq_02A8
+       data raycaster_seq_0286
+       data raycaster_seq_028E
+       data raycaster_seq_02B2
+       data raycaster_seq_029B
+       data raycaster_seq_02B7
+       data raycaster_seq_02BF
+       data raycaster_seq_029B
+       data raycaster_seq_02A8
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
        data >00FF
        data raycaster_track_01_rpt
        data >0000
 raycaster_track_02:
        data snd_channel_3
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_0283
-       data raycaster_seq_0283
 raycaster_track_02_rpt:
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_0283
-       data raycaster_seq_0283
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_0283
-       data raycaster_seq_0283
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_0283
-       data raycaster_seq_0283
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_0283
-       data raycaster_seq_0283
-       data raycaster_seq_0288
-       data raycaster_seq_027E
-       data raycaster_seq_0283
-       data raycaster_seq_0283
-       data raycaster_seq_0283
-       data raycaster_seq_0283
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_028D
-       data raycaster_seq_028D
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_0292
-       data raycaster_seq_0297
-       data raycaster_seq_028D
-       data raycaster_seq_028D
-       data raycaster_seq_028D
-       data raycaster_seq_028D
-       data raycaster_seq_027E
-       data raycaster_seq_027E
-       data raycaster_seq_0283
-       data raycaster_seq_0297
-       data raycaster_seq_028D
-       data raycaster_seq_028D
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02CA
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CF
+       data raycaster_seq_02CF
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02D4
+       data raycaster_seq_02D9
+       data raycaster_seq_02CF
+       data raycaster_seq_02CF
+       data raycaster_seq_02CF
+       data raycaster_seq_02CF
+       data raycaster_seq_02C5
+       data raycaster_seq_02C5
+       data raycaster_seq_02CA
+       data raycaster_seq_02D9
+       data raycaster_seq_02CF
+       data raycaster_seq_02CF
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
        data >00FF
        data raycaster_track_02_rpt
        data >0000
 raycaster_track_03:
        data snd_channel_4
-       data raycaster_seq_029C
-       data raycaster_seq_029C
-       data raycaster_seq_029C
-       data raycaster_seq_029C
 raycaster_track_03_rpt:
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
-       data raycaster_seq_02A1
+       data raycaster_seq_02DE
+       data raycaster_seq_02DE
+       data raycaster_seq_02DE
+       data raycaster_seq_02DE
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02EC
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_02E3
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
+       data raycaster_seq_0218
        data >00FF
        data raycaster_track_03_rpt
        data >0000
-raycaster_seq_01D8:
+raycaster_seq_0218:
        data >0020
        data >0000
-raycaster_seq_01DC:
-       data raycaster_note_02AA
-       data >001F
-       data >0000
-raycaster_seq_027E:
-       data raycaster_note_02FB
-       data >001F
-       data >0000
-raycaster_seq_029C:
-       data raycaster_note_030A
-       data >001F
-       data >0000
-raycaster_seq_01E1:
-       data raycaster_note_02AD
-       data >001F
-       data >0000
-raycaster_seq_0283:
-       data raycaster_note_02FE
-       data >001F
-       data >0000
-raycaster_seq_01E6:
-       data raycaster_note_02AD
-       data >0003
-       data raycaster_note_02B0
-       data >0003
-       data raycaster_note_02B3
-       data >0003
-       data raycaster_note_02B6
-       data >0003
-       data raycaster_note_02B9
-       data >0003
-       data raycaster_note_02BC
-       data >0003
-       data raycaster_note_02BF
-       data >0003
-       data raycaster_note_02C2
-       data >0003
-       data >0000
-raycaster_seq_01F0:
-       data raycaster_note_02C5
-       data >001F
-       data >0000
-raycaster_seq_02A1:
-       data raycaster_note_030A
-       data >000B
-       data raycaster_note_030A
-       data >0003
-       data raycaster_note_030A
-       data >0007
-       data raycaster_note_030C
-       data >0003
-       data raycaster_note_030A
-       data >0003
-       data >0000
-raycaster_seq_01F5:
-       data raycaster_note_02B3
-       data >0003
-       data raycaster_note_02B0
-       data >0003
-       data raycaster_note_02B6
-       data >0003
-       data raycaster_note_02B3
-       data >0003
-       data raycaster_note_02B9
-       data >0003
-       data raycaster_note_02B6
-       data >0003
-       data raycaster_note_02BC
-       data >0003
-       data raycaster_note_02B9
-       data >0003
-       data >0000
-raycaster_seq_01FF:
-       data raycaster_note_02C8
-       data >000B
-       data raycaster_note_02CB
-       data >000B
-       data raycaster_note_02C8
-       data >0007
-       data >0000
-raycaster_seq_0207:
-       data raycaster_note_02CE
-       data >000B
-       data raycaster_note_02D1
-       data >000B
-       data raycaster_note_02CE
-       data >0007
-       data >0000
-raycaster_seq_020F:
-       data raycaster_note_02D1
-       data >0003
-       data raycaster_note_02D4
-       data >0003
-       data raycaster_note_02D7
-       data >0017
-       data >0000
-raycaster_seq_0216:
-       data raycaster_note_02CE
-       data >000B
-       data raycaster_note_02D1
-       data >000B
-       data raycaster_note_02D4
-       data >0007
-       data >0000
-raycaster_seq_021E:
-       data raycaster_note_02D7
-       data >001F
-       data >0000
-raycaster_seq_0288:
-       data raycaster_note_02FB
-       data >001F
-       data >0000
-raycaster_seq_0223:
-       data raycaster_note_02DA
-       data >0003
-       data raycaster_note_02DD
-       data >0003
-       data raycaster_note_02D4
-       data >0003
-       data raycaster_note_02D1
-       data >0003
-       data raycaster_note_02CE
-       data >0003
-       data raycaster_note_02D4
-       data >0003
-       data raycaster_note_02D1
-       data >0003
-       data raycaster_note_02C8
-       data >0003
-       data >0000
-raycaster_seq_022D:
-       data raycaster_note_02DA
-       data >0003
-       data raycaster_note_02DD
-       data >0003
-       data raycaster_note_02D4
-       data >0003
-       data raycaster_note_02D1
-       data >0007
-       data raycaster_note_02D4
-       data >0003
-       data raycaster_note_02D1
-       data >0003
-       data raycaster_note_02CE
-       data >0003
-       data >0000
-raycaster_seq_0237:
-       data raycaster_note_02E0
-       data >001F
-       data >0000
-raycaster_seq_023C:
-       data raycaster_note_02DD
-       data >000B
-       data raycaster_note_02E3
-       data >000B
-       data raycaster_note_02DD
-       data >0007
-       data >0000
-raycaster_seq_028D:
-       data raycaster_note_0301
-       data >001F
-       data >0000
-raycaster_seq_0244:
-       data raycaster_note_02E6
-       data >000B
-       data raycaster_note_02DA
-       data >000B
-       data raycaster_note_02DD
-       data >0007
-       data >0000
-raycaster_seq_024C:
-       data raycaster_note_02E9
-       data >001F
-       data >0000
-raycaster_seq_0251:
-       data raycaster_note_02EC
-       data >001F
-       data >0000
-raycaster_seq_0256:
-       data raycaster_note_02DA
-       data >000B
-       data raycaster_note_02D4
-       data >000B
-       data raycaster_note_02D1
-       data >0007
-       data >0000
-raycaster_seq_0292:
-       data raycaster_note_0304
-       data >001F
-       data >0000
-raycaster_seq_025E:
-       data raycaster_note_02CE
-       data >000B
-       data raycaster_note_02D1
-       data >000B
-       data raycaster_note_02D4
-       data >0007
-       data >0000
-raycaster_seq_0297:
-       data raycaster_note_0307
-       data >001F
-       data >0000
-raycaster_seq_0266:
-       data >0004
-       data raycaster_note_02EF
-       data >0003
-       data raycaster_note_02F2
-       data >0003
+raycaster_seq_021C:
        data raycaster_note_02F5
-       data >0003
+       data >001F
+       data >0000
+raycaster_seq_02C5:
+       data raycaster_note_0346
+       data >001F
+       data >0000
+raycaster_seq_02DE:
+       data raycaster_note_0355
+       data >001F
+       data >0000
+raycaster_seq_0221:
+       data raycaster_note_02F8
+       data >001F
+       data >0000
+raycaster_seq_02CA:
+       data raycaster_note_0349
+       data >001F
+       data >0000
+raycaster_seq_0226:
        data raycaster_note_02F8
        data >0003
-       data raycaster_note_02B0
+       data raycaster_note_02FB
        data >0003
-       data raycaster_note_02B3
+       data raycaster_note_02FE
        data >0003
-       data raycaster_note_02B6
+       data raycaster_note_0301
+       data >0003
+       data raycaster_note_0304
+       data >0003
+       data raycaster_note_0307
+       data >0003
+       data raycaster_note_030A
+       data >0003
+       data raycaster_note_030D
        data >0003
        data >0000
-raycaster_seq_0270:
-       data raycaster_note_02C8
+raycaster_seq_0230:
+       data raycaster_note_0310
+       data >001F
+       data >0000
+raycaster_seq_02E3:
+       data raycaster_note_0355
        data >000B
-       data raycaster_note_02D1
+       data raycaster_note_0355
+       data >0003
+       data raycaster_note_0355
+       data >0007
+       data raycaster_note_0357
+       data >0003
+       data raycaster_note_0355
+       data >0003
+       data >0000
+raycaster_seq_0235:
+       data raycaster_note_02FE
+       data >0003
+       data raycaster_note_02FB
+       data >0003
+       data raycaster_note_0301
+       data >0003
+       data raycaster_note_02FE
+       data >0003
+       data raycaster_note_0304
+       data >0003
+       data raycaster_note_0301
+       data >0003
+       data raycaster_note_0307
+       data >0003
+       data raycaster_note_0304
+       data >0003
+       data >0000
+raycaster_seq_023F:
+       data raycaster_note_02FE
+       data >0003
+       data raycaster_note_02FB
+       data >0003
+       data raycaster_note_0301
+       data >0003
+       data raycaster_note_02FE
+       data >0003
+       data raycaster_note_0304
+       data >0003
+       data raycaster_note_0301
+       data >0003
+       data raycaster_note_0307
+       data >0003
+       data raycaster_note_0304
+       data >0003
+       data >0000
+raycaster_seq_02EC:
+       data raycaster_note_0355
        data >000B
-       data raycaster_note_02C8
+       data raycaster_note_0355
+       data >0003
+       data raycaster_note_0355
+       data >0007
+       data raycaster_note_0357
+       data >0003
+       data raycaster_note_0355
+       data >0003
+       data >0000
+raycaster_seq_0249:
+       data raycaster_note_0313
+       data >000B
+       data raycaster_note_0316
+       data >000B
+       data raycaster_note_0313
        data >0007
        data >0000
-raycaster_seq_0278:
-       data raycaster_note_02E3
+raycaster_seq_0251:
+       data raycaster_note_0319
+       data >000B
+       data raycaster_note_031C
+       data >000B
+       data raycaster_note_0319
+       data >0007
+       data >0000
+raycaster_seq_0259:
+       data raycaster_note_031C
+       data >0003
+       data raycaster_note_031F
+       data >0003
+       data raycaster_note_0322
+       data >0017
+       data >0000
+raycaster_seq_0260:
+       data raycaster_note_0319
+       data >000B
+       data raycaster_note_031C
+       data >000B
+       data raycaster_note_031F
+       data >0007
+       data >0000
+raycaster_seq_0268:
+       data raycaster_note_0322
+       data >001F
+       data >0000
+raycaster_seq_026D:
+       data raycaster_note_0325
+       data >0003
+       data raycaster_note_0328
+       data >0003
+       data raycaster_note_031F
+       data >0003
+       data raycaster_note_031C
+       data >0003
+       data raycaster_note_0319
+       data >0003
+       data raycaster_note_031F
+       data >0003
+       data raycaster_note_031C
+       data >0003
+       data raycaster_note_0313
+       data >0003
+       data >0000
+raycaster_seq_0277:
+       data raycaster_note_0325
+       data >0003
+       data raycaster_note_0328
+       data >0003
+       data raycaster_note_031F
+       data >0003
+       data raycaster_note_031C
+       data >0007
+       data raycaster_note_031F
+       data >0003
+       data raycaster_note_031C
+       data >0003
+       data raycaster_note_0319
+       data >0003
+       data >0000
+raycaster_seq_0281:
+       data raycaster_note_032B
+       data >001F
+       data >0000
+raycaster_seq_0286:
+       data raycaster_note_0328
+       data >000B
+       data raycaster_note_032E
+       data >000B
+       data raycaster_note_0328
+       data >0007
+       data >0000
+raycaster_seq_02CF:
+       data raycaster_note_034C
+       data >001F
+       data >0000
+raycaster_seq_028E:
+       data raycaster_note_0331
+       data >000B
+       data raycaster_note_0325
+       data >000B
+       data raycaster_note_0328
+       data >0007
+       data >0000
+raycaster_seq_0296:
+       data raycaster_note_0334
+       data >001F
+       data >0000
+raycaster_seq_029B:
+       data raycaster_note_0337
+       data >001F
+       data >0000
+raycaster_seq_02A0:
+       data raycaster_note_0325
+       data >000B
+       data raycaster_note_031F
+       data >000B
+       data raycaster_note_031C
+       data >0007
+       data >0000
+raycaster_seq_02D4:
+       data raycaster_note_034F
+       data >001F
+       data >0000
+raycaster_seq_02D9:
+       data raycaster_note_0352
+       data >001F
+       data >0000
+raycaster_seq_02A8:
+       data >0004
+       data raycaster_note_033A
+       data >0003
+       data raycaster_note_033D
+       data >0003
+       data raycaster_note_0340
+       data >0003
+       data raycaster_note_0343
+       data >0003
+       data raycaster_note_02FB
+       data >0003
+       data raycaster_note_02FE
+       data >0003
+       data raycaster_note_0301
+       data >0003
+       data >0000
+raycaster_seq_02B2:
+       data raycaster_note_0334
+       data >001F
+       data >0000
+raycaster_seq_02B7:
+       data raycaster_note_0313
+       data >000B
+       data raycaster_note_031C
+       data >000B
+       data raycaster_note_0313
+       data >0007
+       data >0000
+raycaster_seq_02BF:
+       data raycaster_note_032E
        data >000F
-       data raycaster_note_02D4
+       data raycaster_note_031F
        data >000F
        data >0000
-raycaster_note_02AA:
+raycaster_note_02F5:
        data raycaster_instr_05
        data >01AD
-raycaster_note_02FB:
+raycaster_note_0346:
        data raycaster_instr_00
        data >0072
-raycaster_note_030A:
+raycaster_note_0355:
        data raycaster_instr_01
        data P3
-raycaster_note_02AD:
+raycaster_note_02F8:
        data raycaster_instr_05
        data >021C
-raycaster_note_02FE:
+raycaster_note_0349:
        data raycaster_instr_00
        data >0090
-raycaster_note_02B0:
+raycaster_note_02FB:
        data raycaster_instr_04
        data G#4
-raycaster_note_02B3:
+raycaster_note_02FE:
        data raycaster_instr_04
        data G4
-raycaster_note_02B6:
+raycaster_note_0301:
        data raycaster_instr_04
        data F4
-raycaster_note_02B9:
+raycaster_note_0304:
        data raycaster_instr_04
        data D#4
-raycaster_note_02BC:
+raycaster_note_0307:
        data raycaster_instr_04
        data D4
-raycaster_note_02BF:
+raycaster_note_030A:
        data raycaster_instr_04
        data C4
-raycaster_note_02C2:
+raycaster_note_030D:
        data raycaster_instr_04
        data B4
-raycaster_note_02C5:
+raycaster_note_0310:
        data raycaster_instr_05
        data >0358
-raycaster_note_030C:
+raycaster_note_0357:
        data raycaster_instr_03
        data W0
-raycaster_note_02C8:
+raycaster_note_0313:
        data raycaster_instr_06
        data C3
-raycaster_note_02CB:
+raycaster_note_0316:
        data raycaster_instr_06
        data G2
-raycaster_note_02CE:
+raycaster_note_0319:
        data raycaster_instr_06
        data D3
-raycaster_note_02D1:
+raycaster_note_031C:
        data raycaster_instr_06
        data D#3
-raycaster_note_02D4:
+raycaster_note_031F:
        data raycaster_instr_06
        data F3
-raycaster_note_02D7:
+raycaster_note_0322:
        data raycaster_instr_02
        data G3
-raycaster_note_02DA:
+raycaster_note_0325:
        data raycaster_instr_06
        data G#3
-raycaster_note_02DD:
+raycaster_note_0328:
        data raycaster_instr_06
        data G3
-raycaster_note_02E0:
+raycaster_note_032B:
        data raycaster_instr_02
        data C3
-raycaster_note_02E3:
+raycaster_note_032E:
        data raycaster_instr_06
        data A#3
-raycaster_note_0301:
+raycaster_note_034C:
        data raycaster_instr_00
        data >0060
-raycaster_note_02E6:
+raycaster_note_0331:
        data raycaster_instr_06
        data A#4
-raycaster_note_02E9:
+raycaster_note_0334:
        data raycaster_instr_02
        data F3
-raycaster_note_02EC:
+raycaster_note_0337:
        data raycaster_instr_02
        data D#3
-raycaster_note_0304:
+raycaster_note_034F:
        data raycaster_instr_00
        data E4
-raycaster_note_0307:
+raycaster_note_0352:
        data raycaster_instr_00
        data >0080
-raycaster_note_02EF:
+raycaster_note_033A:
        data raycaster_instr_04
        data D#5
-raycaster_note_02F2:
+raycaster_note_033D:
        data raycaster_instr_04
        data D5
-raycaster_note_02F5:
+raycaster_note_0340:
        data raycaster_instr_04
        data C5
-raycaster_note_02F8:
+raycaster_note_0343:
        data raycaster_instr_04
        data A#5
 raycaster_instr_00:
