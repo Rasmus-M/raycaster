@@ -682,7 +682,10 @@ draw_sprite_3:
        sra  r0,1
 *      Row
        li   r1,screen_height           ; Screen height
+       coc  @sprite_half_size,r5
+       jeq  draw_sprite_4
        s    r3,r1                      ; Minus sprite height
+draw_sprite_4
        srl  r1,1                       ; Divided by 2
 *      Texture
        mov  @sprite_texture(r4),r4     ; Texture number
@@ -693,10 +696,10 @@ draw_sprite_3:
 *      Speak first time
        mov  @current_sprite,r4
        mov  @sprite_speech(r4),r1
-       jeq  draw_sprite_4
+       jeq  draw_sprite_5
        bl   @say_phrase
        clr  @sprite_speech(r4)
-draw_sprite_4:
+draw_sprite_5:
        .pop r5
        .endproc
 *// draw_sprite
