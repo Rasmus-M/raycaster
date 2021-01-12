@@ -7,8 +7,8 @@ public class Sprite {
             "sprite_type_pillar_broken",
             "sprite_type_grate",
             "sprite_type_stump",
-            "sprite_type_obj6",
-            "sprite_type_obj7",
+            "sprite_type_red_potion",
+            "sprite_type_green_potion",
             // Monsters
             "sprite_type_eye",
             "sprite_type_blob",

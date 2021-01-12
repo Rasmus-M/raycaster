@@ -9,6 +9,8 @@ sprite_can_move:
        data :0010000000000000
 sprite_can_be_collected:
        data :0001000000000000
+sprite_half_size:
+       data :0000100000000000
 
 **
 * Sprite types
@@ -49,14 +51,14 @@ sprite_type_stump:
        data 0
        data 0
        data 0
-sprite_type_obj6:
-       data :0000000000000000
+sprite_type_red_potion:
+       data :0001100000000000
        data first_object_texture+6
        data 0
        data 0
        data 0
-sprite_type_obj7:
-       data :0000000000000000
+sprite_type_green_potion:
+       data :0001100000000000
        data first_object_texture+7
        data 0
        data 0

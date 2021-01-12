@@ -410,7 +410,7 @@ n_doors:
 * Sprite init data
 *
 sprite_init_data:
-       data 4
+       data 5
        data sprite_type_grate
        byte >20
        byte >05
@@ -420,6 +420,9 @@ sprite_init_data:
        data sprite_type_mon10
        byte >0a
        byte >0c
+       data sprite_type_red_potion
+       byte >09
+       byte >1b
        data sprite_type_stump
        byte >04
        byte >1d

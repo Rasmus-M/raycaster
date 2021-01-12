@@ -657,6 +657,8 @@ draw_sprite:
        .proc
        .push r5
        mov  r4,@current_sprite
+       mov  @sprite_type(r4),r5
+       mov  @sprite_type_props(r5),r5
 *      Width, Height
        ci   r7,>0100
        jgt  draw_sprite_1
@@ -667,6 +669,10 @@ draw_sprite_1:
        li   r3,max_sprite_height*256   ; max_sprite_height as FP 24.8
        div  r7,r2                      ; Size (FP 16.0) = max_sprite_height / distance
 draw_sprite_2:
+       coc  @sprite_half_size,r5
+       jne  draw_sprite_3
+       srl  r2,1                       ; Half size
+draw_sprite_3:
        mov  r2,r3                      ; Height = size
        srl  r2,2                       ; Width = size / 4
 *      Column
@@ -687,10 +693,10 @@ draw_sprite_2:
 *      Speak first time
        mov  @current_sprite,r4
        mov  @sprite_speech(r4),r1
-       jeq  draw_sprite_11
+       jeq  draw_sprite_4
        bl   @say_phrase
        clr  @sprite_speech(r4)
-draw_sprite_11:
+draw_sprite_4:
        .pop r5
        .endproc
 *// draw_sprite
@@ -1264,12 +1270,12 @@ sprite_collisions_1:
        mov  @sprite_x(r4),r2
        s    r0,r2
        abs  r2
-       ci   r2,>0100
+       ci   r2,>0080
        jgt  sprite_collisions_2
        mov  @sprite_y(r4),r3
        s    r1,r3
        abs  r3
-       ci   r3,>0100
+       ci   r3,>0080
        jgt  sprite_collisions_2
        bl   @collect_sprite
        jmp  sprite_collisions_3

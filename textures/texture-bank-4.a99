@@ -4,5 +4,5 @@
        copy "objects/pillar-broken.a99"
        copy "objects/grate.a99"
        copy "objects/stump.a99"
-       copy "objects/obj2.a99"
-       copy "objects/obj3.a99"
+       copy "objects/red-potion.a99"
+       copy "objects/green-potion.a99"
