@@ -1,8 +1,8 @@
 public class Obj {
 
     private static final String[] OBJECT_TYPES = {
-        "object_type_red_position",
-        "object_type_green_position",
+        "object_type_red_potion",
+        "object_type_green_potion",
         "object_type_key"
     };
 

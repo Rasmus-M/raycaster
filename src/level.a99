@@ -15,9 +15,15 @@ start_dy:
 * Objects
 *
 objects:
-       data object_type_red_position
+       data object_type_red_potion
        byte >00
        byte >00
+       data object_type_green_potion
+       byte >0c
+       byte >14
+       data object_type_red_potion
+       byte >09
+       byte >1b
 
 n_objects:
        data (n_objects - objects) / object_size
@@ -410,7 +416,7 @@ n_doors:
 * Sprite init data
 *
 sprite_init_data:
-       data 5
+       data 6
        data sprite_type_grate
        byte >20
        byte >05
@@ -420,6 +426,9 @@ sprite_init_data:
        data sprite_type_mon10
        byte >0a
        byte >0c
+       data sprite_type_green_potion
+       byte >0c
+       byte >14
        data sprite_type_red_potion
        byte >09
        byte >1b

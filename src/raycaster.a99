@@ -1439,13 +1439,132 @@ hit_sprite_3:
 *
 collect_sprite:
        .proc
+       mov  @sprite_type(r4),r5
        bl   @remove_sprite
+       mov  @sprite_type_index(r5),r5
+       sla  r5,1
+       mov  @collect_sprite_table(r5),r0
+       jeq  collect_sprite_1
+       bl   *r0
+       seto @full_redraw_required
+collect_sprite_1:
+       .endproc
+collect_sprite_table:
+       data collect_box_sprite
+       data collect_barrel_sprite
+       data 0                          ; Pillar
+       data 0                          ; Pillar broken
+       data 0                          ; Grate
+       data 0                          ; Stump
+       data collect_red_potion_sprite
+       data collect_green_potion_sprite
+*// collect_sprite
+
+*********************************************************************
+*
+* Collect box sprite
+*
+* r4: Points to sprite structure
+*
+collect_box_sprite:
+       .proc
+       bl   *r0
+       li   r0,200
+       a    r0,@score
+       bl   @play_chest
+       .endproc
+*// collect_box_sprite
+
+*********************************************************************
+*
+* Collect barrel sprite
+*
+* r4: Points to sprite structure
+*
+collect_barrel_sprite:
+       .proc
+       bl   *r0
        li   r0,100
        a    r0,@score
        bl   @play_chest
-       seto @full_redraw_required
        .endproc
-*// collect_sprite
+*// collect_barrel_sprite
+
+*********************************************************************
+*
+* Collect red potion sprite
+*
+* r4: Points to sprite structure
+*
+collect_red_potion_sprite:
+       .proc
+       mov  @x,r0
+       mov  @y,r1
+       bl   @collect_red_potion
+       .endproc
+*// collect_red_potion_sprite
+
+*********************************************************************
+*
+* Collect green potion sprite
+*
+* r4: Points to sprite structure
+*
+collect_green_potion_sprite:
+       .proc
+       mov  @x,r0
+       mov  @y,r1
+       bl   @collect_green_potion
+       .endproc
+*// collect_green_potion_sprite
+
+*********************************************************************
+*
+* Collect red potion
+*
+collect_red_potion:
+       .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  collect_red_potion_1
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       bl   @add_inventory
+collect_red_potion_1:
+       .endproc
+*// collect_red_potion
+
+*********************************************************************
+*
+* Collect green potion
+*
+collect_green_potion:
+       .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  collect_green_potion_1
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       bl   @add_inventory
+collect_green_potion_1:
+       .endproc
+*// collect_green_potion
+
+*********************************************************************
+*
+* Collect key
+*
+collect_key:
+       .proc
+       bl   @find_object
+       mov  r8,r0
+       jeq  collect_key_1
+       movb @block_recess,*r2
+       seto @full_redraw_required
+       bl   @add_inventory
+collect_key_1:
+       .endproc
+*// collect_key
 
 ****************************************************
 *
@@ -1706,6 +1825,8 @@ find_door_4:
 *
 * r0: x FP 8.8
 * r1: y FP 8.8
+*
+* On return r8 contains the object or zero if not found.
 *
 find_object:
        li   r8,objects
@@ -2786,10 +2907,10 @@ sprites:
 **
 * Object types
 *
-object_type_red_position:
+object_type_red_potion:
        data 0
        data potion_red_patterns
-object_type_green_position:
+object_type_green_potion:
        data 1
        data potion_green_patterns
 object_type_key:

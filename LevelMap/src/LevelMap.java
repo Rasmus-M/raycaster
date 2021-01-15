@@ -16,6 +16,8 @@ public class LevelMap {
     private static final int ROOM = 128;
     private static final int START = 129;
     private static final int FIRST_SPRITE = 136;
+    private static final int FIRST_SPRITE_OBJECT = 142;
+    private static final int LAST_SPRITE_OBJECT = 143;
     private static final int SECRET_DOOR_MASK = 1;
     private static final String MAP_LABEL = "MD";
 
@@ -29,8 +31,8 @@ public class LevelMap {
         int[][] map = mapFromBuffer(buffer);
         ArrayList<Room> rooms = findRooms(map);
         ArrayList<Door> doors  = findDoors(map, rooms);
-        ArrayList<Sprite> initialSprites = findInitialSprites(map);
         ArrayList<Obj> objects = findObjects(map);
+        ArrayList<Sprite> initialSprites = findInitialSprites(map, objects);
         Square start = findStart(map);
         generateLevelFile(doorsFilePath, doors, rooms, initialSprites, objects, start);
         generateMapFile(outputMapFilePath, map);
@@ -140,21 +142,6 @@ public class LevelMap {
         }
     }
 
-    private ArrayList<Obj> findObjects(int[][] map) {
-        ArrayList<Obj> objects = new ArrayList<>();
-        objects.add(new Obj(0, new Square(0, 0)));
-        for (int y = 0; y < map.length; y++) {
-            for (int x = 0; x < map[y].length; x++){
-                int value = map[y][x];
-                if (value >= FIRST_OBJECT && value <= LAST_OBJECT) {
-                    Square square = new Square(x, y);
-                    objects.add(new Obj((value - FIRST_OBJECT) / 2, square));
-                }
-            }
-        }
-        return objects;
-    }
-
     private Square findStart(int[][] map) {
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++){
@@ -168,7 +155,7 @@ public class LevelMap {
         return null;
     }
 
-    private ArrayList<Sprite> findInitialSprites(int[][] map) {
+    private ArrayList<Sprite> findInitialSprites(int[][] map, ArrayList<Obj> objects) {
         ArrayList<Sprite> sprites = new ArrayList<>();
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++){
@@ -177,10 +164,28 @@ public class LevelMap {
                     Square square = new Square(x, y);
                     sprites.add(new Sprite(value - FIRST_SPRITE, square));
                     map[y][x] = SPACE;
+                    if (value >= FIRST_SPRITE_OBJECT && value <= LAST_SPRITE_OBJECT) {
+                        objects.add(new Obj(value - FIRST_SPRITE_OBJECT, square));
+                    }
                 }
             }
         }
         return sprites;
+    }
+
+    private ArrayList<Obj> findObjects(int[][] map) {
+        ArrayList<Obj> objects = new ArrayList<>();
+        objects.add(new Obj(0, new Square(0, 0))); // Initially carried object
+        for (int y = 0; y < map.length; y++) {
+            for (int x = 0; x < map[y].length; x++){
+                int value = map[y][x];
+                if (value >= FIRST_OBJECT && value <= LAST_OBJECT) {
+                    Square square = new Square(x, y);
+                    objects.add(new Obj((value - FIRST_OBJECT) / 2, square));
+                }
+            }
+        }
+        return objects;
     }
 
     private ArrayList<Door> findDoors(int[][] map, ArrayList<Room> rooms) {

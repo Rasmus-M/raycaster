@@ -25,18 +25,20 @@ column_size:
 **
 * Sprite type structure
 *
-sprite_type_props:
+sprite_type_index:
        equ  0
-sprite_type_texture:
+sprite_type_props:
        equ  2
-sprite_type_speech:
+sprite_type_texture:
        equ  4
-sprite_type_health:
+sprite_type_speech:
        equ  6
-sprite_type_next:
+sprite_type_health:
        equ  8
-sprite_type_size:
+sprite_type_next:
        equ  10
+sprite_type_size:
+       equ  12
 
 **
 * Sprite data structure

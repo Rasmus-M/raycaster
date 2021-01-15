@@ -382,13 +382,7 @@ button_block_clicked_1:
 *
 red_potion_block_clicked:
        .proc
-       bl   @find_object
-       mov  r8,r0
-       jeq  red_potion_block_clicked_1
-       movb @block_recess,*r2
-       seto @full_redraw_required
-       bl   @add_inventory
-red_potion_block_clicked_1:
+       bl   @collect_red_potion
        .endproc
 *// red_potion_block_clicked
 *********************************************************************
@@ -397,13 +391,7 @@ red_potion_block_clicked_1:
 *
 green_potion_block_clicked:
        .proc
-       bl   @find_object
-       mov  r8,r0
-       jeq  green_potion_block_clicked_1
-       movb @block_recess,*r2
-       seto @full_redraw_required
-       bl   @add_inventory
-green_potion_block_clicked_1:
+       bl   @collect_green_potion
        .endproc
 *// green_potion_block_clicked
 
@@ -413,13 +401,7 @@ green_potion_block_clicked_1:
 *
 key_block_clicked:
        .proc
-       bl   @find_object
-       mov  r8,r0
-       jeq  key_block_clicked_1
-       movb @block_recess,*r2
-       seto @full_redraw_required
-       bl   @add_inventory
-key_block_clicked_1:
+       bl   @collect_key
        .endproc
 *// key_block_clicked
 
