@@ -1038,29 +1038,29 @@ upload_screen_loop_end:
 *
 move_sprites:
        .proc
-       clr  @has_sprite_moved
+       clr  @has_sprite_moved          ; We will record if any sprite has moved
        li   r4,sprites
        mov  @n_sprites,r5
        jeq  move_sprites_3
 move_sprites_1:
        mov  *r4,r0                     ; Active?
        jeq  move_sprites_2
-       bl   @check_int
+       bl   @check_int                 ; Only if active
        mov  @sprite_type(r4),r1
        mov  @sprite_type_props(r1),r0
-       coc  @sprite_can_move,r0
+       coc  @sprite_can_move,r0        ; Can it move at all?
        jne  move_sprites_2
 *      x
-       mov  @sprite_x(r4),r0
+       mov  @sprite_x(r4),r0           ; Distance from player x
        mov  @x,r2
        s    r0,r2
        mov  r2,r6
 *      y
-       mov  @sprite_y(r4),r1
+       mov  @sprite_y(r4),r1           ; Distance from player y
        mov  @y,r3
        s    r1,r3
        mov  r3,r7
-*      Check distance
+*      Check taxi distance and bail out if too big
        abs  r6
        abs  r7
        a    r6,r7
@@ -1068,7 +1068,7 @@ move_sprites_1:
        jhe  move_sprites_2
        ci   r7,1*256
        jle  move_sprites_9
-*      x
+*      Move x, but not faster than the distance to the player
        mov  r2,r2
        jeq  move_sprites_5
        jlt  move_sprites_4
@@ -1081,7 +1081,7 @@ move_sprites_4:
        jgt  move_sprites_5
        li   r2,-enemy_speed
 move_sprites_5:
-*      y
+*      Move y, but not faster than the distance to the player
        mov  r3,r3
        jeq  move_sprites_7
        jlt  move_sprites_6
@@ -1095,18 +1095,18 @@ move_sprites_6:
        li   r3,-enemy_speed
 move_sprites_7:
 *      Check map
-       mov  r2,r6
-       a    r2,r0
-       a    r3,r1
+       mov  r2,r6                      ; Save dx
+       a    r2,r0                      ; Add dx to x
+       a    r3,r1                      ; Add dy to y
        bl   @get_map_value
        jeq  move_sprites_8
-       s    r6,r0
+       s    r6,r0                      ; What if we only moved in y?
        bl   @get_map_value
        jeq  move_sprites_8
-       a    r6,r0
+       a    r6,r0                      ; What if we only moved in x?
        s    r3,r1
        bl   @get_map_value
-       jne  move_sprites_2
+       jne  move_sprites_2             ; Nope
 move_sprites_8:
 *      Move
        mov  r0,@sprite_x(r4)
