@@ -71,20 +71,22 @@ sprite_type_green_potion:
        data 0
        data 0
        data 0
+**
 *      Monsters
+*
 sprite_type_eye:
        data 16
        data :1110000000000000
        data first_monster_texture
        data eye_can_see_you
-       data 1
+       data 2
        data 0
 sprite_type_blob:
        data 17
        data :1110000000000000
        data first_monster_texture+1
        data your_time_is_up
-       data 2
+       data 1
        data 0
 sprite_type_mon2:
        data 18
@@ -105,28 +107,28 @@ sprite_type_mon4:
        data :1110000000000000
        data first_monster_texture+4
        data 0
-       data 1
+       data 2
        data 0
 sprite_type_mon5:
        data 21
        data :1110000000000000
        data first_monster_texture+5
        data 0
-       data 2
+       data 3
        data 0
 sprite_type_mon6:
        data 22
        data :1110000000000000
        data first_monster_texture+6
        data 0
-       data 3
+       data 4
        data 0
 sprite_type_mon7:
        data 23
        data :1110000000000000
        data first_monster_texture+7
        data 0
-       data 4
+       data 3
        data 0
 sprite_type_mon8:
        data 24
@@ -147,14 +149,14 @@ sprite_type_mon10:
        data :1110000000000000
        data first_monster_texture+10
        data 0
-       data 3
+       data 1
        data 0
 sprite_type_mon11:
        data 27
        data :1110000000000000
        data first_monster_texture+11
        data 0
-       data 4
+       data 3
        data 0
 sprite_type_mon12:
        data 28
@@ -168,7 +170,7 @@ sprite_type_mon13:
        data :1110000000000000
        data first_monster_texture+13
        data 0
-       data 2
+       data 4
        data 0
 sprite_type_mon14:
        data 30
@@ -182,7 +184,7 @@ sprite_type_mon15:
        data :1110000000000000
        data first_monster_texture+15
        data 0
-       data 4
+       data 3
        data 0
 sprite_type_mon16:
        data 32
@@ -196,14 +198,14 @@ sprite_type_mon17:
        data :1110000000000000
        data first_monster_texture+17
        data 0
-       data 2
+       data 3
        data 0
 sprite_type_mon18:
        data 34
        data :1110000000000000
        data first_monster_texture+18
        data 0
-       data 3
+       data 4
        data 0
 sprite_type_mon19:
        data 35
@@ -217,28 +219,28 @@ sprite_type_mon20:
        data :1110000000000000
        data first_monster_texture+20
        data 0
-       data 1
+       data 4
        data 0
 sprite_type_mon21:
        data 37
        data :1110000000000000
        data first_monster_texture+21
        data 0
-       data 2
+       data 3
        data 0
 sprite_type_mon22:
        data 38
        data :1110000000000000
        data first_monster_texture+22
        data 0
-       data 3
+       data 2
        data 0
 sprite_type_mon23:
        data 39
        data :1110000000000000
        data first_monster_texture+23
        data 0
-       data 4
+       data 3
        data 0
 sprite_type_mon24:
        data 40
@@ -252,47 +254,47 @@ sprite_type_mon25:
        data :1110000000000000
        data first_monster_texture+25
        data 0
-       data 2
+       data 4
        data 0
 sprite_type_mon26:
        data 42
        data :1110000000000000
        data first_monster_texture+26
        data 0
-       data 3
+       data 2
        data 0
 sprite_type_mon27:
        data 43
        data :1110000000000000
        data first_monster_texture+27
        data 0
-       data 4
+       data 3
        data 0
 sprite_type_mon28:
        data 44
        data :1110000000000000
        data first_monster_texture+28
        data 0
-       data 1
+       data 4
        data 0
-sprite_type_mon29:
+sprite_type_mon29:                     ; empty
        data 45
        data :1110000000000000
        data first_monster_texture+29
        data 0
-       data 2
        data 0
-sprite_type_mon30:
+       data 0
+sprite_type_mon30:                     ; empty
        data 46
        data :1110000000000000
        data first_monster_texture+30
        data 0
-       data 3
        data 0
-sprite_type_mon31:
+       data 0
+sprite_type_mon31:                     ; empty
        data 47
        data :1110000000000000
        data first_monster_texture+31
        data 0
-       data 4
+       data 0
        data 0

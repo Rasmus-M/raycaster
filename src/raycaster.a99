@@ -1468,7 +1468,6 @@ collect_sprite_table:
 *
 collect_box_sprite:
        .proc
-       bl   *r0
        li   r0,200
        a    r0,@score
        bl   @play_chest
@@ -1483,7 +1482,6 @@ collect_box_sprite:
 *
 collect_barrel_sprite:
        .proc
-       bl   *r0
        li   r0,100
        a    r0,@score
        bl   @play_chest
@@ -1530,6 +1528,7 @@ collect_red_potion:
        movb @block_recess,*r2
        seto @full_redraw_required
        bl   @add_inventory
+       bl   @play_chest
 collect_red_potion_1:
        .endproc
 *// collect_red_potion
@@ -1546,6 +1545,7 @@ collect_green_potion:
        movb @block_recess,*r2
        seto @full_redraw_required
        bl   @add_inventory
+       bl   @play_chest
 collect_green_potion_1:
        .endproc
 *// collect_green_potion
@@ -1562,6 +1562,7 @@ collect_key:
        movb @block_recess,*r2
        seto @full_redraw_required
        bl   @add_inventory
+       bl   @play_chest
 collect_key_1:
        .endproc
 *// collect_key
