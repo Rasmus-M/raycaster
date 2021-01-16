@@ -29,9 +29,9 @@ public class LevelMap {
     public void generate(String inputMapFilePath, String doorsFilePath, String outputMapFilePath) throws IOException {
         byte[] buffer = readMapFile(inputMapFilePath, MAP_LABEL, null);
         int[][] map = mapFromBuffer(buffer);
-        ArrayList<Room> rooms = findRooms(map);
-        ArrayList<Door> doors  = findDoors(map, rooms);
         ArrayList<Obj> objects = findObjects(map);
+        ArrayList<Room> rooms = findRooms(map, objects);
+        ArrayList<Door> doors  = findDoors(map, rooms);
         ArrayList<Sprite> initialSprites = findInitialSprites(map, objects);
         Square start = findStart(map);
         generateLevelFile(doorsFilePath, doors, rooms, initialSprites, objects, start);
@@ -217,7 +217,7 @@ public class LevelMap {
         return null;
     }
 
-    private ArrayList<Room> findRooms(int[][] map) {
+    private ArrayList<Room> findRooms(int[][] map, ArrayList<Obj> objects) {
         ArrayList<Room> rooms = new ArrayList<>();
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++){
@@ -225,7 +225,7 @@ public class LevelMap {
                     Square square = new Square(x, y);
                     if (findContainingRoom(square, rooms) == null) {
                         Room room = new Room();
-                        measureRoom(room, map, square);
+                        measureRoom(room, map, square, objects);
                         rooms.add(room);
                     }
                 }
@@ -234,7 +234,7 @@ public class LevelMap {
         return rooms;
     }
 
-    private void measureRoom(Room room, int[][] map, Square square) {
+    private void measureRoom(Room room, int[][] map, Square square, ArrayList<Obj> objects) {
         if (square.getY() < 0 || square.getY() >= map.length || square.getX() < 0 || square.getX() >= map[square.getY()].length) {
             return;
         }
@@ -245,12 +245,15 @@ public class LevelMap {
             } else {
                 Sprite sprite = new Sprite(value - FIRST_SPRITE, square);
                 room.addSprite(sprite);
+                if (value >= FIRST_SPRITE_OBJECT && value <= LAST_SPRITE_OBJECT) {
+                    objects.add(new Obj(value - FIRST_SPRITE_OBJECT, square));
+                }
             }
             map[square.getY()][square.getX()] = SPACE;
-            measureRoom(room, map, new Square(square.getX() + 1, square.getY()));
-            measureRoom(room, map, new Square(square.getX() - 1, square.getY()));
-            measureRoom(room, map, new Square(square.getX(), square.getY() + 1));
-            measureRoom(room, map, new Square(square.getX(), square.getY() - 1));
+            measureRoom(room, map, new Square(square.getX() + 1, square.getY()), objects);
+            measureRoom(room, map, new Square(square.getX() - 1, square.getY()), objects);
+            measureRoom(room, map, new Square(square.getX(), square.getY() + 1), objects);
+            measureRoom(room, map, new Square(square.getX(), square.getY() - 1), objects);
         }
     }
 

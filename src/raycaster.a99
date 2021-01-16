@@ -1773,8 +1773,10 @@ open_door:
        jne  open_door_3
        movb *r2,r3
        andi r3,>7e00
+       jeq  open_door_0
        cb   r3,@block_door
        jne  open_door_1
+open_door_0:
        movb @block_space,*r2
 open_door_1:
        seto @full_redraw_required
