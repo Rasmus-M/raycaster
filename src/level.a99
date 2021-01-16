@@ -49,8 +49,8 @@ objects:
        byte >00
        byte >39
        data object_type_key
-       byte >03
-       byte >3b
+       byte >07
+       byte >3d
        data object_type_green_potion
        byte >2b
        byte >3d
