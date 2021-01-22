@@ -1789,6 +1789,8 @@ open_door_1:
        jeq  open_door_3
 open_door_2:
        bl   @create_sprite
+       mov  r6,r6
+       jeq  open_door_3
        ai   r4,sprite_init_size
        dec  r5
        jne  open_door_2
@@ -2007,6 +2009,8 @@ remove_sprite:
 *
 * r0: Address of object to add
 *
+* Does nothing if inventory is full
+*
 add_inventory:
        .proc
        mov  @inventory_index,r1
@@ -2138,6 +2142,8 @@ init_level_4:
        jeq  init_level_6
 init_level_5:
        bl   @create_sprite
+       mov  r6,r6
+       jeq  init_level_6
        ai   r4,sprite_init_size
        dec  r5
        jne  init_level_5
