@@ -2293,7 +2293,7 @@ txt_please_wait:
 display_panel:
        .proc
        li   r7,display_panel_data
-       li   r8,10
+       li   r8,6
 display_panel_1:
        mov  *r7+,r0
        mov  *r7+,r1
@@ -2304,12 +2304,8 @@ display_panel_1:
        jne  display_panel_1
        .endproc
 display_panel_data:
-       data 0,0,4,empty_patterns
-       data 4,0,4,empty_patterns
-       data 8,0,4,empty_patterns
-       data 20,0,4,empty_patterns
-       data 24,0,4,empty_patterns
-       data 28,0,4,empty_patterns
+       data 0,0,12,sword_mirrored_patterns
+       data 20,0,12,sword_patterns
        data 0,4,4,score_patterns
        data 4,4,4,map_patterns
        data 8,4,4,attack_patterns

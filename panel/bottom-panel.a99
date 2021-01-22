@@ -6,3 +6,5 @@
        copy "potion-green.a99"
        copy "key.a99"
        copy "arrows.a99"
+       copy "sword.a99"
+       copy "sword-mirrored.a99"
