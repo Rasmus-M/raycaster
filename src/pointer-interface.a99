@@ -314,9 +314,7 @@ sprite_clicked:
        mov  @sprite_type_props(r1),r0
        coc  @sprite_can_be_attacked,r0
        jne  sprite_clicked_1
-       mov  @might,r0
-       jeq  sprite_clicked_2
-       bl   @hit_sprite
+       bl   @fire_bullet
        jmp  sprite_clicked_2
 sprite_clicked_1:
        coc  @sprite_can_be_collected,r0
