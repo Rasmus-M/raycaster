@@ -111,6 +111,8 @@ char_0:
        equ  >30
 max_health:
        equ  64
+max_might:
+       equ  64
 texture_bank_select:
        equ  >6022
 texture_sams_page:
@@ -190,18 +192,20 @@ interrupt_count:
        equ  padvar
 rand_no:
        equ  interrupt_count+2
-sal_no:
-       equ  rand_no+2
 score:
-       equ  sal_no+2
+       equ  rand_no+2
 old_score:
        equ  score+2
 health:
        equ  old_score+2
 old_health:
        equ  health+2
-status:
+might:
        equ  old_health+2
+old_might:
+       equ  might+2
+status:
+       equ  old_might+2
 x:                                     ; Player x FP 8.8
        equ  status+2
 y:                                     ; Player y FP 8.8
@@ -302,6 +306,7 @@ main_loop:
        bl   @move_sprites
        bl   @move_bullets
        bl   @update_health_bar
+       bl   @update_might_bar
        bl   @display_score
        bl   @speak
        bl   @delay
@@ -1296,85 +1301,118 @@ sprite_collisions_3:
 *
 update_health_bar:
        .proc
-       c    @health,@old_health
-       jeq  update_health_bar_4
+       li   r6,health
+       li   r7,old_health
+       li   r8,max_health
+       li   r9,ptrnt3+(23*64)+6
+       bl   @update_status_bar
+       .endproc
+*// update_health_bar
+
+*********************************************************************
+*
+* Update might bar
+*
+update_might_bar:
+       .proc
+       li   r6,might
+       li   r7,old_might
+       li   r8,max_might
+       li   r9,ptrnt3+(23*64)+18
+       bl   @update_status_bar
+       .endproc
+*// update_might_bar
+
+*********************************************************************
+*
+* Update status bar
+*
+* r6: Pointer to new value
+* r7: Pointer to old value
+* r8: Max value
+* r9: VDP address
+*
+update_status_bar:
+       .proc
+       c    *r6,*r7                    ; Compare old and new
+       jeq  update_status_bar_9
 *      Column difference
-       mov  @old_health,r3
+       mov  *r7,r3                     ; Get old value
        srl  r3,3                       ; Old column
-       mov  @health,r2
+       mov  *r6,r2                     ; Get new value
        srl  r2,3                       ; New column
        s    r2,r3                      ; Columns removed
-       jeq  update_health_bar_0
-       jgt  update_health_bar_0
+       jeq  update_status_bar_3
+       jgt  update_status_bar_3
 *      Full columns to add
-       mov  @old_health,r0
+       mov  *r7,r0                     ; Get old value
        srl  r0,3                       ; Old column
        sla  r0,6                       ; Column offset
-       ai   r0,ptrnt3+(23*64)+6        ; Add base address
+       a    r9,r0                      ; Add base address
        li   r1,>ff00                   ; Pattern byte
        mov  r3,r2                      ; Columns removed (negative)
        neg  r2                         ; Columns added
-update_health_bar_5:
-       bl   @vwad
+update_status_bar_1:
+       bl   @vwad                      ; Set VDP address
        li   r4,8                       ; Number of lines to update
-update_health_bar_7:
-       movb r1,*r15                    ; Set pattern
-       movb r1,*r15                    ; Set pattern
+update_status_bar_2:
+       movb r1,*r15                    ; Set pattern byte
+       movb r1,*r15                    ; Set pattern byte
        dect r4
-       jne  update_health_bar_7
+       jne  update_status_bar_2
        ai   r0,64                      ; Next column
        dec  r2
-       jne  update_health_bar_5
+       jne  update_status_bar_1
 *      VDP address for pixels within column
-update_health_bar_0:
-       mov  @health,r0                 ; Health
-       ci   r0,max_health
-       jeq  update_health_bar_3
+update_status_bar_3:
+       mov  *r6,r0                     ; Value
+       c    r0,r8                      ; Compare to max value
+       jeq  update_status_bar_8
        srl  r0,3                       ; Column
        sla  r0,6                       ; Column offset
-       ai   r0,ptrnt3+(23*64)+6        ; Add base address
+       a    r9,r0                      ; Add base address
        mov  r0,r5                      ; Save VDP address
        bl   @vwad
 *      Pixels within column
-update_health_bar_6:
+update_status_bar_4:
        li   r1,>00ff                   ; Pattern
-       mov  @health,r2
+       mov  *r6,r2                     ; New value
        andi r2,>0007                   ; Number of pixels to show
-       li   r0,8
+       li   r0,8                       ; Number of bits in a byte
        s    r2,r0                      ; Number of pixels to clear
        srl  r1,0                       ; Shift pixels out
        sla  r1,0                       ; Shift remaining pixels back
        swpb r1                         ; Pattern to MSB
        li   r2,8                       ; Number of lines to update
-update_health_bar_1:
-       movb r1,*r15                    ; Set pattern
-       movb r1,*r15                    ; Set pattern
+update_status_bar_5:
+       movb r1,*r15                    ; Set pattern byte
+       movb r1,*r15                    ; Set pattern byte
        dect r2
-       jne  update_health_bar_1
+       jne  update_status_bar_5
 *      Full columns to clear
-       mov  @old_health,r0             ; Old health
-       ci   r0,max_health
-       jeq  update_health_bar_3
-       mov  r3,r2
-       jmp  update_health_bar_3
-       jlt  update_health_bar_3
+       mov  *r7,r0                     ; Old value
+       c    r0,r8                      ; Compare to max value
+       jeq  update_status_bar_8
+       mov  r3,r2                      ; Columns removed
+       jmp  update_status_bar_8
+       jlt  update_status_bar_8
        mov  r5,r0                      ; VDP address
-update_health_bar_2:
+update_status_bar_6:
        ai   r0,64                      ; Next column
-       bl   @vwad
+       bl   @vwad                      ; Set VDP address
        li   r4,8                       ; Number of lines to update
-update_health_bar_8:
-       clr  *r15
-       clr  *r15
+update_status_bar_7:
+       clr  *r15                       ; Clear pattern byte
+       clr  *r15                       ; Clear pattern byte
        dect r4
-       jne  update_health_bar_8
+       jne  update_status_bar_7
        dec  r2
-       jne  update_health_bar_2
-update_health_bar_3:
-       mov  @health,@old_health
-update_health_bar_4:
+       jne  update_status_bar_6
+update_status_bar_8:
+       mov  *r6,*r7                    ; Copy new to old
+update_status_bar_9:
        .endproc
-*// update_health_bar
+*// update_status_bar
 
 *********************************************************************
 *
@@ -1408,6 +1446,38 @@ sub_health_1:
        mov  r0,@health
        rt
 *// sub_health
+
+*********************************************************************
+*
+* Add might
+*
+* r0: might to add
+*
+add_might:
+       a    @might,r0
+       ci   r0,max_might
+       jle  add_might_1
+       li   r0,max_might
+add_might_1:
+       mov  r0,@might
+       rt
+*// add_might
+
+*********************************************************************
+*
+* Subtract might
+*
+* r0: might to subtract
+*
+sub_might:
+       neg  r0
+       a    @might,r0
+       jgt  sub_might_1
+       clr  r0
+sub_might_1:
+       mov  r0,@might
+       rt
+*// sub_might
 
 *********************************************************************
 *
@@ -1745,6 +1815,8 @@ fire_bullet:
        .proc
        abs  @bullet_active
        jne  fire_bullet_1
+       mov  @might,r0
+       jeq  fire_bullet_1
        mov  @x,@bullet_x
        mov  @y,@bullet_y
        li   r3,>8000
@@ -1760,6 +1832,8 @@ fire_bullet:
        clr  @bullet_distance
        seto @bullet_active
        bl   @play_shot_1
+       li   r0,1
+       bl   @sub_might
 fire_bullet_1:
        .endproc
 *// fire_bullet
@@ -2105,6 +2179,9 @@ init_level:
        li   r0,max_health
        mov  r0,@health
        clr  @old_health
+       li   r0,max_might
+       mov  r0,@might
+       clr  @old_might
        clr  @score
        seto @old_score
        clr  @status
@@ -2846,6 +2923,8 @@ euclidian_distance_2:
 *
 * Data
 *
+sal_no:
+       data 0
 bullet_active:
        data 0
 bullet_x:

@@ -286,8 +286,8 @@ red_potion_clicked:
 green_potion_clicked:
        .proc
        bl   @remove_inventory
-       li   r0,4
-       bl   @add_health
+       li   r0,8
+       bl   @add_might
        .endproc
 *// green_potion_clicked
 
@@ -314,6 +314,8 @@ sprite_clicked:
        mov  @sprite_type_props(r1),r0
        coc  @sprite_can_be_attacked,r0
        jne  sprite_clicked_1
+       mov  @might,r0
+       jeq  sprite_clicked_2
        bl   @hit_sprite
        jmp  sprite_clicked_2
 sprite_clicked_1:
