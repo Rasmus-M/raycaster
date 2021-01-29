@@ -92,7 +92,7 @@ n_hw_sprite_patterns:
 n_high_priority_hw_sprites:
        equ  2
 n_fixed_hw_sprites:
-       equ  12
+       equ  8
 n_compass_hw_sprites:
        equ  6
 enemy_speed:
@@ -110,7 +110,7 @@ backdrop_color:
 char_0:
        equ  >30
 max_health:
-       equ  63
+       equ  64
 texture_bank_select:
        equ  >6022
 texture_sams_page:
@@ -1309,36 +1309,35 @@ update_health_bar:
 *      Full columns to add
        mov  @old_health,r0
        srl  r0,3                       ; Old column
-       sla  r0,4                       ; Column offset
-       ai   r0,sprptb+(20*32)          ; Add base address
-       bl   @vwad
-       li   r1,>aa00
-       mov  r3,r2
-       neg  r2
+       sla  r0,6                       ; Column offset
+       ai   r0,ptrnt3+(23*64)+6        ; Add base address
+       li   r1,>ff00                   ; Pattern byte
+       mov  r3,r2                      ; Columns removed (negative)
+       neg  r2                         ; Columns added
 update_health_bar_5:
-       li   r4,6
+       bl   @vwad
+       li   r4,8                       ; Number of lines to update
 update_health_bar_7:
-       movb r1,*r15
-       movb r1,*r15
-       dec  r4
+       movb r1,*r15                    ; Set pattern
+       movb r1,*r15                    ; Set pattern
+       dect r4
        jne  update_health_bar_7
-       clr  *r15
-       clr  *r15
-       clr  *r15
-       clr  *r15
+       ai   r0,64                      ; Next column
        dec  r2
        jne  update_health_bar_5
-       jmp  update_health_bar_6
 *      VDP address for pixels within column
 update_health_bar_0:
        mov  @health,r0                 ; Health
-       srl  r0,3                       ; Old column
-       sla  r0,4                       ; Column offset
-       ai   r0,sprptb+(20*32)          ; Add base address
+       ci   r0,max_health
+       jeq  update_health_bar_3
+       srl  r0,3                       ; Column
+       sla  r0,6                       ; Column offset
+       ai   r0,ptrnt3+(23*64)+6        ; Add base address
+       mov  r0,r5                      ; Save VDP address
        bl   @vwad
 *      Pixels within column
 update_health_bar_6:
-       li   r1,>00aa                   ; Pattern
+       li   r1,>00ff                   ; Pattern
        mov  @health,r2
        andi r2,>0007                   ; Number of pixels to show
        li   r0,8
@@ -1346,21 +1345,30 @@ update_health_bar_6:
        srl  r1,0                       ; Shift pixels out
        sla  r1,0                       ; Shift remaining pixels back
        swpb r1                         ; Pattern to MSB
-       li   r2,12                      ; Number of rows to update
+       li   r2,8                       ; Number of lines to update
 update_health_bar_1:
-       movb r1,*r15                    ; Change sprite pattern
-       movb r1,*r15                    ; Change sprite pattern
+       movb r1,*r15                    ; Set pattern
+       movb r1,*r15                    ; Set pattern
        dect r2
        jne  update_health_bar_1
 *      Full columns to clear
-       mov  r3,r2
+       mov  @old_health,r0             ; Old health
+       ci   r0,max_health
        jeq  update_health_bar_3
+       mov  r3,r2
+       jmp  update_health_bar_3
        jlt  update_health_bar_3
-       sla  r2,4                       ; columns * 16
+       mov  r5,r0                      ; VDP address
 update_health_bar_2:
+       ai   r0,64                      ; Next column
+       bl   @vwad
+       li   r4,8                       ; Number of lines to update
+update_health_bar_8:
        clr  *r15
        clr  *r15
-       dect r2
+       dect r4
+       jne  update_health_bar_8
+       dec  r2
        jne  update_health_bar_2
 update_health_bar_3:
        mov  @health,@old_health
@@ -2096,7 +2104,7 @@ init_level:
        mov  @start_dy,@dy
        li   r0,max_health
        mov  r0,@health
-       mov  r0,@old_health
+       clr  @old_health
        clr  @score
        seto @old_score
        clr  @status
@@ -2311,7 +2319,7 @@ display_panel_1:
        .endproc
 display_panel_data:
        data 0,0,12,sword_mirrored_patterns
-       data 20,0,12,sword_patterns
+       data 20,0,12,status_bars_patterns
        data 0,4,4,score_patterns
        data 4,4,4,map_patterns
        data 8,4,4,attack_patterns

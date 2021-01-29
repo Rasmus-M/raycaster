@@ -5,10 +5,6 @@ sal:
        byte >c0,>00,>00,>00
        byte >c0,>00,>00,>00
 sal_fixed:
-       byte >01,>02,>50,>08            ; Health bar
-       byte >01,>12,>54,>0a
-       byte >01,>22,>58,>0b
-       byte >01,>32,>5c,>03
        byte >a7,>a0,>60,>0e            ; Arrows
        byte >a7,>f0,>64,>0e
 
