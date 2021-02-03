@@ -88,7 +88,7 @@ max_sprite_distance:
 max_sprites:
        equ  16
 n_hw_sprite_patterns:
-       equ  27
+       equ  33
 n_high_priority_hw_sprites:
        equ  2
 n_fixed_hw_sprites:
@@ -421,7 +421,24 @@ upload_hw_sprites:
        bl   @vwad
 *      Bullets
        bl   @draw_bullets
+*      Blood stain
+       mov  @blood_stain_count,r0
+       jeq  upload_hw_sprites_2
+       li   r0,blood_stain_sal
+       mov  @blood_stain_x,r1
+       li   r2,4
+upload_hw_sprites_1:
+       movb *r0+,*r15
+       movb *r0+,r3
+       ab   r1,r3
+       movb r3,*r15
+       movb *r0+,*r15
+       movb *r0+,*r15
+       dec  r2
+       jne  upload_hw_sprites_1
+       dec  @blood_stain_count
 *      End marker
+upload_hw_sprites_2:
        movb @end_marker_byte,*r15
        .endproc
 end_marker_byte:
@@ -1220,31 +1237,31 @@ bullet_collisions:
        jmp  bullet_collisions_4
 *      Check for sprite collison
 bullet_collisions_1:
-       li   r4,sprites
-       mov  @n_sprites,r5
-       jeq  bullet_collisions_5
+       li   r4,sprites                 ; Sprite pointer
+       mov  @n_sprites,r5              ; Sprite counter
+       jeq  bullet_collisions_5        ; Skip if no sprites
 bullet_collisions_2:
-       mov  *r4,r2
-       jeq  bullet_collisions_3
-       mov  @sprite_type(r4),r2
+       mov  *r4,r2                     ; Active?
+       jeq  bullet_collisions_3        ; Skip if not active
+       mov  @sprite_type(r4),r2        ; Check if sprite can be attacked
        mov  @sprite_type_props(r2),r2
        coc  @sprite_can_be_attacked,r2
        jne  bullet_collisions_3
-       mov  @sprite_x(r4),r2
-       s    r0,r2
-       abs  r2
-       ci   r2,>0080
-       jgt  bullet_collisions_3
-       mov  @sprite_y(r4),r3
-       s    r1,r3
-       abs  r3
-       ci   r3,>0080
-       jgt  bullet_collisions_3
+       mov  @sprite_x(r4),r2           ; Sprite x
+       s    r0,r2                      ; Minus bullet x
+       abs  r2                         ; Distance
+       ci   r2,>0080                   ; Less than 0.5?
+       jgt  bullet_collisions_3        ; Skip if too far
+       mov  @sprite_y(r4),r3           ; Sprite y
+       s    r1,r3                      ; Minus bullet y
+       abs  r3                         ; Distance
+       ci   r3,>0080                   ; Less than 0.5?
+       jgt  bullet_collisions_3        ; Skip if too far
 *      hit
        bl   @hit_sprite
-       jmp  bullet_collisions_4
+       jmp  bullet_collisions_4        ; Stop when a sprite is hit
 bullet_collisions_3:
-       ai   r4,sprite_size
+       ai   r4,sprite_size             ; Next sprite
        dec  r5
        jne  bullet_collisions_2
        jmp  bullet_collisions_5
@@ -1487,6 +1504,16 @@ sub_might_1:
 *
 hit_sprite:
        .proc
+*      Find sprite column and display blood stain
+       bl   @find_sprite_column
+       mov  r0,r0
+       jlt  hit_sprite_0
+       sla  r0,10                       ; Column * 4 in MSB
+       mov  r0,@blood_stain_x
+       li   r0,16
+       mov  r0,@blood_stain_count
+*      Decrease health
+hit_sprite_0:
        dec  @sprite_health(r4)
        jgt  hit_sprite_1
 *      Sprite is dead
@@ -1508,6 +1535,43 @@ hit_sprite_2:
 hit_sprite_3:
        .endproc
 *// hit_sprite
+
+*********************************************************************
+*
+* Find the screen column where a sprite is displayed
+*
+* r4: points to sprite structure
+*
+* On return r0 contains the screen column number (0-63),
+* or -1 if not displayed.
+*
+find_sprite_column:
+       clr  r1                         ; Start column
+       li   r2,columns
+find_sprite_column_1:
+       c    @column_sprite(r2),r4
+       jeq  find_sprite_column_2
+       ai   r2,column_size
+       inc  r1                         ; Next column
+       ci   r1,n_rays
+       jlt  find_sprite_column_1       ; Loop if more columns
+       seto r0                         ; Not found
+       jmp  find_sprite_column_5
+find_sprite_column_2:
+       mov  r1,r0                      ; End column
+find_sprite_column_3:
+       c    @column_sprite(r2),r4
+       jne  find_sprite_column_4
+       ai   r2,column_size
+       inc  r0
+       ci   r0,n_rays
+       jlt  find_sprite_column_3       ; Loop if more columns
+find_sprite_column_4:
+       a    r1,r0                      ; Start + end column
+       srl  r0,1                       ; Center column
+find_sprite_column_5:
+       rt
+*// find_sprite_column
 
 *********************************************************************
 *
@@ -1546,7 +1610,7 @@ collect_sprite_table:
 *
 collect_box_sprite:
        .proc
-       li   r0,200
+       li   r0,250
        a    r0,@score
        bl   @play_chest
        .endproc
@@ -1562,6 +1626,8 @@ collect_barrel_sprite:
        .proc
        li   r0,100
        a    r0,@score
+       li   r0,16
+       bl   @add_might
        bl   @play_chest
        .endproc
 *// collect_barrel_sprite
@@ -2944,6 +3010,23 @@ bullet_angle:
 bullet_speed:
        data 0
 bullet_distance:
+       data 0
+blood_stain_x:
+       data 0
+blood_stain_count:
+       data 0
+blood_stain_sal:
+       byte >30,>f0,>50,>06
+       byte >30,>00,>54,>06
+       byte >40,>f0,>58,>06
+       byte >40,>00,>5C,>06
+arrow_click_x:
+       data 0
+arrow_click_y:
+       data 0
+arrow_click_pattern:
+       data 0
+arrow_click_count:
        data 0
 
 **
