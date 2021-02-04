@@ -422,7 +422,7 @@ upload_hw_sprites:
 *      Bullets
        bl   @draw_bullets
 *      Blood stain
-       mov  @blood_stain_count,r0
+       mov  @blood_stain_show_count,r0
        jeq  upload_hw_sprites_2
        li   r0,blood_stain_sal
        mov  @blood_stain_x,r1
@@ -436,9 +436,19 @@ upload_hw_sprites_1:
        movb *r0+,*r15
        dec  r2
        jne  upload_hw_sprites_1
-       dec  @blood_stain_count
-*      End marker
+       dec  @blood_stain_show_count
+*      Move arrow
 upload_hw_sprites_2:
+       mov  @arrow_highlight_count,r0
+       jeq  upload_hw_sprites_3
+       mov  @arrow_sal_ptr,r0
+       movb *r0+,*r15
+       movb *r0+,*r15
+       movb *r0+,*r15
+       movb *r0+,*r15
+       dec  @arrow_highlight_count
+*      End marker
+upload_hw_sprites_3:
        movb @end_marker_byte,*r15
        .endproc
 end_marker_byte:
@@ -910,6 +920,8 @@ turn_left:
        mov  r1,@sal_no
        seto @full_redraw_required
        bl   @set_sal
+       li   r0,arrow_sal_turn_left
+       bl   @show_arrow_highlight
        .endproc
 *// turn_left
 
@@ -932,6 +944,8 @@ turn_right:
        mov  r1,@sal_no
        seto @full_redraw_required
        bl   @set_sal
+       li   r0,arrow_sal_turn_right
+       bl   @show_arrow_highlight
        .endproc
 *// turn_right
 
@@ -974,6 +988,8 @@ move_forward_2:
        mov  r1,@y
        seto @full_redraw_required
 move_forward_3:
+       li   r0,arrow_sal_move_forward
+       bl   @show_arrow_highlight
        .endproc
 *// move_forward
 
@@ -993,6 +1009,8 @@ move_back:
        mov  r1,@y
        seto @full_redraw_required
 move_back_1:
+       li   r0,arrow_sal_move_back
+       bl   @show_arrow_highlight
        .endproc
 *// move_back
 
@@ -1012,6 +1030,8 @@ move_left:
        mov  r1,@y
        seto @full_redraw_required
 move_left_1:
+       li   r0,arrow_sal_move_left
+       bl   @show_arrow_highlight
        .endproc
 *// move_left
 
@@ -1031,8 +1051,23 @@ move_right:
        mov  r1,@y
        seto @full_redraw_required
 move_right_1:
+       li   r0,arrow_sal_move_right
+       bl   @show_arrow_highlight
        .endproc
 *// move_right
+
+*********************************************************************
+*
+* Show highlight on movement arrow
+*
+* r0: Sprite attributes to use
+*
+show_arrow_highlight:
+       mov  r0,@arrow_sal_ptr
+       li   r0,8
+       mov  r0,@arrow_highlight_count
+       rt
+*// show_arrow_highlight
 
 *********************************************************************
 *
@@ -1511,7 +1546,7 @@ hit_sprite:
        sla  r0,10                       ; Column * 4 in MSB
        mov  r0,@blood_stain_x
        li   r0,16
-       mov  r0,@blood_stain_count
+       mov  r0,@blood_stain_show_count
 *      Decrease health
 hit_sprite_0:
        dec  @sprite_health(r4)
@@ -3013,21 +3048,29 @@ bullet_distance:
        data 0
 blood_stain_x:
        data 0
-blood_stain_count:
+blood_stain_show_count:
        data 0
 blood_stain_sal:
        byte >30,>f0,>50,>06
        byte >30,>00,>54,>06
        byte >40,>f0,>58,>06
        byte >40,>00,>5C,>06
-arrow_click_x:
+arrow_sal_ptr:
        data 0
-arrow_click_y:
+arrow_highlight_count:
        data 0
-arrow_click_pattern:
-       data 0
-arrow_click_count:
-       data 0
+arrow_sal_turn_left:
+       byte >9f,>68,>6c,>0f
+arrow_sal_move_forward:
+       byte >9f,>78,>70,>0f
+arrow_sal_turn_right:
+       byte >9f,>88,>74,>0f
+arrow_sal_move_left:
+       byte >af,>68,>78,>0f
+arrow_sal_move_back:
+       byte >af,>78,>7c,>0f
+arrow_sal_move_right:
+       byte >af,>88,>80,>0f
 
 **
 * Constants
