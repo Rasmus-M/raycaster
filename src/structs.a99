@@ -35,10 +35,14 @@ sprite_type_speech:
        equ  6
 sprite_type_health:
        equ  8
-sprite_type_next:
+sprite_type_speed:
        equ  10
-sprite_type_size:
+sprite_type_might:
        equ  12
+sprite_type_next:
+       equ  14
+sprite_type_size:
+       equ  16
 
 **
 * Sprite data structure

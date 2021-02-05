@@ -16,16 +16,20 @@ sprite_half_size:
 * Sprite types
 *
 sprite_type_box:
-       data 0
-       data :0001000000000000
-       data first_object_texture
-       data come_and_get_me
-       data 0
-       data 0
+       data 0                          ; Index
+       data :0001000000000000          ; Properties
+       data first_object_texture       ; Texture
+       data come_and_get_me            ; Speech
+       data 0                          ; Health
+       data 0                          ; Speed
+       data 0                          ; Might
+       data 0                          ; Next type, when destroyed
 sprite_type_barrel:
        data 1
        data :0001000000000000
        data first_object_texture+1
+       data 0
+       data 0
        data 0
        data 0
        data 0
@@ -35,11 +39,15 @@ sprite_type_pillar:
        data first_object_texture+2
        data 0
        data 2
+       data 0
+       data 0
        data sprite_type_pillar_broken
 sprite_type_pillar_broken:
        data 3
        data :0100000000000000
        data first_object_texture+3
+       data 0
+       data 0
        data 0
        data 0
        data 0
@@ -50,10 +58,14 @@ sprite_type_grate:
        data 0
        data 0
        data 0
+       data 0
+       data 0
 sprite_type_stump:
        data 5
        data :0000000000000000
        data first_object_texture+5
+       data 0
+       data 0
        data 0
        data 0
        data 0
@@ -64,6 +76,8 @@ sprite_type_red_potion:
        data 0
        data 0
        data 0
+       data 0
+       data 0
 sprite_type_green_potion:
        data 7
        data :0001100000000000
@@ -71,21 +85,27 @@ sprite_type_green_potion:
        data 0
        data 0
        data 0
+       data 0
+       data 0
 **
 *      Monsters
 *
 sprite_type_eye:
-       data 16
-       data :1110000000000000
-       data first_monster_texture
-       data eye_can_see_you
-       data 2
-       data 0
+       data 16                         ; Index
+       data :1110000000000000          ; Properties
+       data first_monster_texture      ; Texture
+       data eye_can_see_you            ; Speech
+       data 2                          ; Health
+       data 1                          ; Speed
+       data 1                          ; Might
+       data 0                          ; Next type, when destroyed
 sprite_type_blob:
        data 17
        data :1110000000000000
        data first_monster_texture+1
        data your_time_is_up
+       data 1
+       data 1
        data 1
        data 0
 sprite_type_mon2:
@@ -94,6 +114,8 @@ sprite_type_mon2:
        data first_monster_texture+2
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon3:
        data 19
@@ -101,6 +123,8 @@ sprite_type_mon3:
        data first_monster_texture+3
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon4:
        data 20
@@ -108,6 +132,8 @@ sprite_type_mon4:
        data first_monster_texture+4
        data 0
        data 2
+       data 1
+       data 1
        data 0
 sprite_type_mon5:
        data 21
@@ -115,6 +141,8 @@ sprite_type_mon5:
        data first_monster_texture+5
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon6:
        data 22
@@ -122,6 +150,8 @@ sprite_type_mon6:
        data first_monster_texture+6
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon7:
        data 23
@@ -129,12 +159,16 @@ sprite_type_mon7:
        data first_monster_texture+7
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon8:
        data 24
        data :1110000000000000
        data first_monster_texture+8
        data 0
+       data 1
+       data 1
        data 1
        data 0
 sprite_type_mon9:
@@ -143,12 +177,16 @@ sprite_type_mon9:
        data first_monster_texture+9
        data 0
        data 2
+       data 1
+       data 1
        data 0
 sprite_type_mon10:
        data 26
        data :1110000000000000
        data first_monster_texture+10
        data 0
+       data 1
+       data 1
        data 1
        data 0
 sprite_type_mon11:
@@ -157,12 +195,16 @@ sprite_type_mon11:
        data first_monster_texture+11
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon12:
        data 28
        data :1110000000000000
        data first_monster_texture+12
        data 0
+       data 1
+       data 1
        data 1
        data 0
 sprite_type_mon13:
@@ -171,6 +213,8 @@ sprite_type_mon13:
        data first_monster_texture+13
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon14:
        data 30
@@ -178,6 +222,8 @@ sprite_type_mon14:
        data first_monster_texture+14
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon15:
        data 31
@@ -185,12 +231,16 @@ sprite_type_mon15:
        data first_monster_texture+15
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon16:
        data 32
        data :1110000000000000
        data first_monster_texture+16
        data 0
+       data 1
+       data 1
        data 1
        data 0
 sprite_type_mon17:
@@ -199,6 +249,8 @@ sprite_type_mon17:
        data first_monster_texture+17
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon18:
        data 34
@@ -206,6 +258,8 @@ sprite_type_mon18:
        data first_monster_texture+18
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon19:
        data 35
@@ -213,6 +267,8 @@ sprite_type_mon19:
        data first_monster_texture+19
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon20:
        data 36
@@ -220,6 +276,8 @@ sprite_type_mon20:
        data first_monster_texture+20
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon21:
        data 37
@@ -227,6 +285,8 @@ sprite_type_mon21:
        data first_monster_texture+21
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon22:
        data 38
@@ -234,6 +294,8 @@ sprite_type_mon22:
        data first_monster_texture+22
        data 0
        data 2
+       data 1
+       data 1
        data 0
 sprite_type_mon23:
        data 39
@@ -241,12 +303,16 @@ sprite_type_mon23:
        data first_monster_texture+23
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon24:
        data 40
        data :1110000000000000
        data first_monster_texture+24
        data 0
+       data 1
+       data 1
        data 1
        data 0
 sprite_type_mon25:
@@ -255,6 +321,8 @@ sprite_type_mon25:
        data first_monster_texture+25
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon26:
        data 42
@@ -262,6 +330,8 @@ sprite_type_mon26:
        data first_monster_texture+26
        data 0
        data 2
+       data 1
+       data 1
        data 0
 sprite_type_mon27:
        data 43
@@ -269,6 +339,8 @@ sprite_type_mon27:
        data first_monster_texture+27
        data 0
        data 3
+       data 1
+       data 1
        data 0
 sprite_type_mon28:
        data 44
@@ -276,11 +348,15 @@ sprite_type_mon28:
        data first_monster_texture+28
        data 0
        data 4
+       data 1
+       data 1
        data 0
 sprite_type_mon29:                     ; empty
        data 45
        data :1110000000000000
        data first_monster_texture+29
+       data 0
+       data 0
        data 0
        data 0
        data 0
@@ -291,10 +367,14 @@ sprite_type_mon30:                     ; empty
        data 0
        data 0
        data 0
+       data 0
+       data 0
 sprite_type_mon31:                     ; empty
        data 47
        data :1110000000000000
        data first_monster_texture+31
+       data 0
+       data 0
        data 0
        data 0
        data 0
