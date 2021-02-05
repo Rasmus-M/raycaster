@@ -1561,6 +1561,7 @@ hit_sprite_0:
        li   r0,25
        a    r0,@score
        seto @full_redraw_required
+       bl   @play_die
        jmp  hit_sprite_3
 *      Sprite is not dead
 hit_sprite_1:
