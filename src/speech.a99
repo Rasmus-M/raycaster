@@ -840,6 +840,8 @@ speech_status_code_end
 *
 * Speech data
 *
+uhoh:
+       data sp_uhoh,0
 hand_up:
        data sp_hand,sp_up,0
 what_was_that:
@@ -852,6 +854,13 @@ green_things_near:
        data sp_uhoh,sp_green,sp_things,sp_near,0
 eye_can_see_you:
        data sp_eye,sp_can,sp_see,sp_you,0
+hello_putting:
+       data sp_hello,sp_putting,0
+turn_back_or_else:
+       data sp_turn,sp_back,sp_or,sp_else,0
+go_home_now:
+       data sp_go,sp_home,sp_now,0
+hello_and_goodbye:
+       data sp_hello,sp_and,sp_goodbye,0
 start_of_level:
        data sp_uhoh,sp_how,sp_did,sp_i,sp_get,sp_here,0
-
