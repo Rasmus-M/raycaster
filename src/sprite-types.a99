@@ -19,7 +19,7 @@ sprite_type_box:
        data 0                          ; Index
        data :0001000000000000          ; Properties
        data first_object_texture       ; Texture
-       data come_and_get_me            ; Speech
+       data 0                          ; Speech
        data 0                          ; Health
        data 0                          ; Speed
        data 0                          ; Might
