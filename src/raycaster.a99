@@ -88,7 +88,7 @@ max_sprite_distance:
 max_sprites:
        equ  16
 n_hw_sprite_patterns:
-       equ  33
+       equ  41
 n_high_priority_hw_sprites:
        equ  2
 n_fixed_hw_sprites:
@@ -1830,6 +1830,8 @@ display_map_10:
        mov  @sal_no,r0                 ; Which table to update?
        sla  r0,7
        ai   r0,spratb+4
+       mov  r0,r2
+       ai   r2,3                       ; Store address of color byte
        bl   @vwad                      ; Set VDP address
        clr  r0
        movb @y,r0
@@ -1840,7 +1842,9 @@ display_map_10:
        sla  r0,1
        ab   @map_x,r0
        movb r0,*r15
-       li   r0,>4805
+       mov  @angle,r0
+       sla  r0,4
+       ai   r0,>8406
        movb r0,*r15
        movb @r0lb,*r15
 *      Wait key
@@ -1852,8 +1856,16 @@ display_map_1:
        li   r0,KEY_FI
        bl   @check_key
        jne  display_map_1
+       clr  r3
 display_map_2:
        bl   @wait_int
+       mov  r2,r0                      ; Address of color byte
+       mov  r3,r1
+       andi r1,>1000
+       srl  r1,3
+       ai   r1,>0600
+       bl   @vsbw                      ; Change color byte
+       ai   r3,>0100                   ; Increment color value
        li   r0,KEY_M
        bl   @check_key
        jne  display_map_3
@@ -1885,9 +1897,9 @@ display_map_3:
        seto @full_redraw_required
        .endproc
 map_x:
-       byte 64-8
+       byte 64-7
 map_y:
-       byte 0-9
+       byte 0-8
 *// display_map
 
 *********************************************************************
