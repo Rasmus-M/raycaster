@@ -11,6 +11,7 @@ tipi_read_mouse:
        li   r0,1
        li   r1,tipi_msg_mouse
        bl   @tipi_send_msg
+       li   r0,3
        li   r1,tipi_mouse_data
        bl   @tipi_receive_msg
        movb @tipi_mouse_button,r0

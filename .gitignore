@@ -5,3 +5,5 @@
 /raycaster.lst
 /raycaster.obj
 /bin/
+!/bin/empty.bin
+!/bin/empty-2k.bin

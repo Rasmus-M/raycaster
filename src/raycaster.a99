@@ -1871,6 +1871,8 @@ display_map_2:
        jne  display_map_3
        li   r0,KEY_FI
        bl   @check_key
+       jne  display_map_3
+       mov  @pointer_click,r0
        jeq  display_map_2
 display_map_3:
        bl   @wait_int
