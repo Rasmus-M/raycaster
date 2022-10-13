@@ -3190,6 +3190,7 @@ upper_ram_max:
 
        aorg >2000
 
+       bl   @main
 **
 *      One time init data
 *

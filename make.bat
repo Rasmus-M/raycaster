@@ -1,7 +1,7 @@
-xas99.py -R -S -L raycaster.lst -w src/raycaster.a99 -o raycaster.obj
+xas99.py -R -S -L raycaster.lst -q src/raycaster.a99 -o raycaster.obj
 @IF %ERRORLEVEL% NEQ 0 GOTO :end
 
-xas99.py -R -i -w src/raycaster.a99 -o bin/RAYCASTER
+xas99.py -R -i -q src/raycaster.a99 -o bin/RAYCASTER
 
 java -jar tools/ea5tocart.jar bin/RAYCASTER "TEXCASTER" > make.log
 

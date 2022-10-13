@@ -453,7 +453,7 @@ raycaster_note_0349:
        data >0090
 raycaster_note_02FB:
        data raycaster_instr_04
-       data G#4
+       data G♯4
 raycaster_note_02FE:
        data raycaster_instr_04
        data G4
@@ -462,7 +462,7 @@ raycaster_note_0301:
        data F4
 raycaster_note_0304:
        data raycaster_instr_04
-       data D#4
+       data D♯4
 raycaster_note_0307:
        data raycaster_instr_04
        data D4
@@ -489,7 +489,7 @@ raycaster_note_0319:
        data D3
 raycaster_note_031C:
        data raycaster_instr_06
-       data D#3
+       data D♯3
 raycaster_note_031F:
        data raycaster_instr_06
        data F3
@@ -498,7 +498,7 @@ raycaster_note_0322:
        data G3
 raycaster_note_0325:
        data raycaster_instr_06
-       data G#3
+       data G♯3
 raycaster_note_0328:
        data raycaster_instr_06
        data G3
@@ -507,19 +507,19 @@ raycaster_note_032B:
        data C3
 raycaster_note_032E:
        data raycaster_instr_06
-       data A#3
+       data A♯3
 raycaster_note_034C:
        data raycaster_instr_00
        data >0060
 raycaster_note_0331:
        data raycaster_instr_06
-       data A#4
+       data A♯4
 raycaster_note_0334:
        data raycaster_instr_02
        data F3
 raycaster_note_0337:
        data raycaster_instr_02
-       data D#3
+       data D♯3
 raycaster_note_034F:
        data raycaster_instr_00
        data E4
@@ -528,7 +528,7 @@ raycaster_note_0352:
        data >0080
 raycaster_note_033A:
        data raycaster_instr_04
-       data D#5
+       data D♯5
 raycaster_note_033D:
        data raycaster_instr_04
        data D5
@@ -537,7 +537,7 @@ raycaster_note_0340:
        data C5
 raycaster_note_0343:
        data raycaster_instr_04
-       data A#5
+       data A♯5
 raycaster_instr_00:
        byte T3
        byte 8
